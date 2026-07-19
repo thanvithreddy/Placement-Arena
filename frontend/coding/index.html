@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Section - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Monaco Editor requires a loader script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow: hidden;
+        }
+        .glass {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .split-pane {
+            display: flex;
+            height: calc(100vh - 72px);
+        }
+        .pane-left {
+            width: 40%;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .pane-right {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+        }
+        .resizer {
+            width: 5px;
+            cursor: col-resize;
+            background: rgba(255,255,255,0.05);
+        }
+        .resizer:hover, .resizer:active {
+            background: #7c3aed;
+        }
+
+        #editor-container {
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .output-panel {
+            height: 30%;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        
+        .prose pre { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; font-family: monospace; }
+        .prose code { color: #a78bfa; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <!-- Topbar -->
+    <header class="glass h-[72px] px-6 flex justify-between items-center z-10 shrink-0 border-b border-white/5">
+        <div class="flex items-center gap-4">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">Placement Arena</h1>
+            <span class="text-slate-400">|</span>
+            <span class="font-medium">Section: Coding</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex bg-slate-800/50 rounded-lg p-1 border border-white/5">
+                <button id="tab-prob-0" onclick="switchProblem(0)" class="px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors">Problem 1</button>
+                <button id="tab-prob-1" onclick="switchProblem(1)" class="px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors">Problem 2</button>
+            </div>
+
+            <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg border border-white/5">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="timer" class="font-mono text-lg font-bold tracking-wider text-amber-400">--:--:--</span>
+            </div>
+            <button id="finish-btn" onclick="finishExam()" class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-lg font-semibold hover:bg-rose-500/30 transition-colors hidden">
+                Finish Exam
+            </button>
+        </div>
+    </header>
+
+    <div class="split-pane">
+        <!-- Left Pane: Problem Description -->
+        <div class="pane-left glass flex flex-col">
+            <div class="p-6 overflow-y-auto flex-1">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 id="prob-title" class="text-2xl font-bold">Loading...</h2>
+                    <span class="px-3 py-1 bg-purple-900/50 text-purple-300 border border-purple-500/30 rounded text-sm font-medium">Coding</span>
+                </div>
+                <div id="prob-desc" class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed mb-6">
+                    <!-- Problem HTML content injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Pane: Editor & Output -->
+        <div class="pane-right">
+            <!-- Editor Toolbar -->
+            <div class="glass px-4 py-2 flex justify-between items-center border-b border-white/5 shrink-0">
+                <select id="lang-select" onchange="changeLanguage()" class="bg-slate-900 border border-white/10 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:border-purple-500">
+                    <option value="python">Python 3</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
+                </select>
+                <div class="flex gap-3">
+                    <button onclick="runCode()" id="run-btn" class="btn-outline px-4 py-1.5 rounded-md text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                        Run Code
+                    </button>
+                    <button onclick="submitCode()" id="submit-btn" class="btn-gradient px-4 py-1.5 rounded-md text-sm font-semibold flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Submit Solution
+                    </button>
+                </div>
+            </div>
+
+            <!-- Monaco Editor -->
+            <div id="editor-container"></div>
+
+            <!-- Output Panel -->
+            <div class="output-panel">
+                <div class="px-4 py-2 bg-slate-800/80 border-b border-white/5 text-xs font-semibold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                    <span>Console Output</span>
+                    <span id="output-status" class="text-emerald-400"></span>
+                </div>
+                <div class="p-4 flex-1 overflow-y-auto font-mono text-sm text-slate-300" id="console-output">
+                    Run your code to see output here.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+        
+        // Auto-refresh JWT token on 401
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        let examId = params.get('exam_id');
+        let attemptId = params.get('attempt_id');
+        let sectionAttemptId = params.get('section_attempt_id');
+        
+        let problems = [];
+        let currentProbIdx = 0;
+        let editor;
+        let timeLeft = 0;
+        let timerInterval;
+        let problemStatus = [false, false]; // true if submitted
+
+        const defaultCodes = {
+            python: 'def solve():\n    # Write your code here\n    pass\n\nif __name__ == "__main__":\n    solve()',
+            cpp: '#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    return 0;\n}',
+            java: 'import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}'
+        };
+
+        async function init() {
+            try {
+                // Get exam sections
+                const examRes = await axios.get(`${API}/exams/${examId}/`, getHeaders());
+                const exam = examRes.data;
+                const codingSection = exam.sections.find(s => s.section_type === 'coding');
+                
+                if (!codingSection) {
+                    alert('No coding section found');
+                    window.location.href = `/result/index.html?exam_id=${examId}`;
+                    return;
+                }
+                
+                timeLeft = (codingSection.duration_minutes || 60) * 60;
+                startTimer();
+                
+                problems = [];
+                for (let pid = 1; pid <= 10; pid++) {
+                    try {
+                        const res = await axios.get(`${API}/coding/problem/${pid}/`, getHeaders());
+                        problems.push(res.data);
+                        if (problems.length >= (codingSection.question_count || 2)) break;
+                    } catch(e) { break; }
+                }
+
+                if (problems.length === 0) {
+                    document.getElementById('prob-title').innerText = 'No problems found';
+                    return;
+                }
+
+                problemStatus = new Array(problems.length).fill(false);
+                initEditor();
+                setInterval(autoSave, 30000); // 30s autosave
+
+            } catch(e) {
+                console.error(e);
+                alert("Failed to initialize coding section.");
+            }
+        }
+
+        function initEditor() {
+            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+            require(['vs/editor/editor.main'], function() {
+                editor = monaco.editor.create(document.getElementById('editor-container'), {
+                    value: defaultCodes['python'],
+                    language: 'python',
+                    theme: 'vs-dark',
+                    automaticLayout: true,
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    padding: { top: 16 }
+                });
+                
+                // Custom dark theme for monaco to match Tailwind slate-900
+                monaco.editor.defineTheme('arena-dark', {
+                    base: 'vs-dark',
+                    inherit: true,
+                    rules: [],
+                    colors: { 'editor.background': '#0f172a' }
+                });
+                monaco.editor.setTheme('arena-dark');
+
+                loadProblem(0);
+            });
+        }
+
+        function switchProblem(idx) {
+            autoSave();
+            currentProbIdx = idx;
+            loadProblem(idx);
+            
+            // Update tabs
+            document.getElementById('tab-prob-0').className = idx === 0 ? 'px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors' : 'px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors';
+            document.getElementById('tab-prob-1').className = idx === 1 ? 'px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors' : 'px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors';
+        }
+
+        function loadProblem(idx) {
+            const p = problems[idx];
+            document.getElementById('prob-title').innerText = p.title;
+            document.getElementById('prob-desc').innerHTML = p.description_html || p.description || p.problem_statement;
+            
+            const lang = document.getElementById('lang-select').value;
+            const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
+            if (savedCode) {
+                editor.setValue(savedCode);
+            } else {
+                editor.setValue(defaultCodes[lang]);
+            }
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const model = editor.getModel();
+            monaco.editor.setModelLanguage(model, lang);
+            
+            const p = problems[currentProbIdx];
+            const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
+            editor.setValue(savedCode || defaultCodes[lang]);
+        }
+
+        function autoSave() {
+            if(!editor || !problems[currentProbIdx]) return;
+            const p = problems[currentProbIdx];
+            const lang = document.getElementById('lang-select').value;
+            const code = editor.getValue();
+            localStorage.setItem(`code_${p.id}_${lang}`, code);
+        }
+
+        async function runCode() {
+            const btn = document.getElementById('run-btn');
+            btn.innerHTML = '<svg class="animate-spin w-4 h-4 mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Running...';
+            btn.disabled = true;
+            
+            const p = problems[currentProbIdx];
+            const lang = document.getElementById('lang-select').value;
+            const code = editor.getValue();
+            const out = document.getElementById('console-output');
+            
+            out.innerHTML = '<span class="text-slate-400">Executing code...</span>';
+            document.getElementById('output-status').innerText = '';
+
+            try {
+                const res = await axios.post(`${API}/coding/run/`, {
+                    problem_id: p.id,
+                    language: lang,
+                    code: code
+                }, getHeaders());
+                
+                const data = res.data;
+                if (data.status === 'Accepted') {
+                    document.getElementById('output-status').innerText = 'Accepted';
+                    document.getElementById('output-status').className = 'text-emerald-400';
+                } else {
+                    document.getElementById('output-status').innerText = data.status || 'Error';
+                    document.getElementById('output-status').className = 'text-rose-400';
+                }
+                
+                out.innerHTML = `<pre>${data.output || data.error || 'No output'}</pre>`;
+                
+            } catch(e) {
+                out.innerHTML = `<span class="text-rose-400">Error communicating with server: ${e.message}</span>`;
+            } finally {
+                btn.innerHTML = '<svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg> Run Code';
+                btn.disabled = false;
+            }
+        }
+
+        async function submitCode() {
+            const btn = document.getElementById('submit-btn');
+            btn.innerText = 'Submitting...';
+            btn.disabled = true;
+            
+            const p = problems[currentProbIdx];
+            const lang = document.getElementById('lang-select').value;
+            const code = editor.getValue();
+            const out = document.getElementById('console-output');
+
+            out.innerHTML = '<span class="text-slate-400">Evaluating against hidden test cases...</span>';
+            
+            try {
+                const res = await axios.post(`${API}/coding/submit/`, {
+                    problem_id: p.id,
+                    language: lang,
+                    code: code,
+                    exam_attempt_id: attemptId
+                }, getHeaders());
+                
+                const data = res.data;
+                out.innerHTML = `<div>Status: <strong>${data.status}</strong></div><div>Score: ${data.score}/${p.max_score || 100}</div>`;
+                
+                if(data.status === 'Accepted' || data.score > 0) {
+                    problemStatus[currentProbIdx] = true;
+                    checkAllDone();
+                }
+
+            } catch(e) {
+                out.innerHTML = `<span class="text-rose-400">Error submitting code: ${e.message}</span>`;
+            } finally {
+                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Submit Solution';
+                btn.disabled = false;
+            }
+        }
+
+        function checkAllDone() {
+            if (problemStatus.every(status => status)) {
+                document.getElementById('finish-btn').classList.remove('hidden');
+            }
+        }
+
+        async function finishExam() {
+            try {
+                if(sectionAttemptId) {
+                    await axios.post(`${API}/exams/sections/${sectionAttemptId}/submit/`, {}, getHeaders());
+                }
+                window.location.href = `/result/index.html?exam_id=${examId}`;
+            } catch(e) {
+                alert("Could not submit section. Please try again.");
+            }
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up for Coding section!");
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const h = Math.floor(timeLeft / 3600);
+            const m = Math.floor((timeLeft % 3600) / 60);
+            const s = timeLeft % 60;
+            const pad = num => num.toString().padStart(2, '0');
+            document.getElementById('timer').innerText = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Arena - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-navy: #0f172a;
+            --accent-purple: #7c3aed;
+            --accent-violet: #a78bfa;
+            --danger-rose: #f43f5e;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-navy);
+            color: white;
+            overflow: hidden;
+        }
+        .bg-animated {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, var(--accent-purple), var(--accent-violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), #6d28d9);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.4);
+        }
+        .input-glow:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+        .error-glow {
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+            border: 1px solid var(--danger-rose);
+        }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen bg-animated flex items-center justify-center p-4">
+
+    <div class="glass w-full max-w-md rounded-2xl p-8 shadow-2xl relative z-10">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold tracking-tight mb-2">
+                ⚡ <span class="gradient-text">Placement Arena</span>
+            </h1>
+            <p class="text-slate-400 text-sm">Sharpen your edge. Daily.</p>
+        </div>
+
+        <div id="error-msg" class="hidden error-glow bg-rose-500/10 text-rose-400 p-3 rounded-lg text-sm mb-6 text-center backdrop-blur-sm">
+            Invalid credentials. Please try again.
+        </div>
+
+        <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
+            <div>
+                <label for="username" class="block text-sm font-medium text-slate-300 mb-1">Username</label>
+                <input type="text" id="username" required
+                    class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 input-glow transition-all"
+                    placeholder="Enter your username">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" required
+                        class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 input-glow transition-all"
+                        placeholder="••••••••">
+                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-3.5 text-slate-400 hover:text-white transition-colors">
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="login-btn" class="w-full btn-primary text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 mt-4">
+                <span>Sign In</span>
+                <div id="loading-spinner" class="spinner hidden"></div>
+            </button>
+        </form>
+    </div>
+
+    <!-- Decorative blobs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600/30 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600/30 rounded-full blur-[100px]"></div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            const type = pwd.getAttribute('type') === 'password' ? 'text' : 'password';
+            pwd.setAttribute('type', type);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const spinner = document.getElementById('loading-spinner');
+            const errorMsg = document.getElementById('error-msg');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // UI State
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            errorMsg.classList.add('hidden');
+
+            try {
+                const response = await axios.post(`${API}/auth/login/`, { username, password });
+                
+                const { access, refresh, user } = response.data;
+                
+                // Store tokens and user info
+                localStorage.setItem('access_token', access);
+                localStorage.setItem('refresh_token', refresh);
+                localStorage.setItem('user_info', JSON.stringify({
+                    id: user.id,
+                    username: user.username,
+                    display_name: user.display_name || user.first_name || user.username,
+                    role: user.role
+                }));
+
+                // Redirect based on role
+                if (user.role === 'admin') {
+                    window.location.href = '/panel/index.html';
+                } else {
+                    window.location.href = '/dashboard/index.html';
+                }
+            } catch (error) {
+                errorMsg.classList.remove('hidden');
+                errorMsg.textContent = error.response?.data?.error || 'Login failed. Try again.';
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+
+

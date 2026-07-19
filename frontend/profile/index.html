@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+        .glass {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Navbar matching dashboard */
+        .nav-item {
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- Navbar -->
+        <header class="flex justify-between items-center glass p-6 rounded-2xl mb-8">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-lg">P</div>
+                <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">Placement Arena</h1>
+            </div>
+            <nav class="flex gap-6 items-center">
+                <a href="/dashboard/index.html" class="nav-item font-medium">Dashboard</a>
+                <a href="/leaderboard/index.html" class="nav-item font-medium">Leaderboard</a>
+                <a href="/profile/index.html" class="nav-item active font-medium">Profile</a>
+            </nav>
+        </header>
+
+        <!-- Section 1: User card + Accuracy charts side by side -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- User Card -->
+            <div class="glass rounded-2xl p-8 flex flex-col items-center text-center">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-4xl font-bold mb-4" id="user-avatar">U</div>
+                <h2 class="text-2xl font-bold" id="user-name">Loading...</h2>
+                <div class="mt-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm capitalize" id="user-role">Candidate</div>
+                <div class="mt-6 grid grid-cols-2 gap-4 w-full text-center">
+                    <div class="glass rounded-xl p-3">
+                        <div class="text-2xl font-bold text-purple-400" id="total-exams">0</div>
+                        <div class="text-xs text-slate-400">Exams Taken</div>
+                    </div>
+                    <div class="glass rounded-xl p-3">
+                        <div class="text-2xl font-bold text-amber-400" id="streak-count">0</div>
+                        <div class="text-xs text-slate-400">Day Streak 🔥</div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="mt-6 w-full py-2 rounded-lg border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 transition-colors text-sm">Logout</button>
+            </div>
+            
+            <!-- Accuracy Charts 2x2 grid -->
+            <div class="lg:col-span-2 glass rounded-2xl p-6 flex flex-col">
+                <h3 class="text-lg font-bold mb-6">Category Accuracy</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 flex-1 items-center" id="accuracy-grid">
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 100 100" class="w-24 h-24 mb-3" id="donut-arithmetic"></svg>
+                        <div class="text-sm font-medium text-slate-300">Arithmetic</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 100 100" class="w-24 h-24 mb-3" id="donut-verbal"></svg>
+                        <div class="text-sm font-medium text-slate-300">Verbal</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 100 100" class="w-24 h-24 mb-3" id="donut-reasoning"></svg>
+                        <div class="text-sm font-medium text-slate-300">Reasoning</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg viewBox="0 0 100 100" class="w-24 h-24 mb-3" id="donut-coding"></svg>
+                        <div class="text-sm font-medium text-slate-300">Coding</div>
+                    </div>
+                </div>
+                <!-- Weak areas -->
+                <div class="mt-4 pt-4 border-t border-white/5" id="weak-areas-section" style="display:none">
+                    <h4 class="text-sm text-slate-400 mb-2">Areas needing improvement:</h4>
+                    <div class="flex gap-2 flex-wrap" id="weak-tags"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: History Table -->
+        <div class="glass rounded-2xl p-6">
+            <h3 class="text-lg font-bold mb-4">Exam History</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-slate-400 text-sm border-b border-white/10">
+                            <th class="pb-3 pr-4">Date</th>
+                            <th class="pb-3 pr-4">Exam</th>
+                            <th class="pb-3 pr-4">Score</th>
+                            <th class="pb-3 pr-4">Rank</th>
+                            <th class="pb-3 pr-4">Time</th>
+                            <th class="pb-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table" class="text-sm divide-y divide-white/5"></tbody>
+                </table>
+                <div id="history-empty" class="text-center py-12 text-slate-500" style="display:none">
+                    No exam history yet. Complete your first exam to see results here!
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Trend Chart -->
+        <div class="glass rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold">Score Trend</h3>
+                <span class="text-xs text-slate-400">Last 10 exams</span>
+            </div>
+            <div style="position: relative; height: 220px;">
+                <canvas id="scoreTrendChart"></canvas>
+            </div>
+            <!-- Category breakdown chart -->
+            <div class="mt-6 pt-6 border-t border-white/5">
+                <h4 class="text-sm font-semibold text-slate-300 mb-4">Category Performance Breakdown</h4>
+                <div style="position: relative; height: 180px;">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+        
+        // Auto-refresh JWT token on 401
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        function renderDonut(canvasId, percentage, color) {
+            const r = 40;
+            const circ = 2 * Math.PI * r;
+            const offset = circ - (percentage / 100) * circ;
+            const svg = document.getElementById(canvasId);
+            svg.innerHTML = `
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="${color}" stroke-width="10"
+                    stroke-dasharray="${circ}" stroke-dashoffset="${offset}"
+                    stroke-linecap="round" transform="rotate(-90 50 50)"
+                    style="transition: stroke-dashoffset 1.5s ease-out;"/>
+                <text x="50" y="55" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="Inter">${percentage}%</text>
+            `;
+        }
+
+        function calculateStreak(history) {
+            // history is sorted by date desc
+            const today = new Date().toISOString().split('T')[0];
+            let streak = 0;
+            let checkDate = new Date();
+            
+            const examDates = new Set(history.map(h => h.exam_date));
+            
+            while (examDates.has(checkDate.toISOString().split('T')[0])) {
+                streak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            }
+            return streak;
+        }
+
+        function formatDuration(seconds) {
+            if (!seconds) return '--';
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            if (h > 0) return `${h}h ${m}m`;
+            if (m > 0) return `${m}m ${s}s`;
+            return `${s}s`;
+        }
+
+        async function loadProfile() {
+            try {
+                // 1. User Info
+                const userRes = await axios.get(`${API}/auth/me/`, getHeaders());
+                const user = userRes.data;
+                const name = user.display_name || user.first_name || user.username;
+                document.getElementById('user-name').innerText = name;
+                document.getElementById('user-avatar').innerText = name.charAt(0).toUpperCase();
+                document.getElementById('user-role').innerText = user.role;
+                
+                // 2. Analytics & Accuracy
+                try {
+                    const analyticsRes = await axios.get(`${API}/analytics/me/`, getHeaders());
+                    let stats = analyticsRes.data;
+                    if (Array.isArray(stats) && stats.length > 0) {
+                        stats = stats[stats.length - 1];
+                    }
+                    window._latestAnalytics = stats;
+                    renderDonut('donut-arithmetic', Math.round(stats.arithmetic_accuracy || 0), '#3b82f6'); // blue
+                    renderDonut('donut-verbal', Math.round(stats.verbal_accuracy || 0), '#10b981'); // emerald
+                    renderDonut('donut-reasoning', Math.round(stats.reasoning_accuracy || 0), '#f59e0b'); // amber
+                    renderDonut('donut-coding', Math.round(stats.coding_accuracy || 0), '#7c3aed'); // purple
+                    
+                    if (stats.weak_areas && stats.weak_areas.length > 0) {
+                        document.getElementById('weak-areas-section').style.display = 'block';
+                        const tags = document.getElementById('weak-tags');
+                        tags.innerHTML = stats.weak_areas.map(area => 
+                            `<span class="px-2 py-1 bg-rose-500/20 text-rose-400 rounded text-xs border border-rose-500/30">${area}</span>`
+                        ).join('');
+                    }
+                } catch(e) {
+                    // Fallback to 0% if no analytics
+                    renderDonut('donut-arithmetic', 0, '#3b82f6');
+                    renderDonut('donut-verbal', 0, '#10b981');
+                    renderDonut('donut-reasoning', 0, '#f59e0b');
+                    renderDonut('donut-coding', 0, '#7c3aed');
+                }
+                
+                // 3. History & Streak
+                try {
+                    const historyRes = await axios.get(`${API}/analytics/history/`, getHeaders());
+                    const history = historyRes.data;
+                    
+                    document.getElementById('total-exams').innerText = history.length;
+                    document.getElementById('streak-count').innerText = calculateStreak(history);
+                    
+                    if (history.length === 0) {
+                        document.getElementById('history-empty').style.display = 'block';
+                    } else {
+                        const tbody = document.getElementById('history-table');
+                        tbody.innerHTML = history.map(h => `
+                            <tr>
+                                <td class="py-4 text-slate-300">${new Date(h.exam_date).toLocaleDateString()}</td>
+                                <td class="py-4 font-medium">${h.exam_title}</td>
+                                <td class="py-4">
+                                    <span class="text-emerald-400 font-semibold">${h.total_score}</span>
+                                </td>
+                                <td class="py-4">
+                                    ${h.rank ? `<span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs border border-amber-500/30">#${h.rank}</span>` : '<span class="text-slate-500">N/A</span>'}
+                                </td>
+                                <td class="py-4 text-slate-400">${formatDuration(h.time_taken_seconds)}</td>
+                                <td class="py-4">
+                                    ${h.status === 'completed' 
+                                        ? `<span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Completed</span>`
+                                        : `<span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">In Progress</span>`
+                                    }
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+                    if (typeof renderCharts === 'function') renderCharts(history);
+                } catch(e) {
+                    document.getElementById('history-empty').style.display = 'block';
+                    document.getElementById('history-empty').innerText = 'Failed to load history.';
+                }
+                
+            } catch(e) {
+                console.error("Failed to load profile", e);
+                if (e.response?.status === 401) {
+                    logout();
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/login/index.html';
+        }
+
+        function renderCharts(history) {
+            // Reverse so oldest is on the left
+            const items = history.slice(0, 10).reverse();
+            const labels = items.map(h => {
+                const d = new Date(h.exam_date || h.started_at);
+                return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+            });
+            const scores = items.map(h => h.total_score || 0);
+
+            // Destroy old charts if they exist
+            if (window._trendChart) window._trendChart.destroy();
+            if (window._catChart) window._catChart.destroy();
+
+            const ctx1 = document.getElementById('scoreTrendChart').getContext('2d');
+            window._trendChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Score',
+                        data: scores,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124,58,237,0.1)',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#a78bfa',
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#a78bfa',
+                            bodyColor: '#cbd5e1',
+                            borderColor: 'rgba(124,58,237,0.3)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: ctx => `Score: ${ctx.parsed.y}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { color: '#64748b', font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: { color: '#64748b', font: { size: 11 } },
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+            // Category stacked bar chart from analytics/me API
+            // Use the latest analytics entry
+            const analyticsData = window._latestAnalytics;
+            if (analyticsData) {
+                const ctx2 = document.getElementById('categoryChart').getContext('2d');
+                window._catChart = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Arithmetic', 'Verbal', 'Reasoning', 'Coding'],
+                        datasets: [{
+                            label: 'Accuracy %',
+                            data: [
+                                analyticsData.arithmetic_accuracy || 0,
+                                analyticsData.verbal_accuracy || 0,
+                                analyticsData.reasoning_accuracy || 0,
+                                analyticsData.coding_accuracy || 0
+                            ],
+                            backgroundColor: [
+                                'rgba(124,58,237,0.7)',
+                                'rgba(16,185,129,0.7)',
+                                'rgba(245,158,11,0.7)',
+                                'rgba(244,63,94,0.7)'
+                            ],
+                            borderColor: [
+                                '#7c3aed', '#10b981', '#f59e0b', '#f43f5e'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                bodyColor: '#cbd5e1',
+                                callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1)}%` }
+                            }
+                        },
+                        scales: {
+                            x: { grid: { display: false }, ticks: { color: '#64748b' } },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: '#64748b', callback: v => v + '%' },
+                                max: 100,
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        window.onload = loadProfile;
+    </script>
+</body>
+</html>
+

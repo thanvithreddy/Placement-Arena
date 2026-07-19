@@ -1,0 +1,26 @@
+# Render.com Infrastructure-as-Code Blueprint
+# Deploy Placement Arena with free managed PostgreSQL + Web Service in 1 click!
+
+services:
+  - type: web
+    name: placement-arena
+    env: python
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "cd backend && python manage.py migrate && python manage.py create_initial_data && python manage.py seed_questions && python manage.py create_daily_exam && gunicorn placement_arena.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: placement-arena-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+
+databases:
+  - name: placement-arena-db
+    databaseName: placement_arena
+    user: arena_user
+    plan: free

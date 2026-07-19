@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Arena - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        :root {
+            --bg-navy: #0f172a;
+            --bg-slate: #1e293b;
+            --accent-purple: #7c3aed;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-navy); color: white; display: flex; height: 100vh; overflow: hidden; }
+        .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        .sidebar-link { display: flex; items-center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; color: #94a3b8; transition: all 0.2s; cursor: pointer; }
+        .sidebar-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .sidebar-link.active { background: var(--accent-purple); color: white; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        
+        .section-view { display: none; }
+        .section-view.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Form elements */
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
+            width: 100%; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: white; font-size: 0.875rem; outline: none; transition: border 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-purple); }
+    </style>
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <aside class="w-64 glass border-r border-white/10 flex flex-col shrink-0 relative z-20">
+        <div class="p-6 border-b border-white/10">
+            <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                ⚡ <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Admin Panel</span>
+            </h1>
+        </div>
+        
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">Core</div>
+            <a class="sidebar-link active" onclick="switchView('dashboard', this)">Dashboard</a>
+            <a class="sidebar-link" onclick="switchView('create-exam', this)">Create Exam</a>
+            
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">Content</div>
+            <a class="sidebar-link" onclick="switchView('questions', this)">Questions Bank</a>
+            <a class="sidebar-link" onclick="switchView('import', this)">Import Questions</a>
+            <a class="sidebar-link" onclick="switchView('coding', this)">Coding Problems</a>
+            
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">Monitoring</div>
+            <a class="sidebar-link" onclick="switchView('submissions', this)">Submissions</a>
+            <a class="sidebar-link" onclick="switchView('violations', this)">Violations Log</a>
+            <a class="sidebar-link" onclick="switchView('users', this)">Users</a>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+            <a href="/dashboard/index.html" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Exit to User App
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-slate-900/50 relative z-10 p-8">
+        
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="section-view active space-y-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold">Overview</h2>
+                    <p class="text-slate-400 text-sm">System statistics for today.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-6 rounded-xl border border-white/5">
+                    <div class="text-slate-400 text-sm font-medium mb-1">Total Exams</div>
+                    <div class="text-3xl font-bold" id="stat-exams">...</div>
+                </div>
+                <div class="glass p-6 rounded-xl border border-white/5">
+                    <div class="text-slate-400 text-sm font-medium mb-1">Questions Bank</div>
+                    <div class="text-3xl font-bold text-blue-400" id="stat-questions">...</div>
+                </div>
+                <div class="glass p-6 rounded-xl border border-white/5">
+                    <div class="text-slate-400 text-sm font-medium mb-1">Today's Status</div>
+                    <div class="mt-2"><span id="today-status" class="px-3 py-1 rounded-full bg-slate-500/20 text-slate-400 text-sm">Loading...</span></div>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 mt-6">
+                <h3 class="font-bold text-lg mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button id="create-today-btn" onclick="createTodayExam()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition py-4 px-6 rounded-xl font-semibold text-left">
+                        <div class="text-xl mb-1">📅</div>
+                        <div>Create Today's Exam</div>
+                        <div class="text-xs text-purple-200 mt-1">Auto-configures 4 sections</div>
+                    </button>
+                    <button onclick="switchView('create-exam', document.querySelector('.sidebar-link:nth-child(3)'))" class="glass hover:bg-white/10 transition py-4 px-6 rounded-xl font-semibold text-left border border-white/10">
+                        <div class="text-xl mb-1">✏️</div>
+                        <div>Custom Exam</div>
+                        <div class="text-xs text-slate-400 mt-1">Full configuration</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Exam View -->
+        <div id="view-create-exam" class="section-view max-w-3xl">
+            <h2 class="text-2xl font-bold mb-6">Configure New Exam</h2>
+            <div class="glass rounded-xl p-6 border border-white/10 space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Exam Title</label>
+                        <input type="text" value="Daily Assessment - 20 Jul">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Date</label>
+                        <input type="date">
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-4">
+                    <h3 class="font-semibold mb-4 text-purple-400">Section Configuration</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Sec 1 -->
+                        <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
+                            <div class="font-medium text-sm">Arithmetic</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="25"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="100"></div>
+                        </div>
+                        <!-- Sec 2 -->
+                        <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
+                            <div class="font-medium text-sm">Verbal</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="80"></div>
+                        </div>
+                        <!-- Sec 3 -->
+                        <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
+                            <div class="font-medium text-sm">Reasoning</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="25"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="100"></div>
+                        </div>
+                        <!-- Sec 4 -->
+                        <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
+                            <div class="font-medium text-sm">Coding</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="60"></div>
+                            <div><label class="text-xs text-slate-400 block">Problems</label><input type="number" value="2"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="200"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-4">
+                    <button class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-lg font-semibold transition" onclick="alert('Exam created and sections initialized.')">Publish Exam</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import View -->
+        <div id="view-import" class="section-view max-w-3xl">
+            <h2 class="text-2xl font-bold mb-6">Bulk Import Questions</h2>
+            <div class="glass rounded-xl p-8 border border-white/10 text-center border-dashed border-2">
+                <div class="text-4xl mb-4">📁</div>
+                <h3 class="text-lg font-semibold mb-2">Drag & Drop Excel/CSV</h3>
+                <p class="text-sm text-slate-400 mb-6">File must follow the required template format.</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="downloadCSVTemplate()" class="bg-slate-800 border border-slate-600 px-4 py-2 rounded text-sm hover:bg-slate-700 transition flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download Template
+                    </button>
+                    <button class="bg-purple-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-purple-500 transition">Browse File</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Violations View -->
+        <div id="view-violations" class="section-view">
+            <h2 class="text-2xl font-bold mb-6">Live Violations Log</h2>
+            <div class="glass rounded-xl overflow-hidden border border-white/10">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800">
+                        <tr>
+                            <th class="p-3 text-slate-300">Timestamp</th>
+                            <th class="p-3 text-slate-300">User</th>
+                            <th class="p-3 text-slate-300">Type</th>
+                            <th class="p-3 text-slate-300">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <tr class="hover:bg-white/5">
+                            <td class="p-3 text-slate-400">14:52:10</td>
+                            <td class="p-3 font-semibold">StudentX</td>
+                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-1 rounded text-xs">tab_switch</span></td>
+                            <td class="p-3 text-slate-300">Switched away from the exam tab</td>
+                        </tr>
+                        <tr class="hover:bg-white/5">
+                            <td class="p-3 text-slate-400">14:48:05</td>
+                            <td class="p-3 font-semibold">AlexChen</td>
+                            <td class="p-3"><span class="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs">fullscreen_exit</span></td>
+                            <td class="p-3 text-slate-300">Exited fullscreen mode</td>
+                        </tr>
+                        <tr class="hover:bg-white/5">
+                            <td class="p-3 text-slate-400">14:45:00</td>
+                            <td class="p-3 font-semibold">CodeNinja</td>
+                            <td class="p-3"><span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs">right_click</span></td>
+                            <td class="p-3 text-slate-300">Right click is disabled</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Placeholder for other views to ensure HTML completion -->
+        <div id="view-questions" class="section-view"><h2 class="text-2xl font-bold mb-6">Questions Bank</h2><p class="text-slate-400">Questions list will appear here.</p></div>
+        <div id="view-coding" class="section-view"><h2 class="text-2xl font-bold mb-6">Coding Problems</h2><p class="text-slate-400">Coding problems manager.</p></div>
+        <div id="view-submissions" class="section-view"><h2 class="text-2xl font-bold mb-6">Submissions</h2><p class="text-slate-400">All student submissions.</p></div>
+        <div id="view-users" class="section-view"><h2 class="text-2xl font-bold mb-6">Users Management</h2><p class="text-slate-400">Registered users.</p></div>
+
+    </main>
+
+    <script>
+        // Restrict access
+        const user = JSON.parse(localStorage.getItem('user_info') || '{}');
+        if (user.role !== 'admin' && window.location.pathname.includes('admin')) {
+            alert('Unauthorized access. Redirecting to dashboard.');
+            window.location.href = '/dashboard/index.html';
+        }
+
+        function switchView(viewId, btnEl) {
+            // Update sidebar links
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            // Hide all views, show target
+            document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+        }
+
+        const API = 'http://127.0.0.1:8000/api';
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            const colors = { success: 'bg-emerald-500', error: 'bg-rose-500', info: 'bg-purple-500' };
+            toast.className = `fixed bottom-6 right-6 ${colors[type] || colors.info} text-white px-6 py-3 rounded-xl shadow-lg z-[200] flex items-center gap-3 transition-all`;
+            toast.style.animation = 'slideUp 0.3s ease';
+            toast.innerHTML = `<span>${message}</span><button onclick="this.parentElement.remove()" class="ml-2 opacity-70 hover:opacity-100">&times;</button>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        async function createTodayExam() {
+            const btn = document.getElementById('create-today-btn');
+            btn.disabled = true;
+            btn.innerText = 'Creating...';
+            try {
+                const res = await axios.post(`${API}/admin-panel/exams/create-today/`, {}, getHeaders());
+                showToast(`Exam created: ${res.data.title} (ID: ${res.data.id})`, 'success');
+                loadDashboardStats();
+            } catch(e) {
+                const msg = e.response?.data?.error || 'Failed to create exam';
+                showToast(msg, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <div class="text-xl mb-1">📅</div>
+                    <div>Create Today's Exam</div>
+                    <div class="text-xs text-purple-200 mt-1">Auto-configures 4 sections</div>
+                `;
+            }
+        }
+
+        function downloadCSVTemplate() {
+            const rows = [
+                ['category', 'difficulty', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option', 'explanation', 'marks'],
+                ['arithmetic', 'medium', 'Sample: What is 2+2?', '3', '4', '5', '6', 'B', 'Basic addition', '4'],
+                ['verbal', 'easy', 'Sample: Synonym of Happy', 'Sad', 'Joyful', 'Angry', 'Tired', 'B', '', '4'],
+                ['reasoning', 'hard', 'Sample: 2, 4, 8, _?', '10', '12', '16', '14', 'C', 'Powers of 2', '4'],
+            ];
+            const csv = rows.map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'placement_arena_questions_template.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function loadDashboardStats() {
+            try {
+                // Total Questions
+                const qRes = await axios.get(`${API}/admin-panel/questions/`, getHeaders());
+                const totalQ = Array.isArray(qRes.data) ? qRes.data.length : 0;
+                const el = document.getElementById('stat-questions');
+                if (el) el.innerText = totalQ;
+                
+                // Total Exams
+                const eRes = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
+                const totalE = Array.isArray(eRes.data) ? eRes.data.length : 0;
+                const el2 = document.getElementById('stat-exams');
+                if (el2) el2.innerText = totalE;
+                
+                // Today's exam status
+                const tRes = await axios.get(`${API}/exams/today/`, getHeaders());
+                const todayBadge = document.getElementById('today-status');
+                if (todayBadge) {
+                    todayBadge.innerText = tRes.data.exam ? 'Active Exam Today' : 'No Exam Today';
+                    todayBadge.className = tRes.data.exam 
+                        ? 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm'
+                        : 'px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm';
+                }
+            } catch(e) { console.warn('Stats load failed', e); }
+        }
+
+        if (user.role === 'admin') {
+            loadDashboardStats();
+        }
+    </script>
+</body>
+</html>
+

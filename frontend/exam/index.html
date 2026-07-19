@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Engine - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow: hidden; /* Prevent body scrolling */
+        }
+        .glass {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .option-card {
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s ease;
+        }
+        .option-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .option-card.selected {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .palette-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s;
+        }
+        .palette-btn.not_visited { background: transparent; }
+        .palette-btn.visited { background: #f43f5e; color: white; border-color: #f43f5e; } /* Rose */
+        .palette-btn.answered { background: #10b981; color: white; border-color: #10b981; } /* Emerald */
+        .palette-btn.marked { background: #7c3aed; color: white; border-color: #7c3aed; } /* Purple */
+        .palette-btn.active { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); border-color: white; transform: scale(1.1); z-index: 10; }
+
+        /* Scrollbar hiding */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        
+        /* Modals */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center; justify-content: center;
+        }
+        .offline-banner {
+            position: fixed; top: 0; left: 0; width: 100%; background: #f43f5e; color: white; text-align: center; padding: 0.5rem; font-weight: bold; z-index: 200; display: none;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-center justify-center" style="display: none;">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-slate-300" id="loading-text">Loading exam...</p>
+        </div>
+    </div>
+    <div id="offline-banner" class="offline-banner">You are currently offline. Check your connection.</div>
+
+    <!-- Topbar -->
+    <header class="glass px-6 py-4 flex justify-between items-center z-10 shrink-0 border-b border-white/5">
+        <div class="flex items-center gap-4">
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">Placement Arena</h1>
+            <span class="text-slate-400">|</span>
+            <span class="font-medium" id="section-name">Loading Section...</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg border border-white/5">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="timer" class="font-mono text-lg font-bold tracking-wider text-amber-400">--:--:--</span>
+            </div>
+            <button onclick="submitSectionConfirm()" class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-lg font-semibold hover:bg-rose-500/30 transition-colors">
+                Submit Section
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Question Area -->
+        <div class="flex-1 flex flex-col p-6 lg:p-8 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full h-full flex flex-col">
+                <!-- Question Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-slate-300">Question <span id="q-num" class="text-white">1</span></h2>
+                    <span class="px-3 py-1 bg-slate-800 rounded text-sm text-slate-400 border border-white/5">+<span id="q-marks">4</span> / -<span id="q-neg">1</span></span>
+                </div>
+                
+                <!-- Question Text -->
+                <div id="q-text" class="text-lg md:text-xl leading-relaxed mb-8 select-none">
+                    Loading question...
+                </div>
+                
+                <!-- Options -->
+                <div id="options-container" class="space-y-4 flex-1">
+                    <!-- Dynamically injected -->
+                </div>
+                
+                <!-- Bottom Controls -->
+                <div class="mt-8 flex justify-between items-center pt-6 border-t border-white/5 shrink-0">
+                    <button onclick="markForReview()" id="mark-btn" class="btn-outline px-6 py-3 rounded-lg font-medium text-slate-300">
+                        Mark for Review
+                    </button>
+                    <div class="flex gap-4">
+                        <button onclick="prevQuestion()" class="btn-outline px-6 py-3 rounded-lg font-medium">Previous</button>
+                        <button onclick="nextQuestion()" class="btn-gradient px-8 py-3 rounded-lg font-semibold">Save & Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Palette -->
+        <div class="w-80 glass border-l border-white/5 flex flex-col shrink-0 z-10">
+            <div class="p-4 border-b border-white/5">
+                <h3 class="font-bold text-slate-200">Question Palette</h3>
+            </div>
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div id="palette-grid" class="flex flex-wrap gap-2">
+                    <!-- Dynamically injected -->
+                </div>
+            </div>
+            <!-- Legend -->
+            <div class="p-4 bg-slate-900/50 border-t border-white/5 shrink-0">
+                <div class="grid grid-cols-2 gap-2 text-xs text-slate-400">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#10b981]"></div> Answered</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#f43f5e]"></div> Not Answered</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#7c3aed]"></div> Marked</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded border border-white/20"></div> Not Visited</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="submit-modal" class="modal-overlay">
+        <div class="glass p-8 rounded-2xl max-w-md w-full text-center">
+            <h2 class="text-2xl font-bold mb-4">Submit Section?</h2>
+            <p class="text-slate-300 mb-6">Are you sure you want to submit this section? You will not be able to return to it.</p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="document.getElementById('submit-modal').style.display='none'" class="btn-outline px-6 py-2 rounded-lg">Cancel</button>
+                <button onclick="submitSection()" class="btn-gradient px-6 py-2 rounded-lg">Yes, Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="warning-modal" class="modal-overlay">
+        <div class="glass p-8 rounded-2xl max-w-md w-full text-center bg-rose-900/20 border-rose-500/30">
+            <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-2 text-rose-400">Warning <span id="warning-count">1</span>/3</h2>
+            <p id="warning-text" class="text-slate-300 mb-6">Suspicious activity detected. Multiple warnings will result in auto-submission.</p>
+            <button onclick="document.getElementById('warning-modal').style.display='none'; requestFullscreen()" class="btn-gradient px-8 py-2 rounded-lg w-full">I Understand</button>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+
+        // Auto-refresh JWT token on 401
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        let examId = params.get('exam_id');
+        let attemptId = params.get('attempt_id');
+        let sections = [];
+        let sectionAttempts = [];
+        let currentSectionIdx = 0;
+        let questions = [];
+        let currentQIdx = 0;
+        let questionStates = {}; // { status: 'not_visited'|'visited'|'answered'|'marked', selected_option_id: null }
+        let timeLeft = 0;
+        let timerInterval;
+        let examAttempt = null;
+        let warningCount = {};
+        
+        function capitalize(s) { return s[0].toUpperCase() + s.slice(1); }
+
+        async function initExam() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+            document.getElementById('loading-text').innerText = 'Loading exam...';
+            try {
+                // Get the full exam
+                const examRes = await axios.get(`${API}/exams/${examId}/`, getHeaders());
+                const exam = examRes.data;
+                sections = exam.sections.sort((a,b) => a.order - b.order);
+                
+                // Get attempt details
+                const startRes = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
+                examAttempt = startRes.data;
+                sectionAttempts = examAttempt.section_attempts || [];
+                
+                if (sectionAttempts.length === 0) {
+                    // Fallback or missing logic handling if serializer lacks it
+                    alert("No section attempts found. Going to result.");
+                    window.location.href = `/result/index.html?exam_id=${examId}`;
+                    return;
+                }
+
+                sectionAttempts.sort((a, b) => a.section_order - b.section_order);
+                
+                currentSectionIdx = sectionAttempts.findIndex(sa => sa.status !== 'completed');
+                if (currentSectionIdx === -1) {
+                    window.location.href = `/result/index.html?exam_id=${examId}`;
+                    return;
+                }
+                
+                loadCurrentSection();
+                setupAntiCheat();
+            } catch(e) {
+                console.error(e);
+                alert("Failed to initialize exam. Returning to dashboard.");
+                window.location.href = `/dashboard/index.html`;
+            }
+        }
+
+        async function loadCurrentSection() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+            document.getElementById('loading-text').innerText = 'Loading section...';
+            const sa = sectionAttempts[currentSectionIdx];
+            const section = sections[currentSectionIdx];
+            
+            document.getElementById('section-name').innerText = `Section ${section.order}: ${capitalize(section.section_type)}`;
+            
+            if (section.section_type === 'coding') {
+                window.location.href = `/coding/index.html?exam_id=${examId}&attempt_id=${examAttempt.id}&section_attempt_id=${sa.id}`;
+                return;
+            }
+            
+            if (sa.status === 'not_started') {
+                await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
+            }
+            
+            timeLeft = section.duration_minutes * 60;
+            
+            const qRes = await axios.get(`${API}/questions/section/${sa.id}/`, getHeaders());
+            questions = qRes.data;
+            questionStates = {};
+            questions.forEach(q => {
+                questionStates[q.id] = { 
+                    status: q.saved_option_id ? 'answered' : 'not_visited', 
+                    selected_option_id: q.saved_option_id || null 
+                };
+            });
+            
+            currentQIdx = 0;
+            startTimer();
+            renderPalette();
+            loadQuestion(0);
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function loadQuestion(idx) {
+            currentQIdx = idx;
+            const q = questions[idx];
+            if (!q) return;
+
+            if (questionStates[q.id].status === 'not_visited') {
+                questionStates[q.id].status = 'visited';
+            }
+
+            document.getElementById('q-num').innerText = idx + 1;
+            document.getElementById('q-text').innerText = q.text;
+            
+            // Render options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, i) => {
+                const label = String.fromCharCode(65 + i); // A, B, C, D
+                const isSelected = questionStates[q.id].selected_option_id === opt.id;
+                
+                const div = document.createElement('div');
+                div.className = `option-card p-4 rounded-xl cursor-pointer flex gap-4 items-center ${isSelected ? 'selected' : ''}`;
+                div.onclick = () => selectOption(opt.id);
+                
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center font-bold text-sm shrink-0 bg-slate-800/50">
+                        ${label}
+                    </div>
+                    <div class="flex-1 text-slate-200">${opt.text}</div>
+                    ${isSelected ? '<div class="text-purple-400"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>' : ''}
+                `;
+                container.appendChild(div);
+            });
+            
+            renderPalette();
+        }
+
+        async function selectOption(optionId) {
+            const q = questions[currentQIdx];
+            questionStates[q.id].selected_option_id = optionId;
+            questionStates[q.id].status = 'answered';
+            loadQuestion(currentQIdx); // re-render to show selected
+            
+            const sa = sectionAttempts[currentSectionIdx];
+            try {
+                await axios.post(`${API}/questions/save-answer/`, {
+                    question_id: q.id,
+                    option_id: optionId,
+                    section_attempt_id: sa.id
+                }, getHeaders());
+            } catch(e) { console.error('Auto-save failed', e); }
+        }
+
+        function markForReview() {
+            const q = questions[currentQIdx];
+            if(questionStates[q.id].status !== 'answered') {
+                questionStates[q.id].status = 'marked';
+            }
+            renderPalette();
+        }
+
+        function nextQuestion() {
+            if (currentQIdx < questions.length - 1) {
+                loadQuestion(currentQIdx + 1);
+            } else {
+                submitSectionConfirm();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
+        }
+
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            questions.forEach((q, i) => {
+                const st = questionStates[q.id].status;
+                const isActive = i === currentQIdx ? 'active' : '';
+                
+                const btn = document.createElement('button');
+                btn.className = `palette-btn ${st} ${isActive}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => loadQuestion(i);
+                grid.appendChild(btn);
+            });
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up for this section!");
+                    submitSection();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const h = Math.floor(timeLeft / 3600);
+            const m = Math.floor((timeLeft % 3600) / 60);
+            const s = timeLeft % 60;
+            const pad = num => num.toString().padStart(2, '0');
+            document.getElementById('timer').innerText = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+        }
+
+        function submitSectionConfirm() {
+            document.getElementById('submit-modal').style.display = 'flex';
+        }
+
+        async function submitSection() {
+            document.getElementById('submit-modal').style.display = 'none';
+            clearInterval(timerInterval);
+            const sa = sectionAttempts[currentSectionIdx];
+            
+            try {
+                await axios.post(`${API}/exams/sections/${sa.id}/submit/`, {}, getHeaders());
+            } catch(e) { console.error('Submit error', e); }
+            
+            currentSectionIdx++;
+            if (currentSectionIdx >= sectionAttempts.length) {
+                window.location.href = `/result/index.html?exam_id=${examId}`;
+                return;
+            }
+            loadCurrentSection();
+        }
+
+        // --- Anti-cheat logic ---
+        function setupAntiCheat() {
+            // Fullscreen check
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    logViolation('fullscreen_exit', 'Exited fullscreen mode');
+                }
+            });
+
+            // Visibility change (tab switch)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    logViolation('tab_switch', 'Switched to another tab or window');
+                }
+            });
+
+            // Prevent right click
+            document.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Prevent copy/paste
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('paste', e => e.preventDefault());
+            
+            // Network status
+            window.addEventListener('offline', () => document.getElementById('offline-banner').style.display = 'block');
+            window.addEventListener('online', () => document.getElementById('offline-banner').style.display = 'none');
+        }
+
+        function requestFullscreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+        }
+
+        function showWarningModal(type, count, desc) {
+            document.getElementById('warning-count').innerText = count;
+            document.getElementById('warning-text').innerText = desc;
+            document.getElementById('warning-modal').style.display = 'flex';
+        }
+
+        async function logViolation(type, desc) {
+            warningCount[type] = (warningCount[type] || 0) + 1;
+            showWarningModal(type, warningCount[type], desc);
+            try {
+                const res = await axios.post(`${API}/violations/log/`, {
+                    exam_attempt_id: examAttempt.id,
+                    violation_type: type,
+                    description: desc
+                }, getHeaders());
+                if (res.data.auto_submitted) {
+                    alert('Exam auto-submitted due to violations.');
+                    window.location.href = `/result/index.html?exam_id=${examId}`;
+                }
+            } catch(e) { /* best effort */ }
+        }
+
+        window.onload = initExam;
+    </script>
+</body>
+</html>
+

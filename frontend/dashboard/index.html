@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+        .glass {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+        .btn-gradient:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pulse-anim {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center glass p-6 rounded-2xl">
+            <div>
+                <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400" id="greeting">Welcome back!</h1>
+                <p class="text-slate-400 mt-1">Ready for your next challenge?</p>
+            </div>
+            <nav class="flex gap-4">
+                <a href="/leaderboard/index.html" class="px-4 py-2 glass rounded-lg hover:bg-white/5 transition-colors">Leaderboard</a>
+                <button onclick="logout()" class="px-4 py-2 glass text-rose-400 rounded-lg hover:bg-rose-400/10 transition-colors">Logout</button>
+            </nav>
+        </header>
+
+        <!-- Main Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Exam Status Card -->
+            <div class="glass p-8 rounded-2xl flex flex-col items-center text-center col-span-1 md:col-span-2 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent pointer-events-none"></div>
+                <div class="flex items-center gap-3 mb-6 relative z-10">
+                    <div id="exam-status-dot" class="w-4 h-4 rounded-full bg-slate-500 shadow-[0_0_12px_currentColor]"></div>
+                    <span id="exam-status-text" class="text-xl font-semibold tracking-wide">Loading Exam...</span>
+                </div>
+                <h2 class="text-4xl font-bold mb-4 relative z-10 text-white">Daily Mock Test</h2>
+                <p class="text-slate-400 mb-8 max-w-md relative z-10">Practice with a comprehensive mock test covering Aptitude, Reasoning, Verbal, and Coding.</p>
+                <button id="cta-btn" class="btn-gradient px-8 py-4 rounded-xl text-lg font-bold shadow-lg relative z-10 pulse-anim">
+                    Loading...
+                </button>
+            </div>
+
+            <!-- Mini Stats -->
+            <div class="space-y-6 flex flex-col">
+                <div class="glass p-6 rounded-2xl flex-1 flex flex-col justify-center items-center">
+                    <p class="text-slate-400 font-medium mb-2">Current Daily Rank</p>
+                    <h3 class="text-4xl font-bold text-amber-400" id="current-rank">#—</h3>
+                </div>
+                <div class="glass p-6 rounded-2xl flex-1 flex flex-col justify-center items-center">
+                    <p class="text-slate-400 font-medium mb-2">Last Score</p>
+                    <h3 class="text-3xl font-bold text-emerald-400" id="last-score">— / 480</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Chart -->
+        <div class="glass p-8 rounded-2xl">
+            <h3 class="text-xl font-bold mb-6">Recent Performance</h3>
+            <div class="h-64">
+                <canvas id="historyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+        
+        // Auto-refresh JWT token on 401
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        function getUser() {
+            try {
+                return JSON.parse(localStorage.getItem('user_info')) || {};
+            } catch(e) { return {}; }
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user_info');
+            window.location.href = '/login/index.html';
+        }
+
+        function setGreeting() {
+            const user = getUser();
+            const name = user.display_name || user.username || 'Student';
+            const hour = new Date().getHours();
+            let greeting = 'Good evening';
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 17) greeting = 'Good afternoon';
+            document.getElementById('greeting').innerText = `${greeting}, ${name}!`;
+        }
+
+        async function init() {
+            setGreeting();
+            try {
+                // 1. Fetch today's exam
+                const res = await axios.get(`${API}/exams/today/`, getHeaders());
+                const { exam, attempt } = res.data;
+                updateExamStatus(exam, attempt);
+                window._examId = exam.id;
+                
+                // 2. Fetch leaderboard for rank
+                try {
+                    const lb = await axios.get(`${API}/leaderboard/daily/?exam_id=${exam.id}`, getHeaders());
+                    const user = getUser();
+                    const myEntry = lb.data.find(e => e.username === user.username);
+                    document.getElementById('current-rank').innerText = myEntry ? `#${myEntry.rank}` : '#—';
+                } catch(e) { /* no leaderboard yet */ }
+                
+            } catch(e) {
+                // No exam today
+                document.getElementById('exam-status-text').innerText = 'No Exam Today';
+                document.getElementById('exam-status-dot').style.backgroundColor = '#64748b';
+                const btn = document.getElementById('cta-btn');
+                btn.disabled = true;
+                btn.innerText = 'No Exam Today';
+                btn.classList.remove('pulse-anim');
+            }
+            
+            // 3. Fetch submission history for chart
+            try {
+                const hist = await axios.get(`${API}/analytics/history/`, getHeaders());
+                const scores = hist.data.slice(0, 5).map(h => h.total_score);
+                if (scores.length > 0) {
+                    const last = hist.data[0];
+                    document.getElementById('last-score').innerText = `${last.total_score} / 480`;
+                    drawChart(scores.reverse());
+                } else {
+                    document.getElementById('historyChart').parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-500">No past performance data available.</div>';
+                }
+            } catch(e) {
+                document.getElementById('historyChart').parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-500">Could not load performance data.</div>';
+            }
+        }
+
+        function updateExamStatus(exam, attempt) {
+            const dot = document.getElementById('exam-status-dot');
+            const txt = document.getElementById('exam-status-text');
+            const btn = document.getElementById('cta-btn');
+            
+            if (!attempt || attempt.status === 'not_started') {
+                dot.style.backgroundColor = '#f59e0b'; // amber
+                txt.innerText = 'Not Started';
+                btn.innerText = 'Start Today\'s Exam';
+                btn.onclick = () => startExam(exam.id);
+            } else if (attempt.status === 'in_progress') {
+                dot.style.backgroundColor = '#f59e0b'; // amber
+                txt.innerText = 'In Progress';
+                btn.innerText = 'Resume Exam';
+                btn.onclick = () => window.location.href = `/exam/index.html?exam_id=${exam.id}&attempt_id=${attempt.id}`;
+            } else if (attempt.status === 'completed') {
+                dot.style.backgroundColor = '#10b981'; // emerald
+                txt.innerText = 'Completed ✓';
+                btn.innerText = 'View Results';
+                btn.classList.remove('pulse-anim');
+                btn.onclick = () => window.location.href = `/result/index.html?exam_id=${exam.id}`;
+            }
+        }
+
+        async function startExam(examId) {
+            try {
+                const btn = document.getElementById('cta-btn');
+                btn.disabled = true;
+                btn.innerText = 'Starting...';
+                const res = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
+                const attempt = res.data;
+                window.location.href = `/exam/index.html?exam_id=${examId}&attempt_id=${attempt.id}`;
+            } catch(e) {
+                alert('Could not start exam. Please try again.');
+                const btn = document.getElementById('cta-btn');
+                btn.disabled = false;
+                btn.innerText = 'Start Today\'s Exam';
+            }
+        }
+
+        function drawChart(data) {
+            const ctx = document.getElementById('historyChart');
+            if(!ctx) return;
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => `Test ${i + 1}`),
+                    datasets: [{
+                        label: 'Total Score',
+                        data: data,
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#a78bfa',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            max: 480, 
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
+

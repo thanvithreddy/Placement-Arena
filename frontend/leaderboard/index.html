@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+        .glass {
+            background-color: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab-btn.active {
+            color: white;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid rgba(124, 58, 237, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <!-- Header & Nav -->
+        <header class="flex justify-between items-center glass p-6 rounded-2xl">
+            <div>
+                <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-500">Hall of Fame</h1>
+                <p class="text-slate-400 mt-1">See how you stack up against the competition.</p>
+            </div>
+            <button onclick="window.location.href='/dashboard/index.html'" class="px-4 py-2 glass rounded-lg hover:bg-white/5 transition-colors">Back to Dashboard</button>
+        </header>
+
+        <!-- Tabs -->
+        <div class="flex gap-2 glass p-2 rounded-xl overflow-x-auto">
+            <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn active shrink-0">Daily Leaderboard</button>
+            <button onclick="switchTab('weekly')" id="tab-weekly" class="tab-btn shrink-0">Weekly Standings</button>
+            <button onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn shrink-0">Monthly Top</button>
+            <button onclick="switchTab('overall')" id="tab-overall" class="tab-btn shrink-0">All-Time Greats</button>
+        </div>
+
+        <!-- Table -->
+        <div class="glass rounded-2xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left whitespace-nowrap">
+                    <thead class="bg-slate-900/50 border-b border-white/5 text-slate-400 text-sm uppercase tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">Rank</th>
+                            <th class="px-6 py-4 font-semibold">Player</th>
+                            <th class="px-6 py-4 font-semibold text-purple-400">Total Score</th>
+                            <th class="px-6 py-4 font-semibold">Aptitude</th>
+                            <th class="px-6 py-4 font-semibold">Verbal</th>
+                            <th class="px-6 py-4 font-semibold">Coding</th>
+                            <th class="px-6 py-4 font-semibold">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lb-table-body">
+                        <tr><td colspan="7" class="text-center py-12 text-slate-400">Loading leaderboard...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000/api';
+        function getHeaders() {
+            const token = localStorage.getItem('access_token');
+            return { headers: { Authorization: `Bearer ${token}` } };
+        }
+
+        function getUser() {
+            try { return JSON.parse(localStorage.getItem('user_info')) || {}; } 
+            catch(e) { return {}; }
+        }
+
+        let currentTab = 'daily';
+
+        function switchTab(type) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${type}`).classList.add('active');
+            currentTab = type;
+            loadLeaderboard(type);
+        }
+
+        async function loadLeaderboard(type) {
+            const tbody = document.getElementById('lb-table-body');
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-slate-400">Loading...</td></tr>`;
+            
+            const endpointMap = {
+                daily: `${API}/leaderboard/daily/`,
+                weekly: `${API}/leaderboard/weekly/`,
+                monthly: `${API}/leaderboard/monthly/`,
+                overall: `${API}/leaderboard/overall/`
+            };
+            
+            try {
+                const res = await axios.get(endpointMap[type], getHeaders());
+                renderTable(res.data);
+            } catch(e) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-rose-400">Failed to load leaderboard.</td></tr>`;
+            }
+        }
+
+        function formatTime(seconds) {
+            if (!seconds) return '—';
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            return h > 0 ? `${h}h ${m}m` : `${m}m`;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('lb-table-body');
+            const user = getUser();
+            
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-slate-400">No data yet. Complete an exam to appear here!</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = data.map((row, i) => {
+                const rank = row.rank || (i+1);
+                const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+                const isMe = row.username === user.username;
+                const rowClass = isMe ? 'bg-purple-900/30 border-l-2 border-purple-500' : '';
+                const rowBg = rank === 1 ? 'bg-amber-900/20' : rank === 2 ? 'bg-slate-700/30' : rank === 3 ? 'bg-orange-900/10' : '';
+                
+                // Fallback handling since API keys might vary
+                const name = row.display_name || row.username || 'Unknown';
+                const total = row.total_score || row.total || 0;
+                const apt = row.arithmetic_score || row.aptitude_score || row.reasoning_score || '—';
+                const verb = row.verbal_score || '—';
+                const code = row.coding_score || '—';
+                
+                return `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors ${rowClass} ${rowBg}">
+                    <td class="px-6 py-4 font-bold text-lg">${rankIcon}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-sm">
+                                ${name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-semibold">${name} ${isMe ? '<span class="text-purple-400 text-xs">(you)</span>' : ''}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-white">${total}</td>
+                    <td class="px-6 py-4 text-slate-300">${apt}</td>
+                    <td class="px-6 py-4 text-slate-300">${verb}</td>
+                    <td class="px-6 py-4 text-slate-300">${code}</td>
+                    <td class="px-6 py-4 text-slate-400">${formatTime(row.time_taken_seconds)}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        window.onload = () => loadLeaderboard('daily');
+    </script>
+</body>
+</html>
+
