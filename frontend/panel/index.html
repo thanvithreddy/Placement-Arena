@@ -20,7 +20,7 @@
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-navy); color: white; display: flex; height: 100vh; overflow: hidden; }
         .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         
-        .sidebar-link { display: flex; items-center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; color: #94a3b8; transition: all 0.2s; cursor: pointer; }
+        .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; color: #94a3b8; transition: all 0.2s; cursor: pointer; }
         .sidebar-link:hover { background: rgba(255,255,255,0.05); color: white; }
         .sidebar-link.active { background: var(--accent-purple); color: white; }
 
@@ -38,6 +38,9 @@
             width: 100%; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.5rem 0.75rem; color: white; font-size: 0.875rem; outline: none; transition: border 0.2s;
         }
         input:focus, select:focus, textarea:focus { border-color: var(--accent-purple); }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
     </style>
 </head>
 <body>
@@ -50,26 +53,28 @@
             </h1>
         </div>
         
-        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">Core</div>
-            <a class="sidebar-link active" onclick="switchView('dashboard', this)">Dashboard</a>
-            <a class="sidebar-link" onclick="switchView('create-exam', this)">Create Exam</a>
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-2 px-2">Core</div>
+            <a class="sidebar-link active" onclick="switchView('dashboard', this)"><span>📊</span> Dashboard</a>
+            <a class="sidebar-link" onclick="switchView('create-exam', this)"><span>✏️</span> Create Exam</a>
             
-            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">Content</div>
-            <a class="sidebar-link" onclick="switchView('questions', this)">Questions Bank</a>
-            <a class="sidebar-link" onclick="switchView('import', this)">Import Questions</a>
-            <a class="sidebar-link" onclick="switchView('coding', this)">Coding Problems</a>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">Content</div>
+            <a class="sidebar-link" onclick="switchView('questions', this)"><span>❓</span> Questions Bank</a>
+            <a class="sidebar-link" onclick="switchView('import', this)"><span>📁</span> Import Questions</a>
+            <a class="sidebar-link" onclick="switchView('coding', this)"><span>💻</span> Coding Problems</a>
             
-            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6 px-2">Monitoring</div>
-            <a class="sidebar-link" onclick="switchView('submissions', this)">Submissions</a>
-            <a class="sidebar-link" onclick="switchView('violations', this)">Violations Log</a>
-            <a class="sidebar-link" onclick="switchView('users', this)">Users</a>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-4 px-2">Monitoring</div>
+            <a class="sidebar-link" onclick="switchView('submissions', this)"><span>📈</span> Submissions</a>
+            <a class="sidebar-link" onclick="switchView('violations', this)"><span>⚠️</span> Violations Log</a>
+            <a class="sidebar-link" onclick="switchView('users', this)"><span>👥</span> Users</a>
         </nav>
 
-        <div class="p-4 border-t border-white/10">
-            <a href="/dashboard/index.html" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Exit to User App
+        <div class="p-4 border-t border-white/10 space-y-2">
+            <a href="/admin/" target="_blank" class="flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition-colors font-medium bg-purple-900/30 p-2 rounded-lg border border-purple-500/30">
+                <span>🛠️</span> Open Django Admin
+            </a>
+            <a href="/dashboard/index.html" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors p-2">
+                <span>←</span> Exit to User App
             </a>
         </div>
     </aside>
@@ -93,7 +98,7 @@
                 </div>
                 <div class="glass p-6 rounded-xl border border-white/5">
                     <div class="text-slate-400 text-sm font-medium mb-1">Questions Bank</div>
-                    <div class="text-3xl font-bold text-blue-400" id="stat-questions">...</div>
+                    <div class="text-3xl font-bold text-purple-400" id="stat-questions">...</div>
                 </div>
                 <div class="glass p-6 rounded-xl border border-white/5">
                     <div class="text-slate-400 text-sm font-medium mb-1">Today's Status</div>
@@ -101,157 +106,410 @@
                 </div>
             </div>
 
-            <div class="glass rounded-2xl p-6 mt-6">
+            <!-- Quick Actions -->
+            <div class="glass rounded-2xl p-6">
                 <h3 class="font-bold text-lg mb-4">Quick Actions</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button id="create-today-btn" onclick="createTodayExam()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition py-4 px-6 rounded-xl font-semibold text-left">
                         <div class="text-xl mb-1">📅</div>
                         <div>Create Today's Exam</div>
-                        <div class="text-xs text-purple-200 mt-1">Auto-configures 4 sections</div>
+                        <div class="text-xs text-purple-200 mt-1">Auto-configures Arithmetic, Verbal, Reasoning & Coding sections</div>
                     </button>
-                    <button onclick="switchView('create-exam', document.querySelector('.sidebar-link:nth-child(3)'))" class="glass hover:bg-white/10 transition py-4 px-6 rounded-xl font-semibold text-left border border-white/10">
+                    <button onclick="switchView('create-exam')" class="glass hover:bg-white/10 transition py-4 px-6 rounded-xl font-semibold text-left border border-white/10">
                         <div class="text-xl mb-1">✏️</div>
-                        <div>Custom Exam</div>
-                        <div class="text-xs text-slate-400 mt-1">Full configuration</div>
+                        <div>Custom Exam Configurator</div>
+                        <div class="text-xs text-slate-400 mt-1">Manual section setup</div>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Create Exam View -->
-        <div id="view-create-exam" class="section-view max-w-3xl">
-            <h2 class="text-2xl font-bold mb-6">Configure New Exam</h2>
-            <div class="glass rounded-xl p-6 border border-white/10 space-y-6">
+        <div id="view-create-exam" class="section-view max-w-4xl">
+            <h2 class="text-2xl font-bold mb-6">Create Custom Exam</h2>
+            <div class="glass p-6 rounded-xl border border-white/10 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Exam Title</label>
-                        <input type="text" value="Daily Assessment - 20 Jul">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Exam Title</label>
+                        <input type="text" id="custom-exam-title" placeholder="e.g. TCS Ninja Practice Test 2">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Date</label>
-                        <input type="date">
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Date</label>
+                        <input type="date" id="custom-exam-date">
                     </div>
                 </div>
 
-                <div class="border-t border-white/10 pt-4">
-                    <h3 class="font-semibold mb-4 text-purple-400">Section Configuration</h3>
-                    
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Section Configuration</h3>
                     <div class="space-y-4">
-                        <!-- Sec 1 -->
                         <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
-                            <div class="font-medium text-sm">Arithmetic</div>
-                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
-                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="25"></div>
-                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="100"></div>
+                            <div class="font-medium text-sm text-purple-300">Arithmetic</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" id="cfg-arithmetic-dur" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" id="cfg-arithmetic-count" value="25"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" id="cfg-arithmetic-score" value="100"></div>
                         </div>
-                        <!-- Sec 2 -->
                         <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
-                            <div class="font-medium text-sm">Verbal</div>
-                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
-                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="20"></div>
-                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="80"></div>
+                            <div class="font-medium text-sm text-emerald-300">Verbal</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" id="cfg-verbal-dur" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" id="cfg-verbal-count" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" id="cfg-verbal-score" value="80"></div>
                         </div>
-                        <!-- Sec 3 -->
                         <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
-                            <div class="font-medium text-sm">Reasoning</div>
-                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="20"></div>
-                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" value="25"></div>
-                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="100"></div>
+                            <div class="font-medium text-sm text-amber-300">Reasoning</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" id="cfg-reasoning-dur" value="20"></div>
+                            <div><label class="text-xs text-slate-400 block">Questions</label><input type="number" id="cfg-reasoning-count" value="25"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" id="cfg-reasoning-score" value="100"></div>
                         </div>
-                        <!-- Sec 4 -->
                         <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 grid grid-cols-4 gap-4 items-center">
-                            <div class="font-medium text-sm">Coding</div>
-                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" value="60"></div>
-                            <div><label class="text-xs text-slate-400 block">Problems</label><input type="number" value="2"></div>
-                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" value="200"></div>
+                            <div class="font-medium text-sm text-rose-300">Coding</div>
+                            <div><label class="text-xs text-slate-400 block">Duration (min)</label><input type="number" id="cfg-coding-dur" value="60"></div>
+                            <div><label class="text-xs text-slate-400 block">Problems</label><input type="number" id="cfg-coding-count" value="2"></div>
+                            <div><label class="text-xs text-slate-400 block">Max Score</label><input type="number" id="cfg-coding-score" value="200"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex justify-end pt-4">
-                    <button class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-lg font-semibold transition" onclick="alert('Exam created and sections initialized.')">Publish Exam</button>
+                    <button class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2.5 rounded-lg font-semibold transition flex items-center gap-2" onclick="createCustomExam()">
+                        <span>Publish Exam</span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Import View -->
+        <!-- Questions Bank View -->
+        <div id="view-questions" class="section-view">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Questions Bank</h2>
+                <button onclick="openQuestionModal()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg font-semibold text-sm transition">
+                    + Add Single Question
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="glass p-4 rounded-xl mb-6 flex gap-4">
+                <div class="w-48">
+                    <label class="text-xs text-slate-400 block mb-1">Category</label>
+                    <select id="filter-q-category" onchange="loadQuestionsBank()">
+                        <option value="">All Categories</option>
+                        <option value="arithmetic">Arithmetic</option>
+                        <option value="verbal">Verbal</option>
+                        <option value="reasoning">Reasoning</option>
+                    </select>
+                </div>
+                <div class="w-48">
+                    <label class="text-xs text-slate-400 block mb-1">Difficulty</label>
+                    <select id="filter-q-difficulty" onchange="loadQuestionsBank()">
+                        <option value="">All Difficulties</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="glass rounded-xl overflow-hidden border border-white/10">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800">
+                        <tr>
+                            <th class="p-3 text-slate-300">ID</th>
+                            <th class="p-3 text-slate-300">Category</th>
+                            <th class="p-3 text-slate-300">Difficulty</th>
+                            <th class="p-3 text-slate-300">Question Text</th>
+                            <th class="p-3 text-slate-300">Marks</th>
+                            <th class="p-3 text-slate-300">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody id="questions-table-body" class="divide-y divide-white/5">
+                        <tr><td colspan="6" class="p-4 text-center text-slate-400">Loading questions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bulk Import View -->
         <div id="view-import" class="section-view max-w-3xl">
             <h2 class="text-2xl font-bold mb-6">Bulk Import Questions</h2>
-            <div class="glass rounded-xl p-8 border border-white/10 text-center border-dashed border-2">
-                <div class="text-4xl mb-4">📁</div>
-                <h3 class="text-lg font-semibold mb-2">Drag & Drop Excel/CSV</h3>
-                <p class="text-sm text-slate-400 mb-6">File must follow the required template format.</p>
+            
+            <input type="file" id="import-file-input" class="hidden" accept=".csv, .xlsx, .xls" onchange="handleFileSelect(this.files[0])">
+            
+            <div id="drop-zone" 
+                ondragover="handleDragOver(event)" 
+                ondragleave="handleDragLeave(event)" 
+                ondrop="handleDrop(event)"
+                class="glass rounded-xl p-10 border border-white/10 text-center border-dashed border-2 hover:border-purple-500 transition-colors cursor-pointer">
+                <div class="text-5xl mb-4">📁</div>
+                <h3 class="text-lg font-semibold mb-2">Drag & Drop Excel/CSV File Here</h3>
+                <p class="text-sm text-slate-400 mb-6">Supports .csv and .xlsx formats with questions, options, and correct answers.</p>
                 <div class="flex justify-center gap-4">
                     <button onclick="downloadCSVTemplate()" class="bg-slate-800 border border-slate-600 px-4 py-2 rounded text-sm hover:bg-slate-700 transition flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         Download Template
                     </button>
-                    <button class="bg-purple-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-purple-500 transition">Browse File</button>
+                    <button onclick="document.getElementById('import-file-input').click()" class="bg-purple-600 text-white px-5 py-2 rounded text-sm font-semibold hover:bg-purple-500 transition">
+                        Browse File
+                    </button>
                 </div>
+            </div>
+
+            <!-- Import Status Result -->
+            <div id="import-status-box" class="mt-6 hidden glass p-6 rounded-xl border border-white/10">
+                <h4 class="font-bold text-lg mb-2" id="import-status-title">Importing...</h4>
+                <div id="import-status-details" class="text-sm text-slate-300 space-y-1"></div>
+            </div>
+        </div>
+
+        <!-- Coding Problems View -->
+        <div id="view-coding" class="section-view">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold">Coding Problems</h2>
+                    <p class="text-slate-400 text-sm">Manage programming problems, sample test cases, and hidden test cases.</p>
+                </div>
+                <button onclick="openCodingProblemModal()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg font-semibold text-sm transition">
+                    + Add Coding Problem
+                </button>
+            </div>
+
+            <div id="coding-problems-list" class="space-y-4">
+                <div class="glass p-6 rounded-xl text-center text-slate-400">Loading coding problems...</div>
+            </div>
+        </div>
+
+        <!-- Submissions View -->
+        <div id="view-submissions" class="section-view">
+            <h2 class="text-2xl font-bold mb-6">Student Submissions</h2>
+            <div class="glass rounded-xl overflow-hidden border border-white/10">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-800">
+                        <tr>
+                            <th class="p-3 text-slate-300">Exam Title</th>
+                            <th class="p-3 text-slate-300">Date</th>
+                            <th class="p-3 text-slate-300">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissions-table-body" class="divide-y divide-white/5">
+                        <tr><td colspan="3" class="p-4 text-center text-slate-400">Loading submissions...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <!-- Violations View -->
         <div id="view-violations" class="section-view">
-            <h2 class="text-2xl font-bold mb-6">Live Violations Log</h2>
+            <h2 class="text-2xl font-bold mb-6">Live Anti-Cheat Violations Log</h2>
             <div class="glass rounded-xl overflow-hidden border border-white/10">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-800">
                         <tr>
                             <th class="p-3 text-slate-300">Timestamp</th>
                             <th class="p-3 text-slate-300">User</th>
-                            <th class="p-3 text-slate-300">Type</th>
+                            <th class="p-3 text-slate-300">Violation Type</th>
                             <th class="p-3 text-slate-300">Description</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
-                        <tr class="hover:bg-white/5">
-                            <td class="p-3 text-slate-400">14:52:10</td>
-                            <td class="p-3 font-semibold">StudentX</td>
-                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-1 rounded text-xs">tab_switch</span></td>
-                            <td class="p-3 text-slate-300">Switched away from the exam tab</td>
-                        </tr>
-                        <tr class="hover:bg-white/5">
-                            <td class="p-3 text-slate-400">14:48:05</td>
-                            <td class="p-3 font-semibold">AlexChen</td>
-                            <td class="p-3"><span class="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs">fullscreen_exit</span></td>
-                            <td class="p-3 text-slate-300">Exited fullscreen mode</td>
-                        </tr>
-                        <tr class="hover:bg-white/5">
-                            <td class="p-3 text-slate-400">14:45:00</td>
-                            <td class="p-3 font-semibold">CodeNinja</td>
-                            <td class="p-3"><span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs">right_click</span></td>
-                            <td class="p-3 text-slate-300">Right click is disabled</td>
-                        </tr>
+                    <tbody id="violations-table-body" class="divide-y divide-white/5">
+                        <tr><td colspan="4" class="p-4 text-center text-slate-400">Loading violations...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        
-        <!-- Placeholder for other views to ensure HTML completion -->
-        <div id="view-questions" class="section-view"><h2 class="text-2xl font-bold mb-6">Questions Bank</h2><p class="text-slate-400">Questions list will appear here.</p></div>
-        <div id="view-coding" class="section-view"><h2 class="text-2xl font-bold mb-6">Coding Problems</h2><p class="text-slate-400">Coding problems manager.</p></div>
-        <div id="view-submissions" class="section-view"><h2 class="text-2xl font-bold mb-6">Submissions</h2><p class="text-slate-400">All student submissions.</p></div>
-        <div id="view-users" class="section-view"><h2 class="text-2xl font-bold mb-6">Users Management</h2><p class="text-slate-400">Registered users.</p></div>
+
+        <!-- Users View -->
+        <div id="view-users" class="section-view">
+            <h2 class="text-2xl font-bold mb-6">Registered Candidates & Admins</h2>
+            <div class="glass rounded-xl p-6 border border-white/10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                        <div class="text-xs text-purple-400 font-bold uppercase mb-1">Admin</div>
+                        <div class="text-lg font-bold">admin1</div>
+                        <div class="text-xs text-slate-400">Password: admin@123</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                        <div class="text-xs text-emerald-400 font-bold uppercase mb-1">Candidate 1</div>
+                        <div class="text-lg font-bold">Thanvith</div>
+                        <div class="text-xs text-slate-400">Password: TCS@1234</div>
+                    </div>
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+                        <div class="text-xs text-emerald-400 font-bold uppercase mb-1">Candidate 2</div>
+                        <div class="text-lg font-bold">Tejaswini</div>
+                        <div class="text-xs text-slate-400">Password: TCS@1234</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
 
+    <!-- MODALS -->
+
+    <!-- Modal 1: Add Coding Problem -->
+    <div id="modal-coding-problem" class="modal-overlay">
+        <div class="glass p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto space-y-4 border border-white/10">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-xl font-bold text-purple-300">Add Coding Problem</h3>
+                <button onclick="closeModal('modal-coding-problem')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-slate-300 mb-1">Problem Title</label>
+                    <input type="text" id="cp-title" placeholder="e.g. Reverse an Array">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Problem Statement</label>
+                    <textarea id="cp-statement" rows="3" placeholder="Write a program to..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Input Format</label>
+                        <textarea id="cp-input-format" rows="2" placeholder="First line contains N..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Output Format</label>
+                        <textarea id="cp-output-format" rows="2" placeholder="Print reversed array..."></textarea>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Difficulty</label>
+                        <select id="cp-difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Time Limit (ms)</label>
+                        <input type="number" id="cp-time-limit" value="5000">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Max Score</label>
+                        <input type="number" id="cp-max-score" value="100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                <button onclick="closeModal('modal-coding-problem')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="submitCodingProblem()" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 font-semibold text-white">Save Problem</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Add Test Case (Sample or Hidden) -->
+    <div id="modal-test-case" class="modal-overlay">
+        <div class="glass p-6 rounded-2xl max-w-lg w-full space-y-4 border border-white/10">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-xl font-bold text-purple-300" id="test-case-modal-title">Add Test Case</h3>
+                <button onclick="closeModal('modal-test-case')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            
+            <input type="hidden" id="tc-problem-id">
+            <input type="hidden" id="tc-type">
+
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-slate-300 mb-1">Input Data</label>
+                    <textarea id="tc-input" rows="3" class="font-mono text-xs" placeholder="e.g. 5\n1 2 3 4 5"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Expected Output</label>
+                    <textarea id="tc-output" rows="3" class="font-mono text-xs" placeholder="e.g. 15"></textarea>
+                </div>
+                <div id="tc-explanation-group">
+                    <label class="block text-slate-300 mb-1">Explanation (Optional for Sample Case)</label>
+                    <input type="text" id="tc-explanation" placeholder="e.g. 1+2+3+4+5 = 15">
+                </div>
+                <div id="tc-weight-group" class="hidden">
+                    <label class="block text-slate-300 mb-1">Score Weight (For Hidden Case)</label>
+                    <input type="number" step="0.1" id="tc-weight" value="1.0">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                <button onclick="closeModal('modal-test-case')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="submitTestCase()" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 font-semibold text-white">Save Test Case</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Add Single MCQ Question -->
+    <div id="modal-question" class="modal-overlay">
+        <div class="glass p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto space-y-4 border border-white/10">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-xl font-bold text-purple-300">Add Single MCQ Question</h3>
+                <button onclick="closeModal('modal-question')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Category</label>
+                        <select id="sq-category">
+                            <option value="arithmetic">Arithmetic</option>
+                            <option value="verbal">Verbal</option>
+                            <option value="reasoning">Reasoning</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Difficulty</label>
+                        <select id="sq-difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-slate-300 mb-1">Question Text</label>
+                    <textarea id="sq-text" rows="3" placeholder="Enter question statement..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-slate-300 mb-1">Option A</label><input type="text" id="sq-opt-a"></div>
+                    <div><label class="block text-slate-300 mb-1">Option B</label><input type="text" id="sq-opt-b"></div>
+                    <div><label class="block text-slate-300 mb-1">Option C</label><input type="text" id="sq-opt-c"></div>
+                    <div><label class="block text-slate-300 mb-1">Option D</label><input type="text" id="sq-opt-d"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Correct Option</label>
+                        <select id="sq-correct">
+                            <option value="A">Option A</option>
+                            <option value="B">Option B</option>
+                            <option value="C">Option C</option>
+                            <option value="D">Option D</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Marks</label>
+                        <input type="number" id="sq-marks" value="4.0">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-slate-300 mb-1">Explanation (Optional)</label>
+                    <textarea id="sq-explanation" rows="2" placeholder="Explanation for correct answer..."></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-white/10">
+                <button onclick="closeModal('modal-question')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="submitSingleQuestion()" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 font-semibold text-white">Save Question</button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
-        // Restrict access
+        // Auth check
         const user = JSON.parse(localStorage.getItem('user_info') || '{}');
-        if (user.role !== 'admin' && window.location.pathname.includes('admin')) {
+        if (user.role !== 'admin' && window.location.pathname.includes('panel')) {
             alert('Unauthorized access. Redirecting to dashboard.');
             window.location.href = '/dashboard/index.html';
-        }
-
-        function switchView(viewId, btnEl) {
-            // Update sidebar links
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            if (btnEl) btnEl.classList.add('active');
-
-            // Hide all views, show target
-            document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
-            document.getElementById(`view-${viewId}`).classList.add('active');
         }
 
         const API = window.location.origin + '/api';
@@ -270,68 +528,358 @@
             setTimeout(() => toast.remove(), 4000);
         }
 
+        function switchView(viewId, btnEl) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.add('active');
+
+            if (viewId === 'coding') loadCodingProblems();
+            if (viewId === 'questions') loadQuestionsBank();
+            if (viewId === 'violations') loadViolations();
+            if (viewId === 'submissions') loadSubmissions();
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        // --- DASHBOARD ---
+        async function loadDashboardStats() {
+            try {
+                const qRes = await axios.get(`${API}/admin-panel/questions/`, getHeaders());
+                if (document.getElementById('stat-questions')) document.getElementById('stat-questions').innerText = Array.isArray(qRes.data) ? qRes.data.length : 0;
+                
+                const eRes = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
+                if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = Array.isArray(eRes.data) ? eRes.data.length : 0;
+                
+                const tRes = await axios.get(`${API}/exams/today/`, getHeaders());
+                const todayBadge = document.getElementById('today-status');
+                if (todayBadge) {
+                    todayBadge.innerText = tRes.data.exam ? 'Active Exam Today' : 'No Exam Today';
+                    todayBadge.className = tRes.data.exam ? 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm' : 'px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm';
+                }
+            } catch(e) { console.warn('Stats load failed', e); }
+        }
+
         async function createTodayExam() {
             const btn = document.getElementById('create-today-btn');
             btn.disabled = true;
             btn.innerText = 'Creating...';
             try {
                 const res = await axios.post(`${API}/admin-panel/exams/create-today/`, {}, getHeaders());
-                showToast(`Exam created: ${res.data.title} (ID: ${res.data.id})`, 'success');
+                showToast(`Exam created: ${res.data.title}`, 'success');
                 loadDashboardStats();
             } catch(e) {
-                const msg = e.response?.data?.error || 'Failed to create exam';
-                showToast(msg, 'error');
+                showToast(e.response?.data?.error || 'Failed to create exam', 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `
-                    <div class="text-xl mb-1">📅</div>
-                    <div>Create Today's Exam</div>
-                    <div class="text-xs text-purple-200 mt-1">Auto-configures 4 sections</div>
-                `;
+                btn.innerHTML = `<div class="text-xl mb-1">📅</div><div>Create Today's Exam</div><div class="text-xs text-purple-200 mt-1">Auto-configures 4 sections</div>`;
             }
         }
 
+        // --- BULK IMPORT ---
         function downloadCSVTemplate() {
             const rows = [
                 ['category', 'difficulty', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option', 'explanation', 'marks'],
-                ['arithmetic', 'medium', 'Sample: What is 2+2?', '3', '4', '5', '6', 'B', 'Basic addition', '4'],
-                ['verbal', 'easy', 'Sample: Synonym of Happy', 'Sad', 'Joyful', 'Angry', 'Tired', 'B', '', '4'],
-                ['reasoning', 'hard', 'Sample: 2, 4, 8, _?', '10', '12', '16', '14', 'C', 'Powers of 2', '4'],
+                ['arithmetic', 'medium', 'What is 2+2?', '3', '4', '5', '6', 'B', 'Basic addition', '4'],
+                ['verbal', 'easy', 'Synonym of Happy', 'Sad', 'Joyful', 'Angry', 'Tired', 'B', '', '4'],
+                ['reasoning', 'hard', 'Series: 2, 4, 8, _?', '10', '12', '16', '14', 'C', 'Powers of 2', '4'],
             ];
             const csv = rows.map(r => r.join(',')).join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'placement_arena_questions_template.csv';
-            a.click();
+            const a = document.createElement('a'); a.href = url; a.download = 'placement_arena_template.csv'; a.click();
             URL.revokeObjectURL(url);
         }
 
-        async function loadDashboardStats() {
+        function handleDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('border-purple-500'); }
+        function handleDragLeave(e) { e.preventDefault(); document.getElementById('drop-zone').classList.remove('border-purple-500'); }
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('drop-zone').classList.remove('border-purple-500');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        }
+
+        async function handleFileSelect(file) {
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const box = document.getElementById('import-status-box');
+            const title = document.getElementById('import-status-title');
+            const details = document.getElementById('import-status-details');
+
+            box.classList.remove('hidden');
+            title.innerText = 'Uploading ' + file.name + '...';
+            details.innerHTML = '';
+
             try {
-                // Total Questions
-                const qRes = await axios.get(`${API}/admin-panel/questions/`, getHeaders());
-                const totalQ = Array.isArray(qRes.data) ? qRes.data.length : 0;
-                const el = document.getElementById('stat-questions');
-                if (el) el.innerText = totalQ;
-                
-                // Total Exams
-                const eRes = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
-                const totalE = Array.isArray(eRes.data) ? eRes.data.length : 0;
-                const el2 = document.getElementById('stat-exams');
-                if (el2) el2.innerText = totalE;
-                
-                // Today's exam status
-                const tRes = await axios.get(`${API}/exams/today/`, getHeaders());
-                const todayBadge = document.getElementById('today-status');
-                if (todayBadge) {
-                    todayBadge.innerText = tRes.data.exam ? 'Active Exam Today' : 'No Exam Today';
-                    todayBadge.className = tRes.data.exam 
-                        ? 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm'
-                        : 'px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm';
+                const res = await axios.post(`${API}/admin-panel/questions/import/`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                title.innerText = '✅ Import Complete';
+                details.innerHTML = `<p class="text-emerald-400 font-semibold">${res.data.message}</p>`;
+                showToast(res.data.message, 'success');
+                loadDashboardStats();
+            } catch(e) {
+                title.innerText = '❌ Import Failed';
+                details.innerHTML = `<p class="text-rose-400">${e.response?.data?.error || 'Upload error'}</p>`;
+                showToast('Import failed', 'error');
+            }
+        }
+
+        // --- CODING PROBLEMS MANAGER ---
+        async function loadCodingProblems() {
+            const container = document.getElementById('coding-problems-list');
+            try {
+                const res = await axios.get(`${API}/admin-panel/coding/`, getHeaders());
+                const problems = res.data;
+                if (!problems || problems.length === 0) {
+                    container.innerHTML = '<div class="glass p-6 rounded-xl text-center text-slate-400">No coding problems found. Click "+ Add Coding Problem" above to create one.</div>';
+                    return;
                 }
-            } catch(e) { console.warn('Stats load failed', e); }
+
+                container.innerHTML = problems.map(p => `
+                    <div class="glass p-6 rounded-xl border border-white/10 space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-3">
+                                    <h3 class="text-xl font-bold text-white">${p.title}</h3>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${p.difficulty === 'easy' ? 'bg-emerald-500/20 text-emerald-400' : p.difficulty === 'medium' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400'}">${p.difficulty.toUpperCase()}</span>
+                                </div>
+                                <p class="text-sm text-slate-400 mt-1">${p.statement || 'No description'}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="openTestCaseModal(${p.id}, 'sample')" class="bg-blue-600/30 hover:bg-blue-600/50 text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                                    + Sample Case
+                                </button>
+                                <button onclick="openTestCaseModal(${p.id}, 'hidden')" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                                    + Hidden Case
+                                </button>
+                                <button onclick="deleteCodingProblem(${p.id})" class="bg-rose-600/20 hover:bg-rose-600/40 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg text-xs transition">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                            <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-700">
+                                <span class="text-slate-400 block">Time Limit:</span>
+                                <span class="font-bold text-slate-200">${p.time_limit_ms} ms</span>
+                            </div>
+                            <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-700">
+                                <span class="text-slate-400 block">Max Score:</span>
+                                <span class="font-bold text-slate-200">${p.max_score} pts</span>
+                            </div>
+                            <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-700">
+                                <span class="text-slate-400 block">Sample Cases (Visible):</span>
+                                <span class="font-bold text-emerald-400">${p.sample_cases ? p.sample_cases.length : 0} cases</span>
+                            </div>
+                            <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-700">
+                                <span class="text-slate-400 block">Hidden Cases (Scoring):</span>
+                                <span class="font-bold text-purple-400">${p.hidden_cases ? p.hidden_cases.length : 0} cases</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                container.innerHTML = '<div class="glass p-6 rounded-xl text-center text-rose-400">Failed to load coding problems.</div>';
+            }
+        }
+
+        function openCodingProblemModal() { openModal('modal-coding-problem'); }
+
+        async function submitCodingProblem() {
+            const data = {
+                title: document.getElementById('cp-title').value,
+                statement: document.getElementById('cp-statement').value,
+                input_format: document.getElementById('cp-input-format').value,
+                output_format: document.getElementById('cp-output-format').value,
+                difficulty: document.getElementById('cp-difficulty').value,
+                time_limit_ms: parseInt(document.getElementById('cp-time-limit').value) || 5000,
+                max_score: parseInt(document.getElementById('cp-max-score').value) || 100
+            };
+
+            if (!data.title || !data.statement) {
+                showToast('Title and statement are required', 'error'); return;
+            }
+
+            try {
+                await axios.post(`${API}/admin-panel/coding/`, data, getHeaders());
+                showToast('Coding Problem created successfully!', 'success');
+                closeModal('modal-coding-problem');
+                loadCodingProblems();
+            } catch(e) {
+                showToast('Failed to create problem', 'error');
+            }
+        }
+
+        function openTestCaseModal(problemId, type) {
+            document.getElementById('tc-problem-id').value = problemId;
+            document.getElementById('tc-type').value = type;
+            document.getElementById('test-case-modal-title').innerText = `Add ${type === 'sample' ? 'Sample (Visible)' : 'Hidden (Scoring)'} Test Case`;
+            
+            if (type === 'sample') {
+                document.getElementById('tc-explanation-group').classList.remove('hidden');
+                document.getElementById('tc-weight-group').classList.add('hidden');
+            } else {
+                document.getElementById('tc-explanation-group').classList.add('hidden');
+                document.getElementById('tc-weight-group').classList.remove('hidden');
+            }
+
+            openModal('modal-test-case');
+        }
+
+        async function submitTestCase() {
+            const problemId = document.getElementById('tc-problem-id').value;
+            const type = document.getElementById('tc-type').value;
+            const input_data = document.getElementById('tc-input').value;
+            const expected_output = document.getElementById('tc-output').value;
+
+            if (!input_data || !expected_output) {
+                showToast('Input and expected output are required', 'error'); return;
+            }
+
+            const payload = { type, input_data, expected_output };
+            if (type === 'sample') payload.explanation = document.getElementById('tc-explanation').value;
+            if (type === 'hidden') payload.score_weight = parseFloat(document.getElementById('tc-weight').value) || 1.0;
+
+            try {
+                await axios.post(`${API}/admin-panel/coding/${problemId}/test-cases/`, payload, getHeaders());
+                showToast(`${type.toUpperCase()} test case added!`, 'success');
+                closeModal('modal-test-case');
+                loadCodingProblems();
+            } catch(e) {
+                showToast('Failed to add test case', 'error');
+            }
+        }
+
+        async function deleteCodingProblem(id) {
+            if (!confirm('Are you sure you want to delete this problem?')) return;
+            try {
+                await axios.delete(`${API}/admin-panel/coding/${id}/`, getHeaders());
+                showToast('Problem deleted', 'success');
+                loadCodingProblems();
+            } catch(e) { showToast('Delete failed', 'error'); }
+        }
+
+        // --- QUESTIONS BANK ---
+        async function loadQuestionsBank() {
+            const body = document.getElementById('questions-table-body');
+            const cat = document.getElementById('filter-q-category').value;
+            const diff = document.getElementById('filter-q-difficulty').value;
+
+            let url = `${API}/admin-panel/questions/`;
+            const params = [];
+            if (cat) params.push(`category=${cat}`);
+            if (diff) params.push(`difficulty=${diff}`);
+            if (params.length > 0) url += '?' + params.join('&');
+
+            try {
+                const res = await axios.get(url, getHeaders());
+                const questions = res.data;
+                if (!questions || questions.length === 0) {
+                    body.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">No questions found.</td></tr>';
+                    return;
+                }
+
+                body.innerHTML = questions.map(q => `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-3 font-mono text-xs text-slate-400">#${q.id}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs uppercase font-bold bg-purple-500/20 text-purple-300">${q.category}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-semibold ${q.difficulty === 'easy' ? 'text-emerald-400' : q.difficulty === 'medium' ? 'text-amber-400' : 'text-rose-400'}">${q.difficulty}</span></td>
+                        <td class="p-3 text-slate-200">${q.text}</td>
+                        <td class="p-3 font-bold text-slate-300">${q.marks}</td>
+                        <td class="p-3 text-xs text-slate-400">${q.options ? q.options.length : 0} options</td>
+                    </tr>
+                `).join('');
+            } catch(e) { body.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-rose-400">Failed to load questions.</td></tr>'; }
+        }
+
+        function openQuestionModal() { openModal('modal-question'); }
+
+        async function submitSingleQuestion() {
+            const category = document.getElementById('sq-category').value;
+            const difficulty = document.getElementById('sq-difficulty').value;
+            const text = document.getElementById('sq-text').value;
+            const optA = document.getElementById('sq-opt-a').value;
+            const optB = document.getElementById('sq-opt-b').value;
+            const optC = document.getElementById('sq-opt-c').value;
+            const optD = document.getElementById('sq-opt-d').value;
+            const correctChar = document.getElementById('sq-correct').value;
+            const marks = parseFloat(document.getElementById('sq-marks').value) || 4.0;
+            const explanation = document.getElementById('sq-explanation').value;
+
+            if (!text || !optA || !optB) {
+                showToast('Question text and at least 2 options are required', 'error'); return;
+            }
+
+            const options = [
+                { text: optA, is_correct: correctChar === 'A', order: 1 },
+                { text: optB, is_correct: correctChar === 'B', order: 2 }
+            ];
+            if (optC) options.push({ text: optC, is_correct: correctChar === 'C', order: 3 });
+            if (optD) options.push({ text: optD, is_correct: correctChar === 'D', order: 4 });
+
+            try {
+                await axios.post(`${API}/admin-panel/questions/create/`, {
+                    category, difficulty, text, marks, explanation, options
+                }, getHeaders());
+
+                showToast('Question created successfully!', 'success');
+                closeModal('modal-question');
+                loadQuestionsBank();
+                loadDashboardStats();
+            } catch(e) {
+                showToast('Failed to create question', 'error');
+            }
+        }
+
+        // --- MONITORING ---
+        async function loadViolations() {
+            const body = document.getElementById('violations-table-body');
+            try {
+                const res = await axios.get(`${API}/admin-panel/violations/`, getHeaders());
+                const logs = res.data;
+                if (!logs || logs.length === 0) {
+                    body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">No violations logged yet.</td></tr>';
+                    return;
+                }
+                body.innerHTML = logs.map(l => `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-3 text-slate-400 text-xs">${new Date(l.timestamp).toLocaleString()}</td>
+                        <td class="p-3 font-semibold text-slate-200">${l.user_username || 'User'}</td>
+                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-xs">${l.violation_type}</span></td>
+                        <td class="p-3 text-slate-300">${l.description || 'Violation'}</td>
+                    </tr>
+                `).join('');
+            } catch(e) { body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-rose-400">Failed to load violations.</td></tr>'; }
+        }
+
+        async function loadSubmissions() {
+            const body = document.getElementById('submissions-table-body');
+            try {
+                const res = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
+                const exams = res.data;
+                if (!exams || exams.length === 0) {
+                    body.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No exams configured.</td></tr>';
+                    return;
+                }
+                body.innerHTML = exams.map(e => `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-3 font-semibold text-purple-300">${e.title}</td>
+                        <td class="p-3 text-slate-400 text-sm">${e.date}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs uppercase font-bold bg-emerald-500/20 text-emerald-400">${e.status}</span></td>
+                    </tr>
+                `).join('');
+            } catch(e) { body.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-rose-400">Failed to load submissions.</td></tr>'; }
         }
 
         if (user.role === 'admin') {
@@ -340,5 +888,3 @@
     </script>
 </body>
 </html>
-
-
