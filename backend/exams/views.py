@@ -235,6 +235,135 @@ class ExamResultView(APIView):
             'sections': sections_data
         })
 
+
+class ExamReviewView(APIView):
+    """
+    GET /api/exams/{id}/review/
+    Returns full question-by-question review (right/wrong options, user selected options, explanations)
+    for 2 hours after exam submission. Auto-deletes questions after 2 hours.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, exam_id):
+        try:
+            attempt = ExamAttempt.objects.get(exam_id=exam_id, user=request.user)
+        except ExamAttempt.DoesNotExist:
+            return Response({'error': 'Attempt not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        now = timezone.now()
+        submitted_at = attempt.submitted_at or attempt.started_at or now
+
+        elapsed_seconds = (now - submitted_at).total_seconds()
+        two_hours_in_seconds = 7200 # 2 hours in seconds
+
+        # Check if 2 hours passed since exam submission
+        if elapsed_seconds > two_hours_in_seconds:
+            # Auto-delete questions for sections in this exam if not deleted already
+            sections = attempt.exam.sections.all()
+            for sec in sections:
+                sec.questions.all().delete()
+                sec.coding_problems.all().delete()
+
+            return Response({
+                'expired': True,
+                'message': 'The 2-hour post-exam review window has expired. Exam questions have been automatically deleted.',
+                'elapsed_seconds': elapsed_seconds
+            })
+
+        # Report is active (within 2 hours)
+        remaining_seconds = max(0, int(two_hours_in_seconds - elapsed_seconds))
+
+        sections_review = []
+        for sa in attempt.section_attempts.order_by('section__order'):
+            sec = sa.section
+
+            if sec.section_type == 'coding':
+                from coding.models import CodingSubmission, CodingProblem
+                problems_data = []
+                coding_problems = sec.coding_problems.all()
+                if not coding_problems.exists():
+                    coding_problems = CodingProblem.objects.all()
+
+                for cp in coding_problems:
+                    sub = CodingSubmission.objects.filter(user=request.user, problem=cp).order_by('-submitted_at').first()
+                    problems_data.append({
+                        'problem_id': cp.id,
+                        'title': cp.title,
+                        'statement': cp.statement,
+                        'max_score': cp.max_score,
+                        'submitted_code': sub.code if sub else 'No code submitted',
+                        'score': sub.score if sub else 0,
+                        'passed_sample': sub.passed_sample if sub else 0,
+                        'total_sample': sub.total_sample if sub else 0,
+                        'passed_hidden': sub.passed_hidden if sub else 0,
+                        'total_hidden': sub.total_hidden if sub else 0,
+                        'status': sub.status if sub else 'not_submitted'
+                    })
+
+                sections_review.append({
+                    'section_type': 'coding',
+                    'order': sec.order,
+                    'score': sa.score,
+                    'max_score': sec.max_score,
+                    'problems': problems_data
+                })
+
+            else:
+                questions_data = []
+                questions = sec.questions.all()
+                if not questions.exists():
+                    from questions.models import Question
+                    questions = Question.objects.filter(category=sec.section_type)
+
+                for q in questions:
+                    ans = sa.answers.filter(question=q).first()
+                    user_option_id = ans.selected_option.id if (ans and ans.selected_option) else None
+                    is_correct = ans.is_correct if ans else False
+
+                    options_data = []
+                    correct_option_text = ""
+                    selected_option_text = "Not Answered"
+
+                    for opt in q.options.all():
+                        options_data.append({
+                            'id': opt.id,
+                            'text': opt.text,
+                            'is_correct': opt.is_correct
+                        })
+                        if opt.is_correct:
+                            correct_option_text = opt.text
+                        if user_option_id == opt.id:
+                            selected_option_text = opt.text
+
+                    questions_data.append({
+                        'question_id': q.id,
+                        'text': q.text,
+                        'marks': q.marks,
+                        'explanation': q.explanation,
+                        'options': options_data,
+                        'user_option_id': user_option_id,
+                        'user_option_text': selected_option_text,
+                        'correct_option_text': correct_option_text,
+                        'is_correct': is_correct,
+                        'status': 'correct' if is_correct else ('wrong' if user_option_id else 'unanswered')
+                    })
+
+                sections_review.append({
+                    'section_type': sec.section_type,
+                    'order': sec.order,
+                    'score': sa.score,
+                    'max_score': sec.max_score,
+                    'questions': questions_data
+                })
+
+        return Response({
+            'expired': False,
+            'remaining_seconds': remaining_seconds,
+            'exam_title': attempt.exam.title,
+            'sections': sections_review
+        })
+
+
 class AdminExamListView(APIView):
     permission_classes = [IsAuthenticated]
     
