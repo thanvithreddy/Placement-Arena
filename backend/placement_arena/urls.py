@@ -25,9 +25,10 @@ urlpatterns = [
     path('api/violations/', include('warnings_log.urls')),
     path('api/admin-panel/', include('placement_arena.admin_api_urls')),
 
-    # Serve frontend static files at root
-    re_path(r'^(?P<path>.*)$', serve, {'document_root': FRONTEND_DIR, 'show_indexes': False}),
+    # Serve frontend HTML files (excluding api, admin, static, media paths)
+    re_path(r'^(?!(api|admin|static|media)/)(?P<path>.*)$', serve, {'document_root': FRONTEND_DIR, 'show_indexes': False}),
 ]
 
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

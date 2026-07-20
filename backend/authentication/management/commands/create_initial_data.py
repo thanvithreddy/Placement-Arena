@@ -11,15 +11,32 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # 1. Create Users
         admin, _ = User.objects.get_or_create(username='admin1', defaults={'role': 'admin', 'display_name': 'Admin User'})
-        if _: admin.set_password('admin@123'); admin.save()
+        admin.role = 'admin'
+        admin.is_staff = True
+        admin.is_superuser = True
+        admin.set_password('admin@123')
+        admin.save()
         
-        c1, _ = User.objects.get_or_create(username='candidate1', defaults={'role': 'candidate', 'display_name': 'Candidate One'})
-        if _: c1.set_password('candidate@123'); c1.save()
-        
-        c2, _ = User.objects.get_or_create(username='candidate2', defaults={'role': 'candidate', 'display_name': 'Candidate Two'})
-        if _: c2.set_password('candidate@123'); c2.save()
+        u1, _ = User.objects.get_or_create(username='Thanvith', defaults={'role': 'candidate', 'display_name': 'Thanvith'})
+        u1.set_password('TCS@1234')
+        u1.display_name = 'Thanvith'
+        u1.save()
 
-        self.stdout.write('Created users')
+        u2, _ = User.objects.get_or_create(username='Tejaswini', defaults={'role': 'candidate', 'display_name': 'Tejaswini'})
+        u2.set_password('TCS@1234')
+        u2.display_name = 'Tejaswini'
+        u2.save()
+
+        # Fallback aliases
+        c1, _ = User.objects.get_or_create(username='candidate1', defaults={'role': 'candidate', 'display_name': 'Thanvith'})
+        c1.set_password('TCS@1234')
+        c1.save()
+        
+        c2, _ = User.objects.get_or_create(username='candidate2', defaults={'role': 'candidate', 'display_name': 'Tejaswini'})
+        c2.set_password('TCS@1234')
+        c2.save()
+
+        self.stdout.write('Created users: Thanvith, Tejaswini, admin1')
 
         # 2. Create Exam
         exam, created = Exam.objects.get_or_create(
