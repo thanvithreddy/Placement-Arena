@@ -137,7 +137,7 @@
     </div>
 
     <script>
-        const API = 'http://127.0.0.1:8000/api';
+        const API = window.location.origin + '/api';
         
         // Auto-refresh JWT token on 401
         axios.interceptors.response.use(
@@ -418,4 +418,5 @@
     </script>
 </body>
 </html>
+
 
