@@ -4,11 +4,12 @@ from rest_framework.permissions import IsAuthenticated
 from .models import DailyLeaderboard
 from .serializers import DailyLeaderboardSerializer
 from exams.models import Exam, ExamAttempt
+from datetime import date
 
 def update_leaderboard(exam):
-    attempts = ExamAttempt.objects.filter(exam=exam, status='completed')
-    # Sort attempts by total_score DESC, then by time taken
-    # Calculate time taken: submitted_at - started_at
+    # Include completed and in-progress attempts for real-time live ranking
+    attempts = ExamAttempt.objects.filter(exam=exam).exclude(status='not_started')
+    
     attempt_list = []
     for att in attempts:
         time_taken = 0
@@ -65,17 +66,16 @@ class DailyLeaderboardView(APIView):
             except Exam.DoesNotExist:
                 return Response({'error': 'Exam not found'}, status=404)
         else:
-            exam = Exam.objects.filter(status='completed').order_by('-date').first()
+            # Get today's exam or latest active/completed exam
+            exam = Exam.objects.filter(date=date.today()).first() or Exam.objects.order_by('-date').first()
             if not exam:
                 return Response([])
                 
-        # Update just in case
+        # Update leaderboard in real-time
         update_leaderboard(exam)
         
         lb = DailyLeaderboard.objects.filter(exam=exam).order_by('rank')
         return Response(DailyLeaderboardSerializer(lb, many=True).data)
-
-from django.db.models import Count
 
 class WeeklyLeaderboardView(APIView):
     permission_classes = [IsAuthenticated]

@@ -31,7 +31,8 @@ class LogViolationView(APIView):
         attempt.save()
         
         auto_submitted = False
-        if attempt.violations_count >= 3 and violation_type in ['tab_switch', 'fullscreen_exit']:
+        # Allow 5 warnings / tab switches before auto-submitting
+        if attempt.violations_count >= 5 and violation_type in ['tab_switch', 'fullscreen_exit']:
             attempt.status = 'completed'
             attempt.submitted_at = timezone.now()
             attempt.save()
@@ -45,6 +46,7 @@ class LogViolationView(APIView):
             
         return Response({
             'warning_count': attempt.violations_count,
+            'max_allowed': 5,
             'auto_submitted': auto_submitted
         })
 

@@ -278,18 +278,22 @@
 
         <!-- Submissions View -->
         <div id="view-submissions" class="section-view">
-            <h2 class="text-2xl font-bold mb-6">Student Submissions</h2>
+            <h2 class="text-2xl font-bold mb-6">Candidate Attempts & Scores</h2>
             <div class="glass rounded-xl overflow-hidden border border-white/10">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-800">
                         <tr>
+                            <th class="p-3 text-slate-300">Candidate</th>
                             <th class="p-3 text-slate-300">Exam Title</th>
-                            <th class="p-3 text-slate-300">Date</th>
+                            <th class="p-3 text-slate-300">Total Score</th>
+                            <th class="p-3 text-slate-300">Section Breakdown</th>
+                            <th class="p-3 text-slate-300">Violations</th>
                             <th class="p-3 text-slate-300">Status</th>
+                            <th class="p-3 text-slate-300">Timestamp</th>
                         </tr>
                     </thead>
                     <tbody id="submissions-table-body" class="divide-y divide-white/5">
-                        <tr><td colspan="3" class="p-4 text-center text-slate-400">Loading submissions...</td></tr>
+                        <tr><td colspan="7" class="p-4 text-center text-slate-400">Loading attempts & scores...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -303,7 +307,7 @@
                     <thead class="bg-slate-800">
                         <tr>
                             <th class="p-3 text-slate-300">Timestamp</th>
-                            <th class="p-3 text-slate-300">User</th>
+                            <th class="p-3 text-slate-300">Candidate</th>
                             <th class="p-3 text-slate-300">Violation Type</th>
                             <th class="p-3 text-slate-300">Description</th>
                         </tr>
@@ -842,44 +846,65 @@
             }
         }
 
-        // --- MONITORING ---
+        // --- MONITORING & ATTEMPTS ---
         async function loadViolations() {
             const body = document.getElementById('violations-table-body');
             try {
                 const res = await axios.get(`${API}/admin-panel/violations/`, getHeaders());
                 const logs = res.data;
                 if (!logs || logs.length === 0) {
-                    body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">No violations logged yet.</td></tr>';
+                    body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">No anti-cheat violations logged yet.</td></tr>';
                     return;
                 }
-                body.innerHTML = logs.map(l => `
-                    <tr class="hover:bg-white/5">
-                        <td class="p-3 text-slate-400 text-xs">${new Date(l.timestamp).toLocaleString()}</td>
-                        <td class="p-3 font-semibold text-slate-200">${l.user_username || 'User'}</td>
-                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-xs">${l.violation_type}</span></td>
-                        <td class="p-3 text-slate-300">${l.description || 'Violation'}</td>
-                    </tr>
-                `).join('');
+                body.innerHTML = logs.map(l => {
+                    const badgeClass = l.violation_type === 'tab_switch' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                                      l.violation_type === 'fullscreen_exit' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                                      'bg-blue-500/20 text-blue-400 border border-blue-500/30';
+                    const name = l.user_display_name || l.user_username || 'Candidate';
+                    const time = l.timestamp ? new Date(l.timestamp).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', day: 'numeric', month: 'short' }) : 'Just now';
+                    return `
+                        <tr class="hover:bg-white/5">
+                            <td class="p-3 text-slate-400 text-xs font-mono">${time}</td>
+                            <td class="p-3 font-bold text-slate-200">${name} <span class="text-xs text-slate-400 font-normal">(@${l.user_username || ''})</span></td>
+                            <td class="p-3"><span class="${badgeClass} px-2.5 py-0.5 rounded text-xs font-semibold">${l.violation_type}</span></td>
+                            <td class="p-3 text-slate-300">${l.description || 'Proctored warning'}</td>
+                        </tr>
+                    `;
+                }).join('');
             } catch(e) { body.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-rose-400">Failed to load violations.</td></tr>'; }
         }
 
         async function loadSubmissions() {
             const body = document.getElementById('submissions-table-body');
             try {
-                const res = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
-                const exams = res.data;
-                if (!exams || exams.length === 0) {
-                    body.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No exams configured.</td></tr>';
+                const res = await axios.get(`${API}/admin-panel/attempts/`, getHeaders());
+                const attempts = res.data;
+                if (!attempts || attempts.length === 0) {
+                    body.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400">No candidate attempts found yet.</td></tr>';
                     return;
                 }
-                body.innerHTML = exams.map(e => `
-                    <tr class="hover:bg-white/5">
-                        <td class="p-3 font-semibold text-purple-300">${e.title}</td>
-                        <td class="p-3 text-slate-400 text-sm">${e.date}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded text-xs uppercase font-bold bg-emerald-500/20 text-emerald-400">${e.status}</span></td>
-                    </tr>
-                `).join('');
-            } catch(e) { body.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-rose-400">Failed to load submissions.</td></tr>'; }
+                body.innerHTML = attempts.map(a => {
+                    const secPills = (a.sections || []).map(s => `
+                        <span class="px-2 py-0.5 rounded text-xs bg-slate-800 border border-slate-700 text-slate-300">
+                            ${s.section_type.charAt(0).toUpperCase() + s.section_type.slice(1)}: <strong class="text-purple-300">${s.score}</strong>/${s.max_score}
+                        </span>
+                    `).join(' ');
+
+                    const dateStr = a.started_at ? new Date(a.started_at).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }) : 'Not started';
+
+                    return `
+                        <tr class="hover:bg-white/5">
+                            <td class="p-3 font-bold text-white">${a.display_name || a.username} <span class="text-xs text-slate-400 font-normal">(@${a.username})</span></td>
+                            <td class="p-3 text-purple-300 font-medium">${a.exam_title}</td>
+                            <td class="p-3"><span class="text-lg font-bold text-emerald-400">${a.total_score}</span> <span class="text-xs text-slate-400">pts</span></td>
+                            <td class="p-3 flex flex-wrap gap-1">${secPills || '<span class="text-xs text-slate-500">None</span>'}</td>
+                            <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${a.violations_count > 0 ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-slate-500/20 text-slate-400'}">${a.violations_count}/5</span></td>
+                            <td class="p-3"><span class="px-2 py-0.5 rounded text-xs uppercase font-bold ${a.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : a.status === 'in_progress' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-slate-500/20 text-slate-400'}">${a.status}</span></td>
+                            <td class="p-3 text-xs text-slate-400 font-mono">${dateStr}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch(e) { body.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-rose-400">Failed to load attempts.</td></tr>'; }
         }
 
         if (user.role === 'admin') {

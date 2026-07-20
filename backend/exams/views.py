@@ -334,3 +334,45 @@ class CreateTodayExamView(APIView):
 
         return Response(ExamSerializer(exam).data, status=status.HTTP_201_CREATED)
 
+
+class AdminAttemptListView(APIView):
+    """
+    GET /api/admin-panel/attempts/
+    Returns all candidate exam attempts with user details, scores, violations, status, and section breakdowns.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        attempts = ExamAttempt.objects.all().order_by('-started_at')
+        result = []
+        for att in attempts:
+            sections_summary = []
+            for sa in att.section_attempts.order_by('section__order'):
+                sections_summary.append({
+                    'section_type': sa.section.section_type,
+                    'score': sa.score,
+                    'max_score': sa.section.max_score,
+                    'status': sa.status,
+                    'is_auto_submitted': sa.is_auto_submitted
+                })
+
+            result.append({
+                'attempt_id': att.id,
+                'user_id': att.user.id,
+                'username': att.user.username,
+                'display_name': att.user.display_name or att.user.username,
+                'exam_id': att.exam.id,
+                'exam_title': att.exam.title,
+                'status': att.status,
+                'total_score': att.total_score,
+                'violations_count': att.violations_count,
+                'started_at': att.started_at,
+                'submitted_at': att.submitted_at,
+                'sections': sections_summary
+            })
+        return Response(result)
+
+
