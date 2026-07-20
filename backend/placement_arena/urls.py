@@ -3,6 +3,7 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from django.views.generic import RedirectView
 import os
 
 # Serve frontend HTML files directly from Django
@@ -10,6 +11,8 @@ FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 FRONTEND_DIR = os.path.normpath(FRONTEND_DIR)
 
 urlpatterns = [
+    # Root redirect to login page
+    path('', RedirectView.as_view(url='/login/index.html', permanent=False)),
     path('admin/', admin.site.urls),
 
     # API endpoints
@@ -23,7 +26,7 @@ urlpatterns = [
     path('api/admin-panel/', include('placement_arena.admin_api_urls')),
 
     # Serve frontend static files at root
-    re_path(r'^(?P<path>.*)$', serve, {'document_root': FRONTEND_DIR, 'show_indexes': True}),
+    re_path(r'^(?P<path>.*)$', serve, {'document_root': FRONTEND_DIR, 'show_indexes': False}),
 ]
 
 if settings.DEBUG:
