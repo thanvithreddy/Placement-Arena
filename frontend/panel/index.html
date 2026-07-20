@@ -757,11 +757,19 @@
 
             try {
                 await axios.post(`${API}/admin-panel/coding/${problemId}/test-cases/`, payload, getHeaders());
-                showToast(`${type.toUpperCase()} test case added!`, 'success');
+                showToast(`✅ ${type.toUpperCase()} test case added!`, 'success');
+                document.getElementById('tc-input').value = '';
+                document.getElementById('tc-output').value = '';
+                document.getElementById('tc-explanation').value = '';
                 closeModal('modal-test-case');
                 loadCodingProblems();
             } catch(e) {
-                showToast('Failed to add test case', 'error');
+                const errData = e.response?.data;
+                let msg = 'Failed to add test case';
+                if (errData) {
+                    msg = typeof errData === 'string' ? errData : JSON.stringify(errData);
+                }
+                showToast(msg, 'error');
             }
         }
 

@@ -173,16 +173,20 @@ class AdminCodingProblemView(APIView):
     
     def get(self, request):
         if not request.user.is_admin_user():
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        problems = CodingProblem.objects.all()
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        problems = CodingProblem.objects.all().order_by('-id')
         return Response(AdminCodingProblemSerializer(problems, many=True).data)
         
     def post(self, request):
         if not request.user.is_admin_user():
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
         serializer = AdminCodingProblemSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            section = serializer.validated_data.get('section')
+            if not section:
+                from exams.models import ExamSection
+                section = ExamSection.objects.filter(section_type='coding').last()
+            serializer.save(section=section)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -191,23 +195,33 @@ class AdminCodingProblemDetailView(APIView):
     
     def get(self, request, id):
         if not request.user.is_admin_user():
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
         try:
             problem = CodingProblem.objects.get(id=id)
             return Response(AdminCodingProblemSerializer(problem).data)
         except CodingProblem.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Problem not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, id):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            problem = CodingProblem.objects.get(id=id)
+            problem.delete()
+            return Response({'message': 'Problem deleted successfully'})
+        except CodingProblem.DoesNotExist:
+            return Response({'error': 'Problem not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class AdminTestCaseView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, id):
         if not request.user.is_admin_user():
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
         try:
             problem = CodingProblem.objects.get(id=id)
         except CodingProblem.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Problem not found'}, status=status.HTTP_404_NOT_FOUND)
             
         case_type = request.data.get('type')
         if case_type == 'sample':
@@ -219,3 +233,4 @@ class AdminTestCaseView(APIView):
             serializer.save(problem=problem)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
