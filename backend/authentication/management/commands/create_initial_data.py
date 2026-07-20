@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from authentication.models import User
 from exams.models import Exam, ExamSection
 from questions.models import Question, Option
-from coding.models import CodingProblem, SampleTestCase, HiddenTestCase
+from coding.models import CodingProblem
 from datetime import date
 
 class Command(BaseCommand):
@@ -38,7 +38,12 @@ class Command(BaseCommand):
 
         self.stdout.write('Created users: Thanvith, Tejaswini, admin1')
 
-        # 2. Create Exam
+        # 2. Delete sample coding problems if present
+        deleted_count, _ = CodingProblem.objects.filter(title__in=['Reverse String', 'Two Sum']).delete()
+        if deleted_count > 0:
+            self.stdout.write(f'Deleted {deleted_count} sample coding problems (Reverse String, Two Sum)')
+
+        # 3. Create Exam
         exam, created = Exam.objects.get_or_create(
             title='Placement Mock Test 1',
             defaults={
@@ -55,7 +60,7 @@ class Command(BaseCommand):
             sec3 = ExamSection.objects.create(exam=exam, section_type='reasoning', order=3, duration_minutes=20, max_score=100, question_count=25)
             sec4 = ExamSection.objects.create(exam=exam, section_type='coding', order=4, duration_minutes=60, max_score=200, question_count=2)
             
-            # 3. Create Questions for Arithmetic
+            # Create Questions for Arithmetic
             q_data = [
                 ("What is 15% of 200?", "30", ["20", "30", "40", "50"]),
                 ("If a train 100m long passes a pole in 10s, what is its speed in m/s?", "10", ["5", "10", "15", "20"]),
@@ -68,31 +73,8 @@ class Command(BaseCommand):
                 q = Question.objects.create(section=sec1, category='arithmetic', difficulty='easy', text=text, marks=4.0, order=i+1)
                 for j, opt in enumerate(options):
                     Option.objects.create(question=q, text=opt, is_correct=(opt==correct_ans), order=j+1)
-                    
-            # 4. Create Coding Problems
-            p1 = CodingProblem.objects.create(
-                section=sec4, title='Reverse String', statement='Write a function to reverse a string.',
-                input_format='A single string S', output_format='Reversed string S',
-                difficulty='easy', max_score=100, order=1
-            )
-            SampleTestCase.objects.create(problem=p1, input_data='hello', expected_output='olleh', order=1)
-            SampleTestCase.objects.create(problem=p1, input_data='world', expected_output='dlrow', order=2)
-            HiddenTestCase.objects.create(problem=p1, input_data='placement', expected_output='tnemecalp', score_weight=1.0, order=1)
-            HiddenTestCase.objects.create(problem=p1, input_data='arena', expected_output='anera', score_weight=1.0, order=2)
-            HiddenTestCase.objects.create(problem=p1, input_data='python', expected_output='nohtyp', score_weight=1.0, order=3)
-            
-            p2 = CodingProblem.objects.create(
-                section=sec4, title='Two Sum', statement='Find two numbers that add up to target.',
-                input_format='N integers followed by target', output_format='Indices (0-based) separated by space',
-                difficulty='medium', max_score=100, order=2
-            )
-            SampleTestCase.objects.create(problem=p2, input_data='2 7 11 15\n9', expected_output='0 1', order=1)
-            SampleTestCase.objects.create(problem=p2, input_data='3 2 4\n6', expected_output='1 2', order=2)
-            HiddenTestCase.objects.create(problem=p2, input_data='3 3\n6', expected_output='0 1', score_weight=1.0, order=1)
-            HiddenTestCase.objects.create(problem=p2, input_data='1 2 3 4 5\n9', expected_output='3 4', score_weight=1.0, order=2)
-            HiddenTestCase.objects.create(problem=p2, input_data='0 4 3 0\n0', expected_output='0 3', score_weight=1.0, order=3)
 
-            self.stdout.write('Created exam, questions, and coding problems')
+            self.stdout.write('Created exam and initial arithmetic questions')
         else:
             self.stdout.write('Exam already exists')
 
