@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from authentication.models import User
 from exams.models import Exam, ExamSection
 from questions.models import Question, Option
-from coding.models import CodingProblem
+from coding.models import CodingProblem, SampleTestCase, HiddenTestCase
 from datetime import date
 
 class Command(BaseCommand):
@@ -38,12 +38,7 @@ class Command(BaseCommand):
 
         self.stdout.write('Created users: Thanvith, Tejaswini, admin1')
 
-        # 2. Delete sample coding problems if present
-        deleted_count, _ = CodingProblem.objects.filter(title__in=['Reverse String', 'Two Sum']).delete()
-        if deleted_count > 0:
-            self.stdout.write(f'Deleted {deleted_count} sample coding problems (Reverse String, Two Sum)')
-
-        # 3. Create Exam
+        # 2. Create Exam if missing
         exam, created = Exam.objects.get_or_create(
             title='Placement Mock Test 1',
             defaults={
@@ -77,6 +72,42 @@ class Command(BaseCommand):
             self.stdout.write('Created exam and initial arithmetic questions')
         else:
             self.stdout.write('Exam already exists')
+
+        # Get coding section
+        coding_sec = ExamSection.objects.filter(section_type='coding').last()
+
+        # 3. Ensure coding problems exist
+        if CodingProblem.objects.count() == 0:
+            p1 = CodingProblem.objects.create(
+                section=coding_sec,
+                title='Reverse an Array',
+                statement='Given an array of integers, reverse the order of elements and print the reversed array separated by spaces.',
+                input_format='First line contains integer N.\nSecond line contains N space-separated integers.',
+                output_format='Print N space-separated integers in reversed order.',
+                difficulty='easy',
+                max_score=100,
+                order=1
+            )
+            SampleTestCase.objects.create(problem=p1, input_data='5\n1 2 3 4 5', expected_output='5 4 3 2 1', explanation='1 2 3 4 5 reversed becomes 5 4 3 2 1', order=1)
+            SampleTestCase.objects.create(problem=p1, input_data='3\n10 20 30', expected_output='30 20 10', explanation='10 20 30 reversed is 30 20 10', order=2)
+            HiddenTestCase.objects.create(problem=p1, input_data='4\n-1 0 1 2', expected_output='2 1 0 -1', score_weight=1.0, order=1)
+            HiddenTestCase.objects.create(problem=p1, input_data='1\n99', expected_output='99', score_weight=1.0, order=2)
+
+            p2 = CodingProblem.objects.create(
+                section=coding_sec,
+                title='Find Maximum Element',
+                statement='Given N integers, find and print the maximum integer in the array.',
+                input_format='First line contains integer N.\nSecond line contains N space-separated integers.',
+                output_format='Print the maximum integer.',
+                difficulty='medium',
+                max_score=100,
+                order=2
+            )
+            SampleTestCase.objects.create(problem=p2, input_data='5\n3 1 9 4 5', expected_output='9', explanation='9 is the maximum element in the array', order=1)
+            SampleTestCase.objects.create(problem=p2, input_data='4\n-5 -2 -10 -1', expected_output='-1', explanation='-1 is the maximum element', order=2)
+            HiddenTestCase.objects.create(problem=p2, input_data='6\n100 200 50 400 300 150', expected_output='400', score_weight=1.0, order=1)
+
+            self.stdout.write('Created seed coding problems: Reverse an Array & Find Maximum Element')
 
         # Add Verbal + Reasoning free questions if not exist
         if Question.objects.filter(category='verbal').count() == 0:

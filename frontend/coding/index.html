@@ -6,154 +6,146 @@
     <title>Coding Section - Placement Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Monaco Editor requires a loader script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <!-- Monaco Editor Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
-            color: white;
+            color: #f8fafc;
+            height: 100vh;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .glass {
-            background-color: rgba(30, 41, 59, 0.4);
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .btn-gradient {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            transition: all 0.3s ease;
-        }
-        .btn-gradient:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-        }
-        .btn-outline {
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.2s ease;
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .split-pane {
+        .ide-container {
             display: flex;
+            flex: 1;
             height: calc(100vh - 72px);
+            overflow: hidden;
         }
         .pane-left {
             width: 40%;
-            border-right: 1px solid rgba(255,255,255,0.1);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.6);
         }
         .pane-right {
             width: 60%;
             display: flex;
             flex-direction: column;
+            background: #0f172a;
         }
-        .resizer {
-            width: 5px;
-            cursor: col-resize;
-            background: rgba(255,255,255,0.05);
-        }
-        .resizer:hover, .resizer:active {
-            background: #7c3aed;
-        }
-
         #editor-container {
             flex: 1;
             min-height: 0;
         }
-        
         .output-panel {
-            height: 30%;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: #0f172a;
+            height: 35%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: #090d16;
             display: flex;
             flex-direction: column;
         }
-
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-        
-        .prose pre { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; font-family: monospace; }
-        .prose code { color: #a78bfa; font-family: monospace; }
     </style>
 </head>
 <body>
     <!-- Topbar -->
-    <header class="glass h-[72px] px-6 flex justify-between items-center z-10 shrink-0 border-b border-white/5">
+    <header class="glass h-[72px] px-6 flex justify-between items-center z-10 shrink-0 border-b border-white/10">
         <div class="flex items-center gap-4">
             <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">Placement Arena</h1>
-            <span class="text-slate-400">|</span>
-            <span class="font-medium">Section: Coding</span>
+            <span class="text-slate-600">|</span>
+            <span class="font-semibold text-slate-300">Coding Section</span>
         </div>
-        <div class="flex items-center gap-6">
-            <div class="flex bg-slate-800/50 rounded-lg p-1 border border-white/5">
-                <button id="tab-prob-0" onclick="switchProblem(0)" class="px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors">Problem 1</button>
-                <button id="tab-prob-1" onclick="switchProblem(1)" class="px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors">Problem 2</button>
+        
+        <!-- Problem Tabs -->
+        <div class="flex items-center gap-4">
+            <div id="prob-tabs-container" class="flex bg-slate-800/80 rounded-xl p-1 border border-white/10">
+                <!-- Dynamically populated buttons -->
             </div>
 
-            <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg border border-white/5">
-                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span id="timer" class="font-mono text-lg font-bold tracking-wider text-amber-400">--:--:--</span>
+            <!-- Timer -->
+            <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-xl border border-white/10 text-amber-400 font-mono font-bold text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="timer">60:00</span>
             </div>
-            <button id="finish-btn" onclick="finishExam()" class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-lg font-semibold hover:bg-rose-500/30 transition-colors hidden">
-                Finish Exam
+
+            <!-- Finish Exam Button -->
+            <button id="finish-btn" onclick="finishExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold px-4 py-2 rounded-xl text-sm transition shadow-lg flex items-center gap-2">
+                <span>Finish Exam & Results</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </div>
     </header>
 
-    <div class="split-pane">
-        <!-- Left Pane: Problem Description -->
-        <div class="pane-left glass flex flex-col">
-            <div class="p-6 overflow-y-auto flex-1">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 id="prob-title" class="text-2xl font-bold">Loading...</h2>
-                    <span class="px-3 py-1 bg-purple-900/50 text-purple-300 border border-purple-500/30 rounded text-sm font-medium">Coding</span>
+    <!-- Main IDE Area -->
+    <div class="ide-container">
+        <!-- Left Pane: Problem Statement -->
+        <div class="pane-left p-6 overflow-y-auto">
+            <div id="problem-loading" class="flex items-center justify-center h-full text-slate-400 text-sm">
+                Loading problem statement...
+            </div>
+            <div id="problem-content" class="hidden space-y-6">
+                <div>
+                    <div class="flex items-center justify-between gap-3 mb-2">
+                        <h2 id="prob-title" class="text-2xl font-bold text-white">Problem Title</h2>
+                        <span id="prob-diff" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Easy</span>
+                    </div>
                 </div>
-                <div id="prob-desc" class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed mb-6">
-                    <!-- Problem HTML content injected here -->
+
+                <div id="prob-desc" class="space-y-4">
+                    <!-- Injected HTML -->
                 </div>
             </div>
         </div>
 
-        <!-- Right Pane: Editor & Output -->
+        <!-- Right Pane: Code Editor + Console -->
         <div class="pane-right">
-            <!-- Editor Toolbar -->
-            <div class="glass px-4 py-2 flex justify-between items-center border-b border-white/5 shrink-0">
-                <select id="lang-select" onchange="changeLanguage()" class="bg-slate-900 border border-white/10 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:border-purple-500">
-                    <option value="python">Python 3</option>
-                    <option value="cpp">C++</option>
-                    <option value="java">Java</option>
-                </select>
-                <div class="flex gap-3">
-                    <button onclick="runCode()" id="run-btn" class="btn-outline px-4 py-1.5 rounded-md text-sm font-medium flex items-center gap-2">
+            <!-- Controls Bar -->
+            <div class="h-12 px-4 bg-slate-900/90 border-b border-white/10 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Language:</span>
+                    <select id="lang-select" onchange="changeLanguage()" class="bg-slate-800 text-slate-200 border border-white/10 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-purple-500">
+                        <option value="python">Python 3</option>
+                        <option value="cpp">C++ 17</option>
+                        <option value="java">Java 15</option>
+                        <option value="c">C 11</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button id="run-btn" onclick="runCode()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 px-4 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition">
                         <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                        Run Code
+                        <span>Run Code</span>
                     </button>
-                    <button onclick="submitCode()" id="submit-btn" class="btn-gradient px-4 py-1.5 rounded-md text-sm font-semibold flex items-center gap-2">
+                    <button id="submit-btn" onclick="submitCode()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 transition shadow-md">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        Submit Solution
+                        <span>Submit Code</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Monaco Editor -->
+            <!-- Monaco Editor Container -->
             <div id="editor-container"></div>
 
-            <!-- Output Panel -->
+            <!-- Console Output Panel -->
             <div class="output-panel">
-                <div class="px-4 py-2 bg-slate-800/80 border-b border-white/5 text-xs font-semibold text-slate-400 uppercase tracking-wider flex justify-between items-center">
-                    <span>Console Output</span>
-                    <span id="output-status" class="text-emerald-400"></span>
+                <div class="px-4 py-2 bg-slate-900 border-b border-white/5 text-xs font-semibold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                    <span>Console & Test Case Results</span>
+                    <span id="output-status" class="text-xs font-mono"></span>
                 </div>
-                <div class="p-4 flex-1 overflow-y-auto font-mono text-sm text-slate-300" id="console-output">
-                    Run your code to see output here.
+                <div class="p-4 flex-1 overflow-y-auto font-mono text-xs text-slate-300" id="console-output">
+                    Click <strong>Run Code</strong> to test against sample cases, or <strong>Submit Code</strong> for evaluation.
                 </div>
             </div>
         </div>
@@ -161,7 +153,7 @@
 
     <script>
         const API = window.location.origin + '/api';
-        
+
         // Auto-refresh JWT token on 401
         axios.interceptors.response.use(
             response => response,
@@ -200,49 +192,39 @@
         let problems = [];
         let currentProbIdx = 0;
         let editor;
-        let timeLeft = 0;
+        let timeLeft = 3600;
         let timerInterval;
-        let problemStatus = [false, false]; // true if submitted
 
         const defaultCodes = {
-            python: 'def solve():\n    # Write your code here\n    pass\n\nif __name__ == "__main__":\n    solve()',
-            cpp: '#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    return 0;\n}',
-            java: 'import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}'
+            python: '# Write Python 3 code here\n# Input: sys.stdin or input()\n\nimport sys\n\ndef main():\n    lines = sys.stdin.read().split()\n    if not lines:\n        return\n    # Implement logic\n    \nif __name__ == "__main__":\n    main()\n',
+            cpp: '// Write C++17 code here\n#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    // Implement logic\n    return 0;\n}\n',
+            java: '// Write Java 15 code here\nimport java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Implement logic\n    }\n}\n',
+            c: '// Write C11 code here\n#include <stdio>\n\nint main() {\n    // Implement logic\n    return 0;\n}\n'
         };
 
         async function init() {
             try {
-                // Get exam sections
-                const examRes = await axios.get(`${API}/exams/${examId}/`, getHeaders());
-                const exam = examRes.data;
-                const codingSection = exam.sections.find(s => s.section_type === 'coding');
-                
-                if (!codingSection) {
-                    alert('No coding section found');
-                    window.location.href = `/result/index.html?exam_id=${examId}`;
-                    return;
-                }
-                
-                timeLeft = (codingSection.duration_minutes || 60) * 60;
-                startTimer();
-                
-                problems = [];
-                for (let pid = 1; pid <= 10; pid++) {
-                    try {
-                        const res = await axios.get(`${API}/coding/problem/${pid}/`, getHeaders());
-                        problems.push(res.data);
-                        if (problems.length >= (codingSection.question_count || 2)) break;
-                    } catch(e) { break; }
-                }
+                // Fetch coding problems directly
+                let probRes;
+                try {
+                    probRes = await axios.get(`${API}/coding/problems/`, getHeaders());
+                    problems = probRes.data || [];
+                } catch(e) { problems = []; }
+
+                document.getElementById('problem-loading').classList.add('hidden');
+                document.getElementById('problem-content').classList.remove('hidden');
 
                 if (problems.length === 0) {
-                    document.getElementById('prob-title').innerText = 'No problems found';
+                    document.getElementById('prob-title').innerText = 'No coding problems available';
+                    document.getElementById('prob-desc').innerHTML = '<div class="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-sm">No coding problems are currently uploaded by the admin. Click <strong>Finish Exam & Results</strong> above to view your exam score!</div>';
+                    initEditor();
                     return;
                 }
 
-                problemStatus = new Array(problems.length).fill(false);
+                renderProblemTabs();
                 initEditor();
-                setInterval(autoSave, 30000); // 30s autosave
+                startTimer();
+                setInterval(autoSave, 30000);
 
             } catch(e) {
                 console.error(e);
@@ -250,11 +232,20 @@
             }
         }
 
+        function renderProblemTabs() {
+            const container = document.getElementById('prob-tabs-container');
+            container.innerHTML = problems.map((p, idx) => `
+                <button onclick="switchProblem(${idx})" id="tab-prob-${idx}" class="px-4 py-1.5 rounded-lg text-xs font-semibold ${idx === currentProbIdx ? 'bg-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-white'} transition">
+                    Problem ${idx + 1}
+                </button>
+            `).join('');
+        }
+
         function initEditor() {
-            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
-            require(['vs/editor/editor.main'], function() {
+            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
+            require(['vs/editor/editor.main'], function () {
                 editor = monaco.editor.create(document.getElementById('editor-container'), {
-                    value: defaultCodes['python'],
+                    value: defaultCodes.python,
                     language: 'python',
                     theme: 'vs-dark',
                     automaticLayout: true,
@@ -262,8 +253,7 @@
                     fontSize: 14,
                     padding: { top: 16 }
                 });
-                
-                // Custom dark theme for monaco to match Tailwind slate-900
+
                 monaco.editor.defineTheme('arena-dark', {
                     base: 'vs-dark',
                     inherit: true,
@@ -272,31 +262,63 @@
                 });
                 monaco.editor.setTheme('arena-dark');
 
-                loadProblem(0);
+                if (problems.length > 0) {
+                    loadProblem(0);
+                }
             });
         }
 
         function switchProblem(idx) {
             autoSave();
             currentProbIdx = idx;
+            renderProblemTabs();
             loadProblem(idx);
-            
-            // Update tabs
-            document.getElementById('tab-prob-0').className = idx === 0 ? 'px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors' : 'px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors';
-            document.getElementById('tab-prob-1').className = idx === 1 ? 'px-4 py-1.5 rounded-md text-sm font-semibold bg-white/10 text-white transition-colors' : 'px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-colors';
         }
 
         function loadProblem(idx) {
             const p = problems[idx];
-            document.getElementById('prob-title').innerText = p.title;
-            document.getElementById('prob-desc').innerHTML = p.description_html || p.description || p.problem_statement;
+            if (!p) return;
+
+            document.getElementById('prob-title').innerText = p.title || `Problem ${idx + 1}`;
             
+            const diffEl = document.getElementById('prob-diff');
+            diffEl.innerText = (p.difficulty || 'medium').toUpperCase();
+            diffEl.className = `px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${p.difficulty === 'easy' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : p.difficulty === 'medium' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}`;
+
+            let html = `
+                <div class="prose prose-invert max-w-none text-slate-300 space-y-4">
+                    <p class="text-slate-200 font-normal leading-relaxed text-sm">${p.statement || p.description || 'No statement provided.'}</p>
+                    
+                    ${p.input_format ? `<div><h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider mb-1">Input Format</h4><pre class="bg-slate-900/80 p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-300 leading-relaxed">${p.input_format}</pre></div>` : ''}
+                    ${p.output_format ? `<div><h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider mb-1">Output Format</h4><pre class="bg-slate-900/80 p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-300 leading-relaxed">${p.output_format}</pre></div>` : ''}
+                    ${p.constraints ? `<div><h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider mb-1">Constraints</h4><pre class="bg-slate-900/80 p-3 rounded-lg border border-white/5 text-xs font-mono text-slate-300 leading-relaxed">${p.constraints}</pre></div>` : ''}
+            `;
+
+            if (p.sample_cases && p.sample_cases.length > 0) {
+                html += `<h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider mt-4 mb-2">Sample Test Cases</h4>`;
+                p.sample_cases.forEach((sc, i) => {
+                    html += `
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-white/5 text-xs space-y-2 mb-3">
+                            <div class="font-bold text-slate-400">Sample Case ${i + 1}</div>
+                            <div><span class="text-slate-500 block mb-0.5">Input:</span><pre class="bg-black/40 p-2 rounded text-emerald-300 font-mono">${sc.input_data}</pre></div>
+                            <div><span class="text-slate-500 block mb-0.5">Expected Output:</span><pre class="bg-black/40 p-2 rounded text-emerald-300 font-mono">${sc.expected_output}</pre></div>
+                            ${sc.explanation ? `<div class="text-slate-400 italic">Explanation: ${sc.explanation}</div>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            html += `</div>`;
+            document.getElementById('prob-desc').innerHTML = html;
+
             const lang = document.getElementById('lang-select').value;
             const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
-            if (savedCode) {
-                editor.setValue(savedCode);
-            } else {
-                editor.setValue(defaultCodes[lang]);
+            if (editor) {
+                if (savedCode) {
+                    editor.setValue(savedCode);
+                } else {
+                    editor.setValue(defaultCodes[lang] || defaultCodes.python);
+                }
             }
         }
 
@@ -306,12 +328,14 @@
             monaco.editor.setModelLanguage(model, lang);
             
             const p = problems[currentProbIdx];
-            const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
-            editor.setValue(savedCode || defaultCodes[lang]);
+            if (p) {
+                const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
+                editor.setValue(savedCode || defaultCodes[lang] || defaultCodes.python);
+            }
         }
 
         function autoSave() {
-            if(!editor || !problems[currentProbIdx]) return;
+            if (!editor || !problems[currentProbIdx]) return;
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
             const code = editor.getValue();
@@ -320,15 +344,15 @@
 
         async function runCode() {
             const btn = document.getElementById('run-btn');
-            btn.innerHTML = '<svg class="animate-spin w-4 h-4 mr-2" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Running...';
             btn.disabled = true;
+            btn.innerHTML = 'Running...';
             
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
             const code = editor.getValue();
             const out = document.getElementById('console-output');
             
-            out.innerHTML = '<span class="text-slate-400">Executing code...</span>';
+            out.innerHTML = '<span class="text-slate-400">Executing code against sample cases...</span>';
             document.getElementById('output-status').innerText = '';
 
             try {
@@ -337,37 +361,39 @@
                     language: lang,
                     code: code
                 }, getHeaders());
-                
+
                 const data = res.data;
-                if (data.status === 'Accepted') {
-                    document.getElementById('output-status').innerText = 'Accepted';
-                    document.getElementById('output-status').className = 'text-emerald-400';
+                if (data.results) {
+                    out.innerHTML = data.results.map((r, i) => `
+                        <div class="mb-2 p-2 rounded ${r.passed ? 'bg-emerald-950/40 border border-emerald-500/20' : 'bg-rose-950/40 border border-rose-500/20'}">
+                            <div class="font-bold ${r.passed ? 'text-emerald-400' : 'text-rose-400'}">Sample Case ${i+1}: ${r.passed ? 'PASSED ✅' : 'FAILED ❌'}</div>
+                            <div class="text-slate-400">Input: <span class="font-mono text-slate-200">${r.input}</span></div>
+                            <div class="text-slate-400">Expected: <span class="font-mono text-slate-200">${r.expected}</span></div>
+                            <div class="text-slate-400">Actual Output: <span class="font-mono ${r.passed ? 'text-emerald-300' : 'text-rose-300'}">${r.stdout || r.stderr || '(empty)'}</span></div>
+                        </div>
+                    `).join('');
                 } else {
-                    document.getElementById('output-status').innerText = data.status || 'Error';
-                    document.getElementById('output-status').className = 'text-rose-400';
+                    out.innerHTML = `<pre class="text-slate-200">${data.stdout || data.stderr || 'No output'}</pre>`;
                 }
-                
-                out.innerHTML = `<pre>${data.output || data.error || 'No output'}</pre>`;
-                
             } catch(e) {
-                out.innerHTML = `<span class="text-rose-400">Error communicating with server: ${e.message}</span>`;
+                out.innerHTML = `<span class="text-rose-400">Execution Error: ${e.response?.data?.error || e.message}</span>`;
             } finally {
-                btn.innerHTML = '<svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg> Run Code';
                 btn.disabled = false;
+                btn.innerHTML = `<svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg> <span>Run Code</span>`;
             }
         }
 
         async function submitCode() {
             const btn = document.getElementById('submit-btn');
-            btn.innerText = 'Submitting...';
             btn.disabled = true;
+            btn.innerText = 'Evaluating...';
             
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
             const code = editor.getValue();
             const out = document.getElementById('console-output');
 
-            out.innerHTML = '<span class="text-slate-400">Evaluating against hidden test cases...</span>';
+            out.innerHTML = '<span class="text-purple-300">Evaluating against all test cases (sample + hidden)...</span>';
             
             try {
                 const res = await axios.post(`${API}/coding/submit/`, {
@@ -378,35 +404,29 @@
                 }, getHeaders());
                 
                 const data = res.data;
-                out.innerHTML = `<div>Status: <strong>${data.status}</strong></div><div>Score: ${data.score}/${p.max_score || 100}</div>`;
-                
-                if(data.status === 'Accepted' || data.score > 0) {
-                    problemStatus[currentProbIdx] = true;
-                    checkAllDone();
-                }
-
+                out.innerHTML = `
+                    <div class="p-3 bg-purple-950/40 border border-purple-500/30 rounded-xl space-y-1">
+                        <div class="text-lg font-bold ${data.status === 'Accepted' ? 'text-emerald-400' : 'text-amber-400'}">${data.status === 'Accepted' ? '🎉 Accepted!' : data.status}</div>
+                        <div class="text-sm font-semibold text-slate-200">Score Earned: <span class="text-emerald-400">${data.score}</span> / ${p.max_score || 100} pts</div>
+                        <div class="text-xs text-slate-400">Passed Hidden Cases: ${data.passed_hidden || 0} / ${data.total_hidden || 0}</div>
+                    </div>
+                `;
             } catch(e) {
-                out.innerHTML = `<span class="text-rose-400">Error submitting code: ${e.message}</span>`;
+                out.innerHTML = `<span class="text-rose-400">Submission Error: ${e.response?.data?.error || e.message}</span>`;
             } finally {
-                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Submit Solution';
                 btn.disabled = false;
-            }
-        }
-
-        function checkAllDone() {
-            if (problemStatus.every(status => status)) {
-                document.getElementById('finish-btn').classList.remove('hidden');
+                btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span>Submit Code</span>`;
             }
         }
 
         async function finishExam() {
             try {
-                if(sectionAttemptId) {
+                if (sectionAttemptId) {
                     await axios.post(`${API}/exams/sections/${sectionAttemptId}/submit/`, {}, getHeaders());
                 }
                 window.location.href = `/result/index.html?exam_id=${examId}`;
             } catch(e) {
-                alert("Could not submit section. Please try again.");
+                window.location.href = `/result/index.html?exam_id=${examId}`;
             }
         }
 
@@ -436,5 +456,3 @@
     </script>
 </body>
 </html>
-
-
