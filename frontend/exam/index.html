@@ -292,14 +292,27 @@
             document.getElementById('section-badge').innerText = capitalize(sec.section_type);
             
             const startRes = await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
-            questions = startRes.data.questions || [];
+            let fetchedQuestions = startRes.data.questions;
+            
+            if (!fetchedQuestions || fetchedQuestions.length === 0) {
+                try {
+                    const qRes = await axios.get(`${API}/questions/section/${sa.id}/`, getHeaders());
+                    fetchedQuestions = qRes.data;
+                } catch(e) { console.error('Failed to fetch questions', e); }
+            }
+
+            questions = fetchedQuestions || [];
             
             timeLeft = (sec.duration_minutes || 20) * 60;
             startTimer();
 
             questionStates = {};
             questions.forEach(q => {
-                questionStates[q.id] = { status: 'not_visited', selected_option_id: null };
+                const savedOptId = q.saved_option_id || null;
+                questionStates[q.id] = { 
+                    status: savedOptId ? 'answered' : 'not_visited', 
+                    selected_option_id: savedOptId 
+                };
             });
             
             currentQIdx = 0;
@@ -308,6 +321,14 @@
         }
 
         function renderQuestion(idx) {
+            if (!questions || questions.length === 0) {
+                document.getElementById('question-number-text').innerText = 'No Questions Uploaded';
+                document.getElementById('question-marks-text').innerText = '0 Marks';
+                document.getElementById('question-text').innerText = 'No questions available for this section yet. Click "Submit Section →" at top right to advance.';
+                document.getElementById('options-container').innerHTML = '';
+                return;
+            }
+
             currentQIdx = idx;
             const q = questions[idx];
             if (!q) return;

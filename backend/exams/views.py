@@ -73,39 +73,29 @@ class StartSectionView(APIView):
             section_attempt.started_at = timezone.now()
             section_attempt.save()
             
-            # --- Question Randomization ---
-            # Only assign questions if not already assigned (idempotent)
-            from questions.models import Question, SectionQuestionAssignment
-            if not section_attempt.question_assignments.exists():
-                section = section_attempt.section
-                section_type = section.section_type
-                count = section.question_count
-                
-                # Try section-specific questions first (legacy), then fall back to bank
-                qs = list(Question.objects.filter(
-                    section=section, is_active=True
-                ))
-                
-                if len(qs) < count:
-                    # Pull from question bank by matching category
-                    category_map = {
-                        'arithmetic': 'arithmetic',
-                        'verbal': 'verbal',
-                        'reasoning': 'reasoning',
-                    }
-                    bank_category = category_map.get(section_type)
-                    if bank_category:
-                        bank_qs = list(Question.objects.filter(
-                            section__isnull=True,
-                            category=bank_category,
-                            is_active=True
-                        ).exclude(id__in=[q.id for q in qs]))
-                        qs = qs + bank_qs
-                
-                # Shuffle and cap to question_count
+        from questions.models import Question, SectionQuestionAssignment
+        from questions.serializers import QuestionSerializer
+
+        if not section_attempt.question_assignments.exists():
+            section = section_attempt.section
+            section_type = section.section_type
+            count = section.question_count
+            
+            # Fetch questions specifically assigned to section
+            qs = list(Question.objects.filter(section=section, is_active=True))
+            
+            # Pull from question bank matching category
+            bank_qs = list(Question.objects.filter(
+                category=section_type,
+                is_active=True
+            ).exclude(id__in=[q.id for q in qs]))
+            
+            all_available = qs + bank_qs
+            
+            if all_available:
                 import random
-                random.shuffle(qs)
-                selected = qs[:count]
+                random.shuffle(all_available)
+                selected = all_available[:count] if (count > 0 and len(all_available) >= count) else all_available
                 
                 for i, q in enumerate(selected):
                     SectionQuestionAssignment.objects.get_or_create(
@@ -113,8 +103,18 @@ class StartSectionView(APIView):
                         question=q,
                         defaults={'order': i + 1}
                     )
-            
-        return Response(SectionAttemptSerializer(section_attempt).data)
+
+        # Get assigned questions for this section attempt
+        assignments = section_attempt.question_assignments.select_related('question').order_by('order')
+        if assignments.exists():
+            questions = [a.question for a in assignments]
+        else:
+            # Fallback: get active questions matching section category directly
+            questions = list(Question.objects.filter(category=section_attempt.section.section_type, is_active=True).order_by('order'))
+
+        data = SectionAttemptSerializer(section_attempt).data
+        data['questions'] = QuestionSerializer(questions, many=True).data
+        return Response(data)
 
 
 class SubmitSectionView(APIView):
