@@ -12,15 +12,13 @@ class TodayExamView(APIView):
     
     def get(self, request):
         exam = Exam.objects.filter(date=date.today(), status='active').first()
-        if not exam:
-            return Response({'message': 'No active exam today'}, status=status.HTTP_404_NOT_FOUND)
-            
-        attempt = ExamAttempt.objects.filter(user=request.user, exam=exam).first()
+        attempt = ExamAttempt.objects.filter(user=request.user, exam=exam).first() if exam else None
         data = {
-            'exam': ExamSerializer(exam).data,
-            'attempt': ExamAttemptSerializer(attempt).data if attempt else None
+            'exam': ExamSerializer(exam).data if exam else None,
+            'attempt': ExamAttemptSerializer(attempt).data if attempt else None,
+            'message': 'Active exam today' if exam else 'No active exam today'
         }
-        return Response(data)
+        return Response(data, status=status.HTTP_200_OK)
 
 class ExamDetailView(APIView):
     permission_classes = [IsAuthenticated]

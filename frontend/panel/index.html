@@ -512,6 +512,31 @@
             return { headers: { Authorization: `Bearer ${token}` } };
         }
 
+        // Axios 401 JWT refresh interceptor
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             const colors = { success: 'bg-emerald-600', error: 'bg-rose-600', info: 'bg-indigo-600' };
@@ -555,17 +580,32 @@
             try {
                 const qRes = await axios.get(`${API}/admin-panel/questions/`, getHeaders());
                 if (document.getElementById('stat-questions')) document.getElementById('stat-questions').innerText = Array.isArray(qRes.data) ? qRes.data.length : 0;
-                
+            } catch(e) { 
+                if (document.getElementById('stat-questions')) document.getElementById('stat-questions').innerText = '0';
+            }
+            
+            try {
                 const eRes = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
                 if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = Array.isArray(eRes.data) ? eRes.data.length : 0;
-                
+            } catch(e) { 
+                if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = '0';
+            }
+
+            try {
                 const tRes = await axios.get(`${API}/exams/today/`, getHeaders());
                 const todayBadge = document.getElementById('today-status');
                 if (todayBadge) {
-                    todayBadge.innerText = tRes.data.exam ? 'Active Exam Today' : 'No Exam Today';
-                    todayBadge.className = tRes.data.exam ? 'px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-200' : 'px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-xs font-bold border border-amber-200';
+                    const hasExam = tRes.data && tRes.data.exam;
+                    todayBadge.innerText = hasExam ? 'Active Exam Today' : 'No Exam Today';
+                    todayBadge.className = hasExam ? 'px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-200' : 'px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-xs font-bold border border-amber-200';
                 }
-            } catch(e) { console.warn('Stats load failed', e); }
+            } catch(e) { 
+                const todayBadge = document.getElementById('today-status');
+                if (todayBadge) {
+                    todayBadge.innerText = 'No Exam Today';
+                    todayBadge.className = 'px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-xs font-bold border border-amber-200';
+                }
+            }
         }
 
         async function createTodayExam() {
