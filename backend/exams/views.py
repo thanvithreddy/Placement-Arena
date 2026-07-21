@@ -82,9 +82,9 @@ class StartSectionView(APIView):
             # Fetch questions specifically assigned to section
             qs = list(Question.objects.filter(section=section, is_active=True))
             
-            # Pull from question bank matching category
+            # Pull from question bank matching category case-insensitively
             bank_qs = list(Question.objects.filter(
-                category=section_type,
+                category__iexact=section_type,
                 is_active=True
             ).exclude(id__in=[q.id for q in qs]))
             
@@ -105,10 +105,10 @@ class StartSectionView(APIView):
         # Get assigned questions for this section attempt
         assignments = section_attempt.question_assignments.select_related('question').order_by('order')
         if assignments.exists():
-            questions = [a.question for a in assignments]
+            questions = [a.question for a in assignments if a.question]
         else:
-            # Fallback: get active questions matching section category directly
-            questions = list(Question.objects.filter(category=section_attempt.section.section_type, is_active=True).order_by('order'))
+            # Fallback: get active questions matching section category case-insensitively
+            questions = list(Question.objects.filter(category__iexact=section_attempt.section.section_type, is_active=True).order_by('order'))
 
         data = SectionAttemptSerializer(section_attempt).data
         data['questions'] = QuestionSerializer(questions, many=True).data

@@ -249,20 +249,23 @@
             document.getElementById('loading-overlay').style.display = 'flex';
             document.getElementById('loading-text').innerText = 'Loading exam...';
             try {
+                // 1. Get Exam metadata & sections
                 const examRes = await axios.get(`${API}/exams/${examId}/`, getHeaders());
                 const exam = examRes.data;
-                sections = exam.sections.sort((a,b) => a.order - b.order);
-                
-                if (!attemptId) {
-                    const startRes = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
-                    attemptId = startRes.data.id;
-                    sectionAttempts = startRes.data.section_attempts || [];
-                } else {
-                    const statusRes = await axios.get(`${API}/exams/today/`, getHeaders());
-                    examAttempt = statusRes.data.attempt;
-                    sectionAttempts = examAttempt.section_attempts || [];
-                }
+                sections = (exam.sections || []).sort((a,b) => a.order - b.order);
 
+                // 2. Start or Resume ExamAttempt (Idempotent call to POST /api/exams/{id}/start/)
+                const startRes = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
+                examAttempt = startRes.data;
+                attemptId = examAttempt.id;
+                
+                // Map & sort section attempts based on section order
+                const rawSectionAttempts = examAttempt.section_attempts || [];
+                sectionAttempts = sections.map(sec => {
+                    return rawSectionAttempts.find(sa => sa.section === sec.id) || null;
+                }).filter(Boolean);
+
+                // 3. Find first in-progress or not-started section
                 currentSectionIdx = sectionAttempts.findIndex(sa => sa.status !== 'completed');
                 if (currentSectionIdx === -1) {
                     window.location.href = `/result/index.html?exam_id=${examId}`;
@@ -273,8 +276,8 @@
                 await loadCurrentSection();
 
             } catch(e) {
-                console.error(e);
-                alert('Failed to initialize exam.');
+                console.error('initExam error:', e);
+                alert('Failed to initialize exam: ' + (e.response?.data?.error || e.message));
             } finally {
                 document.getElementById('loading-overlay').style.display = 'none';
             }
@@ -282,7 +285,13 @@
 
         async function loadCurrentSection() {
             const sa = sectionAttempts[currentSectionIdx];
+            if (!sa) {
+                console.error('Invalid section attempt at index', currentSectionIdx); return;
+            }
             const sec = sections.find(s => s.id === sa.section);
+            if (!sec) {
+                console.error('Invalid section for section attempt', sa); return;
+            }
             
             if (sec.section_type === 'coding') {
                 window.location.href = `/coding/index.html?exam_id=${examId}&attempt_id=${attemptId}&section_attempt_id=${sa.id}`;
@@ -298,7 +307,7 @@
                 try {
                     const qRes = await axios.get(`${API}/questions/section/${sa.id}/`, getHeaders());
                     fetchedQuestions = qRes.data;
-                } catch(e) { console.error('Failed to fetch questions', e); }
+                } catch(e) { console.error('Failed to fetch questions fallback', e); }
             }
 
             questions = fetchedQuestions || [];
