@@ -6,27 +6,27 @@
     <title>Exam Result & Report - Placement Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- HTML2PDF CDN for PDF Download -->
+    <!-- HTML2PDF CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: white;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        .glass {
-            background-color: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .card-white {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         }
-        .btn-gradient {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            transition: all 0.3s ease;
+        .btn-indigo {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.25s ease;
         }
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        .btn-indigo:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px -3px rgba(79, 70, 229, 0.3);
         }
         
         /* Confetti */
@@ -40,7 +40,6 @@
         .confetti {
             position: absolute;
             width: 10px; height: 10px;
-            background-color: #f00;
             animation: fall linear forwards;
         }
         @keyframes fall {
@@ -54,60 +53,62 @@
     
     <div class="max-w-4xl w-full space-y-8" id="report-main-container">
         <!-- Header -->
-        <div class="text-center space-y-4 pt-8">
-            <h1 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400" id="exam-title">Loading Results...</h1>
-            <p class="text-slate-400 text-lg">Detailed Exam Report & Solutions Review</p>
+        <div class="text-center space-y-3 pt-4">
+            <div class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider border border-indigo-100">
+                🎉 Assessment Completed
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight" id="exam-title">Loading Results...</h1>
+            <p class="text-slate-500 text-base">Detailed Exam Performance & Solution Analysis</p>
         </div>
 
         <!-- Score Highlights -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass p-8 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden md:col-span-1">
-                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent pointer-events-none"></div>
-                <p class="text-slate-400 font-medium mb-2 relative z-10">Total Score</p>
-                <div class="text-5xl font-bold text-white relative z-10 flex items-baseline gap-2">
+            <div class="card-white p-8 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden md:col-span-1 bg-gradient-to-br from-indigo-50/50 to-white">
+                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Total Score Earned</p>
+                <div class="text-5xl font-extrabold text-indigo-600 flex items-baseline gap-2">
                     <span id="total-score">0</span>
-                    <span class="text-xl text-slate-500">/ 480</span>
+                    <span class="text-xl text-slate-400 font-bold">/ 480</span>
                 </div>
             </div>
             
-            <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center">
-                <p class="text-slate-400 font-medium mb-2">Rank</p>
-                <h3 class="text-4xl font-bold text-amber-400" id="rank-badge">#—</h3>
+            <div class="card-white p-6 rounded-3xl flex flex-col items-center justify-center">
+                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Rank</p>
+                <h3 class="text-4xl font-extrabold text-amber-500" id="rank-badge">#—</h3>
             </div>
             
-            <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center">
-                <p class="text-slate-400 font-medium mb-2">Time Taken</p>
-                <h3 class="text-3xl font-bold text-emerald-400" id="time-taken">—</h3>
+            <div class="card-white p-6 rounded-3xl flex flex-col items-center justify-center">
+                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Time Taken</p>
+                <h3 class="text-3xl font-extrabold text-emerald-600" id="time-taken">—</h3>
             </div>
         </div>
 
         <!-- Section Breakdown -->
-        <div class="glass p-8 rounded-2xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-200">Section Breakdown</h3>
+        <div class="card-white p-8 rounded-3xl">
+            <h3 class="text-xl font-bold mb-6 text-slate-900">Section Score Breakdown</h3>
             <div class="space-y-6" id="sections-container">
                 <!-- Dynamically injected -->
             </div>
         </div>
 
         <!-- Toggle Answer Review Button -->
-        <button onclick="loadAnswerReview()" id="view-review-btn" class="w-full btn-gradient py-4 rounded-2xl font-bold text-lg transition shadow-xl flex items-center justify-center gap-3">
+        <button onclick="loadAnswerReview()" id="view-review-btn" class="w-full btn-indigo py-4 rounded-2xl font-bold text-lg text-white transition shadow-lg flex items-center justify-center gap-3">
             <span>📋 View Detailed Question-by-Question Report</span>
-            <span class="text-xs bg-black/30 px-3 py-1 rounded-full font-normal">Available for 2h</span>
+            <span class="text-xs bg-white/20 text-white px-3 py-1 rounded-full font-semibold">Active for 2h</span>
         </button>
 
         <!-- Detailed Answer Review Container -->
-        <div id="review-section" class="glass rounded-2xl p-8 space-y-6" style="display:none">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+        <div id="review-section" class="card-white rounded-3xl p-8 space-y-6" style="display:none">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                 <div>
-                    <h3 class="text-2xl font-bold text-white">Full Exam Solutions & Report</h3>
-                    <p class="text-xs text-amber-300 mt-1 flex items-center gap-1" id="review-timer-badge">
+                    <h3 class="text-2xl font-bold text-slate-900">Full Exam Solutions & Solutions</h3>
+                    <p class="text-xs text-amber-700 font-medium mt-1 flex items-center gap-1" id="review-timer-badge">
                         <span>⏳ Questions auto-delete 2 hours after exam submission.</span>
                     </p>
                 </div>
-                <div class="flex gap-2 text-xs font-semibold">
-                    <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✓ Correct</span>
-                    <span class="px-3 py-1 rounded-lg bg-rose-500/20 text-rose-400 border border-rose-500/30">✗ Wrong</span>
-                    <span class="px-3 py-1 rounded-lg bg-slate-500/20 text-slate-400 border border-slate-500/30">— Unanswered</span>
+                <div class="flex gap-2 text-xs font-bold">
+                    <span class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">✓ Correct</span>
+                    <span class="px-3 py-1 rounded-lg bg-rose-50 text-rose-600 border border-rose-200">✗ Wrong</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-500 border border-slate-200">— Unanswered</span>
                 </div>
             </div>
 
@@ -120,24 +121,24 @@
         
         <!-- Actions -->
         <div class="flex flex-wrap justify-center gap-4 pt-4">
-            <button onclick="window.location.href='/dashboard/index.html'" class="glass px-6 py-3 rounded-xl font-medium hover:bg-white/5 transition-colors border-slate-700">Back to Dashboard</button>
-            <button onclick="downloadPDFReport()" id="pdf-download-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+            <button onclick="window.location.href='/dashboard/index.html'" class="card-white px-6 py-3.5 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition text-sm">Back to Dashboard</button>
+            <button onclick="downloadPDFReport()" id="pdf-download-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
                 <span>📥 Download PDF Report</span>
             </button>
-            <button onclick="window.location.href='/leaderboard/index.html'" class="btn-gradient px-6 py-3 rounded-xl font-semibold shadow-lg">View Leaderboard</button>
+            <button onclick="window.location.href='/leaderboard/index.html'" class="btn-indigo text-white px-6 py-3.5 rounded-2xl font-bold shadow-md text-sm">View Leaderboard</button>
         </div>
     </div>
 
     <!-- Hidden Container for PDF Rendering -->
-    <div id="pdf-print-area" class="hidden bg-slate-900 text-white p-8 space-y-6 max-w-4xl">
-        <div class="border-b border-purple-500 pb-4 flex justify-between items-center">
+    <div id="pdf-print-area" class="hidden bg-white text-slate-900 p-8 space-y-6 max-w-4xl">
+        <div class="border-b border-indigo-200 pb-4 flex justify-between items-center">
             <div>
-                <h1 class="text-3xl font-bold text-purple-400">Placement Arena — Exam Report</h1>
-                <p class="text-xs text-slate-400 mt-1" id="pdf-candidate-info">Candidate: Student | Date: Today</p>
+                <h1 class="text-3xl font-extrabold text-indigo-700">Placement Arena — Exam Report</h1>
+                <p class="text-xs text-slate-500 font-medium mt-1" id="pdf-candidate-info">Candidate: Student | Date: Today</p>
             </div>
             <div class="text-right">
-                <div class="text-2xl font-bold text-emerald-400" id="pdf-total-score">0 / 480</div>
-                <div class="text-xs text-amber-400" id="pdf-rank">Rank: #—</div>
+                <div class="text-2xl font-bold text-emerald-600" id="pdf-total-score">0 / 480</div>
+                <div class="text-xs text-amber-600 font-bold" id="pdf-rank">Rank: #—</div>
             </div>
         </div>
 
@@ -154,7 +155,7 @@
 
         function createConfetti() {
             const root = document.getElementById('confetti-root');
-            const colors = ['#7c3aed', '#a78bfa', '#10b981', '#f43f5e', '#f59e0b', '#3b82f6'];
+            const colors = ['#4f46e5', '#7c3aed', '#10b981', '#f43f5e', '#f59e0b', '#3b82f6'];
             
             for (let i = 0; i < 40; i++) {
                 const conf = document.createElement('div');
@@ -207,36 +208,32 @@
                 
                 document.getElementById('exam-title').innerText = data.exam_title || 'Mock Test Results';
                 
-                // Animate score
                 animateValue(document.getElementById('total-score'), 0, data.total_score || 0, 1500);
                 
-                // Set Rank
                 const rank = data.rank || '-';
                 document.getElementById('rank-badge').innerText = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
                 
-                // Set Time
                 document.getElementById('time-taken').innerText = formatTime(data.time_taken_seconds);
                 
-                // Sections
                 const container = document.getElementById('sections-container');
                 container.innerHTML = '';
                 
                 if (data.sections) {
                     data.sections.forEach(sec => {
                         const pct = sec.max_score ? Math.round((sec.score / sec.max_score) * 100) : 0;
-                        const correctStr = sec.section_type === 'coding' ? '' : `<span class="text-xs text-slate-400">(${sec.correct}/${sec.question_count} correct)</span>`;
+                        const correctStr = sec.section_type === 'coding' ? '' : `<span class="text-xs text-slate-500 font-normal">(${sec.correct}/${sec.question_count} correct)</span>`;
                         
                         container.innerHTML += `
                             <div>
                                 <div class="flex justify-between items-center mb-2">
-                                    <div class="font-medium text-slate-200 flex items-center gap-2">
+                                    <div class="font-bold text-slate-800 flex items-center gap-2">
                                         ${capitalize(sec.section_type)}
                                         ${correctStr}
                                     </div>
-                                    <div class="font-bold text-white">${sec.score} / ${sec.max_score}</div>
+                                    <div class="font-extrabold text-slate-900">${sec.score} / ${sec.max_score}</div>
                                 </div>
-                                <div class="w-full bg-slate-800 rounded-full h-2.5 border border-white/5 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-purple-500 to-indigo-500 h-2.5 rounded-full" style="width: ${pct}%"></div>
+                                <div class="w-full bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full" style="width: ${pct}%"></div>
                                 </div>
                             </div>
                         `;
@@ -245,7 +242,6 @@
                 
                 createConfetti();
                 
-                // Load detailed review & trigger auto PDF download
                 await loadAnswerReview();
                 setTimeout(downloadPDFReport, 1500);
 
@@ -277,10 +273,10 @@
 
                 if (data.expired) {
                     reviewSec.innerHTML = `
-                        <div class="p-8 bg-rose-950/40 border border-rose-500/30 rounded-2xl text-center space-y-3">
+                        <div class="p-8 bg-rose-50 border border-rose-200 rounded-3xl text-center space-y-3">
                             <div class="text-4xl mb-2">🔒</div>
-                            <h3 class="text-2xl font-bold text-rose-400">Questions Auto-Deleted</h3>
-                            <p class="text-slate-300 text-sm max-w-md mx-auto">The 2-hour post-exam review window has expired. All questions for this exam attempt have been automatically deleted from the server.</p>
+                            <h3 class="text-2xl font-bold text-rose-600">Questions Auto-Deleted</h3>
+                            <p class="text-slate-600 text-sm max-w-md mx-auto">The 2-hour post-exam review window has expired. All questions for this exam attempt have been automatically deleted from the server.</p>
                         </div>
                     `;
                     reviewSec.style.display = 'block';
@@ -289,21 +285,19 @@
                     return;
                 }
 
-                // Setup Timer Countdown Badge
                 const remainingSecs = data.remaining_seconds || 0;
                 const m = Math.floor(remainingSecs / 60);
                 const h = Math.floor(m / 60);
                 const minRem = m % 60;
                 const timeStr = h > 0 ? `${h}h ${minRem}m` : `${minRem}m`;
-                document.getElementById('review-timer-badge').innerHTML = `<span>⏳ Detailed report active. Questions will auto-delete in <strong class="text-amber-400">${timeStr}</strong>.</span>`;
+                document.getElementById('review-timer-badge').innerHTML = `<span>⏳ Detailed report active. Questions will auto-delete in <strong class="text-amber-700">${timeStr}</strong>.</span>`;
 
-                // Render Section Tabs
                 const tabsContainer = document.getElementById('review-section-tabs');
                 tabsContainer.innerHTML = '';
 
                 data.sections.forEach((sec, idx) => {
                     const btnTab = document.createElement('button');
-                    btnTab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === 0 ? 'bg-purple-600 text-white shadow-lg' : 'bg-slate-800/80 text-slate-400 hover:text-white border border-white/5'}`;
+                    btnTab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === 0 ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200'}`;
                     btnTab.innerText = capitalize(sec.section_type);
                     btnTab.onclick = () => switchReviewTab(idx, data.sections);
                     btnTab.id = `review-tab-${idx}`;
@@ -327,7 +321,7 @@
             sections.forEach((s, idx) => {
                 const tab = document.getElementById(`review-tab-${idx}`);
                 if (tab) {
-                    tab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === activeIdx ? 'bg-purple-600 text-white shadow-lg' : 'bg-slate-800/80 text-slate-400 hover:text-white border border-white/5'}`;
+                    tab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === activeIdx ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200'}`;
                 }
             });
             renderReviewSectionContent(sections[activeIdx]);
@@ -338,36 +332,36 @@
 
             if (sec.section_type === 'coding') {
                 if (!sec.problems || sec.problems.length === 0) {
-                    container.innerHTML = '<p class="text-slate-400 text-center py-6">No coding problems submitted in this exam.</p>';
+                    container.innerHTML = '<p class="text-slate-500 text-center py-6">No coding problems submitted in this exam.</p>';
                     return;
                 }
 
                 container.innerHTML = sec.problems.map((p, idx) => `
-                    <div class="glass p-6 rounded-2xl border border-white/10 space-y-4">
-                        <div class="flex justify-between items-start border-b border-white/10 pb-3">
+                    <div class="card-white p-6 rounded-2xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-start border-b border-slate-100 pb-3">
                             <div>
-                                <h4 class="text-xl font-bold text-purple-300">Problem ${idx + 1}: ${p.title}</h4>
-                                <p class="text-sm text-slate-300 mt-1">${p.statement || ''}</p>
+                                <h4 class="text-xl font-bold text-indigo-700">Problem ${idx + 1}: ${p.title}</h4>
+                                <p class="text-sm text-slate-600 mt-1">${p.statement || ''}</p>
                             </div>
                             <div class="text-right">
-                                <div class="text-2xl font-bold text-emerald-400">${p.score} / ${p.max_score} pts</div>
-                                <div class="text-xs text-slate-400 font-semibold mt-0.5">Status: ${p.status}</div>
+                                <div class="text-2xl font-extrabold text-emerald-600">${p.score} / ${p.max_score} pts</div>
+                                <div class="text-xs text-slate-500 font-bold mt-0.5">Status: ${p.status}</div>
                             </div>
                         </div>
 
                         <div>
-                            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Your Submitted Solution:</div>
-                            <pre class="bg-slate-900 p-4 rounded-xl border border-white/10 font-mono text-xs text-emerald-300 overflow-x-auto">${p.submitted_code}</pre>
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Your Submitted Solution:</div>
+                            <pre class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs text-indigo-800 overflow-x-auto">${p.submitted_code}</pre>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
-                                <span class="text-slate-400 block">Sample Cases:</span>
-                                <span class="font-bold text-slate-200">${p.passed_sample} / ${p.total_sample} passed</span>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <span class="text-slate-500 block">Sample Cases:</span>
+                                <span class="font-bold text-slate-900">${p.passed_sample} / ${p.total_sample} passed</span>
                             </div>
-                            <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
-                                <span class="text-slate-400 block">Hidden Test Cases (Proportional):</span>
-                                <span class="font-bold text-purple-400">${p.passed_hidden} / ${p.total_hidden} passed</span>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <span class="text-slate-500 block">Hidden Test Cases (Proportional):</span>
+                                <span class="font-bold text-indigo-600">${p.passed_hidden} / ${p.total_hidden} passed</span>
                             </div>
                         </div>
                     </div>
@@ -375,38 +369,38 @@
                 return;
             }
 
-            // MCQ Sections (Arithmetic, Verbal, Reasoning)
+            // MCQ Sections
             if (!sec.questions || sec.questions.length === 0) {
-                container.innerHTML = '<p class="text-slate-400 text-center py-6">No questions found in this section.</p>';
+                container.innerHTML = '<p class="text-slate-500 text-center py-6">No questions found in this section.</p>';
                 return;
             }
 
             container.innerHTML = sec.questions.map((q, idx) => {
-                const statusBadge = q.status === 'correct' ? '<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold">✓ Correct (+4 pts)</span>' :
-                                    q.status === 'wrong' ? '<span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-bold">✗ Wrong</span>' :
-                                    '<span class="px-3 py-1 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/30 text-xs font-bold">— Unanswered</span>';
+                const statusBadge = q.status === 'correct' ? '<span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold">✓ Correct (+4 pts)</span>' :
+                                    q.status === 'wrong' ? '<span class="px-3 py-1 rounded-full bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold">✗ Wrong</span>' :
+                                    '<span class="px-3 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200 text-xs font-bold">— Unanswered</span>';
 
                 const optionsHtml = (q.options || []).map((opt, oIdx) => {
                     const isUserChoice = q.user_option_id === opt.id;
                     const isCorrect = opt.is_correct;
                     
-                    let bgStyle = 'bg-slate-800/50 border-white/5 text-slate-300';
+                    let bgStyle = 'bg-slate-50 border-slate-200 text-slate-700';
                     let choiceBadge = '';
 
                     if (isCorrect) {
-                        bgStyle = 'bg-emerald-950/50 border-emerald-500/40 text-emerald-200 font-semibold';
-                        choiceBadge = '<span class="ml-auto text-xs text-emerald-400 font-bold bg-emerald-500/20 px-2 py-0.5 rounded">Correct Answer</span>';
+                        bgStyle = 'bg-emerald-50 border-emerald-300 text-emerald-900 font-bold';
+                        choiceBadge = '<span class="ml-auto text-xs text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Correct Answer</span>';
                     }
                     if (isUserChoice && !isCorrect) {
-                        bgStyle = 'bg-rose-950/50 border-rose-500/40 text-rose-200 font-semibold';
-                        choiceBadge = '<span class="ml-auto text-xs text-rose-400 font-bold bg-rose-500/20 px-2 py-0.5 rounded">Your Selection (Wrong)</span>';
+                        bgStyle = 'bg-rose-50 border-rose-300 text-rose-900 font-bold';
+                        choiceBadge = '<span class="ml-auto text-xs text-rose-700 font-bold bg-rose-100 px-2 py-0.5 rounded">Your Selection (Wrong)</span>';
                     } else if (isUserChoice && isCorrect) {
-                        choiceBadge = '<span class="ml-auto text-xs text-emerald-400 font-bold bg-emerald-500/20 px-2 py-0.5 rounded">Your Selection (Correct ✅)</span>';
+                        choiceBadge = '<span class="ml-auto text-xs text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Your Selection (Correct ✅)</span>';
                     }
 
                     return `
                         <div class="p-3.5 rounded-xl border ${bgStyle} flex items-center gap-3 text-sm">
-                            <span class="w-6 h-6 rounded-full bg-slate-700/50 flex items-center justify-center text-xs font-bold">${String.fromCharCode(65 + oIdx)}</span>
+                            <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">${String.fromCharCode(65 + oIdx)}</span>
                             <span>${opt.text}</span>
                             ${choiceBadge}
                         </div>
@@ -414,9 +408,9 @@
                 }).join('');
 
                 return `
-                    <div class="glass p-6 rounded-2xl border border-white/10 space-y-4">
+                    <div class="card-white p-6 rounded-2xl border border-slate-200 space-y-4">
                         <div class="flex justify-between items-start gap-4">
-                            <h4 class="text-lg font-semibold text-slate-100"><span class="text-purple-400 font-bold">Q${idx + 1}.</span> ${q.text}</h4>
+                            <h4 class="text-base font-bold text-slate-900"><span class="text-indigo-600 font-extrabold">Q${idx + 1}.</span> ${q.text}</h4>
                             ${statusBadge}
                         </div>
 
@@ -425,9 +419,9 @@
                         </div>
 
                         ${q.explanation ? `
-                            <div class="p-3 bg-purple-950/30 border border-purple-500/20 rounded-xl text-xs text-purple-200 space-y-1">
-                                <span class="font-bold text-purple-300 block">Explanation:</span>
-                                <p class="leading-relaxed text-slate-300">${q.explanation}</p>
+                            <div class="p-3.5 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs text-indigo-900 space-y-1">
+                                <span class="font-bold text-indigo-700 block">Explanation:</span>
+                                <p class="leading-relaxed text-slate-700">${q.explanation}</p>
                             </div>
                         ` : ''}
                     </div>
@@ -449,7 +443,6 @@
             const userObj = JSON.parse(localStorage.getItem('user_info') || '{}');
             const candidateName = userObj.display_name || userObj.username || 'Student';
 
-            // Populate printable HTML container
             document.getElementById('pdf-candidate-info').innerText = `Candidate: ${candidateName} | Date: ${new Date().toLocaleDateString('en-IN')}`;
             document.getElementById('pdf-total-score').innerText = `${document.getElementById('total-score').innerText} / 480 pts`;
             document.getElementById('pdf-rank').innerText = `Rank: ${document.getElementById('rank-badge').innerText}`;
@@ -459,31 +452,31 @@
 
             if (reviewDataCache && reviewDataCache.sections) {
                 reviewDataCache.sections.forEach(sec => {
-                    qList.innerHTML += `<h2 class="text-xl font-bold text-purple-400 border-b border-purple-500/30 pb-2 mt-4 uppercase">${capitalize(sec.section_type)} Section</h2>`;
+                    qList.innerHTML += `<h2 class="text-xl font-bold text-indigo-700 border-b border-indigo-200 pb-2 mt-4 uppercase">${capitalize(sec.section_type)} Section</h2>`;
                     
                     if (sec.section_type === 'coding') {
                         (sec.problems || []).forEach((p, idx) => {
                             qList.innerHTML += `
-                                <div class="bg-slate-800 p-4 rounded-xl space-y-2 text-xs border border-slate-700">
-                                    <div class="font-bold text-sm text-purple-300">Problem ${idx + 1}: ${p.title} (${p.score}/${p.max_score} pts)</div>
-                                    <p class="text-slate-300">${p.statement || ''}</p>
-                                    <pre class="bg-slate-950 p-3 rounded font-mono text-emerald-300 overflow-x-auto">${p.submitted_code}</pre>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2 text-xs border border-slate-200">
+                                    <div class="font-bold text-sm text-indigo-700">Problem ${idx + 1}: ${p.title} (${p.score}/${p.max_score} pts)</div>
+                                    <p class="text-slate-700">${p.statement || ''}</p>
+                                    <pre class="bg-slate-900 p-3 rounded font-mono text-emerald-300 overflow-x-auto">${p.submitted_code}</pre>
                                 </div>
                             `;
                         });
                     } else {
                         (sec.questions || []).forEach((q, idx) => {
                             const opts = (q.options || []).map(o => `
-                                <div class="p-2 rounded text-xs ${o.is_correct ? 'bg-emerald-900/40 text-emerald-300 font-bold' : q.user_option_id === o.id ? 'bg-rose-900/40 text-rose-300' : 'bg-slate-800 text-slate-300'}">
-                                    • ${o.text} ${o.is_correct ? '(Correct)' : q.user_option_id === o.id ? '(Your Pick - Wrong)' : ''}
+                                <div class="p-2 rounded text-xs ${o.is_correct ? 'bg-emerald-100 text-emerald-800 font-bold' : q.user_option_id === o.id ? 'bg-rose-100 text-rose-800 font-bold' : 'bg-slate-100 text-slate-700'}">
+                                    • ${o.text} ${o.is_correct ? '(Correct Answer)' : q.user_option_id === o.id ? '(Your Selection - Wrong)' : ''}
                                 </div>
                             `).join('');
 
                             qList.innerHTML += `
-                                <div class="bg-slate-800/80 p-4 rounded-xl space-y-2 border border-slate-700 text-xs">
-                                    <div class="font-bold text-slate-200">Q${idx + 1}. ${q.text}</div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-200 text-xs">
+                                    <div class="font-bold text-slate-900">Q${idx + 1}. ${q.text}</div>
                                     <div class="space-y-1">${opts}</div>
-                                    ${q.explanation ? `<div class="text-purple-300 italic">Explanation: ${q.explanation}</div>` : ''}
+                                    ${q.explanation ? `<div class="text-indigo-700 italic">Explanation: ${q.explanation}</div>` : ''}
                                 </div>
                             `;
                         });
@@ -498,7 +491,7 @@
                 margin:       [0.3, 0.3, 0.3, 0.3],
                 filename:     `Placement_Arena_Report_${candidateName}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, backgroundColor: '#0f172a' },
+                html2canvas:  { scale: 2, backgroundColor: '#ffffff' },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 

@@ -3,165 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Engine - Placement Arena</title>
+    <title>Proctored Assessment - Placement Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: white;
-            overflow: hidden; /* Prevent body scrolling */
+            background-color: #f8fafc;
+            color: #0f172a;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .glass {
-            background-color: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .card-white {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
-        .btn-gradient {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            transition: all 0.3s ease;
+        .btn-indigo {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.2s ease;
         }
-        .btn-gradient:hover {
+        .btn-indigo:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
         .btn-outline {
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #475569;
             transition: all 0.2s ease;
         }
         .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
+            background: #f1f5f9;
+            color: #0f172a;
         }
-        
-        .option-card {
-            border: 1px solid rgba(255,255,255,0.1);
+        .option-label {
             transition: all 0.2s ease;
+            cursor: pointer;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
         }
-        .option-card:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(255,255,255,0.2);
+        .option-label:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
         }
-        .option-card.selected {
-            border-color: #7c3aed;
-            background: rgba(124, 58, 237, 0.1);
-        }
-
-        .palette-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+        .option-label.selected {
+            background: #e0e7ff;
+            border-color: #4f46e5;
+            color: #312e81;
             font-weight: 600;
+        }
+        .palette-item {
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .palette-btn.not_visited { background: transparent; }
-        .palette-btn.visited { background: #f43f5e; color: white; border-color: #f43f5e; } /* Rose */
-        .palette-btn.answered { background: #10b981; color: white; border-color: #10b981; } /* Emerald */
-        .palette-btn.marked { background: #7c3aed; color: white; border-color: #7c3aed; } /* Purple */
-        .palette-btn.active { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); border-color: white; transform: scale(1.1); z-index: 10; }
-
-        /* Scrollbar hiding */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        .palette-item.not-visited { background: #ffffff; border: 1px solid #cbd5e1; color: #64748b; }
+        .palette-item.visited { background: #fef2f2; border: 1px solid #fca5a5; color: #dc2626; }
+        .palette-item.answered { background: #ecfdf5; border: 1px solid #6ee7b7; color: #059669; }
+        .palette-item.marked { background: #f5f3ff; border: 1px solid #c4b5fd; color: #7c3aed; }
+        .palette-item.active { ring: 2px; ring-color: #4f46e5; }
         
-        /* Modals */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
             z-index: 100;
             display: none;
-            align-items: center; justify-content: center;
-        }
-        .offline-banner {
-            position: fixed; top: 0; left: 0; width: 100%; background: #f43f5e; color: white; text-align: center; padding: 0.5rem; font-weight: bold; z-index: 200; display: none;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
-<body class="h-screen flex flex-col">
-    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-center justify-center" style="display: none;">
-        <div class="text-center">
-            <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-slate-300" id="loading-text">Loading exam...</p>
-        </div>
+<body class="h-screen flex flex-col overflow-hidden">
+    <!-- Offline Banner -->
+    <div id="offline-banner" class="bg-rose-600 text-white text-center py-2 text-xs font-bold hidden shrink-0">
+        ⚠️ Internet disconnected! Reconnect immediately. Timer continues to run.
     </div>
-    <div id="offline-banner" class="offline-banner">You are currently offline. Check your connection.</div>
 
-    <!-- Topbar -->
-    <header class="glass px-6 py-4 flex justify-between items-center z-10 shrink-0 border-b border-white/5">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-[150] flex flex-col items-center justify-center text-white">
+        <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p id="loading-text" class="text-sm font-semibold">Loading Exam...</p>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 h-16 px-6 flex justify-between items-center z-10 shrink-0 shadow-xs">
         <div class="flex items-center gap-4">
-            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">Placement Arena</h1>
-            <span class="text-slate-400">|</span>
-            <span class="font-medium" id="section-name">Loading Section...</span>
+            <h1 class="text-lg font-extrabold text-slate-900">Placement Arena</h1>
+            <span class="text-slate-300">|</span>
+            <span id="section-badge" class="px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-full text-xs font-bold">
+                Arithmetic
+            </span>
         </div>
-        <div class="flex items-center gap-6">
-            <div class="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-lg border border-white/5">
-                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span id="timer" class="font-mono text-lg font-bold tracking-wider text-amber-400">--:--:--</span>
-            </div>
-            <button onclick="submitSectionConfirm()" class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-lg font-semibold hover:bg-rose-500/30 transition-colors">
-                Submit Section
-            </button>
+        
+        <!-- Timer -->
+        <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-4 py-1.5 rounded-xl text-amber-700 font-mono font-bold text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span id="timer">00:00</span>
         </div>
+
+        <button onclick="submitSectionConfirm()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+            Submit Section →
+        </button>
     </header>
 
     <!-- Main Content -->
     <main class="flex-1 flex overflow-hidden">
-        <!-- Question Area -->
-        <div class="flex-1 flex flex-col p-6 lg:p-8 overflow-y-auto">
-            <div class="max-w-4xl mx-auto w-full h-full flex flex-col">
-                <!-- Question Header -->
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold text-slate-300">Question <span id="q-num" class="text-white">1</span></h2>
-                    <span class="px-3 py-1 bg-slate-800 rounded text-sm text-slate-400 border border-white/5">+<span id="q-marks">4</span> / -<span id="q-neg">1</span></span>
+        <!-- Main Question Area -->
+        <div class="flex-1 p-6 md:p-8 overflow-y-auto flex flex-col justify-between bg-slate-50">
+            <div class="max-w-3xl w-full mx-auto space-y-6">
+                <!-- Question Title Header -->
+                <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+                    <span class="text-sm font-bold text-indigo-600 uppercase tracking-wider" id="question-number-text">Question 1</span>
+                    <span class="text-xs font-bold text-slate-500 bg-slate-200/60 px-3 py-1 rounded-full" id="question-marks-text">4 Marks</span>
                 </div>
-                
+
                 <!-- Question Text -->
-                <div id="q-text" class="text-lg md:text-xl leading-relaxed mb-8 select-none">
-                    Loading question...
+                <div class="card-white p-6 rounded-2xl">
+                    <p class="text-slate-900 font-medium text-lg leading-relaxed" id="question-text">Loading question statement...</p>
                 </div>
-                
-                <!-- Options -->
-                <div id="options-container" class="space-y-4 flex-1">
-                    <!-- Dynamically injected -->
+
+                <!-- Options List -->
+                <div class="space-y-3" id="options-container">
+                    <!-- Injected dynamically -->
                 </div>
-                
-                <!-- Bottom Controls -->
-                <div class="mt-8 flex justify-between items-center pt-6 border-t border-white/5 shrink-0">
-                    <button onclick="markForReview()" id="mark-btn" class="btn-outline px-6 py-3 rounded-lg font-medium text-slate-300">
-                        Mark for Review
-                    </button>
-                    <div class="flex gap-4">
-                        <button onclick="prevQuestion()" class="btn-outline px-6 py-3 rounded-lg font-medium">Previous</button>
-                        <button onclick="nextQuestion()" class="btn-gradient px-8 py-3 rounded-lg font-semibold">Save & Next</button>
-                    </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="max-w-3xl w-full mx-auto pt-6 border-t border-slate-200 flex justify-between items-center mt-6">
+                <button onclick="markForReview()" class="btn-outline px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                    <span>🔖 Mark for Review</span>
+                </button>
+                <div class="flex gap-3">
+                    <button onclick="prevQuestion()" class="btn-outline px-6 py-2.5 rounded-xl font-bold text-sm">Previous</button>
+                    <button onclick="nextQuestion()" class="btn-indigo text-white px-7 py-2.5 rounded-xl font-bold text-sm shadow-md">Save & Next</button>
                 </div>
             </div>
         </div>
         
         <!-- Sidebar Palette -->
-        <div class="w-80 glass border-l border-white/5 flex flex-col shrink-0 z-10">
-            <div class="p-4 border-b border-white/5">
-                <h3 class="font-bold text-slate-200">Question Palette</h3>
+        <div class="w-80 bg-white border-l border-slate-200 flex flex-col shrink-0 z-10 shadow-xs">
+            <div class="p-4 border-b border-slate-200">
+                <h3 class="font-bold text-slate-900 text-sm">Question Palette</h3>
             </div>
             <div class="p-4 flex-1 overflow-y-auto">
-                <div id="palette-grid" class="flex flex-wrap gap-2">
+                <div id="palette-grid" class="flex flex-wrap gap-2.5">
                     <!-- Dynamically injected -->
                 </div>
             </div>
             <!-- Legend -->
-            <div class="p-4 bg-slate-900/50 border-t border-white/5 shrink-0">
-                <div class="grid grid-cols-2 gap-2 text-xs text-slate-400">
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#10b981]"></div> Answered</div>
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#f43f5e]"></div> Not Answered</div>
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-[#7c3aed]"></div> Marked</div>
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded border border-white/20"></div> Not Visited</div>
+            <div class="p-4 bg-slate-50 border-t border-slate-200 shrink-0 text-xs">
+                <div class="grid grid-cols-2 gap-2 text-slate-600 font-medium">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-emerald-500"></div> Answered</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-rose-500"></div> Not Answered</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-indigo-500"></div> Marked</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded border border-slate-300 bg-white"></div> Not Visited</div>
                 </div>
             </div>
         </div>
@@ -169,24 +175,24 @@
 
     <!-- Modals -->
     <div id="submit-modal" class="modal-overlay">
-        <div class="glass p-8 rounded-2xl max-w-md w-full text-center">
-            <h2 class="text-2xl font-bold mb-4">Submit Section?</h2>
-            <p class="text-slate-300 mb-6">Are you sure you want to submit this section? You will not be able to return to it.</p>
-            <div class="flex gap-4 justify-center">
-                <button onclick="document.getElementById('submit-modal').style.display='none'" class="btn-outline px-6 py-2 rounded-lg">Cancel</button>
-                <button onclick="submitSection()" class="btn-gradient px-6 py-2 rounded-lg">Yes, Submit</button>
+        <div class="bg-white p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl">
+            <h2 class="text-2xl font-bold text-slate-900">Submit Section?</h2>
+            <p class="text-slate-600 text-sm">Are you sure you want to submit this section? You cannot return to it once submitted.</p>
+            <div class="flex gap-4 justify-center pt-2">
+                <button onclick="document.getElementById('submit-modal').style.display='none'" class="btn-outline px-6 py-2.5 rounded-xl font-bold text-sm">Cancel</button>
+                <button onclick="submitSection()" class="btn-indigo text-white px-6 py-2.5 rounded-xl font-bold text-sm">Yes, Submit</button>
             </div>
         </div>
     </div>
 
     <div id="warning-modal" class="modal-overlay">
-        <div class="glass p-8 rounded-2xl max-w-md w-full text-center bg-rose-900/20 border-rose-500/30">
-            <div class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        <div class="bg-white p-8 rounded-3xl max-w-md w-full text-center border-2 border-rose-500 space-y-4 shadow-2xl">
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto text-rose-600 text-2xl font-bold">
+                ⚠️
             </div>
-            <h2 class="text-2xl font-bold mb-2 text-rose-400">Warning <span id="warning-count">1</span>/5</h2>
-            <p id="warning-text" class="text-slate-300 mb-6">Suspicious activity detected. 5 tab switches or violations will result in automatic exam submission.</p>
-            <button onclick="document.getElementById('warning-modal').style.display='none'; requestFullscreen()" class="btn-gradient px-8 py-2 rounded-lg w-full">I Understand</button>
+            <h2 class="text-2xl font-bold text-rose-600">Warning <span id="warning-count">1</span>/5</h2>
+            <p id="warning-text" class="text-slate-600 text-sm">Suspicious activity detected. 5 tab switches or violations will result in automatic exam submission.</p>
+            <button onclick="document.getElementById('warning-modal').style.display='none'; requestFullscreen()" class="btn-indigo text-white px-8 py-3 rounded-xl font-bold text-sm w-full shadow-md">I Understand</button>
         </div>
     </div>
 
@@ -231,7 +237,7 @@
         let currentSectionIdx = 0;
         let questions = [];
         let currentQIdx = 0;
-        let questionStates = {}; // { status: 'not_visited'|'visited'|'answered'|'marked', selected_option_id: null }
+        let questionStates = {};
         let timeLeft = 0;
         let timerInterval;
         let examAttempt = null;
@@ -243,77 +249,65 @@
             document.getElementById('loading-overlay').style.display = 'flex';
             document.getElementById('loading-text').innerText = 'Loading exam...';
             try {
-                // Get the full exam
                 const examRes = await axios.get(`${API}/exams/${examId}/`, getHeaders());
                 const exam = examRes.data;
                 sections = exam.sections.sort((a,b) => a.order - b.order);
                 
-                // Get attempt details
-                const startRes = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
-                examAttempt = startRes.data;
-                sectionAttempts = examAttempt.section_attempts || [];
-                
-                if (sectionAttempts.length === 0) {
-                    // Fallback or missing logic handling if serializer lacks it
-                    alert("No section attempts found. Going to result.");
-                    window.location.href = `/result/index.html?exam_id=${examId}`;
-                    return;
+                if (!attemptId) {
+                    const startRes = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
+                    attemptId = startRes.data.id;
+                    sectionAttempts = startRes.data.section_attempts || [];
+                } else {
+                    const statusRes = await axios.get(`${API}/exams/today/`, getHeaders());
+                    examAttempt = statusRes.data.attempt;
+                    sectionAttempts = examAttempt.section_attempts || [];
                 }
 
-                sectionAttempts.sort((a, b) => a.section_order - b.section_order);
-                
                 currentSectionIdx = sectionAttempts.findIndex(sa => sa.status !== 'completed');
                 if (currentSectionIdx === -1) {
                     window.location.href = `/result/index.html?exam_id=${examId}`;
                     return;
                 }
-                
-                loadCurrentSection();
+
                 setupAntiCheat();
+                await loadCurrentSection();
+
             } catch(e) {
                 console.error(e);
-                alert("Failed to initialize exam. Returning to dashboard.");
-                window.location.href = `/dashboard/index.html`;
+                alert('Failed to initialize exam.');
+            } finally {
+                document.getElementById('loading-overlay').style.display = 'none';
             }
         }
 
         async function loadCurrentSection() {
-            document.getElementById('loading-overlay').style.display = 'flex';
-            document.getElementById('loading-text').innerText = 'Loading section...';
             const sa = sectionAttempts[currentSectionIdx];
-            const section = sections[currentSectionIdx];
+            const sec = sections.find(s => s.id === sa.section);
             
-            document.getElementById('section-name').innerText = `Section ${section.order}: ${capitalize(section.section_type)}`;
-            
-            if (section.section_type === 'coding') {
-                window.location.href = `/coding/index.html?exam_id=${examId}&attempt_id=${examAttempt.id}&section_attempt_id=${sa.id}`;
+            if (sec.section_type === 'coding') {
+                window.location.href = `/coding/index.html?exam_id=${examId}&attempt_id=${attemptId}&section_attempt_id=${sa.id}`;
                 return;
             }
+
+            document.getElementById('section-badge').innerText = capitalize(sec.section_type);
             
-            if (sa.status === 'not_started') {
-                await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
-            }
+            const startRes = await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
+            questions = startRes.data.questions || [];
             
-            timeLeft = section.duration_minutes * 60;
-            
-            const qRes = await axios.get(`${API}/questions/section/${sa.id}/`, getHeaders());
-            questions = qRes.data;
+            timeLeft = (sec.duration_minutes || 20) * 60;
+            startTimer();
+
             questionStates = {};
             questions.forEach(q => {
-                questionStates[q.id] = { 
-                    status: q.saved_option_id ? 'answered' : 'not_visited', 
-                    selected_option_id: q.saved_option_id || null 
-                };
+                questionStates[q.id] = { status: 'not_visited', selected_option_id: null };
             });
             
             currentQIdx = 0;
-            startTimer();
+            renderQuestion(0);
             renderPalette();
-            loadQuestion(0);
-            document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        function loadQuestion(idx) {
+        function renderQuestion(idx) {
             currentQIdx = idx;
             const q = questions[idx];
             if (!q) return;
@@ -322,82 +316,74 @@
                 questionStates[q.id].status = 'visited';
             }
 
-            document.getElementById('q-num').innerText = idx + 1;
-            document.getElementById('q-text').innerText = q.text;
-            
-            // Render options
+            document.getElementById('question-number-text').innerText = `Question ${idx + 1} of ${questions.length}`;
+            document.getElementById('question-marks-text').innerText = `${q.marks || 4} Marks`;
+            document.getElementById('question-text').innerText = q.text;
+
             const container = document.getElementById('options-container');
             container.innerHTML = '';
-            
-            q.options.forEach((opt, i) => {
-                const label = String.fromCharCode(65 + i); // A, B, C, D
+
+            (q.options || []).forEach((opt, oIdx) => {
                 const isSelected = questionStates[q.id].selected_option_id === opt.id;
-                
-                const div = document.createElement('div');
-                div.className = `option-card p-4 rounded-xl cursor-pointer flex gap-4 items-center ${isSelected ? 'selected' : ''}`;
-                div.onclick = () => selectOption(opt.id);
-                
-                div.innerHTML = `
-                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center font-bold text-sm shrink-0 bg-slate-800/50">
-                        ${label}
-                    </div>
-                    <div class="flex-1 text-slate-200">${opt.text}</div>
-                    ${isSelected ? '<div class="text-purple-400"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>' : ''}
+                const label = document.createElement('label');
+                label.className = `option-label p-4 rounded-xl flex items-center gap-3 text-sm ${isSelected ? 'selected' : ''}`;
+                label.innerHTML = `
+                    <input type="radio" name="option" value="${opt.id}" ${isSelected ? 'checked' : ''} onchange="selectOption(${q.id}, ${opt.id})" class="hidden">
+                    <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600'}">${String.fromCharCode(65 + oIdx)}</span>
+                    <span>${opt.text}</span>
                 `;
-                container.appendChild(div);
+                container.appendChild(label);
             });
-            
+
             renderPalette();
         }
 
-        async function selectOption(optionId) {
-            const q = questions[currentQIdx];
-            questionStates[q.id].selected_option_id = optionId;
-            questionStates[q.id].status = 'answered';
-            loadQuestion(currentQIdx); // re-render to show selected
-            
+        async function selectOption(qId, optId) {
+            questionStates[qId].selected_option_id = optId;
+            questionStates[qId].status = 'answered';
+            renderQuestion(currentQIdx);
+
             const sa = sectionAttempts[currentSectionIdx];
             try {
                 await axios.post(`${API}/questions/save-answer/`, {
-                    question_id: q.id,
-                    option_id: optionId,
-                    section_attempt_id: sa.id
+                    section_attempt_id: sa.id,
+                    question_id: qId,
+                    option_id: optId
                 }, getHeaders());
-            } catch(e) { console.error('Auto-save failed', e); }
+            } catch(e) { console.error('Failed to save answer', e); }
         }
 
         function markForReview() {
             const q = questions[currentQIdx];
-            if(questionStates[q.id].status !== 'answered') {
-                questionStates[q.id].status = 'marked';
-            }
+            if (!q) return;
+            questionStates[q.id].status = 'marked';
             renderPalette();
+            nextQuestion();
         }
 
         function nextQuestion() {
             if (currentQIdx < questions.length - 1) {
-                loadQuestion(currentQIdx + 1);
-            } else {
-                submitSectionConfirm();
+                renderQuestion(currentQIdx + 1);
             }
         }
 
         function prevQuestion() {
-            if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
+            if (currentQIdx > 0) {
+                renderQuestion(currentQIdx - 1);
+            }
         }
 
         function renderPalette() {
             const grid = document.getElementById('palette-grid');
             grid.innerHTML = '';
-            questions.forEach((q, i) => {
-                const st = questionStates[q.id].status;
-                const isActive = i === currentQIdx ? 'active' : '';
-                
-                const btn = document.createElement('button');
-                btn.className = `palette-btn ${st} ${isActive}`;
-                btn.innerText = i + 1;
-                btn.onclick = () => loadQuestion(i);
-                grid.appendChild(btn);
+            
+            questions.forEach((q, idx) => {
+                const st = questionStates[q.id] ? questionStates[q.id].status : 'not_visited';
+                const div = document.createElement('div');
+                div.className = `palette-item ${st === 'answered' ? 'answered' : st === 'marked' ? 'marked' : st === 'visited' ? 'visited' : 'not-visited'} ${idx === currentQIdx ? 'ring-2 ring-indigo-600 font-bold' : ''}`;
+                div.innerText = idx + 1;
+                div.onclick = () => renderQuestion(idx);
+                grid.appendChild(div);
             });
         }
 
@@ -409,7 +395,7 @@
                 updateTimerDisplay();
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    alert("Time's up for this section!");
+                    alert('Time limit reached for this section!');
                     submitSection();
                 }
             }, 1000);
@@ -444,30 +430,23 @@
             loadCurrentSection();
         }
 
-        // --- Anti-cheat logic ---
         function setupAntiCheat() {
-            // Fullscreen check
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) {
                     logViolation('fullscreen_exit', 'Exited fullscreen mode');
                 }
             });
 
-            // Visibility change (tab switch)
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     logViolation('tab_switch', 'Switched to another tab or window');
                 }
             });
 
-            // Prevent right click
             document.addEventListener('contextmenu', e => e.preventDefault());
-
-            // Prevent copy/paste
             document.addEventListener('copy', e => e.preventDefault());
             document.addEventListener('paste', e => e.preventDefault());
             
-            // Network status
             window.addEventListener('offline', () => document.getElementById('offline-banner').style.display = 'block');
             window.addEventListener('online', () => document.getElementById('offline-banner').style.display = 'none');
         }
@@ -489,12 +468,12 @@
             showWarningModal(type, warningCount[type], desc);
             try {
                 const res = await axios.post(`${API}/violations/log/`, {
-                    exam_attempt_id: examAttempt.id,
+                    exam_attempt_id: examAttempt ? examAttempt.id : attemptId,
                     violation_type: type,
                     description: desc
                 }, getHeaders());
                 if (res.data.auto_submitted) {
-                    alert('Exam auto-submitted due to violations.');
+                    alert('Exam auto-submitted due to violations limit.');
                     window.location.href = `/result/index.html?exam_id=${examId}`;
                 }
             } catch(e) { /* best effort */ }
@@ -504,5 +483,3 @@
     </script>
 </body>
 </html>
-
-

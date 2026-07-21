@@ -6,30 +6,31 @@
     <title>Leaderboard - Placement Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: white;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        .glass {
-            background-color: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .card-white {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         }
         .tab-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            color: #94a3b8;
+            padding: 0.65rem 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #64748b;
             transition: all 0.2s;
         }
-        .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab-btn:hover { color: #0f172a; background: #f1f5f9; }
         .tab-btn.active {
-            color: white;
-            background: rgba(124, 58, 237, 0.2);
-            border: 1px solid rgba(124, 58, 237, 0.5);
+            color: #ffffff;
+            background: #4f46e5;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
     </style>
 </head>
@@ -37,39 +38,47 @@
     <div class="max-w-6xl mx-auto space-y-8">
         
         <!-- Header & Nav -->
-        <header class="flex justify-between items-center glass p-6 rounded-2xl">
-            <div>
-                <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-500">Hall of Fame</h1>
-                <p class="text-slate-400 mt-1">See how you stack up against the competition.</p>
+        <header class="flex justify-between items-center bg-white p-6 rounded-3xl border border-slate-200 shadow-xs">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center font-bold text-2xl border border-amber-100">
+                    🏆
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Hall of Fame</h1>
+                    <p class="text-slate-500 text-xs font-medium">Real-time candidate leaderboard & rankings</p>
+                </div>
             </div>
-            <button onclick="window.location.href='/dashboard/index.html'" class="px-4 py-2 glass rounded-lg hover:bg-white/5 transition-colors">Back to Dashboard</button>
+            <button onclick="window.location.href='/dashboard/index.html'" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
+                ← Dashboard
+            </button>
         </header>
 
         <!-- Tabs -->
-        <div class="flex gap-2 glass p-2 rounded-xl overflow-x-auto">
-            <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn active shrink-0">Daily Leaderboard</button>
+        <div class="flex gap-2 bg-white p-2 rounded-2xl border border-slate-200 overflow-x-auto shadow-xs">
+            <button onclick="switchTab('daily')" id="tab-daily" class="tab-btn active shrink-0">Daily Standings</button>
             <button onclick="switchTab('weekly')" id="tab-weekly" class="tab-btn shrink-0">Weekly Standings</button>
-            <button onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn shrink-0">Monthly Top</button>
-            <button onclick="switchTab('overall')" id="tab-overall" class="tab-btn shrink-0">All-Time Greats</button>
+            <button onclick="switchTab('monthly')" id="tab-monthly" class="tab-btn shrink-0">Monthly Standings</button>
+            <button onclick="switchTab('overall')" id="tab-overall" class="tab-btn shrink-0">All-Time Standings</button>
         </div>
 
         <!-- Table -->
-        <div class="glass rounded-2xl overflow-hidden">
+        <div class="card-white rounded-3xl overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left whitespace-nowrap">
-                    <thead class="bg-slate-900/50 border-b border-white/5 text-slate-400 text-sm uppercase tracking-wider">
+                <table class="w-full text-left whitespace-nowrap text-sm">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider">
                         <tr>
-                            <th class="px-6 py-4 font-semibold">Rank</th>
-                            <th class="px-6 py-4 font-semibold">Player</th>
-                            <th class="px-6 py-4 font-semibold text-purple-400">Total Score</th>
-                            <th class="px-6 py-4 font-semibold">Aptitude</th>
-                            <th class="px-6 py-4 font-semibold">Verbal</th>
-                            <th class="px-6 py-4 font-semibold">Coding</th>
-                            <th class="px-6 py-4 font-semibold">Time</th>
+                            <th class="px-6 py-4">Rank</th>
+                            <th class="px-6 py-4">Candidate</th>
+                            <th class="px-6 py-4 text-indigo-600 font-extrabold">Total Score</th>
+                            <th class="px-6 py-4">Arithmetic</th>
+                            <th class="px-6 py-4">Verbal</th>
+                            <th class="px-6 py-4">Reasoning</th>
+                            <th class="px-6 py-4">Coding</th>
+                            <th class="px-6 py-4">Time Taken</th>
                         </tr>
                     </thead>
-                    <tbody id="lb-table-body">
-                        <tr><td colspan="7" class="text-center py-12 text-slate-400">Loading leaderboard...</td></tr>
+                    <tbody id="lb-table-body" class="divide-y divide-slate-100">
+                        <tr><td colspan="8" class="text-center py-12 text-slate-400">Loading leaderboard...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -99,7 +108,7 @@
 
         async function loadLeaderboard(type) {
             const tbody = document.getElementById('lb-table-body');
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-slate-400">Loading...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-slate-400">Loading...</td></tr>`;
             
             const endpointMap = {
                 daily: `${API}/leaderboard/daily/`,
@@ -112,7 +121,7 @@
                 const res = await axios.get(endpointMap[type], getHeaders());
                 renderTable(res.data);
             } catch(e) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-rose-400">Failed to load leaderboard.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-rose-500 font-medium">Failed to load leaderboard.</td></tr>`;
             }
         }
 
@@ -128,41 +137,42 @@
             const user = getUser();
             
             if (!data || data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-slate-400">No data yet. Complete an exam to appear here!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-slate-400 font-medium">No candidate rankings available yet. Complete an exam to appear here!</td></tr>`;
                 return;
             }
             
             tbody.innerHTML = data.map((row, i) => {
                 const rank = row.rank || (i+1);
-                const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+                const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
                 const isMe = row.username === user.username;
-                const rowClass = isMe ? 'bg-purple-900/30 border-l-2 border-purple-500' : '';
-                const rowBg = rank === 1 ? 'bg-amber-900/20' : rank === 2 ? 'bg-slate-700/30' : rank === 3 ? 'bg-orange-900/10' : '';
+                const rowClass = isMe ? 'bg-indigo-50/60 font-semibold' : 'hover:bg-slate-50';
                 
-                // Fallback handling since API keys might vary
-                const name = row.display_name || row.username || 'Unknown';
+                const name = row.display_name || row.username || 'Candidate';
                 const total = row.total_score || row.total || 0;
-                const apt = row.arithmetic_score || row.aptitude_score || row.reasoning_score || '—';
-                const verb = row.verbal_score || '—';
-                const code = row.coding_score || '—';
+                const arith = row.arithmetic_score !== undefined ? row.arithmetic_score : '—';
+                const verb = row.verbal_score !== undefined ? row.verbal_score : '—';
+                const reas = row.reasoning_score !== undefined ? row.reasoning_score : '—';
+                const code = row.coding_score !== undefined ? row.coding_score : '—';
                 
-                return `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors ${rowClass} ${rowBg}">
-                    <td class="px-6 py-4 font-bold text-lg">${rankIcon}</td>
+                return `<tr class="transition-colors ${rowClass}">
+                    <td class="px-6 py-4 font-extrabold text-base">${rankIcon}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-sm">
+                            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
                                 ${name.charAt(0).toUpperCase()}
                             </div>
                             <div>
-                                <div class="font-semibold">${name} ${isMe ? '<span class="text-purple-400 text-xs">(you)</span>' : ''}</div>
+                                <div class="font-bold text-slate-900">${name} ${isMe ? '<span class="text-indigo-600 text-xs font-bold">(You)</span>' : ''}</div>
+                                <div class="text-xs text-slate-400 font-normal">@${row.username || ''}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 font-bold text-white">${total}</td>
-                    <td class="px-6 py-4 text-slate-300">${apt}</td>
-                    <td class="px-6 py-4 text-slate-300">${verb}</td>
-                    <td class="px-6 py-4 text-slate-300">${code}</td>
-                    <td class="px-6 py-4 text-slate-400">${formatTime(row.time_taken_seconds)}</td>
+                    <td class="px-6 py-4 font-extrabold text-indigo-600 text-base">${total} pts</td>
+                    <td class="px-6 py-4 text-slate-600 font-medium">${arith}</td>
+                    <td class="px-6 py-4 text-slate-600 font-medium">${verb}</td>
+                    <td class="px-6 py-4 text-slate-600 font-medium">${reas}</td>
+                    <td class="px-6 py-4 text-slate-600 font-medium">${code}</td>
+                    <td class="px-6 py-4 text-slate-500 font-mono text-xs">${formatTime(row.time_taken_seconds)}</td>
                 </tr>`;
             }).join('');
         }
@@ -171,5 +181,3 @@
     </script>
 </body>
 </html>
-
-
