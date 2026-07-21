@@ -223,26 +223,63 @@
 
         <!-- Bulk Import View -->
         <div id="view-import" class="section-view max-w-3xl">
-            <h2 class="text-2xl font-bold mb-6 text-slate-900">Bulk Import Questions</h2>
+            <h2 class="text-2xl font-bold mb-4 text-slate-900">Bulk Import via Excel / CSV</h2>
+
+            <!-- Import Type Tabs -->
+            <div class="flex gap-3 mb-6 bg-slate-200 p-1.5 rounded-2xl w-fit">
+                <button id="import-tab-mcq" onclick="switchImportTab('mcq')" class="px-5 py-2 rounded-xl text-xs font-bold transition bg-white text-indigo-600 shadow-xs">
+                    ❓ MCQ Questions
+                </button>
+                <button id="import-tab-coding" onclick="switchImportTab('coding')" class="px-5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900">
+                    💻 Coding Problems
+                </button>
+            </div>
             
-            <input type="file" id="import-file-input" class="hidden" accept=".csv, .xlsx, .xls" onchange="handleFileSelect(this.files[0])">
-            
-            <div id="drop-zone" 
-                ondragover="handleDragOver(event)" 
-                ondragleave="handleDragLeave(event)" 
-                ondrop="handleDrop(event)"
-                class="card-white rounded-3xl p-10 text-center border-dashed border-2 border-slate-300 hover:border-indigo-500 transition-colors cursor-pointer">
-                <div class="text-5xl mb-4">📁</div>
-                <h3 class="text-lg font-bold text-slate-900 mb-2">Drag & Drop Excel/CSV File Here</h3>
-                <p class="text-sm text-slate-500 mb-6">Supports .csv and .xlsx formats with questions, options, and correct answers.</p>
-                <div class="flex justify-center gap-4">
-                    <button onclick="downloadCSVTemplate()" class="bg-slate-100 text-slate-700 border border-slate-300 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200 transition flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download Template
-                    </button>
-                    <button onclick="document.getElementById('import-file-input').click()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 transition shadow-sm">
-                        Browse File
-                    </button>
+            <!-- MCQ Import Box -->
+            <div id="mcq-import-container">
+                <input type="file" id="import-file-input" class="hidden" accept=".csv, .xlsx, .xls" onchange="handleFileSelect(this.files[0])">
+                
+                <div id="drop-zone" 
+                    ondragover="handleDragOver(event)" 
+                    ondragleave="handleDragLeave(event)" 
+                    ondrop="handleDrop(event)"
+                    class="card-white rounded-3xl p-10 text-center border-dashed border-2 border-slate-300 hover:border-indigo-500 transition-colors cursor-pointer">
+                    <div class="text-5xl mb-4">📁</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Import MCQ Questions (Excel/CSV)</h3>
+                    <p class="text-sm text-slate-500 mb-6">Supports .csv and .xlsx with category, difficulty, question text, 4 options & correct option.</p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="downloadCSVTemplate()" class="bg-slate-100 text-slate-700 border border-slate-300 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200 transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Download MCQ Template
+                        </button>
+                        <button onclick="document.getElementById('import-file-input').click()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-indigo-700 transition shadow-sm">
+                            Browse File
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coding Import Box -->
+            <div id="coding-import-container" class="hidden">
+                <input type="file" id="coding-file-input" class="hidden" accept=".csv, .xlsx, .xls" onchange="handleCodingFileSelect(this.files[0])">
+                
+                <div id="coding-drop-zone" 
+                    ondragover="handleDragOver(event)" 
+                    ondragleave="handleDragLeave(event)" 
+                    ondrop="handleCodingDrop(event)"
+                    class="card-white rounded-3xl p-10 text-center border-dashed border-2 border-purple-300 hover:border-purple-600 transition-colors cursor-pointer">
+                    <div class="text-5xl mb-4">💻</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Import Coding Problems (Excel/CSV)</h3>
+                    <p class="text-sm text-slate-500 mb-6">Supports title, difficulty, statement, input/output formats, sample test cases & hidden test cases.</p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="downloadCodingTemplate()" class="bg-slate-100 text-slate-700 border border-slate-300 px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-200 transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Download Coding Template
+                        </button>
+                        <button onclick="document.getElementById('coding-file-input').click()" class="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-purple-700 transition shadow-sm">
+                            Browse File
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -260,9 +297,17 @@
                     <h2 class="text-2xl font-bold text-slate-900">Coding Problems</h2>
                     <p class="text-slate-500 text-sm">Manage programming problems and sample/hidden test cases.</p>
                 </div>
-                <button onclick="openCodingProblemModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-xs">
-                    + Add Coding Problem
-                </button>
+                <div class="flex gap-3">
+                    <button onclick="downloadCodingTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        📥 Download Template
+                    </button>
+                    <button onclick="switchView('import'); switchImportTab('coding');" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 px-3.5 py-2 rounded-xl text-xs font-bold transition">
+                        📁 Bulk Import Excel/CSV
+                    </button>
+                    <button onclick="openCodingProblemModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold text-xs transition shadow-xs">
+                        + Add Single Problem
+                    </button>
+                </div>
             </div>
 
             <div id="coding-problems-list" class="space-y-4">
@@ -624,6 +669,25 @@
             }
         }
 
+        function switchImportTab(type) {
+            const mcqTab = document.getElementById('import-tab-mcq');
+            const codingTab = document.getElementById('import-tab-coding');
+            const mcqBox = document.getElementById('mcq-import-container');
+            const codingBox = document.getElementById('coding-import-container');
+
+            if (type === 'coding') {
+                mcqTab.className = 'px-5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900';
+                codingTab.className = 'px-5 py-2 rounded-xl text-xs font-bold transition bg-white text-purple-600 shadow-xs';
+                mcqBox.classList.add('hidden');
+                codingBox.classList.remove('hidden');
+            } else {
+                mcqTab.className = 'px-5 py-2 rounded-xl text-xs font-bold transition bg-white text-indigo-600 shadow-xs';
+                codingTab.className = 'px-5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900';
+                mcqBox.classList.remove('hidden');
+                codingBox.classList.add('hidden');
+            }
+        }
+
         function downloadCSVTemplate() {
             const rows = [
                 ['category', 'difficulty', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option', 'explanation', 'marks'],
@@ -638,6 +702,45 @@
             URL.revokeObjectURL(url);
         }
 
+        function downloadCodingTemplate() {
+            const rows = [
+                [
+                    'title', 'difficulty', 'statement', 'input_format', 'output_format',
+                    'sample_input_1', 'sample_output_1', 'sample_explanation_1',
+                    'sample_input_2', 'sample_output_2', 'sample_explanation_2',
+                    'hidden_input_1', 'hidden_output_1',
+                    'hidden_input_2', 'hidden_output_2',
+                    'hidden_input_3', 'hidden_output_3',
+                    'max_score', 'time_limit_ms'
+                ],
+                [
+                    'Reverse an Array', 'easy', 'Given an array of N integers, print elements in reverse order.',
+                    'First line contains N. Second line contains N integers.', 'Print array elements in reverse order separated by space.',
+                    '5\n1 2 3 4 5', '5 4 3 2 1', 'Sample 1 explanation',
+                    '3\n10 20 30', '30 20 10', 'Sample 2 explanation',
+                    '4\n7 8 9 10', '10 9 8 7',
+                    '1\n99', '99',
+                    '6\n1 1 1 1 1 1', '1 1 1 1 1 1',
+                    '100', '5000'
+                ],
+                [
+                    'Find Maximum in Array', 'medium', 'Find and print maximum integer in an array of N integers.',
+                    'First line contains N. Second line contains N space-separated integers.', 'Print the maximum integer.',
+                    '4\n1 5 3 2', '5', '5 is maximum',
+                    '3\n-1 -5 -2', '-1', '-1 is maximum',
+                    '5\n100 200 500 400 300', '500',
+                    '2\n0 0', '0',
+                    '1\n42', '42',
+                    '100', '5000'
+                ]
+            ];
+            const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'coding_problems_template.csv'; a.click();
+            URL.revokeObjectURL(url);
+        }
+
         function handleDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('border-indigo-500'); }
         function handleDragLeave(e) { e.preventDefault(); document.getElementById('drop-zone').classList.remove('border-indigo-500'); }
         function handleDrop(e) {
@@ -645,6 +748,45 @@
             document.getElementById('drop-zone').classList.remove('border-indigo-500');
             if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                 handleFileSelect(e.dataTransfer.files[0]);
+            }
+        }
+
+        function handleCodingDrop(e) {
+            e.preventDefault();
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleCodingFileSelect(e.dataTransfer.files[0]);
+            }
+        }
+
+        async function handleCodingFileSelect(file) {
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const box = document.getElementById('import-status-box');
+            const title = document.getElementById('import-status-title');
+            const details = document.getElementById('import-status-details');
+
+            box.classList.remove('hidden');
+            title.innerText = 'Uploading Coding Problems ' + file.name + '...';
+            details.innerHTML = '';
+
+            try {
+                const res = await axios.post(`${API}/admin-panel/coding/import/`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                title.innerText = '✅ Coding Problems Import Complete';
+                details.innerHTML = `<p class="text-emerald-600 font-semibold">${res.data.message}</p>`;
+                showToast(res.data.message, 'success');
+                loadCodingProblems();
+                loadDashboardStats();
+            } catch(e) {
+                title.innerText = '❌ Import Failed';
+                details.innerHTML = `<p class="text-rose-600">${e.response?.data?.error || 'Upload error'}</p>`;
+                showToast('Import failed', 'error');
             }
         }
 
