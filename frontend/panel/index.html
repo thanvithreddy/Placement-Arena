@@ -795,9 +795,9 @@
                     return;
                 }
 
-                body.innerHTML = questions.map(q => `
+                body.innerHTML = questions.map((q, idx) => `
                     <tr class="hover:bg-slate-50">
-                        <td class="p-3.5 font-mono text-xs text-slate-400">#${q.id}</td>
+                        <td class="p-3.5 font-mono text-xs font-bold text-slate-400">#${idx + 1}</td>
                         <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-xs uppercase font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">${q.category}</span></td>
                         <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${q.difficulty === 'easy' ? 'bg-emerald-50 text-emerald-600' : q.difficulty === 'medium' ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600'}">${q.difficulty}</span></td>
                         <td class="p-3.5 text-slate-900 font-medium">${q.text}</td>

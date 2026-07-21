@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Question, Option, Answer, SectionQuestionAssignment
 from .serializers import QuestionSerializer, AnswerSerializer, AdminQuestionSerializer
 from exams.models import SectionAttempt
+from django.db import connection
 import openpyxl
 import csv
 import io
@@ -25,14 +26,15 @@ class SectionQuestionsView(APIView):
         except SectionAttempt.DoesNotExist:
             return Response({'error': 'Unauthorized or section not found'}, status=status.HTTP_403_FORBIDDEN)
         
-        # Try randomized assignments first (Phase 3)
         assignments = attempt.question_assignments.select_related('question').order_by('order')
         
         if assignments.exists():
-            questions = [a.question for a in assignments]
+            questions = [a.question for a in assignments if a.question]
         else:
-            # Legacy: direct section assignment
+            # Fallback: direct section assignment or case-insensitive category matching
             questions = list(Question.objects.filter(section=attempt.section, is_active=True).order_by('order'))
+            if not questions:
+                questions = list(Question.objects.filter(category__iexact=attempt.section.section_type, is_active=True).order_by('order'))
         
         # Build a lookup of saved answers for session restore
         saved_answers = {
@@ -143,11 +145,16 @@ class BulkImportView(APIView):
             if not row or len(row) < 4:
                 continue
 
-            # Convert row to strings
             r = [clean_val(cell) for cell in row]
 
-            cat = r[0].lower() if r[0] else 'arithmetic'
-            if cat not in ['arithmetic', 'verbal', 'reasoning']:
+            raw_cat = r[0].strip().lower() if r[0] else 'arithmetic'
+            if 'arith' in raw_cat:
+                cat = 'arithmetic'
+            elif 'verb' in raw_cat:
+                cat = 'verbal'
+            elif 'reas' in raw_cat:
+                cat = 'reasoning'
+            else:
                 cat = 'arithmetic'
                 
             diff = r[1].lower() if len(r) > 1 and r[1] else 'medium'
@@ -216,11 +223,11 @@ class QuestionBankView(APIView):
         category = request.query_params.get('category')
         difficulty = request.query_params.get('difficulty')
         
-        qs = Question.objects.all().order_by('-id')
+        qs = Question.objects.all().order_by('id')
         if category:
-            qs = qs.filter(category=category)
+            qs = qs.filter(category__iexact=category)
         if difficulty:
-            qs = qs.filter(difficulty=difficulty)
+            qs = qs.filter(difficulty__iexact=difficulty)
         
         return Response(AdminQuestionSerializer(qs, many=True).data)
 
@@ -266,4 +273,17 @@ class PurgeAllDataView(APIView):
         ExamSection.objects.all().delete()
         Exam.objects.all().delete()
 
-        return Response({'message': 'All questions, exams, submissions, and logs have been completely purged!'})
+        # Reset primary key sequence numbers to start back at 1
+        try:
+            with connection.cursor() as cursor:
+                if connection.vendor == 'postgresql':
+                    cursor.execute("TRUNCATE TABLE questions_question RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE questions_option RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE exams_exam RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE coding_codingproblem RESTART IDENTITY CASCADE;")
+                elif connection.vendor == 'sqlite':
+                    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('questions_question', 'questions_option', 'exams_exam', 'coding_codingproblem');")
+        except Exception:
+            pass
+
+        return Response({'message': 'All questions, exams, submissions, and logs have been completely purged! IDs reset to 1.'})

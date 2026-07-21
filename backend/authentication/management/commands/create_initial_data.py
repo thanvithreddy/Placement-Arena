@@ -6,6 +6,7 @@ from coding.models import CodingProblem, SampleTestCase, HiddenTestCase, CodingS
 from warnings_log.models import ViolationLog
 from leaderboard.models import DailyLeaderboard
 from analytics.models import UserAnalytics
+from django.db import connection
 
 class Command(BaseCommand):
     help = 'Purge entire database and create ONLY Thanvith, Tejaswini, and admin1 accounts'
@@ -29,6 +30,18 @@ class Command(BaseCommand):
         ExamSection.objects.all().delete()
         Exam.objects.all().delete()
 
+        try:
+            with connection.cursor() as cursor:
+                if connection.vendor == 'postgresql':
+                    cursor.execute("TRUNCATE TABLE questions_question RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE questions_option RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE exams_exam RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE coding_codingproblem RESTART IDENTITY CASCADE;")
+                elif connection.vendor == 'sqlite':
+                    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('questions_question', 'questions_option', 'exams_exam', 'coding_codingproblem');")
+        except Exception:
+            pass
+
         # Delete all users except admin1, Thanvith, Tejaswini
         User.objects.all().delete()
 
@@ -45,4 +58,4 @@ class Command(BaseCommand):
         u2.set_password('TCS@1234')
         u2.save()
 
-        self.stdout.write('Database 100% wiped! Only admin1, Thanvith, and Tejaswini accounts remain.')
+        self.stdout.write('Database 100% wiped & sequence IDs reset! Only admin1, Thanvith, and Tejaswini accounts remain.')
