@@ -219,6 +219,7 @@
                 }
 
                 renderProblemTabs();
+                loadProblem(0);
                 initEditor();
                 startTimer();
                 setInterval(autoSave, 30000);
@@ -239,22 +240,71 @@
         }
 
         function initEditor() {
-            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
-            require(['vs/editor/editor.main'], function () {
-                editor = monaco.editor.create(document.getElementById('editor-container'), {
-                    value: defaultCodes.python,
-                    language: 'python',
-                    theme: 'vs',
-                    automaticLayout: true,
-                    minimap: { enabled: false },
-                    fontSize: 14,
-                    padding: { top: 16 }
-                });
+            const container = document.getElementById('editor-container');
+            if (!container) return;
 
-                if (problems.length > 0) {
-                    loadProblem(0);
+            try {
+                if (window.monaco) {
+                    createMonacoInstance();
+                } else if (window.require) {
+                    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
+                    require(['vs/editor/editor.main'], function () {
+                        createMonacoInstance();
+                    }, function(err) {
+                        createFallbackTextarea();
+                    });
+                } else {
+                    createFallbackTextarea();
                 }
+            } catch(e) {
+                createFallbackTextarea();
+            }
+        }
+
+        function createMonacoInstance() {
+            const container = document.getElementById('editor-container');
+            container.innerHTML = '';
+            editor = monaco.editor.create(container, {
+                value: defaultCodes.python,
+                language: 'python',
+                theme: 'vs',
+                automaticLayout: true,
+                minimap: { enabled: false },
+                fontSize: 14,
+                padding: { top: 16 }
             });
+            const p = problems[currentProbIdx];
+            if (p) {
+                const lang = document.getElementById('lang-select')?.value || 'python';
+                const saved = localStorage.getItem(`code_${p.id}_${lang}`);
+                if (saved) editor.setValue(saved);
+            }
+        }
+
+        function createFallbackTextarea() {
+            const container = document.getElementById('editor-container');
+            if (!container) return;
+            container.innerHTML = `<textarea id="fallback-code-input" class="w-full h-full p-4 font-mono text-sm bg-slate-900 text-slate-100 outline-none border-none resize-none leading-relaxed" placeholder="// Write your code here..."></textarea>`;
+            const textarea = document.getElementById('fallback-code-input');
+            const p = problems[currentProbIdx];
+            const lang = document.getElementById('lang-select')?.value || 'python';
+            const saved = p ? localStorage.getItem(`code_${p.id}_${lang}`) : null;
+            textarea.value = saved || defaultCodes[lang] || defaultCodes.python;
+            
+            editor = {
+                getValue: () => textarea.value,
+                setValue: (val) => { textarea.value = val; },
+                layout: () => {},
+                getModel: () => ({ setLanguageId: () => {} })
+            };
+        }
+
+        function getCode() {
+            if (editor && typeof editor.getValue === 'function') {
+                return editor.getValue();
+            }
+            const fallback = document.getElementById('fallback-code-input');
+            return fallback ? fallback.value : '';
         }
 
         function switchProblem(idx) {
@@ -313,11 +363,15 @@
 
         function changeLanguage() {
             const lang = document.getElementById('lang-select').value;
-            const model = editor.getModel();
-            monaco.editor.setModelLanguage(model, lang);
+            if (window.monaco && editor && typeof editor.getModel === 'function') {
+                try {
+                    const model = editor.getModel();
+                    if (model) monaco.editor.setModelLanguage(model, lang);
+                } catch(e) {}
+            }
             
             const p = problems[currentProbIdx];
-            if (p) {
+            if (p && editor) {
                 const savedCode = localStorage.getItem(`code_${p.id}_${lang}`);
                 editor.setValue(savedCode || defaultCodes[lang] || defaultCodes.python);
             }
@@ -327,8 +381,8 @@
             if (!editor || !problems[currentProbIdx]) return;
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
-            const code = editor.getValue();
-            localStorage.setItem(`code_${p.id}_${lang}`, code);
+            const code = getCode();
+            if (code) localStorage.setItem(`code_${p.id}_${lang}`, code);
         }
 
         async function runCode() {
@@ -338,7 +392,7 @@
             
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
-            const code = editor.getValue();
+            const code = getCode();
             const out = document.getElementById('console-output');
             
             out.innerHTML = '<span class="text-slate-500">Executing code against sample cases...</span>';
@@ -379,7 +433,7 @@
             
             const p = problems[currentProbIdx];
             const lang = document.getElementById('lang-select').value;
-            const code = editor.getValue();
+            const code = getCode();
             const out = document.getElementById('console-output');
 
             out.innerHTML = '<span class="text-indigo-600">Evaluating against all test cases (sample + hidden)...</span>';
