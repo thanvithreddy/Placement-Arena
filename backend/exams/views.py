@@ -368,17 +368,54 @@ class AdminExamListView(APIView):
     def get(self, request):
         if not request.user.is_admin_user():
             return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
-        exams = Exam.objects.all()
+        exams = Exam.objects.all().order_by('-date', '-id')
         return Response(ExamSerializer(exams, many=True).data)
         
     def post(self, request):
         if not request.user.is_admin_user():
             return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
-        serializer = ExamSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(created_by=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        title = request.data.get('title')
+        date_val = request.data.get('date') or date.today()
+        status_val = request.data.get('status', 'active')
+        sections_data = request.data.get('sections', [])
+
+        if not title:
+            return Response({'error': 'Exam title is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Deactivate any existing active exam for the same date if status is active
+        if status_val == 'active':
+            Exam.objects.filter(date=date_val, status='active').update(status='completed')
+
+        exam = Exam.objects.create(
+            title=title,
+            date=date_val,
+            status=status_val,
+            created_by=request.user
+        )
+
+        # Create sections if provided, or default 4 sections
+        if sections_data:
+            for s in sections_data:
+                ExamSection.objects.create(
+                    exam=exam,
+                    section_type=s.get('section_type'),
+                    order=s.get('order', 1),
+                    duration_minutes=s.get('duration_minutes', 20),
+                    max_score=s.get('max_score', 100),
+                    question_count=s.get('question_count', 25)
+                )
+        else:
+            default_sections = [
+                {'section_type': 'arithmetic', 'order': 1, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
+                {'section_type': 'verbal', 'order': 2, 'duration_minutes': 20, 'max_score': 80, 'question_count': 20},
+                {'section_type': 'reasoning', 'order': 3, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
+                {'section_type': 'coding', 'order': 4, 'duration_minutes': 60, 'max_score': 200, 'question_count': 2},
+            ]
+            for s in default_sections:
+                ExamSection.objects.create(exam=exam, **s)
+
+        return Response(ExamSerializer(exam).data, status=status.HTTP_201_CREATED)
 
 class AdminExamDetailView(APIView):
     permission_classes = [IsAuthenticated]

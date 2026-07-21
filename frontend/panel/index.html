@@ -669,6 +669,65 @@
             }
         }
 
+        async function createCustomExam() {
+            const title = document.getElementById('custom-exam-title').value.trim();
+            const dateVal = document.getElementById('custom-exam-date').value;
+
+            if (!title) {
+                showToast('Exam Title is required', 'error'); return;
+            }
+
+            const sections = [
+                {
+                    section_type: 'arithmetic', order: 1,
+                    duration_minutes: parseInt(document.getElementById('cfg-arithmetic-dur').value) || 20,
+                    question_count: parseInt(document.getElementById('cfg-arithmetic-count').value) || 20,
+                    max_score: parseInt(document.getElementById('cfg-arithmetic-score').value) || 80
+                },
+                {
+                    section_type: 'verbal', order: 2,
+                    duration_minutes: parseInt(document.getElementById('cfg-verbal-dur').value) || 20,
+                    question_count: parseInt(document.getElementById('cfg-verbal-count').value) || 20,
+                    max_score: parseInt(document.getElementById('cfg-verbal-score').value) || 80
+                },
+                {
+                    section_type: 'reasoning', order: 3,
+                    duration_minutes: parseInt(document.getElementById('cfg-reasoning-dur').value) || 20,
+                    question_count: parseInt(document.getElementById('cfg-reasoning-count').value) || 20,
+                    max_score: parseInt(document.getElementById('cfg-reasoning-score').value) || 80
+                },
+                {
+                    section_type: 'coding', order: 4,
+                    duration_minutes: parseInt(document.getElementById('cfg-coding-dur').value) || 60,
+                    question_count: parseInt(document.getElementById('cfg-coding-count').value) || 2,
+                    max_score: parseInt(document.getElementById('cfg-coding-score').value) || 200
+                }
+            ];
+
+            const btn = document.querySelector("button[onclick='createCustomExam()']");
+            if (btn) { btn.disabled = true; btn.innerText = 'Publishing...'; }
+
+            try {
+                const payload = {
+                    title,
+                    status: 'active',
+                    sections
+                };
+                if (dateVal) payload.date = dateVal;
+
+                const res = await axios.post(`${API}/admin-panel/exams/`, payload, getHeaders());
+                showToast(`🎉 Exam "${res.data.title}" Published Successfully!`, 'success');
+                
+                document.getElementById('custom-exam-title').value = '';
+                switchView('dashboard');
+                loadDashboardStats();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to publish exam', 'error');
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerText = 'Publish Exam'; }
+            }
+        }
+
         function switchImportTab(type) {
             const mcqTab = document.getElementById('import-tab-mcq');
             const codingTab = document.getElementById('import-tab-coding');
@@ -1090,6 +1149,9 @@
         }
 
         if (user.role === 'admin') {
+            if (document.getElementById('custom-exam-date')) {
+                document.getElementById('custom-exam-date').value = new Date().toISOString().split('T')[0];
+            }
             loadDashboardStats();
         }
     </script>
