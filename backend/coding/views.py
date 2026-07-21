@@ -321,15 +321,14 @@ class BulkImportCodingView(APIView):
             try:
                 wb = openpyxl.load_workbook(file_obj, data_only=True)
                 sheet = wb.active
-                rows = list(sheet.iter_rows(values_only=True))
+                for r in sheet.iter_rows(values_only=True):
+                    if r and any(cell is not None for cell in r):
+                        rows.append([cell for cell in r])
             except Exception as e:
                 return Response({'error': f'Failed to parse Excel file: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
             
         if not rows:
             return Response({'error': 'Uploaded file is empty'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Check header
-        start_idx = 1 if len(rows) > 0 and str(rows[0][0]).strip().lower() in ['title', 'problem_title'] else 0
 
         def clean_val(val):
             if val is None:
@@ -342,12 +341,17 @@ class BulkImportCodingView(APIView):
         default_section = ExamSection.objects.filter(section_type='coding').last()
 
         count = 0
-        for row in rows[start_idx:]:
-            if not row or len(row) < 3:
+        for idx, row in enumerate(rows):
+            if not row:
                 continue
                 
             r = [clean_val(cell) for cell in row]
-            title = r[0]
+            title = r[0] if len(r) > 0 else ""
+
+            # Skip header row if first cell matches title keywords
+            if idx == 0 and title.lower() in ['title', 'problem_title', 'problem title', 'name', 'problem name']:
+                continue
+
             if not title:
                 continue
 
@@ -377,20 +381,20 @@ class BulkImportCodingView(APIView):
             hidden_out_3 = r[16] if len(r) > 16 else ''
 
             try:
-                max_score = int(r[17]) if len(r) > 17 and r[17] else 100
-            except ValueError:
+                max_score = int(float(r[17])) if len(r) > 17 and r[17] else 100
+            except (ValueError, TypeError):
                 max_score = 100
 
             try:
-                time_limit = int(r[18]) if len(r) > 18 and r[18] else 5000
-            except ValueError:
+                time_limit = int(float(r[18])) if len(r) > 18 and r[18] else 5000
+            except (ValueError, TypeError):
                 time_limit = 5000
 
             problem = CodingProblem.objects.create(
                 section=default_section,
                 title=title,
                 difficulty=diff,
-                statement=statement,
+                statement=statement or title,
                 input_format=input_format,
                 output_format=output_format,
                 max_score=max_score,
@@ -412,5 +416,8 @@ class BulkImportCodingView(APIView):
                 HiddenTestCase.objects.create(problem=problem, input_data=hidden_in_3, expected_output=hidden_out_3, score_weight=1.0, order=3)
 
             count += 1
+
+        if count == 0:
+            return Response({'error': 'No valid coding problems found in uploaded file. Please verify column layout.'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'message': f'Successfully imported {count} coding problems with sample and hidden test cases!'})
