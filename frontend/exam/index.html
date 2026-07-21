@@ -268,8 +268,13 @@
                 // 3. Find first in-progress or not-started section
                 currentSectionIdx = sectionAttempts.findIndex(sa => sa.status !== 'completed');
                 if (currentSectionIdx === -1) {
-                    window.location.href = `/result/index.html?exam_id=${examId}`;
-                    return;
+                    // Previous test attempt was completed — reset it so candidate can write fresh!
+                    const resetRes = await axios.post(`${API}/exams/${examId}/start/`, { reset: true }, getHeaders());
+                    examAttempt = resetRes.data;
+                    attemptId = examAttempt.id;
+                    const newRawSec = examAttempt.section_attempts || [];
+                    sectionAttempts = sections.map(sec => newRawSec.find(sa => sa.section === sec.id)).filter(Boolean);
+                    currentSectionIdx = 0;
                 }
 
                 setupAntiCheat();

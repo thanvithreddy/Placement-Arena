@@ -39,19 +39,39 @@ class StartExamView(APIView):
         except Exam.DoesNotExist:
             return Response({'error': 'Exam not found'}, status=status.HTTP_404_NOT_FOUND)
             
-        attempt, created = ExamAttempt.objects.get_or_create(
-            user=request.user,
-            exam=exam,
-            defaults={'status': 'in_progress', 'started_at': timezone.now()}
-        )
+        force_reset = request.data.get('reset', False) or request.query_params.get('reset', False)
+        attempt = ExamAttempt.objects.filter(user=request.user, exam=exam).first()
         
-        if created:
-            for section in exam.sections.all():
+        if not attempt:
+            attempt = ExamAttempt.objects.create(
+                user=request.user,
+                exam=exam,
+                status='in_progress',
+                started_at=timezone.now()
+            )
+            for section in exam.sections.all().order_by('order'):
                 SectionAttempt.objects.create(
                     exam_attempt=attempt,
-                    section=section
+                    section=section,
+                    status='not_started'
                 )
-                
+        elif force_reset or attempt.status == 'completed' or not attempt.section_attempts.filter(status__in=['not_started', 'in_progress']).exists():
+            # Reset attempt for a fresh exam attempt session
+            attempt.section_attempts.all().delete()
+            attempt.status = 'in_progress'
+            attempt.started_at = timezone.now()
+            attempt.submitted_at = None
+            attempt.total_score = 0
+            attempt.violations_count = 0
+            attempt.save()
+
+            for section in exam.sections.all().order_by('order'):
+                SectionAttempt.objects.create(
+                    exam_attempt=attempt,
+                    section=section,
+                    status='not_started'
+                )
+
         return Response(ExamAttemptSerializer(attempt).data, status=status.HTTP_200_OK)
 
 class StartSectionView(APIView):

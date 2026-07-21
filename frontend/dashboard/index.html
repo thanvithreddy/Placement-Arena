@@ -262,32 +262,46 @@
             if (!attempt || attempt.status === 'not_started') {
                 txt.innerText = 'Not Started';
                 btn.innerText = 'Start Today\'s Mock Exam →';
-                btn.onclick = () => startExam(exam.id);
+                btn.onclick = () => startExam(exam.id, false);
             } else if (attempt.status === 'in_progress') {
                 txt.innerText = 'In Progress';
                 btn.innerText = 'Resume Exam →';
                 btn.onclick = () => window.location.href = `/exam/index.html?exam_id=${exam.id}&attempt_id=${attempt.id}`;
             } else if (attempt.status === 'completed') {
                 txt.innerText = 'Completed ✓';
-                btn.innerText = 'View Exam Report & Solutions';
                 btn.classList.remove('pulse-anim');
-                btn.onclick = () => window.location.href = `/result/index.html?exam_id=${exam.id}`;
+                
+                const container = btn.parentElement;
+                container.innerHTML = `
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="window.location.href='/result/index.html?exam_id=${exam.id}'" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition transform hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2">
+                            📊 View Exam Report & Solutions
+                        </button>
+                        <button onclick="startExam(${exam.id}, true)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition transform hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2">
+                            🔄 Retake / Restart Exam
+                        </button>
+                    </div>
+                `;
             }
         }
 
-        async function startExam(examId) {
+        async function startExam(examId, isReset = false) {
             try {
                 const btn = document.getElementById('cta-btn');
-                btn.disabled = true;
-                btn.innerText = 'Starting Exam...';
-                const res = await axios.post(`${API}/exams/${examId}/start/`, {}, getHeaders());
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerText = 'Starting Exam...';
+                }
+                const res = await axios.post(`${API}/exams/${examId}/start/`, { reset: isReset }, getHeaders());
                 const attempt = res.data;
                 window.location.href = `/exam/index.html?exam_id=${examId}&attempt_id=${attempt.id}`;
             } catch(e) {
                 alert('Could not start exam. Please try again.');
                 const btn = document.getElementById('cta-btn');
-                btn.disabled = false;
-                btn.innerText = 'Start Today\'s Mock Exam →';
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = 'Start Today\'s Mock Exam →';
+                }
             }
         }
 
