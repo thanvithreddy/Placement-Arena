@@ -6,6 +6,8 @@ from .models import Question, Option, Answer, SectionQuestionAssignment
 from .serializers import QuestionSerializer, AnswerSerializer, AdminQuestionSerializer
 from exams.models import SectionAttempt
 import openpyxl
+import csv
+import io
 
 
 class SectionQuestionsView(APIView):
@@ -96,35 +98,89 @@ class BulkImportView(APIView):
         if not file_obj:
             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
             
-        try:
-            wb = openpyxl.load_workbook(file_obj)
-            sheet = wb.active
-        except Exception:
-            return Response({'error': 'Invalid Excel file'}, status=status.HTTP_400_BAD_REQUEST)
+        filename = file_obj.name.lower()
+        rows = []
+
+        # Support both CSV and Excel (.xlsx, .xls) formats
+        if filename.endswith('.csv') or 'csv' in file_obj.content_type:
+            try:
+                content = file_obj.read()
+                try:
+                    decoded = content.decode('utf-8-sig')
+                except UnicodeDecodeError:
+                    decoded = content.decode('latin-1')
+                
+                reader = csv.reader(io.StringIO(decoded))
+                rows = list(reader)
+            except Exception as e:
+                return Response({'error': f'Failed to parse CSV file: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                wb = openpyxl.load_workbook(file_obj, data_only=True)
+                sheet = wb.active
+                rows = list(sheet.iter_rows(values_only=True))
+            except Exception as e:
+                return Response({'error': f'Failed to parse Excel file: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        if not rows:
+            return Response({'error': 'Uploaded file is empty'}, status=status.HTTP_400_BAD_REQUEST)
             
         count = 0
         errors = []
         
-        rows = list(sheet.iter_rows(values_only=True))
-        if not rows:
-            return Response({'error': 'Empty file'}, status=status.HTTP_400_BAD_REQUEST)
-            
-        # Expecting headers: category, difficulty, question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks
-        for i, row in enumerate(rows[1:], start=2):
-            if not row or len(row) < 8 or not row[2]:
+        # Check if first row is header
+        start_idx = 1 if len(rows) > 0 and str(rows[0][0]).strip().lower() in ['category', 'cat', 'q_category'] else 0
+
+        def clean_val(val):
+            if val is None:
+                return ""
+            s = str(val).strip()
+            # Clean common broken encoding artifacts (e.g. â‚¹ -> ₹)
+            s = s.replace('â‚¹', '₹').replace('â€™', "'").replace('â€"', "-")
+            return s
+
+        for i, row in enumerate(rows[start_idx:], start=start_idx + 1):
+            if not row or len(row) < 4:
                 continue
+
+            # Convert row to strings
+            r = [clean_val(cell) for cell in row]
+
+            cat = r[0].lower() if r[0] else 'arithmetic'
+            if cat not in ['arithmetic', 'verbal', 'reasoning']:
+                cat = 'arithmetic'
                 
-            cat = str(row[0]).strip().lower() if row[0] else 'arithmetic'
-            diff = str(row[1]).strip().lower() if row[1] else 'medium'
-            q_text = str(row[2]).strip()
-            opt_a = str(row[3]).strip() if row[3] else ''
-            opt_b = str(row[4]).strip() if row[4] else ''
-            opt_c = str(row[5]).strip() if len(row) > 5 and row[5] else ''
-            opt_d = str(row[6]).strip() if len(row) > 6 and row[6] else ''
-            correct = str(row[7]).strip().upper() if len(row) > 7 and row[7] else 'A'
-            exp = str(row[8]).strip() if len(row) > 8 and row[8] else ''
-            marks = float(row[9]) if len(row) > 9 and row[9] else 4.0
+            diff = r[1].lower() if len(r) > 1 and r[1] else 'medium'
+            if diff not in ['easy', 'medium', 'hard']:
+                diff = 'medium'
+
+            q_text = r[2] if len(r) > 2 else ''
+            if not q_text:
+                continue
+
+            opt_a = r[3] if len(r) > 3 else ''
+            opt_b = r[4] if len(r) > 4 else ''
+            opt_c = r[5] if len(r) > 5 else ''
+            opt_d = r[6] if len(r) > 6 else ''
+            correct_raw = r[7].upper() if len(r) > 7 else 'A'
+            exp = r[8] if len(r) > 8 else ''
             
+            try:
+                marks = float(r[9]) if len(r) > 9 and r[9] else 4.0
+            except ValueError:
+                marks = 4.0
+
+            # Determine correct option index
+            correct_idx = 0
+            if correct_raw in ['A', '1', 'OPTION A', 'OPTION_A']:
+                correct_idx = 0
+            elif correct_raw in ['B', '2', 'OPTION B', 'OPTION_B']:
+                correct_idx = 1
+            elif correct_raw in ['C', '3', 'OPTION C', 'OPTION_C']:
+                correct_idx = 2
+            elif correct_raw in ['D', '4', 'OPTION D', 'OPTION_D']:
+                correct_idx = 3
+
             question = Question.objects.create(
                 category=cat,
                 difficulty=diff,
@@ -132,10 +188,8 @@ class BulkImportView(APIView):
                 explanation=exp,
                 marks=marks
             )
-            
+
             opts = [opt_a, opt_b, opt_c, opt_d]
-            correct_idx = {'A': 0, 'B': 1, 'C': 2, 'D': 3}.get(correct, 0)
-            
             for idx, opt_text in enumerate(opts):
                 if opt_text:
                     Option.objects.create(
@@ -145,9 +199,9 @@ class BulkImportView(APIView):
                         order=idx + 1
                     )
             count += 1
-            
+
         return Response({
-            'message': f'Successfully imported {count} questions',
+            'message': f'Successfully imported {count} questions!',
             'errors': errors
         })
 
@@ -162,7 +216,7 @@ class QuestionBankView(APIView):
         category = request.query_params.get('category')
         difficulty = request.query_params.get('difficulty')
         
-        qs = Question.objects.all()
+        qs = Question.objects.all().order_by('-id')
         if category:
             qs = qs.filter(category=category)
         if difficulty:
