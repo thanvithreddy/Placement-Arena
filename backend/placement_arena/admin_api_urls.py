@@ -5,7 +5,7 @@ Mounted at: /api/admin-panel/
 """
 from django.urls import path
 from exams.views import AdminExamListView, AdminExamDetailView, CreateTodayExamView, AdminAttemptListView
-from questions.views import BulkImportView, QuestionBankView, QuestionCreateView
+from questions.views import BulkImportView, QuestionBankView, QuestionCreateView, PurgeAllDataView
 from coding.views import AdminCodingProblemView, AdminCodingProblemDetailView, AdminTestCaseView
 from warnings_log.views import AdminViolationListView
 
@@ -16,10 +16,11 @@ urlpatterns = [
     path('exams/<int:id>/', AdminExamDetailView.as_view(), name='admin_exam_detail'),
     path('attempts/', AdminAttemptListView.as_view(), name='admin_attempt_list'),
 
-    # Question bank
+    # Question bank & Purge
     path('questions/', QuestionBankView.as_view(), name='admin_question_bank'),
     path('questions/create/', QuestionCreateView.as_view(), name='admin_question_create'),
     path('questions/import/', BulkImportView.as_view(), name='admin_question_import'),
+    path('questions/purge/', PurgeAllDataView.as_view(), name='admin_purge_data'),
 
     # Coding problems
     path('coding/', AdminCodingProblemView.as_view(), name='admin_coding_problems'),

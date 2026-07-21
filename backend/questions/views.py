@@ -98,45 +98,53 @@ class BulkImportView(APIView):
             
         try:
             wb = openpyxl.load_workbook(file_obj)
-        except Exception as e:
-            return Response({'error': f'Invalid Excel file: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        sheet = wb.active
+            sheet = wb.active
+        except Exception:
+            return Response({'error': 'Invalid Excel file'}, status=status.HTTP_400_BAD_REQUEST)
+            
         count = 0
         errors = []
         
-        for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
-            if not row[2]:  # Question text empty
+        rows = list(sheet.iter_rows(values_only=True))
+        if not rows:
+            return Response({'error': 'Empty file'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        # Expecting headers: category, difficulty, question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks
+        for i, row in enumerate(rows[1:], start=2):
+            if not row or len(row) < 8 or not row[2]:
                 continue
-            try:
-                category = str(row[0]).lower().strip() if row[0] else 'arithmetic'
-                difficulty = str(row[1]).lower().strip() if row[1] else 'medium'
-                q_text = str(row[2]).strip()
-                opts = [row[3], row[4], row[5], row[6]]
-                correct_opt_char = str(row[7]).upper().strip() if row[7] else 'A'
-                explanation = str(row[8]).strip() if row[8] else ''
-                marks = float(row[9]) if row[9] else 4.0
                 
-                q = Question.objects.create(
-                    category=category,
-                    difficulty=difficulty,
-                    text=q_text,
-                    explanation=explanation,
-                    marks=marks
-                )
-                
-                correct_index = ord(correct_opt_char[0]) - 65
-                for i, opt_text in enumerate(opts):
-                    if opt_text:
-                        Option.objects.create(
-                            question=q,
-                            text=str(opt_text).strip(),
-                            is_correct=(i == correct_index),
-                            order=i + 1
-                        )
-                count += 1
-            except Exception as e:
-                errors.append(f'Row {row_num}: {str(e)}')
+            cat = str(row[0]).strip().lower() if row[0] else 'arithmetic'
+            diff = str(row[1]).strip().lower() if row[1] else 'medium'
+            q_text = str(row[2]).strip()
+            opt_a = str(row[3]).strip() if row[3] else ''
+            opt_b = str(row[4]).strip() if row[4] else ''
+            opt_c = str(row[5]).strip() if len(row) > 5 and row[5] else ''
+            opt_d = str(row[6]).strip() if len(row) > 6 and row[6] else ''
+            correct = str(row[7]).strip().upper() if len(row) > 7 and row[7] else 'A'
+            exp = str(row[8]).strip() if len(row) > 8 and row[8] else ''
+            marks = float(row[9]) if len(row) > 9 and row[9] else 4.0
+            
+            question = Question.objects.create(
+                category=cat,
+                difficulty=diff,
+                text=q_text,
+                explanation=exp,
+                marks=marks
+            )
+            
+            opts = [opt_a, opt_b, opt_c, opt_d]
+            correct_idx = {'A': 0, 'B': 1, 'C': 2, 'D': 3}.get(correct, 0)
+            
+            for idx, opt_text in enumerate(opts):
+                if opt_text:
+                    Option.objects.create(
+                        question=question,
+                        text=opt_text,
+                        is_correct=(idx == correct_idx),
+                        order=idx + 1
+                    )
+            count += 1
             
         return Response({
             'message': f'Successfully imported {count} questions',
@@ -174,3 +182,34 @@ class QuestionCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PurgeAllDataView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        from warnings_log.models import ViolationLog
+        from coding.models import CodingSubmission, CodingProblem, SampleTestCase, HiddenTestCase
+        from exams.models import Exam, ExamSection, ExamAttempt, SectionAttempt
+        from leaderboard.models import DailyLeaderboard
+        from analytics.models import UserAnalytics
+
+        ViolationLog.objects.all().delete()
+        CodingSubmission.objects.all().delete()
+        Answer.objects.all().delete()
+        SectionAttempt.objects.all().delete()
+        ExamAttempt.objects.all().delete()
+        DailyLeaderboard.objects.all().delete()
+        UserAnalytics.objects.all().delete()
+        Option.objects.all().delete()
+        Question.objects.all().delete()
+        SampleTestCase.objects.all().delete()
+        HiddenTestCase.objects.all().delete()
+        CodingProblem.objects.all().delete()
+        ExamSection.objects.all().delete()
+        Exam.objects.all().delete()
+
+        return Response({'message': 'All questions, exams, submissions, and logs have been completely purged!'})

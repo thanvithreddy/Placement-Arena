@@ -170,9 +170,14 @@
         <div id="view-questions" class="section-view">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Questions Bank</h2>
-                <button onclick="openQuestionModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-xs">
-                    + Add Single Question
-                </button>
+                <div class="flex gap-3">
+                    <button onclick="purgeAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-4 py-2.5 rounded-xl font-bold text-sm transition">
+                        🧹 Purge All Data
+                    </button>
+                    <button onclick="openQuestionModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-xs">
+                        + Add Single Question
+                    </button>
+                </div>
             </div>
 
             <!-- Filters -->
@@ -316,17 +321,14 @@
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
                         <div class="text-xs text-indigo-600 font-extrabold uppercase mb-1">Admin</div>
                         <div class="text-lg font-bold text-slate-900">admin1</div>
-                        <div class="text-xs text-slate-500">Password: admin@123</div>
                     </div>
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
                         <div class="text-xs text-emerald-600 font-extrabold uppercase mb-1">Candidate 1</div>
                         <div class="text-lg font-bold text-slate-900">Thanvith</div>
-                        <div class="text-xs text-slate-500">Password: TCS@1234</div>
                     </div>
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
                         <div class="text-xs text-emerald-600 font-extrabold uppercase mb-1">Candidate 2</div>
                         <div class="text-lg font-bold text-slate-900">Tejaswini</div>
-                        <div class="text-xs text-slate-500">Password: TCS@1234</div>
                     </div>
                 </div>
             </div>
@@ -535,6 +537,19 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function purgeAllData() {
+            if (!confirm('⚠️ Are you sure you want to PURGE ALL questions, exams, coding problems, and submissions from the database? This cannot be undone.')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/questions/purge/`, {}, getHeaders());
+                showToast(res.data.message || 'All data purged!', 'success');
+                loadQuestionsBank();
+                loadCodingProblems();
+                loadDashboardStats();
+            } catch(e) {
+                showToast('Failed to purge data', 'error');
+            }
+        }
 
         async function loadDashboardStats() {
             try {
@@ -776,7 +791,7 @@
                 const res = await axios.get(url, getHeaders());
                 const questions = res.data;
                 if (!questions || questions.length === 0) {
-                    body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">No questions found.</td></tr>';
+                    body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">No questions found. Click "+ Add Single Question" or "Import Questions" to add.</td></tr>';
                     return;
                 }
 
@@ -856,7 +871,7 @@
                         </tr>
                     `;
                 }).join('');
-            } catch(e) { body.innerHTML = '<tr><td colspan="4" class="p-6 text-center text-rose-500 font-medium">Failed to load violations.</td></tr>'; }
+            } catch(e) { body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-rose-500 font-medium">Failed to load violations.</td></tr>'; }
         }
 
         async function loadSubmissions() {
