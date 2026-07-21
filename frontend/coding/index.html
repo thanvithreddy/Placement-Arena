@@ -442,6 +442,9 @@
         function enterExamFullscreen() {
             document.getElementById('proctor-start-modal').style.display = 'none';
             requestFullscreen();
+            if (typeof editor !== 'undefined' && editor) {
+                setTimeout(() => editor.layout(), 150);
+            }
         }
 
         function toggleFullscreen() {
