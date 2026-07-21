@@ -262,7 +262,7 @@
                 // Map & sort section attempts based on section order
                 const rawSectionAttempts = examAttempt.section_attempts || [];
                 sectionAttempts = sections.map(sec => {
-                    return rawSectionAttempts.find(sa => sa.section === sec.id) || null;
+                    return rawSectionAttempts.find(sa => (sa.section === sec.id || sa.section_id === sec.id)) || null;
                 }).filter(Boolean);
 
                 // 3. Find first in-progress or not-started section
@@ -273,7 +273,7 @@
                     examAttempt = resetRes.data;
                     attemptId = examAttempt.id;
                     const newRawSec = examAttempt.section_attempts || [];
-                    sectionAttempts = sections.map(sec => newRawSec.find(sa => sa.section === sec.id)).filter(Boolean);
+                    sectionAttempts = sections.map(sec => newRawSec.find(sa => (sa.section === sec.id || sa.section_id === sec.id))).filter(Boolean);
                     currentSectionIdx = 0;
                 }
 
@@ -293,7 +293,8 @@
             if (!sa) {
                 console.error('Invalid section attempt at index', currentSectionIdx); return;
             }
-            const sec = sections.find(s => s.id === sa.section);
+            const targetSecId = sa.section || sa.section_id;
+            const sec = sections.find(s => s.id === targetSecId);
             if (!sec) {
                 console.error('Invalid section for section attempt', sa); return;
             }

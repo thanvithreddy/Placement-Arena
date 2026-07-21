@@ -27,7 +27,7 @@ class SectionAttemptSerializer(serializers.ModelSerializer):
     class Meta:
         model = SectionAttempt
         fields = [
-            'id', 'section_id', 'section_type', 'section_order',
+            'id', 'section', 'section_id', 'section_type', 'section_order',
             'duration_minutes', 'max_score', 'question_count',
             'status', 'score', 'started_at', 'submitted_at', 'is_auto_submitted'
         ]
