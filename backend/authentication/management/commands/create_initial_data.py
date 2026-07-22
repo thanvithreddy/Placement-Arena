@@ -1,61 +1,29 @@
 from django.core.management.base import BaseCommand
 from authentication.models import User
-from exams.models import Exam, ExamSection, ExamAttempt, SectionAttempt
-from questions.models import Question, Option, Answer
-from coding.models import CodingProblem, SampleTestCase, HiddenTestCase, CodingSubmission
-from warnings_log.models import ViolationLog
-from leaderboard.models import DailyLeaderboard
-from analytics.models import UserAnalytics
-from django.db import connection
 
 class Command(BaseCommand):
-    help = 'Purge entire database and create ONLY Thanvith, Tejaswini, and admin1 accounts'
+    help = 'Ensures admin1, Thanvith, and Tejaswini user accounts exist safely without modifying questions or exam data.'
 
     def handle(self, *args, **kwargs):
-        self.stdout.write('Wiping entire database...')
-        
-        # Purge all data
-        ViolationLog.objects.all().delete()
-        CodingSubmission.objects.all().delete()
-        Answer.objects.all().delete()
-        SectionAttempt.objects.all().delete()
-        ExamAttempt.objects.all().delete()
-        DailyLeaderboard.objects.all().delete()
-        UserAnalytics.objects.all().delete()
-        Option.objects.all().delete()
-        Question.objects.all().delete()
-        SampleTestCase.objects.all().delete()
-        HiddenTestCase.objects.all().delete()
-        CodingProblem.objects.all().delete()
-        ExamSection.objects.all().delete()
-        Exam.objects.all().delete()
+        # 1. Create Admin User if missing
+        if not User.objects.filter(username='admin1').exists():
+            admin = User.objects.create(username='admin1', role='admin', display_name='Admin User', is_staff=True, is_superuser=True)
+            admin.set_password('admin@123')
+            admin.save()
+            self.stdout.write('Created default admin account: admin1')
 
-        try:
-            with connection.cursor() as cursor:
-                if connection.vendor == 'postgresql':
-                    cursor.execute("TRUNCATE TABLE questions_question RESTART IDENTITY CASCADE;")
-                    cursor.execute("TRUNCATE TABLE questions_option RESTART IDENTITY CASCADE;")
-                    cursor.execute("TRUNCATE TABLE exams_exam RESTART IDENTITY CASCADE;")
-                    cursor.execute("TRUNCATE TABLE coding_codingproblem RESTART IDENTITY CASCADE;")
-                elif connection.vendor == 'sqlite':
-                    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('questions_question', 'questions_option', 'exams_exam', 'coding_codingproblem');")
-        except Exception:
-            pass
+        # 2. Create Candidate Thanvith if missing
+        if not User.objects.filter(username='Thanvith').exists():
+            u1 = User.objects.create(username='Thanvith', role='candidate', display_name='Thanvith')
+            u1.set_password('TCS@1234')
+            u1.save()
+            self.stdout.write('Created default candidate account: Thanvith')
 
-        # Delete all users except admin1, Thanvith, Tejaswini
-        User.objects.all().delete()
+        # 3. Create Candidate Tejaswini if missing
+        if not User.objects.filter(username='Tejaswini').exists():
+            u2 = User.objects.create(username='Tejaswini', role='candidate', display_name='Tejaswini')
+            u2.set_password('TCS@1234')
+            u2.save()
+            self.stdout.write('Created default candidate account: Tejaswini')
 
-        # 1. Create Only Admin and 2 Candidates
-        admin = User.objects.create(username='admin1', role='admin', display_name='Admin User', is_staff=True, is_superuser=True)
-        admin.set_password('admin@123')
-        admin.save()
-        
-        u1 = User.objects.create(username='Thanvith', role='candidate', display_name='Thanvith')
-        u1.set_password('TCS@1234')
-        u1.save()
-
-        u2 = User.objects.create(username='Tejaswini', role='candidate', display_name='Tejaswini')
-        u2.set_password('TCS@1234')
-        u2.save()
-
-        self.stdout.write('Database 100% wiped & sequence IDs reset! Only admin1, Thanvith, and Tejaswini accounts remain.')
+        self.stdout.write('Initial default user check complete! No existing data altered.')
