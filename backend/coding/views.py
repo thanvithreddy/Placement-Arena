@@ -38,6 +38,22 @@ class CodingProblemView(APIView):
         except CodingProblem.DoesNotExist:
             return Response({'error': 'Problem not found'}, status=status.HTTP_404_NOT_FOUND)
 
+def normalize_text(text):
+    if text is None:
+        return ""
+    s = str(text)
+    if '\\n' in s and '\n' not in s:
+        s = s.replace('\\n', '\n')
+    s = s.replace('\r\n', '\n').replace('\r', '\n')
+    lines = [line.rstrip() for line in s.split('\n')]
+    # Strip leading and trailing empty lines
+    while lines and not lines[0]:
+        lines.pop(0)
+    while lines and not lines[-1]:
+        lines.pop()
+    return '\n'.join(lines).strip()
+
+
 class RunCodeView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -55,16 +71,18 @@ class RunCodeView(APIView):
         timeout = math.ceil(problem.time_limit_ms / 1000)
         
         if custom_input is not None:
-            result = execute_code(language, code, custom_input, timeout=timeout)
+            clean_stdin = normalize_text(custom_input)
+            result = execute_code(language, code, clean_stdin, timeout=timeout)
             return Response({'custom_run': result})
             
         # Run against sample cases
         results = []
         passed = 0
         for case in problem.sample_cases.all():
-            res = execute_code(language, code, case.input_data, timeout=timeout)
-            expected = case.expected_output.strip()
-            actual = res['stdout'].strip()
+            clean_stdin = normalize_text(case.input_data)
+            res = execute_code(language, code, clean_stdin, timeout=timeout)
+            expected = normalize_text(case.expected_output)
+            actual = normalize_text(res.get('stdout', ''))
             
             is_correct = False
             if res['status'] == 'ok' and actual == expected:
@@ -107,8 +125,9 @@ class SubmitCodeView(APIView):
         # Test against sample cases
         passed_sample = 0
         for case in problem.sample_cases.all():
-            res = execute_code(language, code, case.input_data, timeout=timeout)
-            if res['status'] == 'ok' and res['stdout'].strip() == case.expected_output.strip():
+            clean_stdin = normalize_text(case.input_data)
+            res = execute_code(language, code, clean_stdin, timeout=timeout)
+            if res['status'] == 'ok' and normalize_text(res.get('stdout', '')) == normalize_text(case.expected_output):
                 passed_sample += 1
                 
         # Test against hidden cases
@@ -117,8 +136,9 @@ class SubmitCodeView(APIView):
         earned_hidden_weight = 0
         for case in problem.hidden_cases.all():
             total_hidden_weight += case.score_weight
-            res = execute_code(language, code, case.input_data, timeout=timeout)
-            if res['status'] == 'ok' and res['stdout'].strip() == case.expected_output.strip():
+            clean_stdin = normalize_text(case.input_data)
+            res = execute_code(language, code, clean_stdin, timeout=timeout)
+            if res['status'] == 'ok' and normalize_text(res.get('stdout', '')) == normalize_text(case.expected_output):
                 passed_hidden += 1
                 earned_hidden_weight += case.score_weight
                 

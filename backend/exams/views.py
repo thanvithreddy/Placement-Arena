@@ -39,7 +39,7 @@ class StartExamView(APIView):
         except Exam.DoesNotExist:
             return Response({'error': 'Exam not found'}, status=status.HTTP_404_NOT_FOUND)
             
-        force_reset = request.data.get('reset', False) or request.query_params.get('reset', False)
+        force_reset = str(request.data.get('reset', '')).lower() in ['true', '1'] or str(request.query_params.get('reset', '')).lower() in ['true', '1']
         attempt = ExamAttempt.objects.filter(user=request.user, exam=exam).first()
         
         if not attempt:
@@ -55,8 +55,8 @@ class StartExamView(APIView):
                     section=section,
                     status='not_started'
                 )
-        elif force_reset or attempt.status == 'completed' or not attempt.section_attempts.filter(status__in=['not_started', 'in_progress']).exists():
-            # Reset attempt for a fresh exam attempt session
+        elif force_reset:
+            # Reset attempt ONLY if user explicitly requested a retake
             attempt.section_attempts.all().delete()
             attempt.status = 'in_progress'
             attempt.started_at = timezone.now()
@@ -258,7 +258,7 @@ class ExamReviewView(APIView):
     """
     GET /api/exams/{id}/review/
     Returns full question-by-question review (right/wrong options, user selected options, explanations)
-    for 2 hours after exam submission. Auto-deletes questions after 2 hours.
+    for completed exam attempts.
     """
     permission_classes = [IsAuthenticated]
 
@@ -267,29 +267,6 @@ class ExamReviewView(APIView):
             attempt = ExamAttempt.objects.get(exam_id=exam_id, user=request.user)
         except ExamAttempt.DoesNotExist:
             return Response({'error': 'Attempt not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        now = timezone.now()
-        submitted_at = attempt.submitted_at or attempt.started_at or now
-
-        elapsed_seconds = (now - submitted_at).total_seconds()
-        two_hours_in_seconds = 7200 # 2 hours in seconds
-
-        # Check if 2 hours passed since exam submission
-        if elapsed_seconds > two_hours_in_seconds:
-            # Auto-delete questions for sections in this exam if not deleted already
-            sections = attempt.exam.sections.all()
-            for sec in sections:
-                sec.questions.all().delete()
-                sec.coding_problems.all().delete()
-
-            return Response({
-                'expired': True,
-                'message': 'The 2-hour post-exam review window has expired. Exam questions have been automatically deleted.',
-                'elapsed_seconds': elapsed_seconds
-            })
-
-        # Report is active (within 2 hours)
-        remaining_seconds = max(0, int(two_hours_in_seconds - elapsed_seconds))
 
         sections_review = []
         for sa in attempt.section_attempts.order_by('section__order'):
