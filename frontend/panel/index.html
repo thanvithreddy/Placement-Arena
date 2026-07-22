@@ -170,11 +170,14 @@
         <div id="view-questions" class="section-view">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Questions Bank</h2>
-                <div class="flex gap-3">
-                    <button onclick="purgeAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-4 py-2.5 rounded-xl font-bold text-sm transition">
-                        🧹 Purge All Data
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="purgeQuestions()" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
+                        🗑️ Purge Questions Bank
                     </button>
-                    <button onclick="openQuestionModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-xs">
+                    <button onclick="purgeSubmissions()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
+                        🧹 Purge Submissions & Violations
+                    </button>
+                    <button onclick="openQuestionModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs transition shadow-xs">
                         + Add Single Question
                     </button>
                 </div>
@@ -360,22 +363,32 @@
 
         <!-- Users View -->
         <div id="view-users" class="section-view">
-            <h2 class="text-2xl font-bold mb-6 text-slate-900">Registered Accounts</h2>
-            <div class="card-white rounded-3xl p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <div class="text-xs text-indigo-600 font-extrabold uppercase mb-1">Admin</div>
-                        <div class="text-lg font-bold text-slate-900">admin1</div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <div class="text-xs text-emerald-600 font-extrabold uppercase mb-1">Candidate 1</div>
-                        <div class="text-lg font-bold text-slate-900">Thanvith</div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                        <div class="text-xs text-emerald-600 font-extrabold uppercase mb-1">Candidate 2</div>
-                        <div class="text-lg font-bold text-slate-900">Tejaswini</div>
-                    </div>
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">User Management</h2>
+                    <p class="text-slate-500 text-sm">Create and manage admin & candidate accounts.</p>
                 </div>
+                <button onclick="openCreateUserModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs transition shadow-xs flex items-center gap-2">
+                    <span>➕ Create New User</span>
+                </button>
+            </div>
+
+            <div class="card-white rounded-3xl overflow-hidden">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs font-bold uppercase">
+                        <tr>
+                            <th class="p-3.5">Username</th>
+                            <th class="p-3.5">Display Name</th>
+                            <th class="p-3.5">Role</th>
+                            <th class="p-3.5">Exams Taken</th>
+                            <th class="p-3.5">Created Date</th>
+                            <th class="p-3.5">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body" class="divide-y divide-slate-100">
+                        <tr><td colspan="6" class="p-6 text-center text-slate-400">Loading registered accounts...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -543,6 +556,49 @@
         </div>
     </div>
 
+    <!-- Modal 4: Create User -->
+    <div id="modal-user" class="modal-overlay">
+        <div class="bg-white p-6 rounded-3xl max-w-md w-full space-y-4 shadow-2xl border border-slate-200">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-xl font-bold text-slate-900">Create New User Account</h3>
+                <button onclick="closeModal('modal-user')" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Username *</label>
+                    <input type="text" id="nu-username" placeholder="e.g. Thanvith">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password *</label>
+                    <input type="password" id="nu-password" placeholder="Enter password...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Display Name</label>
+                    <input type="text" id="nu-display-name" placeholder="Full name (optional)">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Role</label>
+                        <select id="nu-role">
+                            <option value="candidate" selected>Candidate</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Email (Optional)</label>
+                        <input type="email" id="nu-email" placeholder="user@example.com">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                <button onclick="closeModal('modal-user')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs">Cancel</button>
+                <button onclick="submitCreateUser()" class="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-bold text-white text-xs shadow-sm">Create Account</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const user = JSON.parse(localStorage.getItem('user_info') || '{}');
@@ -603,10 +659,37 @@
             if (viewId === 'questions') loadQuestionsBank();
             if (viewId === 'violations') loadViolations();
             if (viewId === 'submissions') loadSubmissions();
+            if (viewId === 'users') loadUsers();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function purgeQuestions() {
+            if (!confirm('⚠️ Are you sure you want to PURGE ALL MCQ questions and Coding problems from the database? Candidate submissions and attempt history will NOT be affected.')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/questions/purge-questions/`, {}, getHeaders());
+                showToast(res.data.message || 'Questions bank purged!', 'success');
+                loadQuestionsBank();
+                loadCodingProblems();
+                loadDashboardStats();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to purge questions', 'error');
+            }
+        }
+
+        async function purgeSubmissions() {
+            if (!confirm('🧹 Are you sure you want to PURGE ALL candidate attempt scores, section attempts, leaderboards, analytics, and violation logs? Questions bank will NOT be affected.')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/questions/purge-submissions/`, {}, getHeaders());
+                showToast(res.data.message || 'Submissions & violations purged!', 'success');
+                loadSubmissions();
+                loadViolations();
+                loadDashboardStats();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to purge submissions', 'error');
+            }
+        }
 
         async function purgeAllData() {
             if (!confirm('⚠️ Are you sure you want to PURGE ALL questions, exams, coding problems, and submissions from the database? This cannot be undone.')) return;
@@ -1146,6 +1229,86 @@
                     `;
                 }).join('');
             } catch(e) { body.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-rose-500 font-medium">Failed to load attempts.</td></tr>'; }
+        }
+
+        async function loadUsers() {
+            const body = document.getElementById('users-table-body');
+            if (!body) return;
+            try {
+                const res = await axios.get(`${API}/admin-panel/users/`, getHeaders());
+                const users = res.data;
+                if (!users || users.length === 0) {
+                    body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">No users found. Click "+ Create New User" to add one.</td></tr>';
+                    return;
+                }
+                body.innerHTML = users.map(u => {
+                    const isSelf = u.id === user.id;
+                    const dateStr = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
+                    const roleBadge = u.role === 'admin' 
+                        ? '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-purple-50 text-purple-700 border border-purple-200">Admin</span>' 
+                        : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">Candidate</span>';
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3.5 font-bold text-slate-900">@${u.username} ${isSelf ? '<span class="text-xs text-indigo-600 font-semibold">(You)</span>' : ''}</td>
+                            <td class="p-3.5 text-slate-700 font-medium">${u.display_name || u.username}</td>
+                            <td class="p-3.5">${roleBadge}</td>
+                            <td class="p-3.5 font-bold text-slate-900">${u.total_exams_taken || 0}</td>
+                            <td class="p-3.5 text-xs text-slate-500 font-mono">${dateStr}</td>
+                            <td class="p-3.5">
+                                ${isSelf ? '<span class="text-xs text-slate-400 italic font-medium">Logged in</span>' : `
+                                    <button onclick="deleteUser(${u.id}, '${u.username}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1 rounded-xl text-xs font-bold transition">
+                                        Delete
+                                    </button>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch(e) {
+                body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-rose-500 font-medium">Failed to load users.</td></tr>';
+            }
+        }
+
+        function openCreateUserModal() { openModal('modal-user'); }
+
+        async function submitCreateUser() {
+            const username = document.getElementById('nu-username').value.trim();
+            const password = document.getElementById('nu-password').value.trim();
+            const display_name = document.getElementById('nu-display-name').value.trim();
+            const role = document.getElementById('nu-role').value;
+            const email = document.getElementById('nu-email').value.trim();
+
+            if (!username || !password) {
+                showToast('Username and Password are required!', 'error');
+                return;
+            }
+
+            try {
+                await axios.post(`${API}/admin-panel/users/`, {
+                    username, password, display_name, role, email
+                }, getHeaders());
+
+                showToast(`🎉 User "@${username}" created successfully!`, 'success');
+                document.getElementById('nu-username').value = '';
+                document.getElementById('nu-password').value = '';
+                document.getElementById('nu-display-name').value = '';
+                document.getElementById('nu-email').value = '';
+                closeModal('modal-user');
+                loadUsers();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to create user', 'error');
+            }
+        }
+
+        async function deleteUser(id, uname) {
+            if (!confirm(`Are you sure you want to delete user "@${uname}"?`)) return;
+            try {
+                await axios.delete(`${API}/admin-panel/users/${id}/`, getHeaders());
+                showToast(`User "@${uname}" deleted`, 'success');
+                loadUsers();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to delete user', 'error');
+            }
         }
 
         if (user.role === 'admin') {

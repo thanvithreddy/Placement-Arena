@@ -14,56 +14,11 @@ import csv
 import io
 
 
-def seed_default_coding_problems():
-    if CodingProblem.objects.exists():
-        return
-        
-    from exams.models import ExamSection
-    coding_section = ExamSection.objects.filter(section_type='coding').last()
-
-    p1 = CodingProblem.objects.create(
-        section=coding_section,
-        title="Reverse an Array",
-        difficulty="easy",
-        statement="Given an array of N integers, print the elements in reverse order separated by space.",
-        input_format="First line contains N. Second line contains N integers.",
-        output_format="Print the array elements in reverse order separated by space.",
-        max_score=100,
-        time_limit_ms=5000,
-        order=1
-    )
-    SampleTestCase.objects.create(problem=p1, input_data="5\n1 2 3 4 5", expected_output="5 4 3 2 1", explanation="Reversed array is 5 4 3 2 1", order=1)
-    SampleTestCase.objects.create(problem=p1, input_data="3\n10 20 30", expected_output="30 20 10", explanation="Reversed array is 30 20 10", order=2)
-    HiddenTestCase.objects.create(problem=p1, input_data="4\n7 8 9 10", expected_output="10 9 8 7", score_weight=1.0, order=1)
-    HiddenTestCase.objects.create(problem=p1, input_data="1\n99", expected_output="99", score_weight=1.0, order=2)
-    HiddenTestCase.objects.create(problem=p1, input_data="6\n1 1 1 1 1 1", expected_output="1 1 1 1 1 1", score_weight=1.0, order=3)
-
-    p2 = CodingProblem.objects.create(
-        section=coding_section,
-        title="Find Maximum in Array",
-        difficulty="medium",
-        statement="Given an array of N integers, find and print the maximum integer in the array.",
-        input_format="First line contains N. Second line contains N space-separated integers.",
-        output_format="Print the maximum integer.",
-        max_score=100,
-        time_limit_ms=5000,
-        order=2
-    )
-    SampleTestCase.objects.create(problem=p2, input_data="4\n1 5 3 2", expected_output="5", explanation="5 is the maximum element.", order=1)
-    SampleTestCase.objects.create(problem=p2, input_data="3\n-1 -5 -2", expected_output="-1", explanation="-1 is the maximum element.", order=2)
-    HiddenTestCase.objects.create(problem=p2, input_data="5\n100 200 500 400 300", expected_output="500", score_weight=1.0, order=1)
-    HiddenTestCase.objects.create(problem=p2, input_data="2\n0 0", expected_output="0", score_weight=1.0, order=2)
-    HiddenTestCase.objects.create(problem=p2, input_data="1\n42", expected_output="42", score_weight=1.0, order=3)
-
-
 class CodingProblemsListView(APIView):
     """List coding problems, optionally filtered by section_id."""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        if not CodingProblem.objects.exists():
-            seed_default_coding_problems()
-
         section_id = request.query_params.get('section_id')
         if section_id:
             problems = CodingProblem.objects.filter(section_id=section_id).order_by('order')

@@ -245,6 +245,60 @@ class QuestionCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PurgeQuestionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        from coding.models import CodingProblem, SampleTestCase, HiddenTestCase
+        from django.db import connection
+
+        Option.objects.all().delete()
+        Question.objects.all().delete()
+        SampleTestCase.objects.all().delete()
+        HiddenTestCase.objects.all().delete()
+        CodingProblem.objects.all().delete()
+
+        try:
+            with connection.cursor() as cursor:
+                if connection.vendor == 'postgresql':
+                    cursor.execute("TRUNCATE TABLE questions_question RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE questions_option RESTART IDENTITY CASCADE;")
+                    cursor.execute("TRUNCATE TABLE coding_codingproblem RESTART IDENTITY CASCADE;")
+                elif connection.vendor == 'sqlite':
+                    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('questions_question', 'questions_option', 'coding_codingproblem');")
+        except Exception:
+            pass
+
+        return Response({'message': 'All MCQ questions and Coding problems have been purged!'})
+
+
+class PurgeSubmissionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        from warnings_log.models import ViolationLog
+        from coding.models import CodingSubmission
+        from exams.models import ExamAttempt, SectionAttempt
+        from leaderboard.models import DailyLeaderboard
+        from analytics.models import UserAnalytics
+
+        ViolationLog.objects.all().delete()
+        CodingSubmission.objects.all().delete()
+        Answer.objects.all().delete()
+        SectionAttempt.objects.all().delete()
+        ExamAttempt.objects.all().delete()
+        DailyLeaderboard.objects.all().delete()
+        UserAnalytics.objects.all().delete()
+
+        return Response({'message': 'All candidate attempts, scores, leaderboards, analytics, and violation logs have been purged!'})
+
+
 class PurgeAllDataView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -257,6 +311,7 @@ class PurgeAllDataView(APIView):
         from exams.models import Exam, ExamSection, ExamAttempt, SectionAttempt
         from leaderboard.models import DailyLeaderboard
         from analytics.models import UserAnalytics
+        from django.db import connection
 
         ViolationLog.objects.all().delete()
         CodingSubmission.objects.all().delete()
@@ -273,7 +328,6 @@ class PurgeAllDataView(APIView):
         ExamSection.objects.all().delete()
         Exam.objects.all().delete()
 
-        # Reset primary key sequence numbers to start back at 1
         try:
             with connection.cursor() as cursor:
                 if connection.vendor == 'postgresql':
@@ -286,4 +340,4 @@ class PurgeAllDataView(APIView):
         except Exception:
             pass
 
-        return Response({'message': 'All questions, exams, submissions, and logs have been completely purged! IDs reset to 1.'})
+        return Response({'message': 'All questions, exams, submissions, and logs have been completely purged!'})
