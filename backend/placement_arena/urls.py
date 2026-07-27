@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/analytics/', include('analytics.urls')),
     path('api/violations/', include('warnings_log.urls')),
     path('api/admin-panel/', include('placement_arena.admin_api_urls')),
+    path('api/communication/', include('communication.urls')),
 
     # Serve frontend HTML files (excluding api, admin, static, media paths)
     re_path(r'^(?!(api|admin|static|media)/)(?P<path>.*)$', serve, {'document_root': FRONTEND_DIR, 'show_indexes': False}),

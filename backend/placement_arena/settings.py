@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'leaderboard',
     'analytics',
     'warnings_log',
+    'communication',
 ]
 
 MIDDLEWARE = [
