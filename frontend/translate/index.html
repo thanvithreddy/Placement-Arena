@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telugu ↔ English Translator | Placement Arena</title>
+    <meta name="description" content="Ultra-powerful Telugu to English and English to Telugu translator powered by Sarvam AI — purpose-built for Indian languages.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:       #08090f;
+            --surface:  #0f1117;
+            --surface2: #161b2e;
+            --border:   #1e2745;
+            --accent:   #f97316;   /* saffron orange — Telugu cultural */
+            --accent2:  #fb923c;
+            --blue:     #6366f1;
+            --green:    #10b981;
+            --text:     #f1f5f9;
+            --muted:    #94a3b8;
+            --glow: 0 0 60px rgba(249,115,22,0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Navbar ── */
+        nav {
+            background: rgba(15,17,23,0.97);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+        .nav-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover { color: var(--text); background: var(--surface2); }
+        .nav-link.active { color: var(--accent2); background: rgba(249,115,22,0.12); }
+
+        /* ── Page ── */
+        .page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,146,60,0.1));
+            border: 1px solid rgba(249,115,22,0.3);
+            color: var(--accent2);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.4rem 1.1rem;
+            border-radius: 50px;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #fb923c 50%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin-bottom: 0.8rem;
+        }
+        .hero-telugu {
+            font-family: 'Noto Sans Telugu', sans-serif;
+            font-size: 1.5rem;
+            color: rgba(251,146,60,0.7);
+            margin-bottom: 0.75rem;
+        }
+        .hero p { color: var(--muted); font-size: 1rem; max-width: 520px; margin: 0 auto; }
+
+        /* ── Engine badge ── */
+        .engine-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.25);
+            color: #34d399;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            margin-top: 0.75rem;
+        }
+
+        /* ── Main translator card ── */
+        .translator-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--glow), 0 0 0 1px rgba(249,115,22,0.05);
+        }
+
+        /* Language selector bar */
+        .lang-bar {
+            display: flex;
+            align-items: center;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+        .lang-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+        .lang-btn:hover { background: rgba(249,115,22,0.07); }
+        .lang-btn.active {
+            background: rgba(249,115,22,0.12);
+            color: var(--accent2);
+        }
+        .lang-flag { font-size: 1.3rem; }
+        .lang-name { font-size: 0.9rem; font-weight: 700; }
+        .lang-sub { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+
+        .swap-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--accent2);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+            flex-shrink: 0;
+            margin: 0 0.5rem;
+        }
+        .swap-btn:hover {
+            background: rgba(249,115,22,0.15);
+            border-color: rgba(249,115,22,0.4);
+            transform: rotate(180deg);
+        }
+
+        /* Text areas */
+        .text-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 320px;
+        }
+        @media(max-width: 700px) {
+            .text-panels { grid-template-columns: 1fr; }
+        }
+
+        .text-panel {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+        .text-panel:last-child { border-right: none; }
+
+        .panel-label {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .char-count { font-weight: 500; }
+
+        textarea.input-area {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            padding: 1.25rem;
+            resize: none;
+            font-family: 'Inter', 'Noto Sans Telugu', sans-serif;
+            min-height: 260px;
+        }
+        textarea.input-area::placeholder { color: rgba(148,163,184,0.4); }
+
+        /* Output area */
+        .output-area {
+            flex: 1;
+            padding: 1.25rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text);
+            font-family: 'Inter', 'Noto Sans Telugu', sans-serif;
+            min-height: 260px;
+            position: relative;
+        }
+        .output-area.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .output-placeholder {
+            color: rgba(148,163,184,0.3);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Loading dots */
+        .loading-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: bounce-dot 1.2s infinite;
+        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce-dot {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Action bar */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface2);
+        }
+
+        .btn-translate {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2.2rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 20px rgba(249,115,22,0.35);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-translate:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(249,115,22,0.5);
+        }
+        .btn-translate:disabled { opacity: 0.6; cursor: wait; transform: none; }
+
+        .btn-icon {
+            padding: 0.6rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+        .btn-icon:hover { color: var(--text); background: var(--surface); border-color: rgba(249,115,22,0.3); }
+
+        .btn-clear {
+            border: 1px solid rgba(244,63,94,0.2);
+            color: #fb7185;
+        }
+        .btn-clear:hover { background: rgba(244,63,94,0.08); border-color: rgba(244,63,94,0.4); }
+
+        .engine-info {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .engine-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        /* Output actions */
+        .output-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            background: rgba(249,115,22,0.04);
+        }
+
+        /* ── Quick phrases ── */
+        .quick-section {
+            margin-top: 2rem;
+        }
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.75rem;
+        }
+        .quick-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.9rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-item:hover {
+            border-color: rgba(249,115,22,0.4);
+            background: rgba(249,115,22,0.05);
+            transform: translateY(-2px);
+        }
+        .quick-te {
+            font-family: 'Noto Sans Telugu', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-bottom: 0.3rem;
+        }
+        .quick-en {
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        /* ── History ── */
+        .history-section { margin-top: 2.5rem; }
+        .history-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+        .history-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .history-item:hover { border-color: rgba(249,115,22,0.3); }
+        .hi-orig { font-size: 0.88rem; color: var(--text); }
+        .hi-arrow { color: var(--accent); font-size: 1.1rem; }
+        .hi-trans { font-size: 0.88rem; color: var(--accent2); text-align: right; }
+
+        /* Notification toast */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1e2a1e;
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #34d399;
+            padding: 0.65rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Speech input support ── */
+        .mic-btn {
+            padding: 0.6rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mic-btn:hover { color: var(--accent2); background: rgba(249,115,22,0.1); }
+        .mic-btn.recording {
+            color: #f43f5e;
+            border-color: rgba(244,63,94,0.4);
+            background: rgba(244,63,94,0.1);
+            animation: mic-pulse 1.5s infinite;
+        }
+        @keyframes mic-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244,63,94,0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(244,63,94,0); }
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-logo">🎯 Placement Arena</span>
+    <div class="nav-links">
+        <a href="/dashboard/index.html" class="nav-link">Dashboard</a>
+        <a href="/communication/index.html" class="nav-link">🗣️ Speaking Lab</a>
+        <a href="/translate/index.html" class="nav-link active">🔤 Translator</a>
+        <a href="/leaderboard/index.html" class="nav-link">Leaderboard</a>
+        <span id="nav-username" style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;"></span>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-badge">🇮🇳 Indian Language AI &nbsp;·&nbsp; Powered by Sarvam AI</div>
+        <h1>Telugu ↔ English<br>Ultra Translator</h1>
+        <p class="hero-telugu">తెలుగు - ఇంగ్లీష్ అనువాదకుడు</p>
+        <p>Purpose-built for Indian languages. Perfect grammar, natural phrasing, context-aware translations.</p>
+        <div class="engine-badge" id="engine-badge">
+            <span>●</span> Sarvam AI · Indian Language Specialist
+        </div>
+    </div>
+
+    <!-- Main Translator -->
+    <div class="translator-card">
+
+        <!-- Language selector -->
+        <div class="lang-bar">
+            <button class="lang-btn" id="btn-src-te" onclick="setDirection('te', 'en')">
+                <span class="lang-flag">🇮🇳</span>
+                <div>
+                    <div class="lang-name">తెలుగు</div>
+                    <div class="lang-sub">Telugu</div>
+                </div>
+            </button>
+            <button class="swap-btn" id="swap-btn" onclick="swapLanguages()" title="Swap languages">⇄</button>
+            <button class="lang-btn" id="btn-src-en" onclick="setDirection('en', 'te')">
+                <span class="lang-flag">🇬🇧</span>
+                <div>
+                    <div class="lang-name">English</div>
+                    <div class="lang-sub">→ తెలుగు</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Text areas -->
+        <div class="text-panels">
+            <!-- Input panel -->
+            <div class="text-panel">
+                <div class="panel-label">
+                    <span id="input-lang-label">తెలుగు Input</span>
+                    <span class="char-count"><span id="char-count">0</span> chars</span>
+                </div>
+                <textarea
+                    class="input-area"
+                    id="input-text"
+                    placeholder="ఇక్కడ తెలుగు టైప్ చేయండి లేదా మాట్లాడండి..."
+                    oninput="onInputChange()"
+                    onkeydown="onKeyDown(event)"
+                ></textarea>
+            </div>
+
+            <!-- Output panel -->
+            <div class="text-panel">
+                <div class="panel-label">
+                    <span id="output-lang-label">English Translation</span>
+                    <span id="output-engine-label" style="font-size:0.68rem;color:var(--green);">Ready</span>
+                </div>
+                <div class="output-area" id="output-area">
+                    <span class="output-placeholder">Translation will appear here...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input action bar -->
+        <div class="action-bar">
+            <button class="btn-translate" id="translate-btn" onclick="doTranslate()">
+                <span>🔤</span> Translate
+            </button>
+            <button class="btn-icon mic-btn" id="mic-btn" onclick="toggleMic()" title="Speak to translate">🎙️</button>
+            <button class="btn-icon btn-clear" onclick="clearAll()">✕ Clear</button>
+            <div class="engine-info" id="engine-info">
+                <span class="engine-dot"></span>
+                <span id="engine-text">Sarvam AI Ready</span>
+            </div>
+        </div>
+
+        <!-- Output action bar -->
+        <div class="output-actions">
+            <button class="btn-icon" onclick="copyTranslation()" id="copy-btn">📋 Copy Translation</button>
+            <button class="btn-icon" onclick="speakTranslation()" id="speak-btn">🔊 Listen</button>
+            <button class="btn-icon" onclick="swapWithTranslation()" title="Translate this back">🔄 Translate Back</button>
+        </div>
+
+    </div>
+
+    <!-- Quick Phrases -->
+    <div class="quick-section">
+        <div class="section-title">⚡ Quick Placement Phrases — Click to Translate</div>
+        <div class="quick-grid" id="quick-grid">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="history-section">
+        <div class="section-title">🕐 Recent Translations</div>
+        <div class="history-list" id="history-list">
+            <div style="color:var(--muted);font-size:0.85rem;text-align:center;padding:1.5rem;">No translations yet. Start typing!</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+    // ── Auth ─────────────────────────────────────────────────────────────
+    const token = localStorage.getItem('access_token');
+    if (!token) window.location.href = '/login/index.html';
+    const API = window.location.origin + '/api';
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+    document.getElementById('nav-username').textContent = userInfo.display_name || userInfo.username || '';
+
+    // ── State ─────────────────────────────────────────────────────────────
+    let sourceLang = 'te-IN';
+    let targetLang = 'en-IN';
+    let translationHistory = JSON.parse(localStorage.getItem('translate_history') || '[]');
+    let translateTimer = null;
+    let isRecording = false;
+    let recognition = null;
+
+    // ── Quick phrases ──────────────────────────────────────────────────────
+    const QUICK_PHRASES = [
+        { te: 'నా పేరు థన్విత్', en: 'My name is Thanvith' },
+        { te: 'నేను కంప్యూటర్ సైన్స్ చదువుతున్నాను', en: 'I am studying Computer Science' },
+        { te: 'నాకు జావాలో నైపుణ్యం ఉంది', en: 'I am proficient in Java' },
+        { te: 'నేను మీ కంపెనీలో చేరాలనుకుంటున్నాను', en: 'I want to join your company' },
+        { te: 'నా బలాలు ఏమిటంటే', en: 'My strengths are' },
+        { te: 'నేను సమస్యలను పరిష్కరించడంలో నిపుణుడను', en: 'I am an expert at problem solving' },
+        { te: 'ధన్యవాదాలు', en: 'Thank you' },
+        { te: 'నేను ఈ అవకాశానికి కృతజ్ఞుడను', en: 'I am grateful for this opportunity' },
+        { te: 'మీరు నన్ను ఎందుకు నియమించాలి?', en: 'Why should you hire me?' },
+        { te: 'నా లక్ష్యం ఏమిటంటే', en: 'My goal is' },
+        { te: 'నేను టీమ్‌లో బాగా పని చేస్తాను', en: 'I work well in a team' },
+        { te: 'నాకు ఐదు సంవత్సరాల అనుభవం ఉంది', en: 'I have five years of experience' },
+    ];
+
+    function renderQuickPhrases() {
+        const grid = document.getElementById('quick-grid');
+        grid.innerHTML = QUICK_PHRASES.map((p, i) => `
+            <div class="quick-item" onclick="useQuickPhrase(${i})">
+                <div class="quick-te">${p.te}</div>
+                <div class="quick-en">${p.en}</div>
+            </div>
+        `).join('');
+    }
+
+    function useQuickPhrase(idx) {
+        const p = QUICK_PHRASES[idx];
+        // If we're in te→en mode, use Telugu as input
+        if (sourceLang === 'te-IN') {
+            document.getElementById('input-text').value = p.te;
+        } else {
+            document.getElementById('input-text').value = p.en;
+        }
+        onInputChange();
+        doTranslate();
+    }
+
+    // ── Direction toggle ───────────────────────────────────────────────────
+    function setDirection(src, tgt) {
+        sourceLang = src === 'te' ? 'te-IN' : 'en-IN';
+        targetLang = tgt === 'en' ? 'en-IN' : 'te-IN';
+        updateDirectionUI();
+        clearAll();
+    }
+
+    function updateDirectionUI() {
+        const isTEtoEN = sourceLang === 'te-IN';
+
+        document.getElementById('btn-src-te').classList.toggle('active', isTEtoEN);
+        document.getElementById('btn-src-en').classList.toggle('active', !isTEtoEN);
+
+        if (isTEtoEN) {
+            document.getElementById('btn-src-te').querySelector('.lang-sub').textContent = '→ English';
+            document.getElementById('btn-src-en').querySelector('.lang-sub').textContent = '→ తెలుగు';
+            document.getElementById('input-lang-label').textContent = 'తెలుగు Input';
+            document.getElementById('output-lang-label').textContent = 'English Translation';
+            document.getElementById('input-text').placeholder = 'ఇక్కడ తెలుగు టైప్ చేయండి లేదా మాట్లాడండి...';
+        } else {
+            document.getElementById('btn-src-te').querySelector('.lang-sub').textContent = 'తెలుగు';
+            document.getElementById('btn-src-en').querySelector('.lang-sub').textContent = '→ తెలుగు';
+            document.getElementById('input-lang-label').textContent = 'English Input';
+            document.getElementById('output-lang-label').textContent = 'తెలుగు Translation';
+            document.getElementById('input-text').placeholder = 'Type English here or speak...';
+        }
+    }
+
+    function swapLanguages() {
+        const tmp = sourceLang;
+        sourceLang = targetLang;
+        targetLang = tmp;
+
+        // Swap text too if there's a translation
+        const outEl = document.getElementById('output-area');
+        const currentOut = outEl.dataset.translation || '';
+        const currentIn = document.getElementById('input-text').value;
+        if (currentOut && currentOut !== '...') {
+            document.getElementById('input-text').value = currentOut;
+            setOutputText(currentIn);
+        } else {
+            document.getElementById('input-text').value = '';
+            setOutputText('');
+        }
+
+        updateDirectionUI();
+        onInputChange();
+    }
+
+    function swapWithTranslation() {
+        const outEl = document.getElementById('output-area');
+        const translation = outEl.dataset.translation || '';
+        if (!translation) return;
+        document.getElementById('input-text').value = translation;
+        const tmp = sourceLang;
+        sourceLang = targetLang;
+        targetLang = tmp;
+        updateDirectionUI();
+        onInputChange();
+        doTranslate();
+    }
+
+    // ── Input handling ─────────────────────────────────────────────────────
+    function onInputChange() {
+        const val = document.getElementById('input-text').value;
+        document.getElementById('char-count').textContent = val.length;
+
+        // Auto-translate after 800ms pause
+        clearTimeout(translateTimer);
+        if (val.trim().length > 2) {
+            translateTimer = setTimeout(doTranslate, 900);
+        }
+    }
+
+    function onKeyDown(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            doTranslate();
+        }
+    }
+
+    // ── Translation ────────────────────────────────────────────────────────
+    async function doTranslate() {
+        const text = document.getElementById('input-text').value.trim();
+        if (!text) return;
+
+        const btn = document.getElementById('translate-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<span>⌛</span> Translating...';
+
+        // Show loading
+        const outEl = document.getElementById('output-area');
+        outEl.innerHTML = `
+            <div class="loading">
+                <div class="loading-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div style="font-size:0.8rem;color:var(--muted);">Sarvam AI is translating...</div>
+            </div>
+        `;
+        outEl.classList.add('loading');
+
+        try {
+            const res = await axios.post(`${API}/communication/translate/`, {
+                text,
+                source_language: sourceLang,
+                target_language: targetLang,
+            }, { headers });
+
+            const { translated_text, engine } = res.data;
+            setOutputText(translated_text);
+
+            // Update engine label
+            const engineLabels = {
+                'sarvam': '✦ Sarvam AI',
+                'mymemory': '✦ MyMemory',
+                'mymemory_fallback': '✦ MyMemory (fallback)',
+            };
+            document.getElementById('output-engine-label').textContent = engineLabels[engine] || engine;
+            document.getElementById('engine-text').textContent = engineLabels[engine] || 'AI Engine';
+
+            // Save to history
+            addToHistory(text, translated_text);
+
+        } catch(e) {
+            const msg = e.response?.data?.error || 'Translation failed. Please try again.';
+            outEl.classList.remove('loading');
+            outEl.innerHTML = `<div style="color:#fb7185;font-size:0.9rem;padding:0.5rem;">❌ ${msg}</div>`;
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>🔤</span> Translate';
+        }
+    }
+
+    function setOutputText(text) {
+        const outEl = document.getElementById('output-area');
+        outEl.classList.remove('loading');
+        if (!text) {
+            outEl.innerHTML = '<span class="output-placeholder">Translation will appear here...</span>';
+            outEl.dataset.translation = '';
+            return;
+        }
+        outEl.textContent = text;
+        outEl.dataset.translation = text;
+    }
+
+    // ── Copy & Speak ──────────────────────────────────────────────────────
+    async function copyTranslation() {
+        const text = document.getElementById('output-area').dataset.translation || '';
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        showToast('✓ Translation copied to clipboard!');
+    }
+
+    function speakTranslation() {
+        const text = document.getElementById('output-area').dataset.translation || '';
+        if (!text) return;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = targetLang === 'en-IN' ? 'en-IN' : 'te-IN';
+        utter.rate = 0.9;
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utter);
+        showToast('🔊 Speaking...');
+    }
+
+    function clearAll() {
+        document.getElementById('input-text').value = '';
+        document.getElementById('char-count').textContent = '0';
+        setOutputText('');
+        document.getElementById('output-engine-label').textContent = 'Ready';
+        clearTimeout(translateTimer);
+    }
+
+    // ── Microphone input ───────────────────────────────────────────────────
+    function toggleMic() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            showToast('❌ Speech recognition not supported in this browser. Use Chrome or Edge.');
+            return;
+        }
+
+        const micBtn = document.getElementById('mic-btn');
+
+        if (isRecording) {
+            if (recognition) recognition.stop();
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            micBtn.title = 'Speak to translate';
+            return;
+        }
+
+        recognition = new SpeechRecognition();
+        recognition.lang = sourceLang === 'te-IN' ? 'te-IN' : 'en-IN';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = (e) => {
+            const transcript = e.results[0][0].transcript;
+            document.getElementById('input-text').value = transcript;
+            onInputChange();
+            doTranslate();
+        };
+        recognition.onend = () => {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+        };
+        recognition.onerror = (e) => {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            showToast(`❌ Mic error: ${e.error}`);
+        };
+
+        recognition.start();
+        isRecording = true;
+        micBtn.classList.add('recording');
+        micBtn.title = 'Recording... click to stop';
+        showToast('🎙️ Listening... speak now');
+    }
+
+    // ── History ────────────────────────────────────────────────────────────
+    function addToHistory(original, translation) {
+        const entry = {
+            original,
+            translation,
+            sourceLang,
+            targetLang,
+            ts: Date.now(),
+        };
+        translationHistory.unshift(entry);
+        if (translationHistory.length > 15) translationHistory = translationHistory.slice(0, 15);
+        localStorage.setItem('translate_history', JSON.stringify(translationHistory));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const el = document.getElementById('history-list');
+        if (!translationHistory.length) {
+            el.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;text-align:center;padding:1.5rem;">No translations yet. Start typing!</div>';
+            return;
+        }
+        el.innerHTML = translationHistory.slice(0, 8).map((h, i) => {
+            const orig = h.original.length > 60 ? h.original.slice(0, 60) + '…' : h.original;
+            const trans = h.translation.length > 60 ? h.translation.slice(0, 60) + '…' : h.translation;
+            return `
+                <div class="history-item" onclick="reloadHistory(${i})">
+                    <div class="hi-orig">${orig}</div>
+                    <div class="hi-arrow">→</div>
+                    <div class="hi-trans">${trans}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function reloadHistory(idx) {
+        const h = translationHistory[idx];
+        sourceLang = h.sourceLang;
+        targetLang = h.targetLang;
+        updateDirectionUI();
+        document.getElementById('input-text').value = h.original;
+        onInputChange();
+        setOutputText(h.translation);
+    }
+
+    // ── Toast ──────────────────────────────────────────────────────────────
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ── Boot ───────────────────────────────────────────────────────────────
+    updateDirectionUI();
+    renderQuickPhrases();
+    renderHistory();
+
+    // Set initial active state
+    document.getElementById('btn-src-te').classList.add('active');
+</script>
+</body>
+</html>

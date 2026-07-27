@@ -1,4 +1,6 @@
 import re
+import requests as http_requests
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -516,3 +518,168 @@ class AdminAttemptsView(APIView):
         attempts = SpeechAttempt.objects.all().order_by('-created_at')[:100]
         serializer = SpeechAttemptSerializer(attempts, many=True)
         return Response(serializer.data)
+
+
+class TranslateView(APIView):
+    """
+    POST /api/communication/translate/
+    Body: { text, source_language, target_language }
+      source_language / target_language: 'te-IN' or 'en-IN'
+    Uses Sarvam AI (primary) with MyMemory as automatic fallback.
+    """
+    permission_classes = [IsAuthenticated]
+
+    # Map our short codes to Sarvam language codes
+    LANG_MAP = {
+        'te': 'te-IN',
+        'en': 'en-IN',
+        'te-IN': 'te-IN',
+        'en-IN': 'en-IN',
+    }
+    # MyMemory uses different codes
+    MYMEMORY_MAP = {
+        'te-IN': 'te',
+        'en-IN': 'en',
+        'te': 'te',
+        'en': 'en',
+    }
+
+    def _translate_sarvam(self, text, source, target):
+        """
+        Call Sarvam AI translate API.
+        Returns translated string or raises exception.
+        """
+        api_key = getattr(settings, 'SARVAM_API_KEY', '')
+        if not api_key:
+            raise ValueError('No Sarvam API key configured')
+
+        src = self.LANG_MAP.get(source, source)
+        tgt = self.LANG_MAP.get(target, target)
+
+        # Split into chunks of 1900 chars to stay under 2000 char limit
+        chunks = self._chunk_text(text, 1900)
+        translated_parts = []
+
+        for chunk in chunks:
+            resp = http_requests.post(
+                'https://api.sarvam.ai/translate',
+                headers={
+                    'api-subscription-key': api_key,
+                    'Content-Type': 'application/json',
+                },
+                json={
+                    'input': chunk,
+                    'source_language_code': src,
+                    'target_language_code': tgt,
+                    'model': 'sarvam-translate:v1',
+                    'enable_preprocessing': True,
+                },
+                timeout=20,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            translated_parts.append(data.get('translated_text', ''))
+
+        return ' '.join(translated_parts)
+
+    def _translate_mymemory(self, text, source, target):
+        """
+        Fallback: MyMemory free translation API.
+        Splits into 500-char chunks automatically.
+        """
+        src = self.MYMEMORY_MAP.get(source, source.split('-')[0])
+        tgt = self.MYMEMORY_MAP.get(target, target.split('-')[0])
+        langpair = f'{src}|{tgt}'
+
+        chunks = self._chunk_text(text, 480)
+        translated_parts = []
+
+        for chunk in chunks:
+            resp = http_requests.get(
+                'https://api.mymemory.translated.net/get',
+                params={'q': chunk, 'langpair': langpair},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            translated_parts.append(data['responseData']['translatedText'])
+
+        return ' '.join(translated_parts)
+
+    def _chunk_text(self, text, max_len):
+        """Split text into chunks at sentence boundaries, max max_len chars each."""
+        if len(text) <= max_len:
+            return [text]
+        # Split at period/newline boundaries
+        sentences = re.split(r'(?<=[.!?\n])\s+', text)
+        chunks = []
+        current = ''
+        for sentence in sentences:
+            if len(current) + len(sentence) + 1 <= max_len:
+                current = (current + ' ' + sentence).strip()
+            else:
+                if current:
+                    chunks.append(current)
+                # If single sentence is too long, split at word boundary
+                if len(sentence) > max_len:
+                    words = sentence.split()
+                    current = ''
+                    for word in words:
+                        if len(current) + len(word) + 1 <= max_len:
+                            current = (current + ' ' + word).strip()
+                        else:
+                            if current:
+                                chunks.append(current)
+                            current = word
+                else:
+                    current = sentence
+        if current:
+            chunks.append(current)
+        return chunks if chunks else [text]
+
+    def post(self, request):
+        text = request.data.get('text', '').strip()
+        source = request.data.get('source_language', 'te-IN')
+        target = request.data.get('target_language', 'en-IN')
+
+        if not text:
+            return Response({'error': 'No text provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if len(text) > 10000:
+            return Response({'error': 'Text too long. Maximum 10,000 characters.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        src_norm = self.LANG_MAP.get(source, source)
+        tgt_norm = self.LANG_MAP.get(target, target)
+
+        # Try Sarvam AI first
+        engine_used = 'sarvam'
+        try:
+            translated = self._translate_sarvam(text, src_norm, tgt_norm)
+        except ValueError:
+            # No API key - use MyMemory
+            engine_used = 'mymemory'
+            try:
+                translated = self._translate_mymemory(text, src_norm, tgt_norm)
+            except Exception as e:
+                return Response(
+                    {'error': f'Translation failed: {str(e)}'},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
+        except Exception as e:
+            # Sarvam failed (rate limit / error) - fallback to MyMemory
+            engine_used = 'mymemory_fallback'
+            try:
+                translated = self._translate_mymemory(text, src_norm, tgt_norm)
+            except Exception as e2:
+                return Response(
+                    {'error': f'All translation engines failed. Sarvam: {str(e)} | MyMemory: {str(e2)}'},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
+
+        return Response({
+            'translated_text': translated,
+            'source_language': src_norm,
+            'target_language': tgt_norm,
+            'engine': engine_used,
+            'char_count': len(text),
+        })

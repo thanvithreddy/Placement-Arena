@@ -151,3 +151,6 @@ SIMPLE_JWT = {
     'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
     'JTI_CLAIM': 'jti',
 }
+
+# ── Sarvam AI Translation API ──────────────────────────────────────────────────
+SARVAM_API_KEY = os.getenv('SARVAM_API_KEY', '')
