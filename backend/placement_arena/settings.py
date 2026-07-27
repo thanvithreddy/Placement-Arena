@@ -154,3 +154,6 @@ SIMPLE_JWT = {
 
 # ── Sarvam AI Translation API ──────────────────────────────────────────────────
 SARVAM_API_KEY = os.getenv('SARVAM_API_KEY', '')
+
+# ── Gemini AI API (Translation + English Grammar Correction) ───────────────────
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
