@@ -691,3 +691,12 @@ class AdminAttemptsView(APIView):
             return Response({'error': 'Admin access required'}, status=status.HTTP_403_FORBIDDEN)
         attempts = SpeechAttempt.objects.all().order_by('-created_at')[:100]
         return Response(SpeechAttemptSerializer(attempts, many=True).data)
+
+
+class PurgeHistoryView(APIView):
+    """DELETE /api/communication/history/purge/ — delete all speech attempts for the current user"""
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        deleted_count, _ = SpeechAttempt.objects.filter(user=request.user).delete()
+        return Response({'deleted': deleted_count, 'message': f'{deleted_count} attempt(s) purged successfully.'})
