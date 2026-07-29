@@ -4,23 +4,33 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'placement_arena.settings'
 import django
 django.setup()
 
-from communication.views import analyze_speech
+from communication.views import _rule_based_correct, analyze_speech
 
-transcript = "hey hello my name is tanvith I am currently pursuing a BTech final year industry of computer science engineering and artificial Intelligence and machine learning I have done certification program in Java and also done project related to Ai and that's all about myself"
-result = analyze_speech(transcript, 45)
+# Test 1: the exact failing sentence from the screenshot
+t1 = "yesterday I go to the store for buy some milk but the shop was closed already"
+corrected, errors, vocab = _rule_based_correct(t1)
+print("=== TEST 1: Tense + preposition + word order ===")
+print("IN: ", t1)
+print("OUT:", corrected)
+print("ERRORS:", len(errors))
+for e in errors:
+    print(f"  [{e['original']}] -> [{e['corrected']}]: {e['type']}")
+print()
 
-print("=== CORRECTED VERSION ===")
-print(result['corrected_transcript'])
+# Test 2: Thanvith's self intro
+t2 = "hey hello my name is tanvith I am currently pursuing a BTech final year industry of computer science engineering and artificial Intelligence and machine learning I have done certification program in Java and also done project related to Ai and that's all about myself"
+corrected2, errors2, vocab2 = _rule_based_correct(t2)
+print("=== TEST 2: Self-intro ===")
+print("IN: ", t2[:80], "...")
+print("OUT:", corrected2[:120], "...")
+print("ERRORS:", len(errors2))
+print("VOCAB:", len(vocab2))
 print()
-print("=== GRAMMAR ERRORS DETECTED ===")
-for e in result['grammar_errors']:
-    print(f"  ORIG: {e['original']}")
-    print(f"  FIX:  {e['corrected']}")
-    print(f"  WHY:  {e['type']}")
-    print()
-print("=== VOCAB UPGRADES ===")
-for v in result['vocabulary_upgrades']:
-    print(f"  {v['original']} -> {v['upgrade']}")
-print()
-print(f"Grammar: {result['grammar_score']}%  Fluency: {result['fluency_score']}%  Vocab: {result['vocabulary_score']}%  Overall: {result['overall_score']}/10")
-print(f"Rating: {result['rating_label']}")
+
+# Test 3: full analyze_speech (no Gemini key, uses rule-based)
+result = analyze_speech(t1, 10)
+print("=== TEST 3: Full analysis on test 1 ===")
+print("Corrected:", result['corrected_transcript'])
+print("Grammar errors:", len(result['grammar_errors']))
+print("Engine:", result['engine'])
+print("Score:", result['overall_score'])

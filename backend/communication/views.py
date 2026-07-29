@@ -112,51 +112,186 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
 
 
 def _rule_based_correct(text: str):
-    """Lightweight rule-based fallback when Gemini is unavailable."""
+    """
+    Comprehensive rule-based grammar corrector — covers 80+ common Indian English errors.
+    Used as fallback when Gemini API key is not configured.
+    """
     PHRASE_REWRITES = [
-        (r'^hey hello\b', 'Hello,', 'Informal opening'),
+        # ── Tense errors (very common in Indian English) ──────────────────────────
+        (r'\byesterday I go\b', 'yesterday I went', 'Past tense error: "go" → "went"'),
+        (r'\byesterday I goes\b', 'yesterday I went', 'Past tense error: "goes" → "went"'),
+        (r'\byesterday I come\b', 'yesterday I came', 'Past tense error: "come" → "came"'),
+        (r'\byesterday I see\b', 'yesterday I saw', 'Past tense error: "see" → "saw"'),
+        (r'\byesterday I eat\b', 'yesterday I ate', 'Past tense error: "eat" → "ate"'),
+        (r'\byesterday I buy\b', 'yesterday I bought', 'Past tense error: "buy" → "bought"'),
+        (r'\byesterday I give\b', 'yesterday I gave', 'Past tense error: "give" → "gave"'),
+        (r'\byesterday I take\b', 'yesterday I took', 'Past tense error: "take" → "took"'),
+        (r'\byesterday I make\b', 'yesterday I made', 'Past tense error: "make" → "made"'),
+        (r'\byesterday I tell\b', 'yesterday I told', 'Past tense error: "tell" → "told"'),
+        (r'\byesterday I speak\b', 'yesterday I spoke', 'Past tense error: "speak" → "spoke"'),
+        (r'\byesterday I write\b', 'yesterday I wrote', 'Past tense error: "write" → "wrote"'),
+        (r'\byesterday I run\b', 'yesterday I ran', 'Past tense error: "run" → "ran"'),
+        (r'\byesterday I do\b', 'yesterday I did', 'Past tense error: "do" → "did"'),
+        (r'\byesterday I meet\b', 'yesterday I met', 'Past tense error: "meet" → "met"'),
+        (r'\byesterday I find\b', 'yesterday I found', 'Past tense error: "find" → "found"'),
+        (r'\bI go to the\b', 'I went to the', 'Past tense: "go" → "went"'),
+        (r'\bI goes to\b', 'I went to', 'Subject-verb agreement + tense error'),
+        (r'\bhe go to\b', 'he went to', 'Past tense: "go" → "went"'),
+        (r'\bshe go to\b', 'she went to', 'Past tense: "go" → "went"'),
+        (r'\bwe go to\b', 'we went to', 'Past tense: "go" → "went"'),
+        (r'\bthey go to\b', 'they went to', 'Past tense: "go" → "went"'),
+
+        # ── "for + verb" → "to + verb" (very common Indian error) ───────────────
+        (r'\bfor buy\b', 'to buy', 'Preposition error: "for buy" → "to buy"'),
+        (r'\bfor get\b', 'to get', 'Preposition error: "for get" → "to get"'),
+        (r'\bfor eat\b', 'to eat', 'Preposition error: "for eat" → "to eat"'),
+        (r'\bfor go\b', 'to go', 'Preposition error: "for go" → "to go"'),
+        (r'\bfor see\b', 'to see', 'Preposition error: "for see" → "to see"'),
+        (r'\bfor take\b', 'to take', 'Preposition error: "for take" → "to take"'),
+        (r'\bfor study\b', 'to study', 'Preposition error: "for study" → "to study"'),
+        (r'\bfor do\b', 'to do', 'Preposition error: "for do" → "to do"'),
+        (r'\bfor make\b', 'to make', 'Preposition error: "for make" → "to make"'),
+        (r'\bfor learn\b', 'to learn', 'Preposition error: "for learn" → "to learn"'),
+        (r'\bfor work\b', 'to work', 'Preposition error: "for work" → "to work"'),
+        (r'\bfor help\b', 'to help', 'Preposition error: "for help" → "to help"'),
+        (r'\bfor come\b', 'to come', 'Preposition error: "for come" → "to come"'),
+        (r'\bfor tell\b', 'to tell', 'Preposition error: "for tell" → "to tell"'),
+        (r'\bfor give\b', 'to give', 'Preposition error: "for give" → "to give"'),
+
+        # ── Subject-verb agreement errors ─────────────────────────────────────────
+        (r'\bthey was\b', 'they were', 'Subject-verb agreement: "they was" → "they were"'),
+        (r'\bwe was\b', 'we were', 'Subject-verb agreement: "we was" → "we were"'),
+        (r'\byou was\b', 'you were', 'Subject-verb agreement: "you was" → "you were"'),
+        (r'\bhe were\b', 'he was', 'Subject-verb agreement: "he were" → "he was"'),
+        (r'\bshe were\b', 'she was', 'Subject-verb agreement: "she were" → "she was"'),
+        (r'\bI are\b', 'I am', 'Subject-verb agreement: "I are" → "I am"'),
+        (r'\bI has\b', 'I have', 'Subject-verb agreement: "I has" → "I have"'),
+        (r'\bhe have\b', 'he has', 'Subject-verb agreement: "he have" → "he has"'),
+        (r'\bshe have\b', 'she has', 'Subject-verb agreement: "she have" → "she has"'),
+        (r'\bI goes\b', 'I go', 'Subject-verb agreement: "I goes" → "I go"'),
+        (r'\bI comes\b', 'I come', 'Subject-verb agreement: "I comes" → "I come"'),
+
+        # ── "already" misuse (common in Indian English) ──────────────────────────
+        (r'\bwas closed already\b', 'was already closed', 'Word order: "closed already" → "already closed"'),
+        (r'\bwas opened already\b', 'was already open', 'Word order: "opened already" → "already open"'),
+        (r'\bhas done already\b', 'has already done', 'Word order fix'),
+        (r'\bdone already\b', 'already done', 'Word order: move "already" before verb'),
+        (r'\bcompleted already\b', 'already completed', 'Word order fix'),
+        (r'\bleft already\b', 'already left', 'Word order fix'),
+        (r'\barrived already\b', 'already arrived', 'Word order fix'),
+        (r'\bfinished already\b', 'already finished', 'Word order fix'),
+
+        # ── Double auxiliary / wrong form ─────────────────────────────────────────
+        (r'\bI have went\b', 'I have gone', '"Have went" is incorrect → "have gone"'),
+        (r'\bI have did\b', 'I have done', '"Have did" is incorrect → "have done"'),
+        (r'\bI have came\b', 'I have come', '"Have came" is incorrect → "have come"'),
+        (r'\bI have ate\b', 'I have eaten', '"Have ate" is incorrect → "have eaten"'),
+        (r'\bI have ran\b', 'I have run', '"Have ran" is incorrect → "have run"'),
+        (r'\bI am knowing\b', 'I know', '"Am knowing" is incorrect → "know"'),
+        (r'\bI am having\b', 'I have', '"Am having" is incorrect → "I have"'),
+        (r'\bI am understanding\b', 'I understand', '"Am understanding" is incorrect → "understand"'),
+        (r'\bI am wanting\b', 'I want', '"Am wanting" is incorrect → "want"'),
+        (r'\bI am liking\b', 'I like', '"Am liking" is incorrect → "like"'),
+        (r'\bI am thinking\b', 'I think', '"Am thinking" is incorrect in simple context → "think"'),
+        (r'\bI done\b', 'I did', '"I done" is incorrect → "I did"'),
+
+        # ── Preposition errors ─────────────────────────────────────────────────────
+        (r'\bmarried with\b', 'married to', 'Preposition error: "married with" → "married to"'),
+        (r'\bdiscuss about\b', 'discuss', '"Discuss" doesn\'t need "about"'),
+        (r'\bexplain about\b', 'explain', '"Explain" doesn\'t need "about"'),
+        (r'\benter into\b', 'enter', '"Enter" doesn\'t need "into"'),
+        (r'\bsince (\d+) years\b', r'for \1 years', 'Use "for" with duration, not "since"'),
+        (r'\bsince long time\b', 'for a long time', '"Since" needs a point in time; use "for" with duration'),
+
+        # ── Article errors ─────────────────────────────────────────────────────────
+        (r'\ban university\b', 'a university', 'Article: "university" takes "a" (consonant sound)'),
+        (r'\ba hour\b', 'an hour', 'Article: "hour" takes "an" (vowel sound)'),
+        (r'\ba honest\b', 'an honest', 'Article: "honest" takes "an" (vowel sound)'),
+        (r'\ba MBA\b', 'an MBA', 'Article: abbreviation starting with vowel sound takes "an"'),
+        (r'\ba MCA\b', 'an MCA', 'Article: abbreviation starting with vowel sound takes "an"'),
+
+        # ── Double negatives ───────────────────────────────────────────────────────
+        (r"\bdon't know nothing\b", "don't know anything", 'Double negative error'),
+        (r"\bcan't do nothing\b", "can't do anything", 'Double negative error'),
+        (r"\bdidn't go nowhere\b", "didn't go anywhere", 'Double negative error'),
+
+        # ── Placement/self-intro errors ────────────────────────────────────────────
+        (r'^hey hello\b', 'Hello,', 'Informal opening: use "Hello," or "Good morning,"'),
         (r'^hey\b', 'Hello,', 'Informal opening'),
         (r'\bI am currently pursuing a\b', 'I am currently in my', 'Rephrase for formality'),
-        (r'\bBTech\b', 'B.Tech', 'Use B.Tech'),
-        (r'\bBtech\b', 'B.Tech', 'Use B.Tech'),
-        (r'\bfinal year industry of\b', 'final year in the field of', 'Fix "industry of"'),
-        (r'\bindustry of\b', 'field of', 'Fix "industry of"'),
-        (r'\bI have done certification\b', 'I have completed a certification', 'done→completed'),
-        (r'\bhave done certification\b', 'have completed a certification', 'done→completed'),
-        (r'\bdone project related to\b', 'completed a project related to', 'done→completed + article'),
-        (r'\balso done project\b', 'also completed a project', 'done→completed + article'),
-        (r'\bhave done\b', 'have completed', 'done→completed'),
-        (r'\brelated to Ai\b', 'related to Artificial Intelligence', 'Expand AI'),
-        (r'\brelated to ai\b', 'related to Artificial Intelligence', 'Expand AI'),
+        (r'\bBTech\b', 'B.Tech', 'Write as "B.Tech"'),
+        (r'\bBtech\b', 'B.Tech', 'Write as "B.Tech"'),
+        (r'\bfinal year industry of\b', 'final year in the field of', '"industry of" → "field of"'),
+        (r'\bindustry of\b', 'field of', '"industry of" → "field of"'),
+        (r'\bI have done certification\b', 'I have completed a certification', '"done" → "completed"'),
+        (r'\bhave done certification\b', 'have completed a certification', '"done" → "completed"'),
+        (r'\bdone project related to\b', 'completed a project related to', '"done" → "completed"'),
+        (r'\balso done project\b', 'also completed a project', '"done" → "completed"'),
+        (r'\bhave done\b', 'have completed', '"have done" → "have completed"'),
+        (r'\brelated to Ai\b', 'related to Artificial Intelligence', 'Expand "AI"'),
+        (r'\brelated to ai\b', 'related to Artificial Intelligence', 'Expand "AI"'),
         (r"\bthat'?s all about myself\b", 'That is a brief overview of my background.', 'Formal closing'),
         (r"\bthat'?s all about me\b", 'That is a brief introduction about myself.', 'Formal closing'),
         (r'\bcomputer science engineering and artificial intelligence and machine learning\b',
-         'Computer Science Engineering with a specialization in Artificial Intelligence and Machine Learning', 'Expand degree'),
-        (r'\bartificial intelligence and machine learning\b', 'Artificial Intelligence and Machine Learning', 'Capitalize'),
+         'Computer Science Engineering with a specialization in Artificial Intelligence and Machine Learning',
+         'Expand and format degree title'),
+        (r'\bartificial intelligence and machine learning\b',
+         'Artificial Intelligence and Machine Learning', 'Capitalize subject name'),
         (r'\bcomputer science engineering\b', 'Computer Science Engineering', 'Capitalize'),
         (r'\bcomputer science\b', 'Computer Science', 'Capitalize'),
-        (r'\bthey was\b', 'they were', 'Agreement error'),
-        (r'\bhe were\b', 'he was', 'Agreement error'),
-        (r'\bwe was\b', 'we were', 'Agreement error'),
-        (r'\bI are\b', 'I am', 'Agreement error'),
-        (r'\bI has\b', 'I have', 'Agreement error'),
-        (r'\bwanna\b', 'want to', 'Informal'),
-        (r'\bgonna\b', 'going to', 'Informal'),
-        (r'\blots of\b', 'numerous', 'Informal'),
+
+        # ── Informal → formal ──────────────────────────────────────────────────────
+        (r'\bwanna\b', 'want to', 'Informal: "wanna" → "want to"'),
+        (r'\bgonna\b', 'going to', 'Informal: "gonna" → "going to"'),
+        (r'\bgotta\b', 'have to', 'Informal: "gotta" → "have to"'),
+        (r'\bkinda\b', 'somewhat', 'Informal: "kinda" → "somewhat"'),
+        (r'\bsorta\b', 'somewhat', 'Informal: "sorta" → "somewhat"'),
+        (r'\blots of\b', 'numerous', 'Informal: "lots of" → "numerous"'),
+        (r'\ba lot of\b', 'numerous', 'Informal: "a lot of" → "numerous"'),
+        (r'\bgot opportunity\b', 'had the opportunity', 'Formal: "got opportunity" → "had the opportunity"'),
+        (r'\bgot chance\b', 'had the opportunity', 'Formal phrasing'),
     ]
+
+    # Vocabulary upgrades (whole word replacements)
+    VOCAB_UPGRADES = [
+        (r'\bgood at\b', 'proficient in', 'More professional than "good at"'),
+        (r'\btalk about\b', 'elaborate on', 'More formal than "talk about"'),
+        (r'\bwork on\b', 'contribute to', 'More formal than "work on"'),
+        (r'\bliked\b', 'appreciated', 'More professional than "liked"'),
+        (r'\bi think\b', 'I believe', 'More confident than "I think"'),
+        (r'\bstuff\b', 'aspects', 'More formal than "stuff"'),
+        (r'\bthings\b', 'elements', 'More formal than "things"'),
+        (r'\bmaybe\b', 'potentially', 'More formal than "maybe"'),
+        (r'\bfix\b', 'resolve', 'More formal than "fix"'),
+        (r'\bshow\b', 'demonstrate', 'More formal than "show"'),
+        (r'\bfast\b', 'efficient', 'More professional than "fast"'),
+    ]
+
     errors = []
+    vocab_applied = []
     result = text
+
     for pattern, replacement, desc in PHRASE_REWRITES:
         matches = re.findall(pattern, result, flags=re.IGNORECASE)
         if matches:
             orig = matches[0] if isinstance(matches[0], str) else matches[0]
             errors.append({'original': orig, 'corrected': replacement, 'type': desc})
             result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
+
+    for pattern, replacement, reason in VOCAB_UPGRADES:
+        m = re.search(pattern, result, flags=re.IGNORECASE)
+        if m:
+            vocab_applied.append({'original': m.group(0), 'upgrade': replacement, 'reason': reason})
+            result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
+
+    # Fix capitalization
+    result = result.strip()
     if result and result[0].islower():
         result = result[0].upper() + result[1:]
     result = re.sub(r'(?<=[.!?]\s)([a-z])', lambda m: m.group(1).upper(), result)
-    result = re.sub(r'(?<![A-Z])\bi\b', 'I', result)
-    return result, errors
+    result = re.sub(r'(?<![A-Za-z])\bi\b(?![A-Za-z])', 'I', result)
+
+    return result, errors, vocab_applied
 
 
 def analyze_speech(transcript: str, duration_seconds: int) -> dict:
@@ -185,9 +320,8 @@ def analyze_speech(transcript: str, duration_seconds: int) -> dict:
         vocabulary_upgrades = gemini_result.get('vocabulary_upgrades', [])
         extra_tips = gemini_result.get('extra_tips', [])
     else:
-        # Fallback to rule-based
-        corrected_transcript, grammar_errors = _rule_based_correct(text)
-        vocabulary_upgrades = []
+        # Fallback to comprehensive rule-based engine
+        corrected_transcript, grammar_errors, vocabulary_upgrades = _rule_based_correct(text)
         extra_tips = []
 
     # ── Scoring ────────────────────────────────────────────────────────────
