@@ -340,6 +340,37 @@ class PurgeExamCountView(APIView):
         return Response({'message': f'Exam question count purged across all {updated_count} exam sections! Question counts reset to 0.'})
 
 
+class PurgeExamsView(APIView):
+    """
+    POST /api/admin-panel/questions/purge-exams/
+    Deletes all exams, sections, and attempts, resetting Total Exams count to 0.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        from exams.models import Exam, ExamSection, ExamAttempt, SectionAttempt
+        from leaderboard.models import DailyLeaderboard
+        from analytics.models import UserAnalytics
+        from coding.models import CodingSubmission
+        from warnings_log.models import ViolationLog
+        from questions.models import Answer, Question
+
+        ViolationLog.objects.all().delete()
+        CodingSubmission.objects.all().delete()
+        Answer.objects.all().delete()
+        SectionAttempt.objects.all().delete()
+        ExamAttempt.objects.all().delete()
+        DailyLeaderboard.objects.all().delete()
+        UserAnalytics.objects.all().delete()
+        ExamSection.objects.all().delete()
+        deleted_count, _ = Exam.objects.all().delete()
+
+        return Response({'message': f'All exams purged successfully! Total Exams is now 0.'})
+
+
 class PurgeAllDataView(APIView):
     permission_classes = [IsAuthenticated]
 

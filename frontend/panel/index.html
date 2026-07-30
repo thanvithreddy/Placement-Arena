@@ -82,7 +82,12 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="card-white p-6 rounded-2xl">
-                    <div class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Exams</div>
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Exams</div>
+                        <button onclick="purgeExams()" class="text-xs text-rose-600 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-lg transition" title="Purge all created exams and reset count to 0">
+                            🗑️ Purge Exams
+                        </button>
+                    </div>
                     <div class="text-3xl font-extrabold text-slate-900" id="stat-exams">...</div>
                 </div>
                 <div class="card-white p-6 rounded-2xl">
@@ -182,6 +187,9 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Questions Bank</h2>
                 <div class="flex flex-wrap gap-2">
+                    <button onclick="purgeExams()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
+                        🗑️ Purge All Exams (Reset Total)
+                    </button>
                     <button onclick="purgeExamCount()" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
                         🔥 Purge Exam Count
                     </button>
@@ -678,6 +686,17 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function purgeExams() {
+            if (!confirm('⚠️ Are you sure you want to PURGE ALL EXAMS? This will delete all created exams, sections, and candidate attempts, resetting Total Exams count to 0.')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/questions/purge-exams/`, {}, getHeaders());
+                showToast(res.data.message || 'All exams purged!', 'success');
+                loadDashboardStats();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to purge exams', 'error');
+            }
+        }
 
         async function purgeExamCount() {
             if (!confirm('🔥 Are you sure you want to PURGE/RESET question counts across all exam sections? All section question counts will reset to 0 and will increase only as you upload questions.')) return;
