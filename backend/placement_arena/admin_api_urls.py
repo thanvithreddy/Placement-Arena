@@ -8,7 +8,7 @@ from exams.views import (
     AdminExamListView, AdminExamDetailView, CreateTodayExamView,
     AdminAttemptListView, PurgeExamCountView
 )
-from questions.views import BulkImportView, QuestionBankView, QuestionCreateView, PurgeAllDataView, PurgeQuestionsView, PurgeSubmissionsView
+from questions.views import BulkImportView, QuestionBankView, QuestionCreateView, PurgeAllDataView, PurgeQuestionsView, PurgeSubmissionsView, PurgeExamCountView as QuestionPurgeExamCountView
 from coding.views import AdminCodingProblemView, AdminCodingProblemDetailView, AdminTestCaseView, BulkImportCodingView
 from warnings_log.views import AdminViolationListView
 from authentication.views import AdminUserListView, AdminUserDetailView
@@ -28,6 +28,7 @@ urlpatterns = [
     path('questions/purge/', PurgeAllDataView.as_view(), name='admin_purge_data'),
     path('questions/purge-questions/', PurgeQuestionsView.as_view(), name='admin_purge_questions'),
     path('questions/purge-submissions/', PurgeSubmissionsView.as_view(), name='admin_purge_submissions'),
+    path('questions/purge-exam-count/', QuestionPurgeExamCountView.as_view(), name='admin_purge_exam_count'),
 
     # Coding problems
     path('coding/', AdminCodingProblemView.as_view(), name='admin_coding_problems'),

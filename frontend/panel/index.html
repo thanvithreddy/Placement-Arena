@@ -182,6 +182,9 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Questions Bank</h2>
                 <div class="flex flex-wrap gap-2">
+                    <button onclick="purgeExamCount()" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
+                        🔥 Purge Exam Count
+                    </button>
                     <button onclick="purgeQuestions()" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3.5 py-2.5 rounded-xl font-bold text-xs transition">
                         🗑️ Purge Questions Bank
                     </button>
@@ -675,6 +678,17 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function purgeExamCount() {
+            if (!confirm('🔥 Are you sure you want to PURGE/RESET question counts across all exam sections? All section question counts will reset to 0 and will increase only as you upload questions.')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/questions/purge-exam-count/`, {}, getHeaders());
+                showToast(res.data.message || 'Exam question counts purged!', 'success');
+                loadDashboardStats();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to purge exam count', 'error');
+            }
+        }
 
         async function purgeQuestions() {
             if (!confirm('⚠️ Are you sure you want to PURGE ALL MCQ questions and Coding problems from the database? Candidate submissions and attempt history will NOT be affected.')) return;

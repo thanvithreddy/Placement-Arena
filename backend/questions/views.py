@@ -129,6 +129,7 @@ class BulkImportView(APIView):
             
         count = 0
         errors = []
+        cat_counts = {}
         
         # Check if first row is header
         start_idx = 1 if len(rows) > 0 and str(rows[0][0]).strip().lower() in ['category', 'cat', 'q_category'] else 0
@@ -206,9 +207,22 @@ class BulkImportView(APIView):
                         order=idx + 1
                     )
             count += 1
+            cat_counts[cat] = cat_counts.get(cat, 0) + 1
+
+        # Increment question count on today's active exam for imported categories
+        from exams.models import Exam
+        from datetime import date
+        today_exam = Exam.objects.filter(date=date.today(), status='active').first()
+        if today_exam:
+            for cat_type, added_count in cat_counts.items():
+                sec = today_exam.sections.filter(section_type__iexact=cat_type).first()
+                if sec:
+                    sec.question_count += added_count
+                    sec.max_score += added_count
+                    sec.save()
 
         return Response({
-            'message': f'Successfully imported {count} questions!',
+            'message': f'Successfully imported {count} questions! Today\'s exam question count updated.',
             'errors': errors
         })
 
@@ -240,7 +254,17 @@ class QuestionCreateView(APIView):
             return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
         serializer = AdminQuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            q = serializer.save()
+            # Increment question_count on today's active exam for this category
+            from exams.models import Exam
+            from datetime import date
+            today_exam = Exam.objects.filter(date=date.today(), status='active').first()
+            if today_exam:
+                sec = today_exam.sections.filter(section_type__iexact=q.category).first()
+                if sec:
+                    sec.question_count += 1
+                    sec.max_score += 1
+                    sec.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -297,6 +321,23 @@ class PurgeSubmissionsView(APIView):
         UserAnalytics.objects.all().delete()
 
         return Response({'message': 'All candidate attempts, scores, leaderboards, analytics, and violation logs have been purged!'})
+
+
+class PurgeExamCountView(APIView):
+    """
+    POST /api/admin-panel/questions/purge-exam-count/
+    Purges/resets exam section question count to 0 across all exams.
+    Count will only increase when new questions are uploaded/created.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+        from exams.models import ExamSection
+        updated_count = ExamSection.objects.all().update(question_count=0, max_score=0)
+        return Response({'message': f'Exam question count purged across all {updated_count} exam sections! Question counts reset to 0.'})
 
 
 class PurgeAllDataView(APIView):
