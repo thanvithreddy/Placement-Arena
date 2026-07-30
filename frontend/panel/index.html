@@ -102,13 +102,24 @@
                     <button id="create-today-btn" onclick="createTodayExam()" class="bg-indigo-600 hover:bg-indigo-700 text-white transition py-4 px-6 rounded-2xl font-bold text-left shadow-md">
                         <div class="text-xl mb-1">📅</div>
                         <div>Create Today's Exam</div>
-                        <div class="text-xs text-indigo-100 font-normal mt-1">Auto-configures Arithmetic, Verbal, Reasoning & Coding sections</div>
+                        <div class="text-xs text-indigo-100 font-normal mt-1">3 sections: 20Q Arithmetic, 20Q Verbal, 20Q Reasoning — 1 mark each</div>
                     </button>
                     <button onclick="switchView('create-exam')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 transition py-4 px-6 rounded-2xl font-bold text-left border border-slate-200">
                         <div class="text-xl mb-1">✏️</div>
                         <div>Custom Exam Configurator</div>
                         <div class="text-xs text-slate-500 font-normal mt-1">Manual section & duration setup</div>
                     </button>
+                </div>
+            </div>
+
+            <!-- Exam List with Sync Controls -->
+            <div class="card-white rounded-3xl p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-slate-900">📋 Exams &amp; Question Count Sync</h3>
+                    <span class="text-xs text-slate-400 italic">After uploading questions, click "Sync Count" to update each exam's question count</span>
+                </div>
+                <div id="dashboard-exam-list" class="space-y-2">
+                    <p class="text-slate-400 text-sm text-center py-4">Loading exams...</p>
                 </div>
             </div>
         </div>
@@ -131,29 +142,29 @@
                 <div>
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Section Configuration</h3>
                     <div class="space-y-4">
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-4 gap-4 items-center">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-4 gap-4 items-center">
                             <div class="font-bold text-sm text-indigo-600">Arithmetic</div>
                             <div><label class="text-xs text-slate-500 block font-medium">Duration (min)</label><input type="number" id="cfg-arithmetic-dur" value="20"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-arithmetic-count" value="5"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-arithmetic-score" value="100"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-arithmetic-count" value="20"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-arithmetic-score" value="20"></div>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-4 gap-4 items-center">
                             <div class="font-bold text-sm text-emerald-600">Verbal</div>
                             <div><label class="text-xs text-slate-500 block font-medium">Duration (min)</label><input type="number" id="cfg-verbal-dur" value="20"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-verbal-count" value="5"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-verbal-score" value="80"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-verbal-count" value="20"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-verbal-score" value="20"></div>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-4 gap-4 items-center">
                             <div class="font-bold text-sm text-amber-600">Reasoning</div>
                             <div><label class="text-xs text-slate-500 block font-medium">Duration (min)</label><input type="number" id="cfg-reasoning-dur" value="20"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-reasoning-count" value="5"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-reasoning-score" value="100"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Questions</label><input type="number" id="cfg-reasoning-count" value="20"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-reasoning-score" value="20"></div>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 grid grid-cols-4 gap-4 items-center">
-                            <div class="font-bold text-sm text-purple-600">Coding</div>
+                        <div class="bg-slate-50/50 p-4 rounded-2xl border border-dashed border-slate-300 grid grid-cols-4 gap-4 items-center opacity-60">
+                            <div class="font-bold text-sm text-purple-400">Coding <span class="text-xs font-normal text-slate-400">(optional)</span></div>
                             <div><label class="text-xs text-slate-500 block font-medium">Duration (min)</label><input type="number" id="cfg-coding-dur" value="60"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Problems</label><input type="number" id="cfg-coding-count" value="2"></div>
-                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-coding-score" value="200"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Problems</label><input type="number" id="cfg-coding-count" value="0"></div>
+                            <div><label class="text-xs text-slate-500 block font-medium">Max Score</label><input type="number" id="cfg-coding-score" value="0"></div>
                         </div>
                     </div>
                 </div>
@@ -714,7 +725,28 @@
             
             try {
                 const eRes = await axios.get(`${API}/admin-panel/exams/`, getHeaders());
-                if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = Array.isArray(eRes.data) ? eRes.data.length : 0;
+                const exams = Array.isArray(eRes.data) ? eRes.data : [];
+                if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = exams.length;
+
+                // Render exam list in dashboard with Sync Count per exam
+                const examListContainer = document.getElementById('dashboard-exam-list');
+                if (examListContainer) {
+                    if (exams.length === 0) {
+                        examListContainer.innerHTML = '<p class="text-slate-400 text-sm text-center py-4">No exams created yet.</p>';
+                    } else {
+                        examListContainer.innerHTML = exams.slice(0, 10).map(e => `
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <div>
+                                    <div class="font-bold text-slate-800 text-sm">${e.title}</div>
+                                    <div class="text-xs text-slate-400">${e.date} &bull; <span class="${e.status === 'active' ? 'text-emerald-600' : 'text-slate-400'} font-semibold">${e.status.toUpperCase()}</span></div>
+                                </div>
+                                <button onclick="syncExamCount(${e.id})" class="text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 px-3 py-1.5 rounded-lg transition" title="Sync question count from question bank">
+                                    🔄 Sync Count
+                                </button>
+                            </div>
+                        `).join('');
+                    }
+                }
             } catch(e) { 
                 if (document.getElementById('stat-exams')) document.getElementById('stat-exams').innerText = '0';
             }
@@ -748,7 +780,7 @@
                 showToast(e.response?.data?.error || 'Failed to create exam', 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<div class="text-xl mb-1">📅</div><div>Create Today's Exam</div><div class="text-xs text-indigo-100 font-normal mt-1">Auto-configures 4 sections</div>`;
+                btn.innerHTML = `<div class="text-xl mb-1">📅</div><div>Create Today's Exam</div><div class="text-xs text-indigo-100 font-normal mt-1">3 sections: 20Q Arithmetic, 20Q Verbal, 20Q Reasoning</div>`;
             }
         }
 
@@ -760,32 +792,37 @@
                 showToast('Exam Title is required', 'error'); return;
             }
 
+            const codingCount = parseInt(document.getElementById('cfg-coding-count').value) || 0;
             const sections = [
                 {
                     section_type: 'arithmetic', order: 1,
                     duration_minutes: parseInt(document.getElementById('cfg-arithmetic-dur').value) || 20,
                     question_count: parseInt(document.getElementById('cfg-arithmetic-count').value) || 20,
-                    max_score: parseInt(document.getElementById('cfg-arithmetic-score').value) || 80
+                    max_score: parseInt(document.getElementById('cfg-arithmetic-score').value) || 20
                 },
                 {
                     section_type: 'verbal', order: 2,
                     duration_minutes: parseInt(document.getElementById('cfg-verbal-dur').value) || 20,
                     question_count: parseInt(document.getElementById('cfg-verbal-count').value) || 20,
-                    max_score: parseInt(document.getElementById('cfg-verbal-score').value) || 80
+                    max_score: parseInt(document.getElementById('cfg-verbal-score').value) || 20
                 },
                 {
                     section_type: 'reasoning', order: 3,
                     duration_minutes: parseInt(document.getElementById('cfg-reasoning-dur').value) || 20,
                     question_count: parseInt(document.getElementById('cfg-reasoning-count').value) || 20,
-                    max_score: parseInt(document.getElementById('cfg-reasoning-score').value) || 80
-                },
-                {
-                    section_type: 'coding', order: 4,
-                    duration_minutes: parseInt(document.getElementById('cfg-coding-dur').value) || 60,
-                    question_count: parseInt(document.getElementById('cfg-coding-count').value) || 2,
-                    max_score: parseInt(document.getElementById('cfg-coding-score').value) || 200
+                    max_score: parseInt(document.getElementById('cfg-reasoning-score').value) || 20
                 }
             ];
+
+            // Only add coding section if problems count > 0
+            if (codingCount > 0) {
+                sections.push({
+                    section_type: 'coding', order: 4,
+                    duration_minutes: parseInt(document.getElementById('cfg-coding-dur').value) || 60,
+                    question_count: codingCount,
+                    max_score: parseInt(document.getElementById('cfg-coding-score').value) || 0
+                });
+            }
 
             const btn = document.querySelector("button[onclick='createCustomExam()']");
             if (btn) { btn.disabled = true; btn.innerText = 'Publishing...'; }
@@ -808,6 +845,18 @@
                 showToast(e.response?.data?.error || 'Failed to publish exam', 'error');
             } finally {
                 if (btn) { btn.disabled = false; btn.innerText = 'Publish Exam'; }
+            }
+        }
+
+        async function syncExamCount(examId) {
+            if (!confirm('🔄 This will update the section question counts to exactly match how many questions are currently in the question bank for each category. Continue?')) return;
+            try {
+                const res = await axios.post(`${API}/admin-panel/exams/${examId}/reset-count/`, {}, getHeaders());
+                const updated = res.data.updated || [];
+                const details = updated.map(u => `${u.section}: ${u.count}Q`).join(', ');
+                showToast(`✅ Counts synced! ${details}`, 'success');
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to sync counts', 'error');
             }
         }
 

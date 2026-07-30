@@ -173,9 +173,9 @@ class BulkImportView(APIView):
             exp = r[8] if len(r) > 8 else ''
             
             try:
-                marks = float(r[9]) if len(r) > 9 and r[9] else 4.0
+                marks = float(r[9]) if len(r) > 9 and r[9] else 1.0
             except ValueError:
-                marks = 4.0
+                marks = 1.0
 
             # Determine correct option index
             correct_idx = 0

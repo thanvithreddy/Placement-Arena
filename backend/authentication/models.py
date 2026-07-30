@@ -10,3 +10,14 @@ class User(AbstractUser):
     
     def is_admin_user(self):
         return self.role == 'admin'
+
+
+class DailyStreak(models.Model):
+    """Tracks the daily exam streak for each candidate."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='streak')
+    current_streak = models.IntegerField(default=0)
+    longest_streak = models.IntegerField(default=0)
+    last_exam_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} — streak: {self.current_streak}"

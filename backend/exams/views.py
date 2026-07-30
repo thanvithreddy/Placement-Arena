@@ -171,8 +171,29 @@ class SubmitSectionView(APIView):
             exam_attempt.submitted_at = timezone.now()
             exam_attempt.total_score = sum(s.score for s in all_sections)
             exam_attempt.save()
-            
-            # Leaderboard and analytics updates
+
+            # Update total_exams_taken counter
+            from django.db.models import F
+            exam_attempt.user.total_exams_taken = F('total_exams_taken') + 1
+            exam_attempt.user.save(update_fields=['total_exams_taken'])
+            exam_attempt.user.refresh_from_db()
+
+            # ── Daily Streak ──────────────────────────────────────────────
+            from authentication.models import DailyStreak
+            today = date.today()
+            streak_obj, _ = DailyStreak.objects.get_or_create(user=exam_attempt.user)
+            if streak_obj.last_exam_date == today:
+                pass  # already counted today
+            elif streak_obj.last_exam_date and (today - streak_obj.last_exam_date).days == 1:
+                streak_obj.current_streak += 1
+                streak_obj.longest_streak = max(streak_obj.longest_streak, streak_obj.current_streak)
+            else:
+                streak_obj.current_streak = 1
+                streak_obj.longest_streak = max(streak_obj.longest_streak, 1)
+            streak_obj.last_exam_date = today
+            streak_obj.save()
+            # ─────────────────────────────────────────────────────────────
+
             from leaderboard.views import update_leaderboard
             update_leaderboard(exam_attempt.exam)
             
@@ -391,7 +412,7 @@ class AdminExamListView(APIView):
             created_by=request.user
         )
 
-        # Create sections if provided, or default 4 sections
+        # Create sections if provided, or default 3 sections (no coding)
         if sections_data:
             for s in sections_data:
                 ExamSection.objects.create(
@@ -399,15 +420,14 @@ class AdminExamListView(APIView):
                     section_type=s.get('section_type'),
                     order=s.get('order', 1),
                     duration_minutes=s.get('duration_minutes', 20),
-                    max_score=s.get('max_score', 100),
-                    question_count=s.get('question_count', 25)
+                    max_score=s.get('max_score', 20),
+                    question_count=s.get('question_count', 20)
                 )
         else:
             default_sections = [
-                {'section_type': 'arithmetic', 'order': 1, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
-                {'section_type': 'verbal', 'order': 2, 'duration_minutes': 20, 'max_score': 80, 'question_count': 20},
-                {'section_type': 'reasoning', 'order': 3, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
-                {'section_type': 'coding', 'order': 4, 'duration_minutes': 60, 'max_score': 200, 'question_count': 2},
+                {'section_type': 'arithmetic', 'order': 1, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
+                {'section_type': 'verbal',     'order': 2, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
+                {'section_type': 'reasoning',  'order': 3, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
             ]
             for s in default_sections:
                 ExamSection.objects.create(exam=exam, **s)
@@ -462,10 +482,9 @@ class CreateTodayExamView(APIView):
     permission_classes = [IsAuthenticated]
 
     SECTION_DEFAULTS = [
-        {'section_type': 'arithmetic', 'order': 1, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
-        {'section_type': 'verbal',     'order': 2, 'duration_minutes': 20, 'max_score': 80,  'question_count': 20},
-        {'section_type': 'reasoning',  'order': 3, 'duration_minutes': 20, 'max_score': 100, 'question_count': 25},
-        {'section_type': 'coding',     'order': 4, 'duration_minutes': 60, 'max_score': 200, 'question_count': 2},
+        {'section_type': 'arithmetic', 'order': 1, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
+        {'section_type': 'verbal',     'order': 2, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
+        {'section_type': 'reasoning',  'order': 3, 'duration_minutes': 20, 'max_score': 20, 'question_count': 20},
     ]
 
     def post(self, request):
@@ -537,3 +556,32 @@ class AdminAttemptListView(APIView):
         return Response(result)
 
 
+class PurgeExamCountView(APIView):
+    """
+    POST /api/admin-panel/exams/{id}/reset-count/
+    Resets question_count on all sections of an exam to match
+    how many questions are actually uploaded for that category.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            exam = Exam.objects.get(id=id)
+        except Exam.DoesNotExist:
+            return Response({'error': 'Exam not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        from questions.models import Question
+        updated = []
+        for section in exam.sections.all():
+            actual_count = Question.objects.filter(
+                category__iexact=section.section_type,
+                is_active=True
+            ).count()
+            section.question_count = actual_count
+            section.max_score = actual_count   # 1 mark each
+            section.save()
+            updated.append({'section': section.section_type, 'count': actual_count})
+
+        return Response({'updated': updated, 'message': 'Section question counts synced from live question bank.'})

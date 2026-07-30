@@ -4,7 +4,10 @@ All endpoints here require is_admin_user() check (enforced in each view).
 Mounted at: /api/admin-panel/
 """
 from django.urls import path
-from exams.views import AdminExamListView, AdminExamDetailView, CreateTodayExamView, AdminAttemptListView
+from exams.views import (
+    AdminExamListView, AdminExamDetailView, CreateTodayExamView,
+    AdminAttemptListView, PurgeExamCountView
+)
 from questions.views import BulkImportView, QuestionBankView, QuestionCreateView, PurgeAllDataView, PurgeQuestionsView, PurgeSubmissionsView
 from coding.views import AdminCodingProblemView, AdminCodingProblemDetailView, AdminTestCaseView, BulkImportCodingView
 from warnings_log.views import AdminViolationListView
@@ -15,6 +18,7 @@ urlpatterns = [
     path('exams/', AdminExamListView.as_view(), name='admin_exam_list'),
     path('exams/create-today/', CreateTodayExamView.as_view(), name='admin_create_today_exam'),
     path('exams/<int:id>/', AdminExamDetailView.as_view(), name='admin_exam_detail'),
+    path('exams/<int:id>/reset-count/', PurgeExamCountView.as_view(), name='admin_exam_reset_count'),
     path('attempts/', AdminAttemptListView.as_view(), name='admin_attempt_list'),
 
     # Question bank & Purging

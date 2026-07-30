@@ -26,7 +26,33 @@ class MeView(APIView):
 
     def get(self, request):
         serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        data = serializer.data
+        # Include streak info
+        from .models import DailyStreak
+        streak_obj = DailyStreak.objects.filter(user=request.user).first()
+        data['current_streak'] = streak_obj.current_streak if streak_obj else 0
+        data['longest_streak'] = streak_obj.longest_streak if streak_obj else 0
+        data['last_exam_date'] = str(streak_obj.last_exam_date) if streak_obj and streak_obj.last_exam_date else None
+        return Response(data)
+
+
+class StreakView(APIView):
+    """GET /api/auth/streak/ — Returns the current user's daily exam streak."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from .models import DailyStreak
+        from datetime import date
+        streak_obj, _ = DailyStreak.objects.get_or_create(user=request.user)
+        today = date.today()
+        # If last_exam_date is more than 1 day ago, streak is broken (show 0 unless today)
+        is_active_today = streak_obj.last_exam_date == today
+        return Response({
+            'current_streak': streak_obj.current_streak,
+            'longest_streak': streak_obj.longest_streak,
+            'last_exam_date': str(streak_obj.last_exam_date) if streak_obj.last_exam_date else None,
+            'is_active_today': is_active_today,
+        })
 
 
 class AdminUserListView(APIView):
