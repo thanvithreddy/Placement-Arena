@@ -534,7 +534,7 @@
                 <textarea
                     class="input-area"
                     id="input-text"
-                    placeholder="ఇక్కడ తెలుగు టైప్ చేయండి లేదా మాట్లాడండి..."
+                    placeholder="ఇక్కడ తెలుగు లేదా ఇంగ్లీష్‌ అక్షరాల్లో టైప్ చేయండి (e.g. vellandi, ela unnaru, వెళ్ళండి)..."
                     oninput="onInputChange()"
                     onkeydown="onKeyDown(event)"
                 ></textarea>
@@ -584,7 +584,12 @@
 
     <!-- History -->
     <div class="history-section">
-        <div class="section-title">🕐 Recent Translations</div>
+        <div style="display:flex;justify-space-between:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+            <div class="section-title" style="margin-bottom:0;">🕐 Recent Translations</div>
+            <button onclick="purgeTranslateHistory()" style="background:rgba(244,63,94,0.08);color:#e11d48;border:1px solid rgba(244,63,94,0.2);padding:0.35rem 0.85rem;border-radius:20px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(244,63,94,0.15)'" onmouseout="this.style.background='rgba(244,63,94,0.08)'">
+                🗑️ Purge History
+            </button>
+        </div>
         <div class="history-list" id="history-list">
             <div style="color:var(--muted);font-size:0.85rem;text-align:center;padding:1.5rem;">No translations yet. Start typing!</div>
         </div>
@@ -615,18 +620,18 @@
 
     // ── Quick phrases ──────────────────────────────────────────────────────
     const QUICK_PHRASES = [
+        { te: 'వెళ్ళండి (vellandi)', en: 'Go' },
+        { te: 'ఎలా ఉన్నారు (ela unnaru)', en: 'How are you?' },
+        { te: 'నమస్కారం (namaskaram)', en: 'Hello / Greetings' },
         { te: 'నా పేరు థన్విత్', en: 'My name is Thanvith' },
         { te: 'నేను కంప్యూటర్ సైన్స్ చదువుతున్నాను', en: 'I am studying Computer Science' },
         { te: 'నాకు జావాలో నైపుణ్యం ఉంది', en: 'I am proficient in Java' },
         { te: 'నేను మీ కంపెనీలో చేరాలనుకుంటున్నాను', en: 'I want to join your company' },
+        { te: 'చాలా బాగుంది (chala bagundi)', en: 'Very good' },
+        { te: 'ధన్యవాదాలు (dhanyavadalu)', en: 'Thank you' },
+        { te: 'నేను సహాయం చేయగలనా?', en: 'Can I help you?' },
         { te: 'నా బలాలు ఏమిటంటే', en: 'My strengths are' },
-        { te: 'నేను సమస్యలను పరిష్కరించడంలో నిపుణుడను', en: 'I am an expert at problem solving' },
-        { te: 'ధన్యవాదాలు', en: 'Thank you' },
-        { te: 'నేను ఈ అవకాశానికి కృతజ్ఞుడను', en: 'I am grateful for this opportunity' },
-        { te: 'మీరు నన్ను ఎందుకు నియమించాలి?', en: 'Why should you hire me?' },
-        { te: 'నా లక్ష్యం ఏమిటంటే', en: 'My goal is' },
         { te: 'నేను టీమ్‌లో బాగా పని చేస్తాను', en: 'I work well in a team' },
-        { te: 'నాకు ఐదు సంవత్సరాల అనుభవం ఉంది', en: 'I have five years of experience' },
     ];
 
     function renderQuickPhrases() {
@@ -903,6 +908,18 @@
                 </div>
             `;
         }).join('');
+    }
+
+    function purgeTranslateHistory() {
+        if (!translationHistory.length) {
+            showToast('ℹ️ History is already empty');
+            return;
+        }
+        if (!confirm('🗑️ Clear all translation history?')) return;
+        translationHistory = [];
+        localStorage.removeItem('translate_history');
+        renderHistory();
+        showToast('✓ Translation history purged!');
     }
 
     function reloadHistory(idx) {

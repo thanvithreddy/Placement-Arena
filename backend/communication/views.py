@@ -521,18 +521,20 @@ class TranslateView(APIView):
         src_name = self.LANG_NAMES.get(source, source)
         tgt_name = self.LANG_NAMES.get(target, target)
 
-        prompt = f"""You are an expert {src_name}-to-{tgt_name} translator specialized in Indian languages.
+        prompt = f"""You are an ultra-powerful {src_name}-to-{tgt_name} translator specialized in Indian languages (Telugu and English).
 
-Translate the following {src_name} text to {tgt_name}.
+Translate the following input text to {tgt_name}.
 
-Rules:
-- Produce natural, fluent {tgt_name} — not word-for-word literal translation
-- Preserve the original meaning, tone, and context exactly
-- For Telugu→English: use formal/professional English where appropriate
-- For English→Telugu: use natural, colloquial Telugu (not overly literary)
-- Return ONLY the translated text, nothing else — no explanations, no labels, no quotes
+CRITICAL INSTRUCTIONS FOR TELUGU INPUT:
+1. The input text may be written in:
+   - Native Telugu script (e.g., "వెళ్ళండి", "ఎలా ఉన్నారు", "ధన్యవాదాలు")
+   - Phonetic/Romanized Telugu using English keyboard letters (e.g., "vellandi", "ela unnaru", "namaskaram", "nenu bagunnanu", "chala bagundi", "vasthunnanu", "ravali")
+   - Standard English or a mix
+2. AUTOMATICALLY RECOGNIZE Phonetic Romanized Telugu (e.g. "vellandi" -> "Go", "ela unnaru" -> "How are you?", "namaskaram" -> "Hello", "nenu vasthunnanu" -> "I am coming") and translate it accurately to fluent {tgt_name}!
+3. Produce natural, grammatically flawless, context-aware {tgt_name}.
+4. Return ONLY the translated text, with no extra conversational filler, labels, quotes, or markdown wrappers.
 
-{src_name} text:
+Input text:
 {text}"""
 
         return _call_gemini(prompt, temperature=0.1)
