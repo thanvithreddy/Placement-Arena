@@ -655,58 +655,113 @@
             color: var(--accent);
         }
 
-        /* ── Robo Stage ── */
+        /* ── Futuristic 3D Glassmorphism Robo Stage ── */
         .robo-stage {
-            background: linear-gradient(135deg, #0f172a, #1e1b4b);
-            border-radius: 20px;
-            padding: 2.5rem 1.5rem;
+            background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 70%, #090d16 100%);
+            border-radius: 24px;
+            padding: 3rem 1.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.8), inset 0 0 40px rgba(79, 70, 229, 0.15);
         }
+
+        .robo-avatar-wrapper {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .robo-aura-glow {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(99, 102, 241, 0.15) 50%, transparent 70%);
+            filter: blur(20px);
+            transition: all 0.5s ease;
+            animation: float-aura 3s ease-in-out infinite alternate;
+        }
+        @keyframes float-aura {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            100% { transform: scale(1.15); opacity: 0.9; }
+        }
+
+        .robo-orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .robo-orbit-ring.outer {
+            width: 160px;
+            height: 160px;
+            border: 1.5px dashed rgba(56, 189, 248, 0.4);
+            animation: spin-cw 18s linear infinite;
+        }
+        .robo-orbit-ring.inner {
+            width: 140px;
+            height: 140px;
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            border-top-color: #38bdf8;
+            animation: spin-ccw 10s linear infinite;
+        }
+        @keyframes spin-cw { 100% { transform: rotate(360deg); } }
+        @keyframes spin-ccw { 100% { transform: rotate(-360deg); } }
 
         .robo-avatar-box {
             position: relative;
             width: 120px;
             height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            z-index: 5;
+            animation: robo-float 3.5s ease-in-out infinite;
         }
-        .robo-pulse-ring {
-            position: absolute;
-            inset: -15px;
-            border-radius: 50%;
-            border: 2px solid rgba(99,102,241,0.25);
-            animation: ring-pulse 2s infinite ease-in-out;
+        @keyframes robo-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
-        @keyframes ring-pulse {
-            0%, 100% { transform: scale(0.95); opacity: 0.4; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+
+        .robo-svg-pro {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
         }
-        .robo-svg {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 12px rgba(99,102,241,0.5));
+
+        /* Equalizer mouth bars animation when speaking */
+        .robo-stage.speaking .eq-bar {
+            animation: eq-bounce 0.6s ease-in-out infinite alternate;
+        }
+        .robo-stage.speaking .eq-bar.b1 { animation-delay: 0.1s; }
+        .robo-stage.speaking .eq-bar.b2 { animation-delay: 0.3s; }
+        .robo-stage.speaking .eq-bar.b3 { animation-delay: 0.0s; }
+        .robo-stage.speaking .eq-bar.b4 { animation-delay: 0.4s; }
+        .robo-stage.speaking .eq-bar.b5 { animation-delay: 0.2s; }
+        .robo-stage.speaking .eq-bar.b6 { animation-delay: 0.5s; }
+        .robo-stage.speaking .eq-bar.b7 { animation-delay: 0.15s; }
+
+        @keyframes eq-bounce {
+            0% { transform: scaleY(0.3); }
+            100% { transform: scaleY(1.6); }
         }
 
         .robo-status-badge {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             color: #cbd5e1;
             font-size: 0.82rem;
             font-weight: 600;
-            padding: 0.45rem 1.25rem;
+            padding: 0.5rem 1.4rem;
             border-radius: 50px;
             margin-top: 1.25rem;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* Robo action buttons */
@@ -1059,22 +1114,66 @@
                 </div>
             </div>
 
-            <!-- Robo Avatar Stage -->
+            <!-- Futuristic Robo Avatar Stage -->
             <div class="robo-stage">
-                <div class="robo-avatar-box">
-                    <div class="robo-pulse-ring" id="robo-ring"></div>
-                    <svg class="robo-svg" id="robo-svg" viewBox="0 0 100 100">
-                        <line x1="50" y1="20" x2="50" y2="10" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="50" cy="8" r="4" fill="#6366f1" id="robo-antenna"/>
-                        <rect x="20" y="20" width="60" height="50" rx="16" fill="#1e1b4b" stroke="#4f46e5" stroke-width="2"/>
-                        <rect x="14" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
-                        <rect x="80" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
-                        <rect x="28" y="30" width="44" height="20" rx="8" fill="#0f172a"/>
-                        <circle cx="40" cy="40" r="5" fill="#38bdf8" id="robo-eye-l"/>
-                        <circle cx="60" cy="40" r="5" fill="#38bdf8" id="robo-eye-r"/>
-                        <rect x="36" y="56" width="28" height="6" rx="3" fill="#6366f1" id="robo-mouth"/>
-                        <path d="M 40 70 L 60 70 L 65 85 L 35 85 Z" fill="#312e81"/>
-                    </svg>
+                <div class="robo-avatar-wrapper">
+                    <div class="robo-aura-glow" id="robo-aura"></div>
+                    <div class="robo-orbit-ring outer" id="robo-orbit-1"></div>
+                    <div class="robo-orbit-ring inner" id="robo-orbit-2"></div>
+                    
+                    <div class="robo-avatar-box">
+                        <svg class="robo-svg-pro" id="robo-svg" viewBox="0 0 120 120">
+                            <defs>
+                                <linearGradient id="helm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#312e81"/>
+                                    <stop offset="50%" stop-color="#1e1b4b"/>
+                                    <stop offset="100%" stop-color="#0f172a"/>
+                                </linearGradient>
+                                <filter id="glow-light" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                </filter>
+                            </defs>
+
+                            <!-- Antenna -->
+                            <line x1="60" y1="24" x2="60" y2="10" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="60" cy="8" r="5" fill="#38bdf8" id="robo-antenna" filter="url(#glow-light)"/>
+
+                            <!-- Ear Nodes -->
+                            <rect x="12" y="44" width="8" height="22" rx="4" fill="#4f46e5"/>
+                            <rect x="100" y="44" width="8" height="22" rx="4" fill="#4f46e5"/>
+                            <circle cx="16" cy="55" r="3" fill="#38bdf8" id="robo-ear-l"/>
+                            <circle cx="104" cy="55" r="3" fill="#38bdf8" id="robo-ear-r"/>
+
+                            <!-- Helmet Head Base -->
+                            <rect x="20" y="22" width="80" height="66" rx="24" fill="url(#helm-grad)" stroke="#6366f1" stroke-width="2.5"/>
+
+                            <!-- Glossy Glass Visor -->
+                            <rect x="28" y="34" width="64" height="28" rx="12" fill="#090d16" stroke="#38bdf8" stroke-width="1.5"/>
+
+                            <!-- Glowing Visor Expressional LED Eyes -->
+                            <ellipse cx="44" cy="48" rx="7" ry="8" fill="#38bdf8" id="robo-eye-l" filter="url(#glow-light)"/>
+                            <ellipse cx="76" cy="48" rx="7" ry="8" fill="#38bdf8" id="robo-eye-r" filter="url(#glow-light)"/>
+                            
+                            <!-- Visor Glare Effect -->
+                            <path d="M 32 38 Q 60 36 88 38 Q 60 40 32 38 Z" fill="rgba(255,255,255,0.15)"/>
+
+                            <!-- Animated Audio Equalizer Mouth -->
+                            <g id="robo-eq-mouth" transform="translate(41, 68)">
+                                <rect class="eq-bar b1" x="0" y="0" width="3" height="8" rx="1.5" fill="#38bdf8"/>
+                                <rect class="eq-bar b2" x="6" y="0" width="3" height="12" rx="1.5" fill="#38bdf8"/>
+                                <rect class="eq-bar b3" x="12" y="0" width="3" height="16" rx="1.5" fill="#6366f1"/>
+                                <rect class="eq-bar b4" x="18" y="0" width="3" height="12" rx="1.5" fill="#6366f1"/>
+                                <rect class="eq-bar b5" x="24" y="0" width="3" height="16" rx="1.5" fill="#6366f1"/>
+                                <rect class="eq-bar b6" x="30" y="0" width="3" height="12" rx="1.5" fill="#38bdf8"/>
+                                <rect class="eq-bar b7" x="36" y="0" width="3" height="8" rx="1.5" fill="#38bdf8"/>
+                            </g>
+
+                            <!-- Neck & Shoulders Base -->
+                            <path d="M 45 88 L 75 88 L 82 106 L 38 106 Z" fill="#1e1b4b" stroke="#4f46e5" stroke-width="1.5"/>
+                            <circle cx="60" cy="97" r="4" fill="#38bdf8" id="robo-chest-core"/>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="robo-status-badge" id="robo-status-text">🤖 Robo is ready! Select a persona and tap Speak to Robo</div>
@@ -1655,37 +1754,66 @@
     }
 
     function setRoboState(state) {
+        const stageEl = document.querySelector('.robo-stage');
         const statusEl = document.getElementById('robo-status-text');
         const eyeL = document.getElementById('robo-eye-l');
         const eyeR = document.getElementById('robo-eye-r');
+        const earL = document.getElementById('robo-ear-l');
+        const earR = document.getElementById('robo-ear-r');
         const antenna = document.getElementById('robo-antenna');
-        const mouth = document.getElementById('robo-mouth');
+        const chestCore = document.getElementById('robo-chest-core');
+        const aura = document.getElementById('robo-aura');
 
         if (!statusEl || !eyeL || !eyeR) return;
 
+        if (stageEl) {
+            stageEl.classList.toggle('speaking', state === 'speaking');
+        }
+
         if (state === 'listening') {
             statusEl.textContent = '🎙️ Listening... Speak naturally!';
-            eyeL.setAttribute('fill', '#e11d48');
-            eyeR.setAttribute('fill', '#e11d48');
-            if (antenna) antenna.setAttribute('fill', '#f43f5e');
-            if (mouth) { mouth.setAttribute('height', '10'); mouth.setAttribute('y', '54'); }
+            const ruby = '#f43f5e';
+            eyeL.setAttribute('fill', ruby);
+            eyeR.setAttribute('fill', ruby);
+            if (earL) earL.setAttribute('fill', ruby);
+            if (earR) earR.setAttribute('fill', ruby);
+            if (antenna) antenna.setAttribute('fill', '#fb7185');
+            if (chestCore) chestCore.setAttribute('fill', ruby);
+            if (aura) aura.style.background = 'radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(225, 29, 72, 0.2) 50%, transparent 70%)';
+
         } else if (state === 'thinking') {
             statusEl.textContent = '🔮 Robo is thinking & analyzing speech...';
-            eyeL.setAttribute('fill', '#a78bfa');
-            eyeR.setAttribute('fill', '#a78bfa');
-            if (antenna) antenna.setAttribute('fill', '#c084fc');
+            const purple = '#c084fc';
+            eyeL.setAttribute('fill', purple);
+            eyeR.setAttribute('fill', purple);
+            if (earL) earL.setAttribute('fill', purple);
+            if (earR) earR.setAttribute('fill', purple);
+            if (antenna) antenna.setAttribute('fill', '#a855f7');
+            if (chestCore) chestCore.setAttribute('fill', purple);
+            if (aura) aura.style.background = 'radial-gradient(circle, rgba(192, 132, 252, 0.45) 0%, rgba(168, 85, 247, 0.2) 50%, transparent 70%)';
+
         } else if (state === 'speaking') {
             statusEl.textContent = '🔊 Speaking response & verbal correction out loud...';
-            eyeL.setAttribute('fill', '#10b981');
-            eyeR.setAttribute('fill', '#10b981');
-            if (antenna) antenna.setAttribute('fill', '#34d399');
-            if (mouth) { mouth.setAttribute('height', '12'); mouth.setAttribute('y', '53'); }
+            const emerald = '#34d399';
+            eyeL.setAttribute('fill', emerald);
+            eyeR.setAttribute('fill', emerald);
+            if (earL) earL.setAttribute('fill', emerald);
+            if (earR) earR.setAttribute('fill', emerald);
+            if (antenna) antenna.setAttribute('fill', '#10b981');
+            if (chestCore) chestCore.setAttribute('fill', emerald);
+            if (aura) aura.style.background = 'radial-gradient(circle, rgba(52, 211, 153, 0.45) 0%, rgba(16, 185, 129, 0.2) 50%, transparent 70%)';
+
         } else {
-            statusEl.textContent = roboCallMode ? '🎧 Voice Call Active — Ready for your next answer' : '🤖 Robo is ready! Tap below to speak';
-            eyeL.setAttribute('fill', '#38bdf8');
-            eyeR.setAttribute('fill', '#38bdf8');
+            // idle
+            statusEl.textContent = roboCallMode ? '🎧 Voice Call Active — Ready for your next answer' : '🤖 Robo is ready! Tap below or start Voice Call';
+            const cyan = '#38bdf8';
+            eyeL.setAttribute('fill', cyan);
+            eyeR.setAttribute('fill', cyan);
+            if (earL) earL.setAttribute('fill', cyan);
+            if (earR) earR.setAttribute('fill', cyan);
             if (antenna) antenna.setAttribute('fill', '#6366f1');
-            if (mouth) { mouth.setAttribute('height', '6'); mouth.setAttribute('y', '56'); }
+            if (chestCore) chestCore.setAttribute('fill', cyan);
+            if (aura) aura.style.background = 'radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(99, 102, 241, 0.15) 50%, transparent 70%)';
         }
     }
 
