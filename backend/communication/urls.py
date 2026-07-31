@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('topics/', views.TopicListView.as_view(), name='speech-topics'),
     path('analyze/', views.AnalyzeSpeechView.as_view(), name='analyze-speech'),
+    path('robo-speak/', views.VoiceRoboConversationView.as_view(), name='robo-speak'),
     path('history/', views.SpeechHistoryView.as_view(), name='speech-history'),
     path('history/purge/', views.PurgeHistoryView.as_view(), name='speech-history-purge'),
     path('translate/', views.TranslateView.as_view(), name='translate'),

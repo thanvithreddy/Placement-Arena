@@ -631,6 +631,87 @@ Input text:
         )
 
 
+class VoiceRoboConversationView(APIView):
+    """
+    POST /api/communication/robo-speak/
+    Interactive Conversational AI Robo for Speaking Lab.
+    Returns:
+      - robo_reply: conversational response
+      - corrected_user_speech: formal English rewrite
+      - verbal_correction_phrase: spoken audio feedback tip
+      - grammar_fixes: list of errors fixed
+      - turn_score: 1-100 rating
+    """
+    permission_classes = [IsAuthenticated]
+
+    PERSONA_PROMPTS = {
+        'hr': "You are an expert HR Placement Interviewer named Robo. You are conducting a professional mock interview for campus placement. Ask insightful HR questions, evaluate candidate's speech, and keep the interview flowing professionally.",
+        'technical': "You are a Senior Technical Lead & Coding Recruiter named Robo. You evaluate technical English, problem-solving explanations, DBMS, Data Structures, and Software Engineering skills.",
+        'buddy': "You are a friendly, encouraging English Speaking Buddy named Robo. Help the candidate build natural English speaking confidence, correct their grammar gently, and keep casual placement conversation fun.",
+    }
+
+    def post(self, request):
+        transcript = request.data.get('transcript', '').strip()
+        persona_key = request.data.get('persona', 'hr').lower()
+        history = request.data.get('history', [])
+
+        if not transcript:
+            return Response({'error': 'No transcript provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        persona_context = self.PERSONA_PROMPTS.get(persona_key, self.PERSONA_PROMPTS['hr'])
+
+        history_text = ""
+        if history:
+            history_text = "CONVERSATION HISTORY:\n" + "\n".join(
+                f"{turn.get('role', 'user').upper()}: {turn.get('text', '')}"
+                for turn in history[-6:]
+            )
+
+        prompt = f"""{persona_context}
+
+The candidate just said: "{transcript}"
+
+{history_text}
+
+Task:
+1. Formulate a natural, conversational next response as Robo to keep the interview/chat going.
+2. Rewrite the candidate's speech into formal, placement-ready, grammatically flawless English.
+3. Provide a short verbal correction phrase for text-to-speech feedback (e.g., "A better way to say that is: ...").
+4. Identify 1-3 specific grammar errors if present.
+5. Score the turn out of 100 based on grammar, clarity, and vocabulary.
+
+Respond ONLY in this exact JSON format (no markdown, no extra text):
+{{
+  "robo_reply": "Natural conversational response as Robo",
+  "corrected_user_speech": "Formal, perfect English rewrite of candidate's speech",
+  "verbal_correction_phrase": "Short spoken tip for audio voice feedback",
+  "grammar_fixes": [
+    {{"error": "wrong phrase", "fix": "correct phrase", "rule": "explanation"}}
+  ],
+  "turn_score": 90
+}}"""
+
+        try:
+            raw = _call_gemini(prompt, temperature=0.3)
+            raw = re.sub(r'^```(?:json)?\s*', '', raw, flags=re.MULTILINE)
+            raw = re.sub(r'\s*```$', '', raw, flags=re.MULTILINE)
+            import json
+            data = json.loads(raw.strip())
+            return Response(data, status=status.HTTP_200_OK)
+        except ValueError:
+            # Fallback when API key is missing
+            corrected = _rule_based_correct(transcript)
+            return Response({
+                'robo_reply': f"I understood your point about '{transcript[:30]}...'. Tell me more!",
+                'corrected_user_speech': corrected.get('corrected_transcript') or transcript,
+                'verbal_correction_phrase': f"Try saying: {corrected.get('corrected_transcript') or transcript}",
+                'grammar_fixes': corrected.get('grammar_errors', []),
+                'turn_score': 85
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 # ════════════════════════════════════════════════════════════════════════════════
 #  ADMIN VIEWS
 # ════════════════════════════════════════════════════════════════════════════════
