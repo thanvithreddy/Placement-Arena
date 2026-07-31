@@ -790,11 +790,13 @@ The candidate just said: "{transcript}"
 {history_text}
 
 Task:
-1. Formulate a natural, conversational next response as Robo to keep the interview/chat going.
+1. Formulate an intelligent, highly natural, conversational next response as Robo to keep the interview/chat flowing. Ask insightful follow-up questions tailored to your persona.
 2. Rewrite the candidate's speech into formal, placement-ready, grammatically flawless English.
 3. Provide a short verbal correction phrase for text-to-speech feedback (e.g., "A better way to say that is: ...").
 4. Identify 1-3 specific grammar errors if present.
-5. Score the turn out of 100 based on grammar, clarity, and vocabulary.
+5. Provide 1-2 native professional vocabulary upgrades (e.g., "think" -> "firmly believe", "worked on" -> "architected").
+6. Score the turn out of 100 based on grammar, clarity, and vocabulary richness.
+7. Provide a short 1-sentence actionable tip for confidence/delivery.
 
 Respond ONLY in this exact JSON format (no markdown, no extra text):
 {{
@@ -804,7 +806,11 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
   "grammar_fixes": [
     {{"error": "wrong phrase", "fix": "correct phrase", "rule": "explanation"}}
   ],
-  "turn_score": 90
+  "vocabulary_upgrades": [
+    {{"original": "informal word", "upgrade": "professional word", "reason": "why upgrade"}}
+  ],
+  "turn_score": 92,
+  "confidence_tip": "One clear tip for better placement delivery"
 }}"""
 
         try:

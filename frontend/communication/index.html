@@ -1107,10 +1107,24 @@
                         Speak naturally into your mic. Robo listens, responds out loud, and corrects your English in real-time!
                     </p>
                 </div>
-                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center;">
                     <button class="persona-btn active" id="persona-btn-hr" onclick="setRoboPersona('hr')">👔 HR Recruiter</button>
                     <button class="persona-btn" id="persona-btn-technical" onclick="setRoboPersona('technical')">💻 Tech Lead</button>
                     <button class="persona-btn" id="persona-btn-buddy" onclick="setRoboPersona('buddy')">🗣️ English Buddy</button>
+                    
+                    <div style="display:flex; gap:0.38rem; align-items:center; background:rgba(79,70,229,0.06); padding:0.25rem 0.6rem; border-radius:12px; border:1px solid rgba(79,70,229,0.15);">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--accent);">🔊 Voice:</span>
+                        <select id="robo-voice-select" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid #cbd5e1; background:#fff; color:var(--text);">
+                            <option value="en-US">US Natural Voice</option>
+                            <option value="en-GB">UK Accent</option>
+                            <option value="en-IN">Indian Accent</option>
+                        </select>
+                        <select id="robo-speed-select" style="font-size:0.75rem; font-weight:600; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid #cbd5e1; background:#fff; color:var(--text);">
+                            <option value="0.9">0.9x Clear</option>
+                            <option value="1.0" selected>1.0x Normal</option>
+                            <option value="1.15">1.15x Fast</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -1925,11 +1939,13 @@
             const corrected = data.corrected_user_speech || userSpeech;
             const verbalTip = data.verbal_correction_phrase || "";
             const fixes = data.grammar_fixes || [];
+            const vocabUpgrades = data.vocabulary_upgrades || [];
             const score = data.turn_score || 90;
+            const tip = data.confidence_tip || "";
 
             roboConversationHistory.push({ role: 'robo', text: reply });
 
-            updateLastUserBubbleFeedback(corrected, fixes, score);
+            updateLastUserBubbleFeedback(corrected, fixes, score, vocabUpgrades, tip);
             addRoboBubble(reply);
 
             const fullSpeech = `${reply} ${verbalTip ? ' ' + verbalTip : ''}`;
@@ -1970,9 +1986,18 @@
         setRoboState('speaking');
 
         const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'en-US';
-        utter.rate = 0.95;
+        const voiceLang = document.getElementById('robo-voice-select') ? document.getElementById('robo-voice-select').value : 'en-US';
+        const voiceSpeed = document.getElementById('robo-speed-select') ? parseFloat(document.getElementById('robo-speed-select').value) : 1.0;
+
+        utter.lang = voiceLang;
+        utter.rate = voiceSpeed;
         utter.pitch = 1.0;
+
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang.startsWith(voiceLang.split('-')[0]) || v.lang === voiceLang);
+        if (preferredVoice) {
+            utter.voice = preferredVoice;
+        }
 
         utter.onend = () => {
             setRoboState('idle');
@@ -2030,7 +2055,7 @@
         feed.scrollTop = feed.scrollHeight;
     }
 
-    function updateLastUserBubbleFeedback(corrected, fixes, score) {
+    function updateLastUserBubbleFeedback(corrected, fixes, score, vocabUpgrades, tip) {
         const feed = document.getElementById('robo-chat-feed');
         if (!feed) return;
         const lastUserBubble = feed.querySelector('.chat-bubble-user:last-of-type');
@@ -2041,23 +2066,60 @@
 
         let fixesHtml = '';
         if (fixes && fixes.length > 0) {
-            fixesHtml = fixes.map(f => `
-                <div style="font-size:0.75rem; color:#b91c1c; margin-top:0.25rem;">
-                    ❌ <span style="text-decoration:line-through;">${f.error}</span> → <strong style="color:#047857;">${f.fix}</strong>
+            fixesHtml = `
+                <div style="margin-top:0.5rem; padding-top:0.4rem; border-top:1px dashed #cbd5e1;">
+                    <div style="font-size:0.72rem; font-weight:700; color:#dc2626; margin-bottom:0.2rem;">🔴 Grammar Corrections:</div>
+                    ${fixes.map(f => `
+                        <div style="font-size:0.75rem; color:#991b1b; margin-bottom:0.15rem;">
+                            • <span style="text-decoration:line-through;">${f.error}</span> ➔ <strong style="color:#047857;">${f.fix}</strong> ${f.rule ? `<span style="color:#64748b; font-size:0.7rem;">(${f.rule})</span>` : ''}
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
         }
 
+        let vocabHtml = '';
+        if (vocabUpgrades && vocabUpgrades.length > 0) {
+            vocabHtml = `
+                <div style="margin-top:0.4rem; padding-top:0.3rem;">
+                    <div style="font-size:0.72rem; font-weight:700; color:#7c3aed; margin-bottom:0.2rem;">💡 Vocabulary Upgrades:</div>
+                    ${vocabUpgrades.map(v => `
+                        <div style="font-size:0.75rem; color:#5b21b6; margin-bottom:0.15rem;">
+                            • <span style="color:#475569;">"${v.original}"</span> ➔ <strong style="color:#6d28d9;">"${v.upgrade}"</strong> ${v.reason ? `<span style="color:#64748b; font-size:0.7rem;">— ${v.reason}</span>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        let tipHtml = '';
+        if (tip) {
+            tipHtml = `
+                <div style="margin-top:0.4rem; background:rgba(59,130,246,0.06); padding:0.35rem 0.6rem; border-radius:8px; font-size:0.73rem; color:#1e40af; border:1px solid rgba(59,130,246,0.2);">
+                    🚀 <strong>Confidence Tip:</strong> ${tip}
+                </div>
+            `;
+        }
+
+        const scoreColor = score >= 85 ? '#047857' : (score >= 70 ? '#d97706' : '#dc2626');
+        const scoreBg = score >= 85 ? '#d1fae5' : (score >= 70 ? '#fef3c7' : '#fee2e2');
+        const safeCorrected = (corrected || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
         slot.innerHTML = `
-            <div class="chat-correction-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div class="chat-correction-title">✨ Placement Formal English</div>
-                    <div style="font-size:0.72rem; font-weight:800; color:var(--accent); background:rgba(79,70,229,0.1); padding:0.1rem 0.5rem; border-radius:50px;">
-                        Turn Score: ${score}/100
+            <div class="chat-correction-card" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:0.75rem 1rem; margin-top:0.6rem; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+                    <div class="chat-correction-title" style="font-weight:800; font-size:0.8rem; color:#1e293b;">✨ Placement Formal English</div>
+                    <div style="display:flex; align-items:center; gap:0.4rem;">
+                        <button onclick="navigator.clipboard.writeText('${safeCorrected}')" style="background:none; border:none; color:#6366f1; font-size:0.72rem; font-weight:700; cursor:pointer;" title="Copy formal version">📋 Copy</button>
+                        <div style="font-size:0.72rem; font-weight:800; color:${scoreColor}; background:${scoreBg}; padding:0.15rem 0.6rem; border-radius:50px;">
+                            Turn Score: ${score}/100
+                        </div>
                     </div>
                 </div>
-                <div class="chat-corrected-text">"${corrected}"</div>
+                <div class="chat-corrected-text" style="font-size:0.85rem; color:#0f172a; font-weight:600; margin-top:0.3rem; line-height:1.4;">"${corrected}"</div>
                 ${fixesHtml}
+                ${vocabHtml}
+                ${tipHtml}
             </div>
         `;
     }
