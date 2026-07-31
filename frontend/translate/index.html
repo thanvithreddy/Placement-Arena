@@ -492,35 +492,50 @@
 
     <!-- Hero -->
     <div class="hero">
-        <div class="hero-badge">🇮🇳 Indian Language AI &nbsp;·&nbsp; Powered by Sarvam AI</div>
-        <h1>Telugu ↔ English<br>Ultra Translator</h1>
-        <p class="hero-telugu">తెలుగు - ఇంగ్లీష్ అనువాదకుడు</p>
-        <p>Purpose-built for Indian languages. Perfect grammar, natural phrasing, context-aware translations.</p>
+        <div class="hero-badge">🇮🇳 Tri-Lingual AI Translator &nbsp;·&nbsp; Gemini &amp; Sarvam AI</div>
+        <h1>Telugu ↔ Hindi ↔ English<br>Smart AI Translator</h1>
+        <p class="hero-telugu">తెలుగు • हिंदी • English</p>
+        <p>Purpose-built for Indian languages. Supports Native &amp; Phonetic Romanized typing (e.g. "ela unnaru", "aap kaise ho").</p>
         <div class="engine-badge" id="engine-badge">
-            <span>●</span> Sarvam AI · Indian Language Specialist
+            <span>●</span> Gemini AI &amp; Sarvam AI · Multilingual Specialist
         </div>
     </div>
 
     <!-- Main Translator -->
     <div class="translator-card">
 
-        <!-- Language selector -->
-        <div class="lang-bar">
-            <button class="lang-btn" id="btn-src-te" onclick="setDirection('te', 'en')">
-                <span class="lang-flag">🇮🇳</span>
-                <div>
-                    <div class="lang-name">తెలుగు</div>
-                    <div class="lang-sub">Telugu</div>
-                </div>
-            </button>
-            <button class="swap-btn" id="swap-btn" onclick="swapLanguages()" title="Swap languages">⇄</button>
-            <button class="lang-btn" id="btn-src-en" onclick="setDirection('en', 'te')">
-                <span class="lang-flag">🇬🇧</span>
-                <div>
-                    <div class="lang-name">English</div>
-                    <div class="lang-sub">→ తెలుగు</div>
-                </div>
-            </button>
+        <!-- Language selector bar -->
+        <div class="lang-bar" style="display:flex; justify-content:space-between; align-items:center; background:linear-gradient(135deg, #eef2ff, #f3e8ff); padding:0.85rem 1.25rem; border-bottom:1px solid #e0e7ff; gap:0.5rem; flex-wrap:wrap;">
+            
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="font-weight:800; font-size:0.8rem; color:#475569; text-transform:uppercase;">From Language:</span>
+                <select id="select-source-lang" onchange="onLangSelectChange()" style="font-size:0.92rem; font-weight:700; padding:0.5rem 0.9rem; border-radius:12px; border:1.5px solid #c7d2fe; background:#ffffff; color:#312e81; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+                    <option value="te-IN">🧡 Telugu (తెలుగు)</option>
+                    <option value="hi-IN">🔴 Hindi (हिंदी)</option>
+                    <option value="en-IN">🇬🇧 English</option>
+                </select>
+            </div>
+
+            <button class="swap-btn" id="swap-btn" onclick="swapLanguages()" title="Swap Source & Target Languages">⇄</button>
+
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="font-weight:800; font-size:0.8rem; color:#475569; text-transform:uppercase;">To Language:</span>
+                <select id="select-target-lang" onchange="onLangSelectChange()" style="font-size:0.92rem; font-weight:700; padding:0.5rem 0.9rem; border-radius:12px; border:1.5px solid #c7d2fe; background:#ffffff; color:#312e81; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+                    <option value="en-IN" selected>🇬🇧 English</option>
+                    <option value="te-IN">🧡 Telugu (తెలుగు)</option>
+                    <option value="hi-IN">🔴 Hindi (हिंदी)</option>
+                </select>
+            </div>
+
+            <!-- Quick direction pills -->
+            <div style="display:flex; gap:0.3rem; width:100%; justify-content:center; margin-top:0.4rem; flex-wrap:wrap;">
+                <button onclick="setQuickDirection('te-IN', 'en-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #c7d2fe; background:#ffffff; color:#4f46e5; cursor:pointer;">Telugu ➔ English</button>
+                <button onclick="setQuickDirection('te-IN', 'hi-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #fed7aa; background:#ffffff; color:#ea580c; cursor:pointer;">Telugu ➔ Hindi</button>
+                <button onclick="setQuickDirection('hi-IN', 'en-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #fbcfe8; background:#ffffff; color:#be185d; cursor:pointer;">Hindi ➔ English</button>
+                <button onclick="setQuickDirection('hi-IN', 'te-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #cbd5e1; background:#ffffff; color:#334155; cursor:pointer;">Hindi ➔ Telugu</button>
+                <button onclick="setQuickDirection('en-IN', 'te-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #c7d2fe; background:#ffffff; color:#4f46e5; cursor:pointer;">English ➔ Telugu</button>
+                <button onclick="setQuickDirection('en-IN', 'hi-IN')" style="font-size:0.73rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:20px; border:1px solid #fed7aa; background:#ffffff; color:#ea580c; cursor:pointer;">English ➔ Hindi</button>
+            </div>
         </div>
 
         <!-- Text areas -->
@@ -618,77 +633,80 @@
     let isRecording = false;
     let recognition = null;
 
+    // ── Language names map ────────────────────────────────────────────────
+    const LANG_DISPLAY = {
+        'te-IN': { name: 'Telugu', local: 'తెలుగు', flag: '🧡', placeholder: 'ఇక్కడ తెలుగు లేదా ఇంగ్లీష్‌ టైప్ చేయండి (e.g. vellandi, ela unnaru)...' },
+        'hi-IN': { name: 'Hindi', local: 'हिंदी', flag: '🔴', placeholder: 'यहाँ हिंदी या अंग्रेजी में टाइप करें (e.g. aap kaise ho, namaste)...' },
+        'en-IN': { name: 'English', local: 'English', flag: '🇬🇧', placeholder: 'Type English text or speak here...' }
+    };
+
     // ── Quick phrases ──────────────────────────────────────────────────────
     const QUICK_PHRASES = [
-        { te: 'వెళ్ళండి (vellandi)', en: 'Go' },
-        { te: 'ఎలా ఉన్నారు (ela unnaru)', en: 'How are you?' },
-        { te: 'నమస్కారం (namaskaram)', en: 'Hello / Greetings' },
-        { te: 'నా పేరు థన్విత్', en: 'My name is Thanvith' },
-        { te: 'నేను కంప్యూటర్ సైన్స్ చదువుతున్నాను', en: 'I am studying Computer Science' },
-        { te: 'నాకు జావాలో నైపుణ్యం ఉంది', en: 'I am proficient in Java' },
-        { te: 'నేను మీ కంపెనీలో చేరాలనుకుంటున్నాను', en: 'I want to join your company' },
-        { te: 'చాలా బాగుంది (chala bagundi)', en: 'Very good' },
-        { te: 'ధన్యవాదాలు (dhanyavadalu)', en: 'Thank you' },
-        { te: 'నేను సహాయం చేయగలనా?', en: 'Can I help you?' },
-        { te: 'నా బలాలు ఏమిటంటే', en: 'My strengths are' },
-        { te: 'నేను టీమ్‌లో బాగా పని చేస్తాను', en: 'I work well in a team' },
+        { text: 'నమస్కారం (namaskaram)', lang: 'te-IN', desc: 'Hello / Greetings (Telugu)' },
+        { text: 'ఎలా ఉన్నారు? (ela unnaru)', lang: 'te-IN', desc: 'How are you? (Telugu)' },
+        { text: 'వెళ్ళండి (vellandi)', lang: 'te-IN', desc: 'Go / Please leave (Telugu)' },
+        { text: 'नमस्ते (namaste / aap kaise ho)', lang: 'hi-IN', desc: 'Hello / How are you? (Hindi)' },
+        { text: 'खाना खाया क्या? (khana khaya)', lang: 'hi-IN', desc: 'Did you have food? (Hindi)' },
+        { text: 'धन्यवाद (dhanyawad)', lang: 'hi-IN', desc: 'Thank you (Hindi)' },
+        { text: 'I am proficient in Python and Java', lang: 'en-IN', desc: 'Placement Intro (English)' },
+        { text: 'What are your career goals?', lang: 'en-IN', desc: 'HR Question (English)' },
     ];
 
     function renderQuickPhrases() {
         const grid = document.getElementById('quick-grid');
         grid.innerHTML = QUICK_PHRASES.map((p, i) => `
             <div class="quick-item" onclick="useQuickPhrase(${i})">
-                <div class="quick-te">${p.te}</div>
-                <div class="quick-en">${p.en}</div>
+                <div class="quick-te" style="font-size:0.9rem; font-weight:700;">${p.text}</div>
+                <div class="quick-en" style="font-size:0.75rem; color:var(--muted);">${p.desc}</div>
             </div>
         `).join('');
     }
 
     function useQuickPhrase(idx) {
         const p = QUICK_PHRASES[idx];
-        // If we're in te→en mode, use Telugu as input
-        if (sourceLang === 'te-IN') {
-            document.getElementById('input-text').value = p.te;
-        } else {
-            document.getElementById('input-text').value = p.en;
-        }
+        setQuickDirection(p.lang, targetLang === p.lang ? 'en-IN' : targetLang);
+        document.getElementById('input-text').value = p.text;
         onInputChange();
         doTranslate();
     }
 
-    // ── Direction toggle ───────────────────────────────────────────────────
-    function setDirection(src, tgt) {
-        sourceLang = src === 'te' ? 'te-IN' : 'en-IN';
-        targetLang = tgt === 'en' ? 'en-IN' : 'te-IN';
+    // ── Direction & Select handlers ───────────────────────────────────────
+    function onLangSelectChange() {
+        sourceLang = document.getElementById('select-source-lang').value;
+        targetLang = document.getElementById('select-target-lang').value;
+        if (sourceLang === targetLang) {
+            // Prevent same source and target
+            const options = ['te-IN', 'hi-IN', 'en-IN'];
+            targetLang = options.find(o => o !== sourceLang) || 'en-IN';
+            document.getElementById('select-target-lang').value = targetLang;
+        }
         updateDirectionUI();
-        clearAll();
+    }
+
+    function setQuickDirection(src, tgt) {
+        sourceLang = src;
+        targetLang = tgt;
+        document.getElementById('select-source-lang').value = src;
+        document.getElementById('select-target-lang').value = tgt;
+        updateDirectionUI();
     }
 
     function updateDirectionUI() {
-        const isTEtoEN = sourceLang === 'te-IN';
+        const srcInfo = LANG_DISPLAY[sourceLang] || LANG_DISPLAY['te-IN'];
+        const tgtInfo = LANG_DISPLAY[targetLang] || LANG_DISPLAY['en-IN'];
 
-        document.getElementById('btn-src-te').classList.toggle('active', isTEtoEN);
-        document.getElementById('btn-src-en').classList.toggle('active', !isTEtoEN);
-
-        if (isTEtoEN) {
-            document.getElementById('btn-src-te').querySelector('.lang-sub').textContent = '→ English';
-            document.getElementById('btn-src-en').querySelector('.lang-sub').textContent = '→ తెలుగు';
-            document.getElementById('input-lang-label').textContent = 'తెలుగు Input';
-            document.getElementById('output-lang-label').textContent = 'English Translation';
-            document.getElementById('input-text').placeholder = 'ఇక్కడ తెలుగు టైప్ చేయండి లేదా మాట్లాడండి...';
-        } else {
-            document.getElementById('btn-src-te').querySelector('.lang-sub').textContent = 'తెలుగు';
-            document.getElementById('btn-src-en').querySelector('.lang-sub').textContent = '→ తెలుగు';
-            document.getElementById('input-lang-label').textContent = 'English Input';
-            document.getElementById('output-lang-label').textContent = 'తెలుగు Translation';
-            document.getElementById('input-text').placeholder = 'Type English here or speak...';
-        }
+        document.getElementById('input-lang-label').textContent = `${srcInfo.flag} ${srcInfo.local} (${srcInfo.name}) Input`;
+        document.getElementById('output-lang-label').textContent = `${tgtInfo.flag} ${tgtInfo.local} (${tgtInfo.name}) Translation`;
+        document.getElementById('input-text').placeholder = srcInfo.placeholder;
     }
 
     function swapLanguages() {
         const tmp = sourceLang;
         sourceLang = targetLang;
         targetLang = tmp;
+
+        document.getElementById('select-source-lang').value = sourceLang;
+        document.getElementById('select-target-lang').value = targetLang;
 
         // Swap text too if there's a translation
         const outEl = document.getElementById('output-area');
@@ -714,6 +732,8 @@
         const tmp = sourceLang;
         sourceLang = targetLang;
         targetLang = tmp;
+        document.getElementById('select-source-lang').value = sourceLang;
+        document.getElementById('select-target-lang').value = targetLang;
         updateDirectionUI();
         onInputChange();
         doTranslate();

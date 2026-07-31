@@ -555,27 +555,35 @@ class TranslateView(APIView):
     LANG_NAMES = {
         'te-IN': 'Telugu',
         'en-IN': 'English',
+        'hi-IN': 'Hindi',
         'te': 'Telugu',
         'en': 'English',
+        'hi': 'Hindi',
     }
-    SARVAM_MAP = {'te': 'te-IN', 'en': 'en-IN', 'te-IN': 'te-IN', 'en-IN': 'en-IN'}
-    MYMEMORY_MAP = {'te-IN': 'te', 'en-IN': 'en', 'te': 'te', 'en': 'en'}
+    SARVAM_MAP = {
+        'te': 'te-IN', 'en': 'en-IN', 'hi': 'hi-IN',
+        'te-IN': 'te-IN', 'en-IN': 'en-IN', 'hi-IN': 'hi-IN'
+    }
+    MYMEMORY_MAP = {
+        'te-IN': 'te', 'en-IN': 'en', 'hi-IN': 'hi',
+        'te': 'te', 'en': 'en', 'hi': 'hi'
+    }
 
     # ── Gemini translation ────────────────────────────────────────────────
     def _translate_gemini(self, text: str, source: str, target: str) -> str:
         src_name = self.LANG_NAMES.get(source, source)
         tgt_name = self.LANG_NAMES.get(target, target)
 
-        prompt = f"""You are an ultra-powerful {src_name}-to-{tgt_name} translator specialized in Indian languages (Telugu and English).
+        prompt = f"""You are an ultra-powerful multi-lingual AI translator specialized in Indian languages (Telugu, Hindi, and English).
 
-Translate the following input text to {tgt_name}.
+Translate the following input text from {src_name} to {tgt_name}.
 
-CRITICAL INSTRUCTIONS FOR TELUGU INPUT:
+CRITICAL INSTRUCTIONS FOR INPUT TRANSLATION:
 1. The input text may be written in:
-   - Native Telugu script (e.g., "వెళ్ళండి", "ఎలా ఉన్నారు", "ధన్యవాదాలు")
-   - Phonetic/Romanized Telugu using English keyboard letters (e.g., "vellandi", "ela unnaru", "namaskaram", "nenu bagunnanu", "chala bagundi", "vasthunnanu", "ravali")
+   - Native script (e.g. Telugu script "ఎలా ఉన్నారు", Hindi Devanagari script "आप कैसे हैं")
+   - Phonetic/Romanized typing using English keyboard letters (e.g., Phonetic Telugu: "ela unnaru", "vellandi", "namaskaram" | Phonetic Hindi: "aap kaise ho", "namaste", "dhanyawad", "main thik hoon", "khana khaya kya")
    - Standard English or a mix
-2. AUTOMATICALLY RECOGNIZE Phonetic Romanized Telugu (e.g. "vellandi" -> "Go", "ela unnaru" -> "How are you?", "namaskaram" -> "Hello", "nenu vasthunnanu" -> "I am coming") and translate it accurately to fluent {tgt_name}!
+2. AUTOMATICALLY RECOGNIZE Phonetic Romanized Telugu or Phonetic Romanized Hindi and translate it accurately to fluent {tgt_name}!
 3. Produce natural, grammatically flawless, context-aware {tgt_name}.
 4. Return ONLY the translated text, with no extra conversational filler, labels, quotes, or markdown wrappers.
 
