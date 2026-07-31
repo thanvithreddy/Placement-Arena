@@ -778,6 +778,9 @@ class VoiceRoboConversationView(APIView):
         transcript = request.data.get('transcript', '').strip()
         persona_key = request.data.get('persona', 'hr').lower()
         history = request.data.get('history', [])
+        user_name = request.data.get('user_name', '')
+        if not user_name:
+            user_name = getattr(request.user, 'display_name', '') or request.user.username
 
         if not transcript:
             return Response({'error': 'No transcript provided.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -793,12 +796,13 @@ class VoiceRoboConversationView(APIView):
 
         prompt = f"""{persona_context}
 
-The candidate just said: "{transcript}"
+Candidate Name: {user_name}
+The candidate ({user_name}) just said: "{transcript}"
 
 {history_text}
 
 Task:
-1. Formulate an intelligent, highly natural, conversational next response as Robo to keep the interview/chat flowing. Ask insightful follow-up questions tailored to your persona.
+1. Formulate an intelligent, highly natural, conversational next response as Robo to keep the interview/chat flowing. Naturally address the candidate by name ({user_name}) when appropriate. Ask insightful follow-up questions tailored to your persona.
 2. Rewrite the candidate's speech into formal, placement-ready, grammatically flawless English.
 3. Provide a short verbal correction phrase for text-to-speech feedback (e.g., "A better way to say that is: ...").
 4. Identify 1-3 specific grammar errors if present.

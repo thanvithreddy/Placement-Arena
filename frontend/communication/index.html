@@ -1757,10 +1757,11 @@
     }
 
     function greetCandidateRobo() {
+        const candidateName = userInfo.display_name || userInfo.username || 'Student';
         const greetings = {
-            'hr': "Hello! I'm Robo, your HR Placement Interviewer. Let's practice your campus placement interview. Tell me, why should our company hire you?",
-            'technical': "Welcome! I'm Robo, your Technical Lead. Let's evaluate your technical communication. Tell me about your favorite programming language or technical project.",
-            'buddy': "Hey there! I'm Robo, your English speaking buddy. Let's have a fun conversation to build your fluency! How has your day been so far?",
+            'hr': `Hello ${candidateName}! I'm Robo, your HR Placement Interviewer. Let's practice your campus placement interview. Tell me, why should our company hire you?`,
+            'technical': `Welcome ${candidateName}! I'm Robo, your Technical Lead. Let's evaluate your technical communication. Tell me about your favorite programming language or technical project.`,
+            'buddy': `Hey ${candidateName}! I'm Robo, your English speaking buddy. Let's have a fun conversation to build your fluency! How has your day been so far?`,
         };
         const msg = greetings[roboPersona] || greetings['hr'];
         addRoboBubble(msg);
@@ -1927,11 +1928,14 @@
 
         roboConversationHistory.push({ role: 'user', text: userSpeech });
 
+        const candidateName = userInfo.display_name || userInfo.username || 'Student';
+
         try {
             const res = await axios.post(`${API}/communication/robo-speak/`, {
                 transcript: userSpeech,
                 persona: roboPersona,
-                history: roboConversationHistory
+                history: roboConversationHistory,
+                user_name: candidateName
             }, { headers });
 
             const data = res.data;
