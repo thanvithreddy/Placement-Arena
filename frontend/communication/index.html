@@ -914,81 +914,6 @@
                 </div>
             </div>
         </div>
-    </div> <!-- /standard-mode-container -->
-
-    <!-- INTERACTIVE AI VOICE ROBO MODE CONTAINER -->
-    <div id="robo-mode-container" style="display:none;">
-        <div class="card" style="background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1px solid #c7d2fe;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
-                <div>
-                    <h2 style="font-size:1.25rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:0.5rem;">
-                        <span>🤖</span> AI Speaking Robo Coach &amp; Mock Interviewer
-                    </h2>
-                    <p style="font-size:0.82rem; color:var(--muted); margin-top:0.2rem;">
-                        Speak naturally into your mic. Robo listens, responds out loud, and corrects your English in real-time!
-                    </p>
-                </div>
-
-                <!-- Persona selector -->
-                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-                    <button class="persona-btn active" id="persona-btn-hr" onclick="setRoboPersona('hr')">👔 HR Recruiter</button>
-                    <button class="persona-btn" id="persona-btn-technical" onclick="setRoboPersona('technical')">💻 Tech Lead</button>
-                    <button class="persona-btn" id="persona-btn-buddy" onclick="setRoboPersona('buddy')">🗣️ English Buddy</button>
-                </div>
-            </div>
-
-            <!-- Robo Stage -->
-            <div class="robo-stage">
-                <div class="robo-avatar-box">
-                    <div class="robo-pulse-ring" id="robo-ring"></div>
-                    <svg class="robo-svg" id="robo-svg" viewBox="0 0 100 100">
-                        <line x1="50" y1="20" x2="50" y2="10" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="50" cy="8" r="4" fill="#6366f1" id="robo-antenna"/>
-                        <rect x="20" y="20" width="60" height="50" rx="16" fill="#1e1b4b" stroke="#4f46e5" stroke-width="2"/>
-                        <rect x="14" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
-                        <rect x="80" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
-                        <rect x="28" y="30" width="44" height="20" rx="8" fill="#0f172a"/>
-                        <circle cx="40" cy="40" r="5" fill="#38bdf8" id="robo-eye-l"/>
-                        <circle cx="60" cy="40" r="5" fill="#38bdf8" id="robo-eye-r"/>
-                        <rect x="36" y="56" width="28" height="6" rx="3" fill="#6366f1" id="robo-mouth"/>
-                        <path d="M 40 70 L 60 70 L 65 85 L 35 85 Z" fill="#312e81"/>
-                    </svg>
-                </div>
-                
-                <div class="robo-status-badge" id="robo-status-text">🤖 Robo is ready! Tap below or start Voice Call</div>
-
-                <div style="display:flex; gap:0.75rem; justify-content:center; align-items:center; margin-top:1.25rem; flex-wrap:wrap;">
-                    <button class="btn-robo-mic" id="btn-robo-mic" onclick="toggleRoboMic()">
-                        <span id="robo-mic-icon">🎙️</span> <span id="robo-mic-text">Speak to Robo</span>
-                    </button>
-                    <button class="btn-robo-call" id="btn-robo-call" onclick="toggleRoboCall()">
-                        <span>🎧</span> <span id="robo-call-text">Start Hands-Free Voice Call</span>
-                    </button>
-                    <button class="btn-robo-action" onclick="replayRoboSpeech()" title="Repeat last AI audio">
-                        <span>🔊</span> Replay Voice
-                    </button>
-                </div>
-            </div>
-
-            <!-- Conversation Feed -->
-            <div style="margin-top:2rem;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                    <div style="font-weight:700; font-size:0.9rem; color:var(--text); display:flex; align-items:center; gap:0.4rem;">
-                        💬 Live Conversation &amp; Verbal Correction Feed
-                    </div>
-                    <button onclick="clearRoboChat()" style="background:transparent; border:none; color:var(--muted); font-size:0.75rem; font-weight:600; cursor:pointer;">
-                        🗑️ Clear Chat
-                    </button>
-                </div>
-
-                <div class="robo-chat-feed" id="robo-chat-feed">
-                    <div style="color:var(--muted); font-size:0.85rem; text-align:center; padding:2rem;" id="robo-feed-empty">
-                        👋 Hi! I'm Robo, your AI speaking coach. Select a persona above and tap <strong>"Speak to Robo"</strong> to begin!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
         <!-- Right: Recording + Feedback -->
         <div class="recording-panel">
@@ -1109,9 +1034,82 @@
                 </div>
             </div>
 
+        </div> <!-- /recording-panel -->
+    </div> <!-- /lab-grid -->
+    </div> <!-- /standard-mode-container -->
+
+    <!-- ══ INTERACTIVE AI VOICE ROBO MODE CONTAINER ══ -->
+    <div id="robo-mode-container" style="display:none;">
+        <div class="card" style="background: linear-gradient(135deg, #ffffff, #f0f4ff); border: 2px solid #c7d2fe; border-radius:20px;">
+
+            <!-- Header + Persona selector -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+                <div>
+                    <h2 style="font-size:1.25rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:0.5rem;">
+                        🤖 AI Speaking Robo Coach &amp; Mock Interviewer
+                    </h2>
+                    <p style="font-size:0.82rem; color:var(--muted); margin-top:0.25rem;">
+                        Speak naturally into your mic. Robo listens, responds out loud, and corrects your English in real-time!
+                    </p>
+                </div>
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                    <button class="persona-btn active" id="persona-btn-hr" onclick="setRoboPersona('hr')">👔 HR Recruiter</button>
+                    <button class="persona-btn" id="persona-btn-technical" onclick="setRoboPersona('technical')">💻 Tech Lead</button>
+                    <button class="persona-btn" id="persona-btn-buddy" onclick="setRoboPersona('buddy')">🗣️ English Buddy</button>
+                </div>
+            </div>
+
+            <!-- Robo Avatar Stage -->
+            <div class="robo-stage">
+                <div class="robo-avatar-box">
+                    <div class="robo-pulse-ring" id="robo-ring"></div>
+                    <svg class="robo-svg" id="robo-svg" viewBox="0 0 100 100">
+                        <line x1="50" y1="20" x2="50" y2="10" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="50" cy="8" r="4" fill="#6366f1" id="robo-antenna"/>
+                        <rect x="20" y="20" width="60" height="50" rx="16" fill="#1e1b4b" stroke="#4f46e5" stroke-width="2"/>
+                        <rect x="14" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
+                        <rect x="80" y="38" width="6" height="14" rx="3" fill="#6366f1"/>
+                        <rect x="28" y="30" width="44" height="20" rx="8" fill="#0f172a"/>
+                        <circle cx="40" cy="40" r="5" fill="#38bdf8" id="robo-eye-l"/>
+                        <circle cx="60" cy="40" r="5" fill="#38bdf8" id="robo-eye-r"/>
+                        <rect x="36" y="56" width="28" height="6" rx="3" fill="#6366f1" id="robo-mouth"/>
+                        <path d="M 40 70 L 60 70 L 65 85 L 35 85 Z" fill="#312e81"/>
+                    </svg>
+                </div>
+
+                <div class="robo-status-badge" id="robo-status-text">🤖 Robo is ready! Select a persona and tap Speak to Robo</div>
+
+                <div style="display:flex; gap:0.75rem; justify-content:center; align-items:center; margin-top:1.25rem; flex-wrap:wrap;">
+                    <button class="btn-robo-mic" id="btn-robo-mic" onclick="toggleRoboMic()">
+                        <span id="robo-mic-icon">🎙️</span> <span id="robo-mic-text">Speak to Robo</span>
+                    </button>
+                    <button class="btn-robo-call" id="btn-robo-call" onclick="toggleRoboCall()">
+                        <span>🎧</span> <span id="robo-call-text">Start Hands-Free Voice Call</span>
+                    </button>
+                    <button class="btn-robo-action" onclick="replayRoboSpeech()" title="Repeat last AI audio">
+                        <span>🔊</span> Replay Voice
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Conversation Feed -->
+            <div style="margin-top:2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--text);">
+                        💬 Live Conversation &amp; Verbal Correction Feed
+                    </div>
+                    <button onclick="clearRoboChat()" style="background:transparent; border:none; color:var(--muted); font-size:0.75rem; font-weight:600; cursor:pointer;">
+                        🗑️ Clear Chat
+                    </button>
+                </div>
+                <div class="robo-chat-feed" id="robo-chat-feed">
+                    <div style="color:var(--muted); font-size:0.85rem; text-align:center; padding:2rem;" id="robo-feed-empty">
+                        👋 Hi! I'm Robo, your AI speaking coach. Select a persona above and tap <strong>"Speak to Robo"</strong> to begin!
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </div><!-- /robo-mode-container -->
 
 <script>
     // ── Config ────────────────────────────────────────────────────────────
