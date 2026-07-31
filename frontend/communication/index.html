@@ -1981,22 +1981,97 @@
         }
     }
 
+    function populateVoiceDropdown() {
+        const select = document.getElementById('robo-voice-select');
+        if (!select) return;
+
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) return;
+
+        const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+        if (englishVoices.length === 0) return;
+
+        const currentVal = select.value;
+        select.innerHTML = '';
+
+        const sweetKeywords = ['natural', 'neural', 'google us english', 'jenny', 'aria', 'zira', 'samantha', 'victoria', 'karen', 'sonia', 'neerja'];
+
+        englishVoices.sort((a, b) => {
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+            const scoreA = sweetKeywords.some(k => nameA.includes(k)) ? 2 : 1;
+            const scoreB = sweetKeywords.some(k => nameB.includes(k)) ? 2 : 1;
+            return scoreB - scoreA;
+        });
+
+        englishVoices.forEach((v, idx) => {
+            const opt = document.createElement('option');
+            opt.value = v.name;
+            let displayName = v.name.replace('Microsoft ', '').replace('Desktop ', '').replace('Online (Natural)', '✨ Natural');
+            if (idx === 0 || sweetKeywords.some(k => v.name.toLowerCase().includes(k))) {
+                displayName = `💖 ${displayName} (Sweet Voice)`;
+            }
+            opt.textContent = displayName;
+            select.appendChild(opt);
+        });
+
+        if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
+            select.value = currentVal;
+        }
+    }
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = populateVoiceDropdown;
+        setTimeout(populateVoiceDropdown, 300);
+    }
+
     function speakRoboText(text, onEndCallback) {
         window.speechSynthesis.cancel();
         setRoboState('speaking');
 
         const utter = new SpeechSynthesisUtterance(text);
-        const voiceLang = document.getElementById('robo-voice-select') ? document.getElementById('robo-voice-select').value : 'en-US';
+        const selectedVoiceName = document.getElementById('robo-voice-select') ? document.getElementById('robo-voice-select').value : '';
         const voiceSpeed = document.getElementById('robo-speed-select') ? parseFloat(document.getElementById('robo-speed-select').value) : 1.0;
 
-        utter.lang = voiceLang;
         utter.rate = voiceSpeed;
-        utter.pitch = 1.0;
+        utter.pitch = 1.08; // Warm, sweet conversational pitch boost
 
         const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => v.lang.startsWith(voiceLang.split('-')[0]) || v.lang === voiceLang);
-        if (preferredVoice) {
-            utter.voice = preferredVoice;
+        let chosenVoice = null;
+
+        if (selectedVoiceName) {
+            chosenVoice = voices.find(v => v.name === selectedVoiceName);
+        }
+
+        if (!chosenVoice) {
+            const sweetPriorities = [
+                'google us english',
+                'microsoft jenny online (natural)',
+                'microsoft aria online (natural)',
+                'microsoft sonia online (natural)',
+                'microsoft neerja online (natural)',
+                'microsoft zira',
+                'samantha',
+                'karen',
+                'victoria',
+                'google uk english female'
+            ];
+
+            for (const key of sweetPriorities) {
+                chosenVoice = voices.find(v => v.name.toLowerCase().includes(key));
+                if (chosenVoice) break;
+            }
+
+            if (!chosenVoice) {
+                chosenVoice = voices.find(v => v.lang.startsWith('en'));
+            }
+        }
+
+        if (chosenVoice) {
+            utter.voice = chosenVoice;
+            utter.lang = chosenVoice.lang;
+        } else {
+            utter.lang = 'en-US';
         }
 
         utter.onend = () => {
