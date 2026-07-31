@@ -149,6 +149,8 @@ def _rule_based_correct(text: str):
         (r'\bI am wake up\b', 'I woke up', 'Verb tense: "am wake up" → "woke up"'),
         (r'\bI am woke up\b', 'I woke up', 'Verb tense: "am woke up" → "woke up"'),
         (r'\bI wake up at\b', 'I woke up at', 'Past tense: "wake up" → "woke up"'),
+        (r'\bworked up very late\b', 'woke up very late', 'Word choice: "worked up" → "woke up"'),
+        (r'\bworked up at\b', 'woke up at', 'Word choice: "worked up" → "woke up"'),
         (r'\beat to egg\b', 'ate eggs', 'Preposition & tense error: "eat to egg" → "ate eggs"'),
         (r'\beat egg\b', 'ate an egg', 'Article & tense error: "eat egg" → "ate an egg"'),
         (r'\beat to\b', 'ate', 'Preposition error: "eat to" → "ate"'),
@@ -159,6 +161,27 @@ def _rule_based_correct(text: str):
         (r'\bshe go to\b', 'she went to', 'Past tense: "go" → "went"'),
         (r'\bwe go to\b', 'we went to', 'Past tense: "go" → "went"'),
         (r'\bthey go to\b', 'they went to', 'Past tense: "go" → "went"'),
+
+        # ── Workplace & Spoken English errors ──────────────────────────────────────
+        (r'\bmy boss look\b', 'my boss looked', 'Subject-verb & tense error: "boss look" → "boss looked"'),
+        (r'\bboss look\b', 'boss looked', 'Past tense: "boss look" → "boss looked"'),
+        (r'\blook very angry to me\b', 'looked very angry with me', 'Preposition & tense: "angry to me" → "angry with me"'),
+        (r'\bangry to me\b', 'angry with me', 'Preposition error: "angry to me" → "angry with me"'),
+        (r'\bangry on me\b', 'angry with me', 'Preposition error: "angry on me" → "angry with me"'),
+        (r'\bwhen I arrive at my office\b', 'when I arrived at my office', 'Past tense: "arrive" → "arrived"'),
+        (r'\bwhen I arrive at\b', 'when I arrived at', 'Past tense: "arrive at" → "arrived at"'),
+        (r'\barrive at my office\b', 'arrived at my office', 'Past tense: "arrive" → "arrived"'),
+        (r'\barrive at office\b', 'arrived at the office', 'Past tense & article error'),
+        (r'\bclock do not ring\b', "clock didn't ring", 'Past tense & auxiliary error'),
+        (r'\bdo not ring\b', "didn't ring", 'Past tense: "do not" → "didn\'t"'),
+        (r'\bdoes not ring\b', "didn't ring", 'Past tense: "does not" → "didn\'t"'),
+        (r'\bhe look\b', 'he looked', 'Past tense: "look" → "looked"'),
+        (r'\bshe look\b', 'she looked', 'Past tense: "look" → "looked"'),
+        (r'\bthey look\b', 'they looked', 'Past tense: "look" → "looked"'),
+        (r'\bhe say\b', 'he said', 'Past tense: "say" → "said"'),
+        (r'\bshe say\b', 'she said', 'Past tense: "say" → "said"'),
+        (r'\bthey say\b', 'they said', 'Past tense: "say" → "said"'),
+        (r'\bboss say\b', 'boss said', 'Past tense: "say" → "said"'),
 
         # ── "for + verb" → "to + verb" (very common Indian error) ───────────────
         (r'\bfor buy\b', 'to buy', 'Preposition error: "for buy" → "to buy"'),
@@ -682,39 +705,55 @@ class VoiceRoboConversationView(APIView):
             })
 
         words = transcript.split()
-        score = max(65, min(98, 95 - len(fixes) * 8 + (5 if len(words) > 10 else 0)))
+        if len(fixes) > 0:
+            score = max(55, min(88, 92 - len(fixes) * 10))
+        elif len(words) < 5:
+            score = 75
+        else:
+            score = 88
+
+        # Word boundary helper to prevent matching 'ok' inside 'look'
+        def has_word(w):
+            return bool(re.search(r'\b' + re.escape(w) + r'\b', text_lower))
 
         if persona_key == 'buddy':
-            if any(k in text_lower for k in ['breakfast', 'wake', 'woke', 'morning', 'eat', 'food', 'day', 'kitchen', 'egg']):
-                reply = "That sounds like a comfortable start to your day! What are your plans for the rest of today? Are you preparing for placements or studying?"
-            elif any(k in text_lower for k in ['fine', 'good', 'great', 'okay', 'ok', 'nothing']):
-                reply = "Glad to hear that! What topics or projects have you been working on recently for your campus placements?"
-            elif any(k in text_lower for k in ['project', 'python', 'java', 'code', 'college', 'exam', 'class']):
+            if any(has_word(w) for w in ['boss', 'office', 'manager', 'work', 'colleague', 'job', 'company']):
+                if any(has_word(w) for w in ['angry', 'mad', 'upset', 'scolded', 'late', 'traffic', 'delay', 'clock', 'alarm']):
+                    reply = "Oh no! That sounds really stressful. Dealing with an angry boss or a late morning can be tough. What happened next? Did you get a chance to explain?"
+                else:
+                    reply = "I understand. Work environments can be fast-paced. How are things going at your workplace or internship overall?"
+            elif any(has_word(w) for w in ['angry', 'mad', 'upset', 'sad', 'scolded', 'fight']):
+                reply = "I'm sorry to hear that you had a difficult situation. How did you handle it, and is everything okay now?"
+            elif any(has_word(w) for w in ['breakfast', 'wake', 'woke', 'morning', 'eat', 'food', 'day', 'kitchen', 'egg', 'alarm']):
+                reply = "That sounds like a busy morning! What are your main plans or tasks for the rest of today?"
+            elif any(has_word(w) for w in ['fine', 'good', 'great', 'okay', 'ok', 'happy', 'awesome']):
+                reply = "Glad to hear that you're doing well! What topics or projects have you been working on recently?"
+            elif any(has_word(w) for w in ['project', 'python', 'java', 'code', 'college', 'exam', 'class', 'study']):
                 reply = "That sounds interesting! What did you enjoy most while working on that?"
             else:
-                reply = f"That's nice! Speaking about your daily routine helps build confidence. What else would you like to discuss today?"
+                reply = "I see! Tell me more about what happened next or what else is on your mind today."
 
-            verbal = f"Great effort! A quick tip: try saying '{corrected_transcript}'." if fixes else "Your English sounded clear and natural!"
+            verbal = f"Good effort! A quick tip: try saying '{corrected_transcript}'." if fixes else "Good attempt! Keep practicing natural English sentences."
 
         elif persona_key == 'technical':
-            if any(k in text_lower for k in ['python', 'java', 'cpp', 'c++', 'sql', 'db', 'database', 'project', 'code']):
-                reply = "Good technical context! How do you handle error handling and optimization in your code?"
-            elif any(k in text_lower for k in ['fine', 'good', 'know', 'start', 'day', 'wake', 'eat', 'breakfast']):
-                reply = "Understood. As a Tech Lead, I'd love to know: what is your favorite programming language and why?"
+            if any(has_word(w) for w in ['boss', 'office', 'project', 'team', 'deadline', 'client']):
+                reply = "In professional tech environments, managing deadlines and expectations is key. How do you handle workplace pressure or project delays?"
+            elif any(has_word(w) for w in ['python', 'java', 'cpp', 'c++', 'sql', 'db', 'database', 'code', 'api']):
+                reply = "Good technical context! How do you handle error handling, edge cases, and optimization in your code?"
             else:
-                reply = "Interesting technical point. Can you walk me through the key logic step-by-step?"
+                reply = "Understood. As a Tech Lead, I'd love to know: what is your primary technical project or favorite programming language?"
 
-            verbal = f"Good explanation. For technical interviews, phrase it like: '{corrected_transcript}'." if fixes else "Excellent technical vocabulary!"
+            verbal = f"For technical interviews, phrase it like: '{corrected_transcript}'." if fixes else "Clear technical response!"
 
         else: # HR recruiter
-            if any(k in text_lower for k in ['strengths', 'strength', 'good', 'hardworking', 'learn', 'team']):
+            if any(has_word(w) for w in ['boss', 'office', 'work', 'conflict', 'angry', 'late']):
+                reply = "Handling workplace challenges professionally is an important HR metric. How do you resolve conflicts or miscommunications in a team?"
+            elif any(has_word(w) for w in ['strengths', 'strength', 'good', 'hardworking', 'learn', 'team']):
                 reply = "Thank you for sharing your strength. Can you give me a real-life example where you demonstrated that?"
-            elif any(k in text_lower for k in ['day', 'breakfast', 'fine', 'wake', 'start', 'eat', 'kitchen']):
-                reply = "Welcome to the HR interview session! Could you please introduce yourself and mention your key academic background?"
             else:
-                reply = "Thank you. Why do you feel you are a strong fit for our organization?"
+                reply = "Thank you for sharing. Could you please tell me about your background and why you are interested in joining our company?"
 
-            verbal = f"In an HR interview, state it formally like: '{corrected_transcript}'." if fixes else "Very professional response!"
+            verbal = f"In an HR interview, state it formally like: '{corrected_transcript}'." if fixes else "Professional response!"
 
         return {
             'robo_reply': reply,

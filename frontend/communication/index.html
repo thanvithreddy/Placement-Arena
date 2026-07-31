@@ -1818,15 +1818,18 @@
         } catch(e) {
             console.error("Robo network/API error:", e);
             const lower = userSpeech.toLowerCase();
+            const hasW = (w) => new RegExp('\\b' + w + '\\b', 'i').test(lower);
             let dynReply = "";
-            if (lower.includes('breakfast') || lower.includes('wake') || lower.includes('day') || lower.includes('morning') || lower.includes('eat') || lower.includes('egg')) {
-                dynReply = "That sounds like a comfortable start to your day! What are your plans for the rest of today?";
-            } else if (lower.includes('fine') || lower.includes('good') || lower.includes('great') || lower.includes('okay')) {
+            if (hasW('boss') || hasW('office') || hasW('manager') || hasW('work') || hasW('angry') || hasW('late') || hasW('alarm')) {
+                dynReply = "Oh no! That sounds really stressful. Dealing with an angry boss or a late morning can be tough. What happened next?";
+            } else if (hasW('breakfast') || hasW('wake') || hasW('morning') || hasW('eat') || hasW('egg')) {
+                dynReply = "That sounds like a busy morning! What are your main plans or tasks for the rest of today?";
+            } else if (hasW('fine') || hasW('good') || hasW('great') || hasW('happy')) {
                 dynReply = "Glad to hear that! What topics or projects have you been working on recently for your placements?";
-            } else if (lower.includes('project') || lower.includes('code') || lower.includes('python') || lower.includes('java')) {
+            } else if (hasW('project') || hasW('code') || hasW('python') || hasW('java')) {
                 dynReply = "That sounds interesting! What did you enjoy most while working on that technical project?";
             } else {
-                dynReply = "That's great! Speaking about your routine helps build confidence. What else would you like to discuss today?";
+                dynReply = "I see! Tell me more about what happened next or what else is on your mind today.";
             }
             addRoboBubble(dynReply);
             speakRoboText(dynReply);
