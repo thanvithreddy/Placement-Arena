@@ -16,14 +16,13 @@ from .serializers import SpeechTopicSerializer, SpeechAttemptSerializer, SpeechA
 
 def _call_gemini(prompt: str, temperature: float = 0.3) -> str:
     """
-    Call Gemini REST API with multi-model fallback (gemini-2.0-flash, gemini-1.5-flash, gemini-2.5-flash).
-    Free tier: 15 RPM, 1500 req/day — more than enough for candidates.
+    Call Gemini REST API with multi-model fallback (gemini-1.5-flash, gemini-1.5-pro, gemini-pro).
     """
     api_key = getattr(settings, 'GEMINI_API_KEY', '')
     if not api_key:
         raise ValueError('GEMINI_API_KEY not configured')
 
-    models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash']
+    models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro']
     last_err = None
     for model in models:
         url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}'
@@ -35,12 +34,16 @@ def _call_gemini(prompt: str, temperature: float = 0.3) -> str:
             }
         }
         try:
-            resp = http_requests.post(url, json=payload, timeout=20)
+            resp = http_requests.post(url, json=payload, timeout=25)
             if resp.status_code == 200:
                 data = resp.json()
-                return data['candidates'][0]['content']['parts'][0]['text'].strip()
+                candidates = data.get('candidates', [])
+                if candidates and 'content' in candidates[0]:
+                    parts = candidates[0]['content'].get('parts', [])
+                    if parts and 'text' in parts[0]:
+                        return parts[0]['text'].strip()
             else:
-                last_err = f"{resp.status_code}: {resp.text}"
+                last_err = f"{resp.status_code}: {resp.text[:200]}"
         except Exception as e:
             last_err = str(e)
 
@@ -806,13 +809,17 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
 
         try:
             raw = _call_gemini(prompt, temperature=0.3)
-            raw = re.sub(r'^```(?:json)?\s*', '', raw, flags=re.MULTILINE)
-            raw = re.sub(r'\s*```$', '', raw, flags=re.MULTILINE)
             import json
+            match = re.search(r'\{.*\}', raw, re.DOTALL)
+            if match:
+                data = json.loads(match.group(0))
+                if 'robo_reply' in data and 'corrected_user_speech' in data:
+                    return Response(data, status=status.HTTP_200_OK)
+            
             data = json.loads(raw.strip())
             return Response(data, status=status.HTTP_200_OK)
-        except Exception:
-            # Dynamic fallback when Gemini is offline, key missing, or returning non-JSON
+        except Exception as e:
+            print(f"[Robo AI View Error]: {e}")
             fallback_data = self._fallback_robo_reply(transcript, persona_key, history)
             return Response(fallback_data, status=status.HTTP_200_OK)
 
