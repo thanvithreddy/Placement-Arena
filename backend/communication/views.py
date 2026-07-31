@@ -16,25 +16,35 @@ from .serializers import SpeechTopicSerializer, SpeechAttemptSerializer, SpeechA
 
 def _call_gemini(prompt: str, temperature: float = 0.3) -> str:
     """
-    Call Gemini 1.5 Flash via REST API.
-    Free tier: 15 RPM, 1500 req/day — more than enough for 2 candidates.
+    Call Gemini REST API with multi-model fallback (gemini-2.0-flash, gemini-1.5-flash, gemini-2.5-flash).
+    Free tier: 15 RPM, 1500 req/day — more than enough for candidates.
     """
     api_key = getattr(settings, 'GEMINI_API_KEY', '')
     if not api_key:
         raise ValueError('GEMINI_API_KEY not configured')
 
-    url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}'
-    payload = {
-        'contents': [{'parts': [{'text': prompt}]}],
-        'generationConfig': {
-            'temperature': temperature,
-            'maxOutputTokens': 2048,
+    models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash']
+    last_err = None
+    for model in models:
+        url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}'
+        payload = {
+            'contents': [{'parts': [{'text': prompt}]}],
+            'generationConfig': {
+                'temperature': temperature,
+                'maxOutputTokens': 2048,
+            }
         }
-    }
-    resp = http_requests.post(url, json=payload, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
-    return data['candidates'][0]['content']['parts'][0]['text'].strip()
+        try:
+            resp = http_requests.post(url, json=payload, timeout=20)
+            if resp.status_code == 200:
+                data = resp.json()
+                return data['candidates'][0]['content']['parts'][0]['text'].strip()
+            else:
+                last_err = f"{resp.status_code}: {resp.text}"
+        except Exception as e:
+            last_err = str(e)
+
+    raise RuntimeError(f"Gemini API call failed across models: {last_err}")
 
 
 # ════════════════════════════════════════════════════════════════════════════════
@@ -134,7 +144,16 @@ def _rule_based_correct(text: str):
         (r'\byesterday I do\b', 'yesterday I did', 'Past tense error: "do" → "did"'),
         (r'\byesterday I meet\b', 'yesterday I met', 'Past tense error: "meet" → "met"'),
         (r'\byesterday I find\b', 'yesterday I found', 'Past tense error: "find" → "found"'),
-        (r'\bI go to the\b', 'I went to the', 'Past tense: "go" → "went"'),
+        (r'\bmy day start\b', 'my day started', 'Past tense: "day start" → "day started"'),
+        (r'\bday start\b', 'day started', 'Past tense: "day start" → "day started"'),
+        (r'\bI am wake up\b', 'I woke up', 'Verb tense: "am wake up" → "woke up"'),
+        (r'\bI am woke up\b', 'I woke up', 'Verb tense: "am woke up" → "woke up"'),
+        (r'\bI wake up at\b', 'I woke up at', 'Past tense: "wake up" → "woke up"'),
+        (r'\beat to egg\b', 'ate eggs', 'Preposition & tense error: "eat to egg" → "ate eggs"'),
+        (r'\beat egg\b', 'ate an egg', 'Article & tense error: "eat egg" → "ate an egg"'),
+        (r'\beat to\b', 'ate', 'Preposition error: "eat to" → "ate"'),
+        (r'\bI go to kitchen\b', 'I went to the kitchen', 'Tense & article error: "go to kitchen" → "went to the kitchen"'),
+        (r'\bI go to\b', 'I went to', 'Past tense: "go to" → "went to"'),
         (r'\bI goes to\b', 'I went to', 'Subject-verb agreement + tense error'),
         (r'\bhe go to\b', 'he went to', 'Past tense: "go" → "went"'),
         (r'\bshe go to\b', 'she went to', 'Past tense: "go" → "went"'),
@@ -650,6 +669,61 @@ class VoiceRoboConversationView(APIView):
         'buddy': "You are a friendly, encouraging English Speaking Buddy named Robo. Help the candidate build natural English speaking confidence, correct their grammar gently, and keep casual placement conversation fun.",
     }
 
+    def _fallback_robo_reply(self, transcript, persona_key, history):
+        text_lower = transcript.lower()
+        corrected_transcript, raw_fixes, _ = _rule_based_correct(transcript)
+
+        fixes = []
+        for err in raw_fixes:
+            fixes.append({
+                'error': err.get('original', ''),
+                'fix': err.get('corrected', ''),
+                'rule': err.get('type', 'Grammar correction')
+            })
+
+        words = transcript.split()
+        score = max(65, min(98, 95 - len(fixes) * 8 + (5 if len(words) > 10 else 0)))
+
+        if persona_key == 'buddy':
+            if any(k in text_lower for k in ['breakfast', 'wake', 'woke', 'morning', 'eat', 'food', 'day', 'kitchen', 'egg']):
+                reply = "That sounds like a comfortable start to your day! What are your plans for the rest of today? Are you preparing for placements or studying?"
+            elif any(k in text_lower for k in ['fine', 'good', 'great', 'okay', 'ok', 'nothing']):
+                reply = "Glad to hear that! What topics or projects have you been working on recently for your campus placements?"
+            elif any(k in text_lower for k in ['project', 'python', 'java', 'code', 'college', 'exam', 'class']):
+                reply = "That sounds interesting! What did you enjoy most while working on that?"
+            else:
+                reply = f"That's nice! Speaking about your daily routine helps build confidence. What else would you like to discuss today?"
+
+            verbal = f"Great effort! A quick tip: try saying '{corrected_transcript}'." if fixes else "Your English sounded clear and natural!"
+
+        elif persona_key == 'technical':
+            if any(k in text_lower for k in ['python', 'java', 'cpp', 'c++', 'sql', 'db', 'database', 'project', 'code']):
+                reply = "Good technical context! How do you handle error handling and optimization in your code?"
+            elif any(k in text_lower for k in ['fine', 'good', 'know', 'start', 'day', 'wake', 'eat', 'breakfast']):
+                reply = "Understood. As a Tech Lead, I'd love to know: what is your favorite programming language and why?"
+            else:
+                reply = "Interesting technical point. Can you walk me through the key logic step-by-step?"
+
+            verbal = f"Good explanation. For technical interviews, phrase it like: '{corrected_transcript}'." if fixes else "Excellent technical vocabulary!"
+
+        else: # HR recruiter
+            if any(k in text_lower for k in ['strengths', 'strength', 'good', 'hardworking', 'learn', 'team']):
+                reply = "Thank you for sharing your strength. Can you give me a real-life example where you demonstrated that?"
+            elif any(k in text_lower for k in ['day', 'breakfast', 'fine', 'wake', 'start', 'eat', 'kitchen']):
+                reply = "Welcome to the HR interview session! Could you please introduce yourself and mention your key academic background?"
+            else:
+                reply = "Thank you. Why do you feel you are a strong fit for our organization?"
+
+            verbal = f"In an HR interview, state it formally like: '{corrected_transcript}'." if fixes else "Very professional response!"
+
+        return {
+            'robo_reply': reply,
+            'corrected_user_speech': corrected_transcript,
+            'verbal_correction_phrase': verbal,
+            'grammar_fixes': fixes,
+            'turn_score': score
+        }
+
     def post(self, request):
         transcript = request.data.get('transcript', '').strip()
         persona_key = request.data.get('persona', 'hr').lower()
@@ -698,18 +772,10 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
             import json
             data = json.loads(raw.strip())
             return Response(data, status=status.HTTP_200_OK)
-        except ValueError:
-            # Fallback when API key is missing
-            corrected = _rule_based_correct(transcript)
-            return Response({
-                'robo_reply': f"I understood your point about '{transcript[:30]}...'. Tell me more!",
-                'corrected_user_speech': corrected.get('corrected_transcript') or transcript,
-                'verbal_correction_phrase': f"Try saying: {corrected.get('corrected_transcript') or transcript}",
-                'grammar_fixes': corrected.get('grammar_errors', []),
-                'turn_score': 85
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception:
+            # Dynamic fallback when Gemini is offline, key missing, or returning non-JSON
+            fallback_data = self._fallback_robo_reply(transcript, persona_key, history)
+            return Response(fallback_data, status=status.HTTP_200_OK)
 
 
 # ════════════════════════════════════════════════════════════════════════════════

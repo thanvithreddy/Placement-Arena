@@ -1816,10 +1816,20 @@
             });
 
         } catch(e) {
-            console.error(e);
-            const errReply = "I understood your point! Could you elaborate a bit more on that?";
-            addRoboBubble(errReply);
-            speakRoboText(errReply);
+            console.error("Robo network/API error:", e);
+            const lower = userSpeech.toLowerCase();
+            let dynReply = "";
+            if (lower.includes('breakfast') || lower.includes('wake') || lower.includes('day') || lower.includes('morning') || lower.includes('eat') || lower.includes('egg')) {
+                dynReply = "That sounds like a comfortable start to your day! What are your plans for the rest of today?";
+            } else if (lower.includes('fine') || lower.includes('good') || lower.includes('great') || lower.includes('okay')) {
+                dynReply = "Glad to hear that! What topics or projects have you been working on recently for your placements?";
+            } else if (lower.includes('project') || lower.includes('code') || lower.includes('python') || lower.includes('java')) {
+                dynReply = "That sounds interesting! What did you enjoy most while working on that technical project?";
+            } else {
+                dynReply = "That's great! Speaking about your routine helps build confidence. What else would you like to discuss today?";
+            }
+            addRoboBubble(dynReply);
+            speakRoboText(dynReply);
             setRoboState('idle');
         }
     }
