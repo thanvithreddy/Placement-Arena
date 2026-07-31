@@ -296,9 +296,9 @@ class ExamReviewView(APIView):
             if sec.section_type == 'coding':
                 from coding.models import CodingSubmission, CodingProblem
                 problems_data = []
-                coding_problems = sec.coding_problems.all()
-                if not coding_problems.exists():
-                    coding_problems = CodingProblem.objects.all()
+                coding_problems = list(sec.coding_problems.all())
+                if not coding_problems:
+                    coding_problems = list(CodingProblem.objects.all())
 
                 for cp in coding_problems:
                     sub = CodingSubmission.objects.filter(user=request.user, problem=cp).order_by('-submitted_at').first()
@@ -307,7 +307,7 @@ class ExamReviewView(APIView):
                         'title': cp.title,
                         'statement': cp.statement,
                         'max_score': cp.max_score,
-                        'submitted_code': sub.code if sub else 'No code submitted',
+                        'submitted_code': sub.code if (sub and sub.code) else 'No code submitted',
                         'score': sub.score if sub else 0,
                         'passed_sample': sub.passed_sample if sub else 0,
                         'total_sample': sub.total_sample if sub else 0,
@@ -325,14 +325,31 @@ class ExamReviewView(APIView):
                 })
 
             else:
-                questions_data = []
-                questions = sec.questions.all()
-                if not questions.exists():
-                    from questions.models import Question
-                    questions = Question.objects.filter(category=sec.section_type)
+                from questions.models import Question
+                # 1. Assigned questions for candidate's section attempt
+                assignments = sa.question_assignments.select_related('question').order_by('order')
+                if assignments.exists():
+                    questions = [a.question for a in assignments if a.question]
+                else:
+                    # 2. Questions answered by candidate
+                    ans_q_ids = sa.answers.values_list('question_id', flat=True)
+                    if ans_q_ids.exists():
+                        questions = list(Question.objects.filter(id__in=ans_q_ids, is_active=True).order_by('order'))
+                    else:
+                        # 3. Direct section assignment or category fallback
+                        questions = list(sec.questions.filter(is_active=True).order_by('order'))
+                        if not questions:
+                            questions = list(Question.objects.filter(category__iexact=sec.section_type, is_active=True).order_by('order'))
 
+                # Build lookup of user's saved answers
+                user_answers = {
+                    ans.question_id: ans
+                    for ans in sa.answers.all()
+                }
+
+                questions_data = []
                 for q in questions:
-                    ans = sa.answers.filter(question=q).first()
+                    ans = user_answers.get(q.id)
                     user_option_id = ans.selected_option.id if (ans and ans.selected_option) else None
                     is_correct = ans.is_correct if ans else False
 
@@ -355,7 +372,7 @@ class ExamReviewView(APIView):
                         'question_id': q.id,
                         'text': q.text,
                         'marks': q.marks,
-                        'explanation': q.explanation,
+                        'explanation': q.explanation or "No detailed explanation provided for this question.",
                         'options': options_data,
                         'user_option_id': user_option_id,
                         'user_option_text': selected_option_text,
@@ -374,7 +391,6 @@ class ExamReviewView(APIView):
 
         return Response({
             'expired': False,
-            'remaining_seconds': remaining_seconds,
             'exam_title': attempt.exam.title,
             'sections': sections_review
         })
