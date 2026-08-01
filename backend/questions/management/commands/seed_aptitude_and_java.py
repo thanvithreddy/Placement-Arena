@@ -2,135 +2,131 @@ from django.core.management.base import BaseCommand
 from questions.models import AptitudeTopic, AptitudeQuestion, JavaTopic
 
 class Command(BaseCommand):
-    help = 'Seeds Aptitude Topics with user handwritten Speed/Distance/Trains and Boats/Streams PDF notes'
+    help = 'Seeds Aptitude Topics with user handwritten Permutations/Combinations and Probability PDF notes'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("Starting database seeding with Speed/Distance/Trains and Boats/Streams PDF notes..."))
+        self.stdout.write(self.style.SUCCESS("Starting database seeding with P&C and Probability PDF notes..."))
 
         # ----------------------------------------------------
-        # 1. SPEED, DISTANCE & TIME / TRAINS - PDF MASTER NOTES
+        # 1. PERMUTATIONS AND COMBINATIONS - PDF MASTER NOTES
         # ----------------------------------------------------
-        sdt_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Speed, Distance, Time & Trains
+        pnc_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Permutations & Combinations
 
-#### 1. Core Formulas & Unit Conversions
-- $\\text{Speed} = \\frac{\\text{Distance}}{\\text{Time}}$ | $\\text{Distance} = \\text{Speed} \\times \\text{Time}$ | $\\text{Time} = \\frac{\\text{Distance}}{\\text{Speed}}$
-- **km/h to m/s**: Multiply by $\\frac{5}{18}$
-- **m/s to km/h**: Multiply by $\\frac{18}{5}$
+#### 1. Fundamental Definitions & Identities
+- **Permutation ($^nP_r$)**: Arrangements where **Position/Order Matters**!
+  - $^nP_r = \\frac{n!}{(n-r)!}$ | $^nP_n = n!$ | $^nP_{n-1} = n!$ | $^nP_1 = n$ | $^nP_0 = 1$
+- **Combination ($^nC_r$)**: Selection where **Position Does NOT Matter**!
+  - $^nC_r = \\frac{n!}{r!(n-r)!}$ | $^nC_r = ^nC_{n-r}$ | $^nC_n = ^nC_0 = 1$ | $^nC_1 = n$
+- **Key Relation**: $^nP_r = ^nC_r \\times r!$
 
-#### 2. The 4 Train Cases
-1. **Crossing Standing Man / Pole**: Distance = Length of Train ($L$). Speed = Train Speed ($S$).
-2. **Crossing Platform / Bridge**: Distance = Train Length ($L_1$) + Platform Length ($L_2$).
-3. **Crossing Running Person**:
-   - Same Direction: Relative Speed = $S_{\\text{train}} - S_{\\text{person}}$
-   - Opposite Direction: Relative Speed = $S_{\\text{train}} + S_{\\text{person}}$
-4. **Crossing Another Train**:
-   - Distance is ALWAYS $L_1 + L_2$ regardless of direction.
-   - Same Direction Time = $\\frac{L_1 + L_2}{|S_1 - S_2|}$ | Opposite Direction Time = $\\frac{L_1 + L_2}{S_1 + S_2}$
+#### 2. Word Arrangements & Identical Objects Rule
+- **Distinct Letters**: `YUVRAJ` (6 letters) $\\to 6P_6 = 6! = \\mathbf{720 \\text{ ways}}$.
+- **Identical Objects (Repetitions)**: Formula $\\frac{n!}{p! \\, q!}$
+  - `BALLOON` (7 letters, L=2, O=2) $\\to \\frac{7!}{2! \\, 2!} = \\mathbf{1260 \\text{ ways}}$.
 
-#### 3. Two Distant Places Meeting Concept
-- Two vehicles start from A & B towards each other $\\implies$ Relative Speed $= S_1 + S_2$.
-- **Different Starting Times Trick**: Calculate distance covered by earlier train BEFORE second train starts!
-  - *PDF Example*: A & B 440km apart. Train P starts at 4 AM (30km/h). Train Q starts at 7 AM (40km/h).
-  - From 4-7 AM (3 hrs), P covers $30 \\times 3 = 90\\text{km}$. Remaining $= 350\\text{km}$.
-  - Relative Speed $= 30 + 40 = 70\\text{km/h}$. Time to meet $= \\frac{350}{70} = 5 \\text{ hrs after 7 AM} \\implies \\mathbf{12:00 \\text{ PM (Noon)}}$!
+#### 3. Vowels Together vs NEVER Together (Unit Method & Gap Method)
+- **Vowels Always Together (Unit Method)**: Treat all vowels as a single unit!
+  - `TENDULKAR` (9 letters: Vowels E, U, A = 3; Consonants = 6).
+  - Total units $= 6 + 1 = 7 \\implies 7! \\times 3! = 5040 \\times 6 = \\mathbf{30,240 \\text{ ways}}$!
+- **Never Together**: $\\text{Total Arrangements} - \\text{Together Arrangements}$.
+- **GAP METHOD (No two elements together)**:
+  - Arrange 3 boys ($3! = 6$). Creates 4 gaps `_ B _ B _ B _`. Choose 2 gaps for 2 girls ($^4C_2 \\times 2! = 12$) $\\implies 6 \\times 12 = \\mathbf{36 \\text{ ways}}$!
 
-#### 4. Chasing Case (Same Direction)
-- *PDF Example*: Rajdhani leaves at 14:30 (60km/h). Duronto leaves at 16:30 (80km/h).
-  - Gap at 16:30 (2 hrs) $= 60 \\times 2 = 120\\text{km}$.
-  - Relative Speed $= 80 - 60 = 20\\text{km/h}$. Time $= \\frac{120}{20} = 6 \\text{ hrs} \\implies \\mathbf{480\\text{km from Delhi}}$!
+#### 4. Circular Permutations & Number Formation
+- **Normal Circle**: $(n-1)!$ | **Necklace/Garland**: $\\frac{(n-1)!}{2}$
+- **Number Formation (Digits 0-4 without repetition)**:
+  - 1st digit cannot be 0 (4 choices), 2nd (4 choices), 3rd (3 choices) $\\implies 4 \\times 4 \\times 3 = \\mathbf{48}$.
 
-#### 5. Stoppage Time Formula per Hour
-$$\\mathbf{\\text{Stoppage Time/hr} = \\left(\\frac{\\text{Speed excl. stoppages} - \\text{Speed incl. stoppages}}{\\text{Speed excl. stoppages}}\\right) \\times 60 \\text{ mins}}$$
-- *PDF Example*: Incl = 25km/h, Excl = 40km/h $\\implies \\left(\\frac{40 - 25}{40}\\right) \\times 60 = \\mathbf{22.5 \\text{ mins/hr}}$!
-
-#### 6. Late vs Early Distance Formula
-$$\\mathbf{\\text{Distance} = \\frac{S_1 \\times S_2}{|S_1 - S_2|} \\times \\left(\\frac{\\Delta \\text{Time in mins}}{60}\\right)}$$
-- *PDF Example*: 30km/h (10m late) vs 40km/h (5m early) $\\to \\Delta t = 15\\text{m} \\implies \\text{Distance} = \\frac{1200}{10} \\times \\frac{15}{60} = \\mathbf{30\\text{km}}$!
-
-#### 7. Post-Meeting Time Formula
-$$\\mathbf{\\frac{S_1}{S_2} = \\sqrt{\\frac{T_2}{T_1}}}$$
-- *PDF Example*: After meeting, trains reach destinations in 9 hrs and 16 hrs. $S_1 = 80\\text{km/h} \\implies \\frac{80}{S_2} = \\sqrt{\\frac{16}{9}} = \\frac{4}{3} \\implies S_2 = \\mathbf{60\\text{km/h}}$!
+#### 5. Handshakes, Matches, Tickets & Geometric Shapes
+- **Handshakes (Order doesn't matter $\\to ^nC_2$)**: 20 people $\\to ^20C_2 = \\frac{20 \\times 19}{2} = \\mathbf{190 \\text{ handshakes}}$.
+- **Railway Tickets (Order matters $\\to ^nP_2$)**: 20 stations $\\to 22P_2 = 22 \\times 21 = \\mathbf{462 \\text{ ticket types}}$.
+- **Polygon Diagonals**: $\\frac{n(n-3)}{2}$ | Octagon Triangles $= ^8C_3 = \\mathbf{56}$.
 """
 
-        sdt_topic, _ = AptitudeTopic.objects.update_or_create(
-            slug="speed-distance-time",
+        pnc_topic, _ = AptitudeTopic.objects.update_or_create(
+            slug="permutations-combinations",
             defaults={
-                "order": 13,
-                "name": "Speed, Distance & Time / Trains (PDF Master Edition)",
-                "description": "Master Train Cases, Platform Crossing, Chasing, Stoppage formula, Late/Early formula, & Post-Meeting Time root law.",
-                "icon": "🚀",
-                "formula_sheet": sdt_formula_sheet
+                "order": 12,
+                "name": "Permutations & Combinations (PDF Master Edition)",
+                "description": "Master nPr vs nCr, Identical letters, Vowels Together / Gap method, Circular permutations, Handshakes & Diagonals.",
+                "icon": "🔢",
+                "formula_sheet": pnc_formula_sheet
             }
         )
 
         # ----------------------------------------------------
-        # 2. BOATS AND STREAMS - PDF MASTER NOTES
+        # 2. PROBABILITY - PDF MASTER NOTES
         # ----------------------------------------------------
-        boats_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Boats and Streams
+        prob_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Probability
 
-#### 1. Core Speed Definitions & Formulas
-- $B$ = Speed of boat in still water
-- $W$ = Speed of stream / current / water flow
-- **Downstream Speed ($D$)**: $D = B + W$ (moving WITH stream)
-- **Upstream Speed ($U$)**: $U = B - W$ (moving AGAINST stream)
-- **Boat Speed ($B$)**: $B = \\frac{D + U}{2}$
-- **Stream Speed ($W$)**: $W = \\frac{D - U}{2}$
+#### 1. Core Rules & Range
+- $P(E) = \\frac{\\text{Favorable Outcomes}}{\\text{Total Outcomes}} = \\frac{\\text{Our Selections}}{\\text{Total Selections}}$
+- **Range**: $0 \\le P(E) \\le 1$ ($0 =$ Impossible, $1 =$ Certain).
+- **Complement Rule**: $P(\\text{not } E) = 1 - P(E)$ (Used for "At least one").
+- **Addition Rule (OR)**: $P(A \\text{ or } B) = P(A) + P(B) - P(A \\cap B)$.
+- **Multiplication Rule (AND)**: $P(A \\text{ and } B) = P(A) \\times P(B)$.
 
-#### 2. Round-Trip Total Time Distance Formula
-$$\\mathbf{\\text{Distance} = \\frac{D \\times U}{D + U} \\times \\text{Total Time} = \\frac{(B^2 - W^2)}{2B} \\times \\text{Total Time}}$$
-- *PDF Example*: Boat speed = 8km/h, Stream = 2km/h ($D=10, U=6$). Takes 8 hours total round trip.
-  - $\\text{Distance} = \\frac{10 \\times 6}{10 + 6} \\times 8 = \\frac{60}{16} \\times 8 = \\mathbf{30\\text{km}}$!
+#### 2. Coins & Dice Shortcuts
+- **Coins Probability ($2^n$ total outcomes)**:
+  - Probability of exactly $r$ heads: $P = \\frac{^nC_r}{2^n}$
+  - *Example*: 5 coins tossed, exactly 3 heads $\\implies \\frac{^5C_3}{2^5} = \\frac{10}{32} = \\mathbf{\\frac{5}{16}}$!
+- **2 Dice Sum Shortcut Table**:
+  - Sum 2/12 $\\to 1/36$ | Sum 3/11 $\\to 2/36$ | Sum 4/10 $\\to 3/36$ | Sum 5/9 $\\to 4/36$ | Sum 6/8 $\\to 5/36$ | Sum 7 $\\to 6/36$
 
-#### 3. Simultaneous Equations Factorization Method
-- *PDF Example*: 40km upstream + 55km downstream in 13 hrs; 30km upstream + 44km downstream in 10 hrs.
-  - Try common factors of 55 & 44 $\\implies D = 11\\text{km/h}$.
-  - $55/11 = 5 \\implies 40/U = 8 \\implies U = 5\\text{km/h}$.
-  - Boat Speed $B = \\frac{11 + 5}{2} = \\mathbf{8\\text{km/h}}$, Stream Speed $W = \\frac{11 - 5}{2} = \\mathbf{3\\text{km/h}}$!
+#### 3. Cards & Bag Ball Selection
+- **Deck of 52 Cards**: 26 Red, 26 Black, 16 Face Cards (4 Kings, 4 Queens, 4 Jacks, 4 Aces).
+  - *Example*: Diamond OR King $= \\frac{13 + 4 - 1}{52} = \\mathbf{\\frac{4}{13}}$ (Subtract 1 overlap).
+
+#### 4. Contradict Each Other & Problem Solving Laws
+- **Contradiction Rule**: $P(\\text{Contradict}) = P(A_{\\text{true}} \\cap B_{\\text{false}}) + P(A_{\\text{false}} \\cap B_{\\text{true}})$
+  - *PDF Ex*: A (60% true), B (45% true) $\\implies (0.6 \\times 0.55) + (0.4 \\times 0.45) = 0.33 + 0.18 = \\mathbf{51\\%}$!
+- **Problem Solved by Students**: $P(\\text{Solved}) = 1 - P(\\text{None solve})$
+  - *PDF Ex*: A (1/2), B (1/3), C (1/4) solve $\\implies 1 - (1/2 \\times 2/3 \\times 3/4) = 1 - 1/4 = \\mathbf{3/4}$!
 """
 
-        boats_topic, _ = AptitudeTopic.objects.update_or_create(
-            slug="boats-and-streams",
+        prob_topic, _ = AptitudeTopic.objects.update_or_create(
+            slug="probability",
             defaults={
-                "order": 15,
-                "name": "Boats and Streams (PDF Master Edition)",
-                "description": "Master Downstream/Upstream laws, Round-Trip Distance formula, & Simultaneous Equations factorization trick.",
-                "icon": "⛵",
-                "formula_sheet": boats_formula_sheet
+                "order": 13,
+                "name": "Probability (PDF Master Edition)",
+                "description": "Master Coins nCr/2^n trick, 2 Dice Sum Table, Cards Overlap rule, Contradiction law, & Problem Solving Complement.",
+                "icon": "🎲",
+                "formula_sheet": prob_formula_sheet
             }
         )
 
         # Seed PDF Worked Questions
         AptitudeQuestion.objects.get_or_create(
-            topic=sdt_topic,
-            text="A train travelling at constant speed crosses a 96m long platform in 12 seconds and another 141m long platform in 15 seconds. Find the length of the train.",
+            topic=pnc_topic,
+            text="In how many ways can the letters of the word 'TENDULKAR' be arranged such that all vowels are always together?",
             defaults={
                 "difficulty": "intermediate",
-                "option_a": "72m", "option_b": "84m", "option_c": "90m", "option_d": "96m",
+                "option_a": "15,120", "option_b": "30,240", "option_c": "5,040", "option_d": "40,320",
                 "correct_option": "B",
-                "explanation": "PDF Extra Distance Method: Extra distance = 141 - 96 = 45m in extra time = 15 - 12 = 3s.\nTrain Speed = 45 / 3 = 15 m/s.\nDistance in 12s = 15 * 12 = 180m.\nTrain Length = 180 - 96 = 84m!"
+                "explanation": "PDF Unit Method: Vowels (E, U, A = 3) treated as 1 unit. Consonants = 6.\nTotal units = 7 -> Arrangements = 7! * 3! = 5040 * 6 = 30,240 ways!"
             }
         )
 
         AptitudeQuestion.objects.get_or_create(
-            topic=sdt_topic,
-            text="Two trains start simultaneously from Hyderabad to Chennai and Chennai to Hyderabad. After meeting, they reach their destinations in 9 hours and 16 hours respectively. If the first train speed is 80km/h, find the speed of the second train.",
+            topic=pnc_topic,
+            text="20 members attended a party. If each person shakes hands with every other person once, find the total number of handshakes.",
             defaults={
-                "difficulty": "advanced",
-                "option_a": "50 km/h", "option_b": "60 km/h", "option_c": "70 km/h", "option_d": "64 km/h",
+                "difficulty": "intermediate",
+                "option_a": "380", "option_b": "190", "option_c": "400", "option_d": "200",
                 "correct_option": "B",
-                "explanation": "Post-Meeting Formula: S1 / S2 = sqrt(T2 / T1) -> 80 / S2 = sqrt(16 / 9) = 4 / 3.\nS2 = 80 * (3 / 4) = 60 km/h!"
+                "explanation": "PDF Handshake Combination Formula: 20C2 = (20 * 19) / (2 * 1) = 190 handshakes!"
             }
         )
 
         AptitudeQuestion.objects.get_or_create(
-            topic=boats_topic,
-            text="A man can row 40km upstream and 55km downstream in 13 hours. Also, he can row 30km upstream and 44km downstream in 10 hours. Find the speed of the man in still water.",
+            topic=prob_topic,
+            text="A speaks truth in 60% cases and B speaks truth in 45% cases. In what percentage of cases are they likely to contradict each other?",
             defaults={
                 "difficulty": "advanced",
-                "option_a": "6 km/h", "option_b": "8 km/h", "option_c": "10 km/h", "option_d": "7 km/h",
+                "option_a": "45%", "option_b": "51%", "option_c": "55%", "option_d": "48%",
                 "correct_option": "B",
-                "explanation": "PDF Factorization Method: Common factors of 55 and 44 is D = 11 km/h.\n55/11 = 5 hrs -> 40/U = 8 hrs -> U = 5 km/h.\nBoat Speed B = (D + U) / 2 = (11 + 5) / 2 = 8 km/h!"
+                "explanation": "PDF Contradiction Formula: P(Contradict) = (A_true * B_false) + (A_false * B_true) = (0.60 * 0.55) + (0.40 * 0.45) = 0.33 + 0.18 = 0.51 = 51%!"
             }
         )
 
-        self.stdout.write(self.style.SUCCESS("Speed/Distance/Trains and Boats/Streams PDF notes & worked problems successfully seeded!"))
+        self.stdout.write(self.style.SUCCESS("P&C and Probability PDF notes & worked problems successfully seeded!"))
