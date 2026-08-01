@@ -3,379 +3,1072 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamified Java Quest - Placement Arena</title>
+    <title>Java Quest - Interactive Master Learning Platform</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .gradient-purple { background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef); }
-        .gradient-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .level-node-locked { background: #1e293b; border: 2px solid #334155; color: #64748b; }
-        .level-node-unlocked { background: linear-gradient(135deg, #4f46e5, #7c3aed); border: 2px solid #a78bfa; color: #ffffff; box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
-        .level-node-completed { background: #10b981; border: 2px solid #34d399; color: #ffffff; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
-        .code-font { font-family: 'Fira Code', 'Courier New', monospace; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .card-candy {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-candy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px -5px rgba(99, 102, 241, 0.12);
+            border-color: #cbd5e1;
+        }
+        .gradient-brand {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+        }
+        .gradient-yellow {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        .gradient-green {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        .gradient-blue {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+        .gradient-purple {
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+        }
+
+        /* 3D Flip Card Effect */
+        .flip-card {
+            perspective: 1000px;
+            height: 220px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flip-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .flip-card-front {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+        }
+        .flip-card-back {
+            background: linear-gradient(135deg, #eef2ff, #f3e8ff);
+            border: 2px solid #c7d2fe;
+            transform: rotateY(180deg);
+        }
+
+        /* Memory Animation Stack/Heap */
+        .stack-frame {
+            animation: slideInDown 0.4s ease-out;
+        }
+        .heap-object {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideInDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .pulse-character {
+            animation: pulseChar 2.5s infinite ease-in-out;
+        }
+        @keyframes pulseChar {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.05); }
+        }
     </style>
 </head>
-<body class="min-h-screen bg-slate-950 pb-16">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Navbar -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-3">
-            <div class="flex items-center gap-3">
+    <!-- Header -->
+    <header class="glass-header sticky top-0 z-40 px-6 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand & Mascot -->
+            <div class="flex items-center gap-4">
                 <a href="/dashboard/index.html" class="flex items-center gap-3">
-                    <div class="w-10 h-10 gradient-purple text-white rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg">
-                        ⚡
+                    <div class="w-11 h-11 gradient-brand text-white rounded-2xl flex items-center justify-center font-black text-2xl shadow-lg pulse-character">
+                        <i class="fa-solid fa-mug-hot"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold text-white tracking-tight">Placement Arena</h1>
-                        <p class="text-xs text-purple-400 font-bold">Gamified Java Quest</p>
+                        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                            Java Quest <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">Pro</span>
+                        </h1>
+                        <p class="text-xs text-indigo-600 font-bold">Mastery Academy</p>
                     </div>
                 </a>
             </div>
 
-            <!-- Gamification Profile Bar -->
-            <div class="flex items-center gap-5">
-                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
-                    <span class="text-amber-400 text-base">⚡</span>
-                    <span class="text-xs font-bold text-slate-300">XP: <strong id="user-xp" class="text-white">0</strong></span>
+            <!-- Gamification Status Indicators -->
+            <div class="flex items-center gap-4">
+                <!-- XP Progress Bar -->
+                <div class="hidden md:flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-2xl border border-slate-200">
+                    <div class="text-amber-500 font-black flex items-center gap-1.5 text-sm">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span id="header-xp">1,250</span> XP
+                    </div>
+                    <div class="w-28 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                        <div id="header-xp-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 65%"></div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
-                    <span class="text-indigo-400 text-base">🛡️</span>
-                    <span class="text-xs font-bold text-slate-300">Level: <strong id="user-level" class="text-white">1</strong></span>
+
+                <!-- Coins -->
+                <div class="flex items-center gap-2 bg-yellow-50 border border-yellow-200 px-3.5 py-1.5 rounded-2xl text-yellow-700 font-bold text-xs">
+                    <i class="fa-solid fa-coins text-yellow-500 text-sm"></i>
+                    <span id="header-coins">340</span>
                 </div>
-                <a href="/dashboard/index.html" class="text-xs font-bold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+
+                <!-- Level Badge -->
+                <div class="flex items-center gap-2 bg-indigo-50 border border-indigo-200 px-3.5 py-1.5 rounded-2xl text-indigo-900 font-bold text-xs">
+                    <i class="fa-solid fa-shield-halved text-indigo-600 text-sm"></i>
+                    <span>Level <strong id="header-level">5</strong></span>
+                </div>
+
+                <!-- Streak -->
+                <div class="flex items-center gap-1.5 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-2xl text-orange-600 font-extrabold text-xs">
+                    <i class="fa-solid fa-fire text-orange-500"></i>
+                    <span>7 Days</span>
+                </div>
+
+                <a href="/dashboard/index.html" class="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-2xl transition">
                     Dashboard
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 pt-8 space-y-8">
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
 
-        <!-- Hero Section -->
-        <div class="relative overflow-hidden rounded-3xl p-8 md:p-10 gradient-purple shadow-2xl">
-            <div class="max-w-3xl relative z-10 space-y-3">
-                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
-                    <span>👑 Syntax &amp; Concept Perfection</span>
-                </div>
-                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Java Mastery RPG Quest</h1>
-                <p class="text-purple-100 text-sm leading-relaxed">
-                    Master Java syntax, Stack vs Heap memory management, compiler traps, and core concepts across all 23 levels in order!
-                </p>
-                <div class="flex items-center gap-2 pt-2" id="badges-container">
-                    <!-- Badges rendered via JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Quest Map View -->
-        <div id="quest-map-view" class="space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-extrabold text-white tracking-tight">23-Level Quest Map</h2>
-                <span class="text-xs font-semibold text-purple-300 bg-purple-900/40 px-3 py-1 rounded-full border border-purple-700/50">Sequential Unlock Mode</span>
-            </div>
-
-            <!-- 23 Level Nodes Grid -->
-            <div id="levels-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                <!-- Level cards rendered via JS -->
-            </div>
-        </div>
-
-        <!-- Topic Detail & Lesson Reader View (Hidden by default) -->
-        <div id="topic-reader-view" class="hidden space-y-8">
-            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-md">
-                <button onclick="backToMap()" class="text-sm font-bold text-slate-300 hover:text-white flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition">
-                    ← Back to Quest Map
-                </button>
-                <h3 class="text-lg font-extrabold text-white" id="reader-topic-title">1. Variables &amp; Data Types</h3>
-                <span class="text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-700/50 px-3 py-1.5 rounded-xl" id="reader-xp-tag">+100 XP</span>
-            </div>
-
-            <!-- Concept Summary -->
-            <div class="glass-card rounded-3xl p-8 space-y-4">
-                <h4 class="text-base font-extrabold text-purple-400 flex items-center gap-2 uppercase tracking-wider text-xs">
-                    <span>📖 Concept Overview</span>
-                </h4>
-                <p class="text-slate-300 text-sm leading-relaxed" id="reader-concept"></p>
-            </div>
-
-            <!-- Syntax Rules Checklist & Compiler Traps -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Rules -->
-                <div class="glass-card rounded-3xl p-7 space-y-4 border-l-4 border-l-indigo-500">
-                    <h4 class="text-sm font-extrabold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
-                        <span>⚡ Syntax &amp; Rules Checklist</span>
-                    </h4>
-                    <ul class="space-y-2.5 text-xs text-slate-300" id="reader-rules">
-                        <!-- Rules list -->
-                    </ul>
+        <!-- Sidebar Navigation (3 Cols) -->
+        <aside class="lg:col-span-3 space-y-6">
+            <div class="card-candy p-5 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-compass text-indigo-600"></i> Java Modules
+                    </h2>
+                    <span class="text-[10px] font-extrabold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full" id="sidebar-progress">6/6 Available</span>
                 </div>
 
-                <!-- Common Compiler Errors -->
-                <div class="glass-card rounded-3xl p-7 space-y-4 border-l-4 border-l-rose-500">
-                    <h4 class="text-sm font-extrabold text-rose-400 uppercase tracking-wider flex items-center gap-2">
-                        <span>⚠️ Common Compiler Traps &amp; Errors</span>
-                    </h4>
-                    <ul class="space-y-2.5 text-xs text-rose-200 code-font" id="reader-errors">
-                        <!-- Errors list -->
-                    </ul>
-                </div>
+                <!-- Module List -->
+                <nav class="space-y-2" id="modules-list">
+                    <!-- Dynamic rendering via JS -->
+                </nav>
             </div>
 
-            <!-- Visual Memory Diagram (Stack vs Heap) -->
-            <div class="glass-card rounded-3xl p-8 space-y-4 border-l-4 border-l-emerald-500">
-                <h4 class="text-sm font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-                    <span>🧠 Visual Memory Allocation (Stack vs Heap)</span>
-                </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2">
-                        <span class="text-xs font-bold text-indigo-400 uppercase">Stack Memory (Frames &amp; Local Vars)</span>
-                        <ul class="text-xs text-slate-300 space-y-1.5 code-font" id="memory-stack"></ul>
+            <!-- Mascot Motivational Card -->
+            <div class="card-candy p-5 gradient-brand text-white space-y-3 relative overflow-hidden">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-xl font-bold">
+                        🤖
                     </div>
-                    <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2">
-                        <span class="text-xs font-bold text-purple-400 uppercase">Heap Memory (Objects &amp; Pool)</span>
-                        <ul class="text-xs text-slate-300 space-y-1.5 code-font" id="memory-heap"></ul>
+                    <div>
+                        <h4 class="text-sm font-extrabold">Byte Bot Companion</h4>
+                        <p class="text-[11px] text-indigo-100">"You're mastering JVM Memory like a senior engineer!"</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Code Sandbox -->
-            <div class="glass-card rounded-3xl p-8 space-y-4">
-                <h4 class="text-sm font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                    <span>💻 Runnable Code Example</span>
-                </h4>
-                <pre class="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-xs text-emerald-400 code-font overflow-x-auto leading-relaxed" id="reader-code"></pre>
-            </div>
-
-            <!-- Challenge Quiz & Level Complete Button -->
-            <div class="glass-card rounded-3xl p-8 space-y-6 border border-purple-500/30">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <h4 class="text-base font-extrabold text-white flex items-center gap-2">
-                        <span>⚔️ Level Mastery Challenge</span>
-                    </h4>
-                    <span class="text-xs text-purple-300 font-semibold">Answer correctly to complete level!</span>
+                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                    <div class="bg-white h-full rounded-full" style="width: 80%"></div>
                 </div>
+            </div>
+        </aside>
 
-                <div id="quiz-container" class="space-y-4">
-                    <p class="text-sm font-semibold text-slate-200" id="quiz-question"></p>
-                    <div class="space-y-2.5" id="quiz-options"></div>
-                </div>
+        <!-- Main Content Area (9 Cols) -->
+        <main class="lg:col-span-9 space-y-8">
 
-                <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-                    <div id="quiz-result" class="text-xs font-bold"></div>
-                    <button id="complete-btn" onclick="completeTopic()" class="gradient-purple text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-xl hover:opacity-95 transition">
-                        Complete Level &amp; Unlock Next 🚀
-                    </button>
+            <!-- Hero Module Banner -->
+            <div class="card-candy p-8 gradient-brand text-white shadow-xl relative overflow-hidden">
+                <div class="max-w-2xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-trophy text-amber-300"></i> <span id="module-hero-badge">Module 1: Foundational Java</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black tracking-tight" id="module-hero-title">Variables &amp; JVM Memory Magic</h2>
+                    <p class="text-indigo-100 text-sm leading-relaxed" id="module-hero-desc">
+                        Explore how variables store magical values, how primitive types live in Stack Memory, and how JVM manages references!
+                    </p>
                 </div>
             </div>
 
-        </div>
+            <!-- Interactive Module Reader & Playground -->
+            <div class="space-y-8" id="lesson-content-wrapper">
 
-    </main>
+                <!-- 1. 📖 Story Introduction -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-indigo-500">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                            ① 📖 Feynman Story Introduction
+                        </span>
+                        <span class="text-xs font-bold text-slate-400"><i class="fa-solid fa-book-open"></i> Story Mode</span>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900" id="story-title">The Magical Locker Room of Computer Memory</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed font-medium" id="story-body">
+                        Imagine your computer's RAM is a giant futuristic city with millions of empty glowing lockers. When you write a variable in Java, you are renting one of these lockers, putting a label on the door (Variable Name), setting a strict locker size (Data Type), and dropping your value inside!
+                    </p>
+                </section>
 
-    <script>
-        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000' || window.location.port === '5501') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
+                <!-- 2. 💡 Why We Need It -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-emerald-500">
+                    <span class="text-xs font-black uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                        ② 💡 Why Java Invented This Concept
+                    </span>
+                    <h3 class="text-xl font-black text-slate-900" id="why-title">Why Static Typing Keeps Enterprise Code Safe</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium text-slate-600">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                            <strong class="text-slate-900 font-extrabold flex items-center gap-2">
+                                <i class="fa-solid fa-earth-americas text-emerald-500"></i> Real-World Analogy
+                            </strong>
+                            <p id="why-analogy">Just like a liquid measuring cup only holds liquids, an `int` locker in Java only holds whole numbers!</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                            <strong class="text-slate-900 font-extrabold flex items-center gap-2">
+                                <i class="fa-solid fa-building-columns text-indigo-500"></i> Industry Enterprise Usage
+                            </strong>
+                            <p id="why-industry">Banks use strict Java types so currency balances can never accidentally be stored as text!</p>
+                        </div>
+                    </div>
+                </section>
 
-        function getToken() { return localStorage.getItem('access_token'); }
-        function getHeaders() {
-            const token = getToken();
-            return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-        }
+                <!-- 3. 🧠 Brain Logic & JVM Internals -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-purple-500">
+                    <span class="text-xs font-black uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+                        ③ 🧠 Brain Logic &amp; JVM Internal Architecture
+                    </span>
+                    <h3 class="text-xl font-black text-slate-900">What Happens Inside the JVM?</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        When you execute your Java code, the <code>javac</code> compiler transforms source code into `.class` Bytecode. Then, the JVM ClassLoader loads it into Memory!
+                    </p>
 
-        // Axios 401 Interceptor
-        axios.interceptors.response.use(
-            response => response,
-            async error => {
-                const originalRequest = error.config;
-                if (error.response?.status === 401 && !originalRequest._retry) {
-                    originalRequest._retry = true;
-                    try {
-                        const refresh = localStorage.getItem('refresh_token');
-                        if (!refresh) throw new Error('No refresh token');
-                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
-                        const newAccess = res.data.access;
-                        localStorage.setItem('access_token', newAccess);
-                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
-                        return axios(originalRequest);
-                    } catch(e) {
-                        localStorage.clear();
-                        return Promise.reject(e);
-                    }
-                }
-                return Promise.reject(error);
-            }
-        );
+                    <!-- Interactive Memory Stack & Heap Visualizer -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl space-y-4 border border-slate-800">
+                        <div class="flex items-center justify-between text-xs border-b border-slate-800 pb-3">
+                            <span class="font-extrabold text-indigo-400 flex items-center gap-2">
+                                <i class="fa-solid fa-microchip"></i> Live JVM Memory State
+                            </span>
+                            <button onclick="animateMemoryTrace()" class="gradient-brand text-white px-3 py-1.5 rounded-xl font-bold text-xs hover:opacity-90">
+                                <i class="fa-solid fa-play"></i> Simulate Execution
+                            </button>
+                        </div>
 
-        let currentTopicSlug = null;
-        let currentQuizAnswer = null;
-        let selectedQuizOption = null;
-
-        async function loadTopics() {
-            const grid = document.getElementById('levels-grid');
-            grid.innerHTML = '<div class="col-span-4 text-center py-12 font-bold text-slate-400">Loading 23 Gamified Java Quest Levels...</div>';
-
-            try {
-                const res = await axios.get(`${API}/questions/java-quest/topics/`, getHeaders());
-                const data = res.data;
-
-                document.getElementById('user-xp').innerText = data.gamification.total_xp;
-                document.getElementById('user-level').innerText = data.gamification.current_level;
-
-                const badgesBox = document.getElementById('badges-container');
-                badgesBox.innerHTML = '';
-                (data.gamification.badges || []).forEach(b => {
-                    badgesBox.innerHTML += `<span class="bg-purple-950/80 border border-purple-500/40 text-purple-200 text-xs font-bold px-3 py-1 rounded-full">${b}</span>`;
-                });
-
-                grid.innerHTML = '';
-
-                if (!data.topics || data.topics.length === 0) {
-                    grid.innerHTML = '<div class="col-span-4 text-center py-12 text-slate-400 font-bold">No Java Quest topics found.</div>';
-                    return;
-                }
-
-                data.topics.forEach(t => {
-                    let nodeClass = 'level-node-locked';
-                    let statusText = '🔒 Locked';
-                    let clickAttr = '';
-
-                    if (t.is_completed) {
-                        nodeClass = 'level-node-completed';
-                        statusText = '✅ Completed';
-                        clickAttr = `onclick="openTopic('${t.slug}')"`;
-                    } else if (t.is_unlocked) {
-                        nodeClass = 'level-node-unlocked';
-                        statusText = '⚔️ Ready to Play';
-                        clickAttr = `onclick="openTopic('${t.slug}')"`;
-                    }
-
-                    grid.innerHTML += `
-                        <div ${clickAttr} class="${nodeClass} rounded-3xl p-6 flex flex-col justify-between cursor-pointer hover:scale-105 transition-all duration-200 relative group">
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-wider opacity-80">Level ${t.order}</span>
-                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-black/20">${statusText}</span>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            <!-- Stack Memory -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-indigo-500/30 space-y-2">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-indigo-300">
+                                    <span>📚 STACK MEMORY (Fast &amp; Method Frames)</span>
+                                    <span class="text-[9px] bg-indigo-900/50 px-2 py-0.5 rounded text-indigo-200">LIFO</span>
                                 </div>
-                                <h3 class="text-base font-extrabold text-white leading-snug">${t.title}</h3>
+                                <div id="stack-container" class="space-y-2 min-h-[120px] flex flex-col justify-end">
+                                    <div class="stack-frame bg-indigo-900/40 border border-indigo-500/50 p-2.5 rounded-lg text-xs font-mono text-indigo-200">
+                                        <code>main() frame: int age = 25;</code>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="pt-4 flex items-center justify-between text-xs font-bold opacity-90 border-t border-white/10 mt-4">
-                                <span>+${t.xp_reward} XP</span>
-                                <span>Play →</span>
+
+                            <!-- Heap Memory -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-purple-500/30 space-y-2">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-purple-300">
+                                    <span>🧱 HEAP MEMORY (Objects &amp; String Pool)</span>
+                                    <span class="text-[9px] bg-purple-900/50 px-2 py-0.5 rounded text-purple-200">Garbage Collector</span>
+                                </div>
+                                <div id="heap-container" class="space-y-2 min-h-[120px] flex items-center justify-center">
+                                    <div class="heap-object bg-purple-900/40 border border-purple-500/50 p-3 rounded-lg text-xs font-mono text-purple-200 text-center">
+                                        <code>String "Java Quest" @0x7f8a</code>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    `;
-                });
-            } catch (err) {
-                console.error("Error loading Java quest topics:", err);
-            }
-        }
+                    </div>
+                </section>
 
-        async function openTopic(slug) {
-            try {
-                const res = await axios.get(`${API}/questions/java-quest/topics/${slug}/`, getHeaders());
-                const t = res.data;
-                currentTopicSlug = slug;
+                <!-- 4. 🎴 3D Interactive Formula & Play Cards -->
+                <section class="card-candy p-8 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-200">
+                            ④ 🎴 3D Formula &amp; Concept Play Cards
+                        </span>
+                        <span class="text-xs font-bold text-indigo-600">Tap Card to Flip 🔄</span>
+                    </div>
 
-                document.getElementById('quest-map-view').classList.add('hidden');
-                document.getElementById('topic-reader-view').classList.remove('hidden');
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="flashcards-grid">
+                        <!-- Dynamic rendering via JS -->
+                    </div>
+                </section>
 
-                document.getElementById('reader-topic-title').innerText = `${t.order}. ${t.title}`;
-                document.getElementById('reader-xp-tag').innerText = `+${t.xp_reward} XP`;
-                document.getElementById('reader-concept').innerText = t.concept_summary;
+                <!-- 5. 💻 Code Playground & Execution Simulator -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-blue-500">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                            ⑤ 💻 Code Playground &amp; JVM Interpreter Simulator
+                        </span>
+                        <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i> Live Execution
+                        </span>
+                    </div>
 
-                // Render Rules
-                const rulesList = document.getElementById('reader-rules');
-                rulesList.innerHTML = '';
-                (t.syntax_rules || []).forEach(r => {
-                    rulesList.innerHTML += `<li class="flex items-start gap-2"><span>•</span><span>${r}</span></li>`;
-                });
-
-                // Render Errors
-                const errorsList = document.getElementById('reader-errors');
-                errorsList.innerHTML = '';
-                (t.common_errors || []).forEach(e => {
-                    errorsList.innerHTML += `<li>⚠️ ${e}</li>`;
-                });
-
-                // Render Memory Stack vs Heap
-                const stackList = document.getElementById('memory-stack');
-                stackList.innerHTML = '';
-                (t.memory_diagram_json.stack || []).forEach(s => {
-                    stackList.innerHTML += `<li>→ ${s}</li>`;
-                });
-
-                const heapList = document.getElementById('memory-heap');
-                heapList.innerHTML = '';
-                (t.memory_diagram_json.heap || []).forEach(h => {
-                    heapList.innerHTML += `<li>📦 ${h}</li>`;
-                });
-
-                // Render Code Example
-                document.getElementById('reader-code').innerText = t.code_example;
-
-                // Render Quiz
-                if (t.quiz_json && t.quiz_json.length > 0) {
-                    const q = t.quiz_json[0];
-                    currentQuizAnswer = q.ans;
-                    selectedQuizOption = null;
-
-                    document.getElementById('quiz-question').innerText = q.q;
-                    const optsBox = document.getElementById('quiz-options');
-                    optsBox.innerHTML = '';
-
-                    q.opts.forEach((optText, idx) => {
-                        optsBox.innerHTML += `
-                            <button onclick="selectQuizOpt(${idx})" id="quiz-opt-${idx}" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-purple-500 bg-slate-900 text-xs font-medium text-slate-200 transition">
-                                ${optText}
+                    <div class="bg-slate-950 text-slate-100 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+                        <!-- IDE Header -->
+                        <div class="bg-slate-900 px-5 py-3 flex items-center justify-between border-b border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <span class="text-xs font-mono text-slate-400 ml-2">Main.java</span>
+                            </div>
+                            <button onclick="runCodeSimulator()" class="gradient-brand text-white px-4 py-1.5 rounded-xl font-bold text-xs shadow-md hover:opacity-90 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> Run Code
                             </button>
-                        `;
-                    });
-                }
+                        </div>
 
-                document.getElementById('quiz-result').innerText = '';
-            } catch (err) {
-                alert("Failed to load topic details.");
-            }
-        }
+                        <!-- Code Editor Area -->
+                        <div class="p-6 font-mono text-xs md:text-sm space-y-1.5 leading-relaxed" id="code-editor-body">
+                            <!-- Rendered dynamically -->
+                        </div>
 
-        function selectQuizOpt(idx) {
-            selectedQuizOption = idx;
-            [0,1,2,3].forEach(i => {
-                const btn = document.getElementById(`quiz-opt-${i}`);
-                if (btn) {
-                    if (i === idx) {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-purple-500 bg-purple-950/60 text-xs font-bold text-purple-200 shadow-md";
-                    } else {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900 text-xs font-medium text-slate-200";
+                        <!-- Simulated Console Output -->
+                        <div class="bg-slate-900 p-4 border-t border-slate-800 font-mono text-xs space-y-1">
+                            <div class="text-slate-400 font-bold text-[10px] uppercase tracking-wider">Console Output</div>
+                            <div id="console-output" class="text-emerald-400 font-bold">Press 'Run Code' to execute Java main...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. ⚠️ Common Mistakes & Compiler Traps -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-rose-500">
+                    <span class="text-xs font-black uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+                        ⑥ ⚠️ Common Compiler Traps &amp; Bug Fixes
+                    </span>
+                    <h3 class="text-xl font-black text-slate-900">Don't Get Caught By The Java Compiler!</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Wrong Code -->
+                        <div class="bg-rose-50 border-2 border-rose-200 p-5 rounded-2xl space-y-2">
+                            <div class="flex items-center gap-2 text-rose-700 font-extrabold text-xs">
+                                <i class="fa-solid fa-xmark-circle text-base"></i> WRONG CODE (Compilation Error)
+                            </div>
+                            <pre class="bg-white p-3 rounded-xl border border-rose-200 font-mono text-xs text-rose-900" id="wrong-code-snippet"></pre>
+                            <p class="text-xs text-rose-700 font-medium" id="wrong-code-why"></p>
+                        </div>
+
+                        <!-- Correct Code -->
+                        <div class="bg-emerald-50 border-2 border-emerald-200 p-5 rounded-2xl space-y-2">
+                            <div class="flex items-center gap-2 text-emerald-700 font-extrabold text-xs">
+                                <i class="fa-solid fa-check-circle text-base"></i> CORRECT CODE (Clean Execution)
+                            </div>
+                            <pre class="bg-white p-3 rounded-xl border border-emerald-200 font-mono text-xs text-emerald-900" id="correct-code-snippet"></pre>
+                            <p class="text-xs text-emerald-700 font-medium" id="correct-code-why"></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. 🎯 Interview Corner -->
+                <section class="card-candy p-8 space-y-4 border-l-8 border-l-amber-500">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                            ⑦ 🎯 Top Placement Interview Corner
+                        </span>
+                        <span class="text-xs font-bold text-amber-600">Tap Question to Reveal Answer 🔑</span>
+                    </div>
+
+                    <div class="space-y-4" id="interview-questions-list">
+                        <!-- Dynamic rendering via JS -->
+                    </div>
+                </section>
+
+                <!-- 8. 🎮 Challenge Zone & Mini-Quiz -->
+                <section class="card-candy p-8 space-y-6 border-l-8 border-l-indigo-600">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                            ⑧ 🎮 Challenge Zone &amp; Interactive Quiz
+                        </span>
+                        <span class="text-xs font-bold text-emerald-600 font-mono" id="quiz-live-score">Score: 0/0</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900" id="quiz-q-text">Loading Challenge Question...</h4>
+                        <div class="grid grid-cols-1 gap-3" id="quiz-options-grid">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div id="quiz-explanation-box" class="hidden p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-medium"></div>
+                        <div class="flex justify-end pt-2">
+                            <button id="quiz-next-btn" onclick="nextLessonQuiz()" disabled class="gradient-brand text-white px-6 py-2.5 rounded-xl font-bold text-xs disabled:opacity-50">
+                                Next Challenge →
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. 🎓 Certificate Trigger Section -->
+                <section class="card-candy p-8 gradient-brand text-white text-center space-y-4">
+                    <div class="w-16 h-16 bg-white/20 backdrop-blur-md text-white rounded-full flex items-center justify-center text-3xl mx-auto border border-white/30">
+                        🎓
+                    </div>
+                    <h3 class="text-2xl font-black">Ready to Graduate this Module?</h3>
+                    <p class="text-xs text-indigo-100 max-w-lg mx-auto">
+                        Complete all challenges in this module to earn your verified Java Master Certificate badge!
+                    </p>
+                    <button onclick="generateCertificateModal()" class="bg-white text-indigo-700 hover:bg-slate-100 font-black px-6 py-3 rounded-xl text-xs shadow-lg transition">
+                        View Module Certificate 📜
+                    </button>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-8 text-center space-y-6 border-4 border-indigo-500 shadow-2xl relative">
+            <button onclick="closeCertModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="space-y-2">
+                <span class="text-xs font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                    Verified Placement Arena Graduation
+                </span>
+                <h3 class="text-3xl font-black text-slate-900">Certificate of Java Mastery</h3>
+                <p class="text-xs text-slate-500 font-medium">This certifies that the candidate has successfully mastered</p>
+                <p class="text-base font-extrabold text-indigo-600" id="cert-module-name">Module 1: Variables &amp; JVM Memory</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex justify-around text-xs font-bold">
+                <div>
+                    <span class="text-slate-400 block text-[10px]">XP EARNED</span>
+                    <span class="text-indigo-700 font-extrabold text-base" id="cert-xp">+500 XP</span>
+                </div>
+                <div class="border-r border-slate-200"></div>
+                <div>
+                    <span class="text-slate-400 block text-[10px]">GRADE</span>
+                    <span class="text-emerald-600 font-extrabold text-base">A+ Master</span>
+                </div>
+            </div>
+            <button onclick="closeCertModal(); confetti({particleCount: 150});" class="w-full gradient-brand text-white py-3 rounded-xl font-extrabold text-xs shadow-md">
+                Claim Certificate &amp; Continue 🚀
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Full Java Mastery Modules Dataset
+        const javaModules = [
+            {
+                id: 1,
+                title: "1. Variables & JVM Memory",
+                badge: "Foundational Java",
+                desc: "Explore primitive data types, Stack vs Heap allocation, and JVM byte storage.",
+                storyTitle: "The Magical Locker Room of Computer Memory",
+                storyBody: "Imagine RAM is a futuristic city with millions of glowing lockers. Declaring `int age = 25` rents a 32-bit locker named 'age' and locks 25 inside! Primitive types live right inside Stack lockers for maximum speed.",
+                whyTitle: "Why Static Typing Keeps Enterprise Systems Safe",
+                whyAnalogy: "Just like a measuring cup only holds liquids, an `int` locker in Java only holds whole numbers!",
+                whyIndustry: "Banks use strict Java types so monetary balances can never accidentally store text!",
+                flashcards: [
+                    {
+                        title: "Primitive vs Reference Types",
+                        badge: "💡 Memory Rule",
+                        front: "Where do primitive variables (`int`, `double`, `boolean`) store their values?",
+                        back: "Primitives store their actual raw values directly inside Stack Memory frames!\nReference types store a 64-bit memory address pointing to Heap objects!"
+                    },
+                    {
+                        title: "The 8 Java Primitives",
+                        badge: "🔢 Syntax Rule",
+                        front: "Name the 8 primitive types in Java.",
+                        back: "1. `byte` (8-bit)\n2. `short` (16-bit)\n3. `int` (32-bit)\n4. `long` (64-bit)\n5. `float` (32-bit IEEE)\n6. `double` (64-bit IEEE)\n7. `char` (16-bit Unicode)\n8. `boolean` (true/false)"
                     }
-                }
-            });
+                ],
+                editorLines: [
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        int studentAge = 22;',
+                    '        double gpa = 3.92;',
+                    '        String name = "Placement Hero";',
+                    '        System.out.println(name + " | Age: " + studentAge + " | GPA: " + gpa);',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'Compiling Main.java via javac...',
+                    'Executing bytecode on JVM...',
+                    'Placement Hero | Age: 22 | GPA: 3.92'
+                ],
+                wrongSnippet: 'int age = "Twenty-Two"; // Compilation Error',
+                wrongWhy: "Type Mismatch: Cannot convert String to int. Java checks types at compile time!",
+                correctSnippet: 'int age = 22; // Correct Type Declaration',
+                correctWhy: "int type matches integer literal 22 cleanly.",
+                interviewQs: [
+                    {
+                        q: "What is the size and default value of an `int` and `double` in Java?",
+                        a: "`int`: 32 bits (4 bytes), default value `0`.\n`double`: 64 bits (8 bytes), default value `0.0`.",
+                        diff: "Easy"
+                    },
+                    {
+                        q: "Why is `char` 2 bytes in Java instead of 1 byte like in C?",
+                        a: "Java uses 16-bit Unicode encoding (UTF-16) to support international alphabets (Hindi, Chinese, Japanese, etc.), whereas C uses 8-bit ASCII!",
+                        diff: "Medium"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Which memory region holds primitive local variables in Java?",
+                        options: ["Heap Memory", "Stack Memory", "Metaspace", "String Constant Pool"],
+                        correct: 1,
+                        exp: "Local primitive variables declared inside method frames live directly in Stack Memory!"
+                    },
+                    {
+                        text: "What is the bit size of a `double` primitive in Java?",
+                        options: ["16 bits", "32 bits", "64 bits", "128 bits"],
+                        correct: 2,
+                        exp: "Java `double` is a 64-bit IEEE 754 floating point number."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "2. OOP Magic & Classes",
+                badge: "Object-Oriented Programming",
+                desc: "Master Blueprints (Classes), Objects in Heap, Constructors, and `this` reference.",
+                storyTitle: "Architect Blueprints vs Physical Houses",
+                storyBody: "A `Class` is just an architectural blueprint on paper. An `Object` is the actual physical house built in Heap Memory using the `new` keyword!",
+                whyTitle: "Why OOP Powers Large-Scale Software",
+                whyAnalogy: "Car manufacturers use one chassis blueprint to manufacture thousands of individual cars!",
+                whyIndustry: "Amazon uses an `Order` class to instantiate millions of customer orders every minute!",
+                flashcards: [
+                    {
+                        title: "The `new` Keyword",
+                        badge: "🧱 Heap Allocation",
+                        front: "What does the `new` keyword actually do in JVM memory?",
+                        back: "1. Allocates memory in Heap for the object.\n2. Initializes instance fields.\n3. Invokes constructor.\n4. Returns reference address!"
+                    }
+                ],
+                editorLines: [
+                    'class Student {',
+                    '    String name;',
+                    '    Student(String n) { this.name = n; }',
+                    '}',
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        Student s1 = new Student("Alice");',
+                    '        System.out.println("Student created: " + s1.name);',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'Heap Allocation: @0x91fa',
+                    'Student created: Alice'
+                ],
+                wrongSnippet: 'Student s; s.name = "Bob"; // NullPointerException',
+                wrongWhy: "Variable `s` is uninitialized (null). You must instantiate with `new Student()` first!",
+                correctSnippet: 'Student s = new Student("Bob"); s.name = "Bob";',
+                correctWhy: "Allocates a valid Heap object before setting properties.",
+                interviewQs: [
+                    {
+                        q: "What is the difference between a Class and an Object?",
+                        a: "A Class is a logical template/definition. An Object is a physical instance residing in Heap Memory with its own state.",
+                        diff: "Easy"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Where are Java objects stored in memory when created with `new`?",
+                        options: ["Stack", "Heap", "Register", "Disk"],
+                        correct: 1,
+                        exp: "All objects instantiated with `new` are allocated inside Heap Memory."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "3. Stack vs Heap Memory",
+                badge: "JVM Architecture",
+                desc: "Deep dive into garbage collection, string pool immutability, and stack frames.",
+                storyTitle: "The Dance Between Stack & Heap",
+                storyBody: "Stack Memory handles short-lived method frames and reference variables. Heap Memory stores large shared objects and strings!",
+                whyTitle: "Why String Immutability Matters",
+                whyAnalogy: "Like a published book, once a String is printed in String Pool, it can never be altered!",
+                whyIndustry: "String immutability ensures security for passwords, network sockets, and hashmap keys!",
+                flashcards: [
+                    {
+                        title: "String Pool Mechanics",
+                        badge: "🧵 String Pool",
+                        front: "What is the difference between `String s1 = \"Java\"` and `String s2 = new String(\"Java\")`?",
+                        back: "`s1` reuses the existing instance from String Constant Pool.\n`s2` forces creation of a brand new Object in Heap!"
+                    }
+                ],
+                editorLines: [
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        String a = "Quest";',
+                    '        String b = "Quest";',
+                    '        System.out.println("String Pool Match: " + (a == b));',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'String Pool Check: Same reference address @0x33a',
+                    'String Pool Match: true'
+                ],
+                wrongSnippet: 'if (name == "Alice") { ... } // Risky Reference Check',
+                wrongWhy: "`==` checks reference memory addresses, NOT String content value! Use `.equals()` instead.",
+                correctSnippet: 'if ("Alice".equals(name)) { ... } // Safe Value Comparison',
+                correctWhy: "`.equals()` compares character array values safely.",
+                interviewQs: [
+                    {
+                        q: "Why are Strings immutable in Java?",
+                        a: "Security, thread-safety, HashMap hashing caching, and String Pool memory savings!",
+                        diff: "Hard"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Which method compares String text content instead of memory references?",
+                        options: ["==", ".equals()", ".compareTo()", "hashCode()"],
+                        correct: 1,
+                        exp: "`.equals()` evaluates text character sequence matching."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "4. Exception Handling",
+                badge: "Production Resilience",
+                desc: "Master `try-catch-finally`, Checked vs Unchecked Exceptions, and Custom Error Classes.",
+                storyTitle: "The Airbag Safety System of Java Code",
+                storyBody: "Exceptions are like car airbags. When a crash occurs (division by zero, null pointer), the airbag deploys (`catch`) to prevent the program from crashing!",
+                whyTitle: "Why Enterprise Systems Rely on Exception Handling",
+                whyAnalogy: "An ATM machine catching network timeout errors so customer cards aren't trapped!",
+                whyIndustry: "Microservices catch runtime errors and return graceful HTTP 500 error payloads.",
+                flashcards: [
+                    {
+                        title: "Checked vs Unchecked Exceptions",
+                        badge: "⚠️ Compiler Rules",
+                        front: "What is the difference between Checked and Unchecked exceptions?",
+                        back: "• **Checked**: Verified at compile-time (e.g., `IOException`). Must be declared or caught!\n• **Unchecked**: Extends `RuntimeException` (e.g., `NullPointerException`). Happens at runtime!"
+                    }
+                ],
+                editorLines: [
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        try {',
+                    '            int res = 10 / 0;',
+                    '        } catch (ArithmeticException e) {',
+                    '            System.out.println("Caught: " + e.getMessage());',
+                    '        }',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'Caught: / by zero'
+                ],
+                wrongSnippet: 'try { ... } catch(Exception e) {} // Silent Catch Trap',
+                wrongWhy: "Swallowing exceptions silently hides bugs and breaks production debugging!",
+                correctSnippet: 'try { ... } catch(Exception e) { logger.error("Failed", e); }',
+                correctWhy: "Logging exceptions ensures trace visibility.",
+                interviewQs: [
+                    {
+                        q: "Does `finally` block execute if `try` has a `return` statement?",
+                        a: "YES! `finally` block ALWAYS executes before returning, unless `System.exit(0)` is invoked!",
+                        diff: "Medium"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Which keyword is used to explicitly throw an exception object?",
+                        options: ["throws", "throw", "try", "finally"],
+                        correct: 1,
+                        exp: "`throw` is used to throw an exception instance inside a method body."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "5. Collections Framework",
+                badge: "Data Structures",
+                desc: "Master ArrayList, LinkedList, HashMap internal buckets, and HashSet duplicate handling.",
+                storyTitle: "The Organizer Drawers of Enterprise Data",
+                storyBody: "Collections are high-speed organizer drawers. Need fast index lookup? Use `ArrayList`. Need $O(1)$ key-value lookup? Use `HashMap`!",
+                whyTitle: "Why HashMap Powers 90% of Backend Systems",
+                whyAnalogy: "Like a library catalog index where book category code leads straight to the shelf!",
+                whyIndustry: "Used for user session caching, database result indexing, and token validation.",
+                flashcards: [
+                    {
+                        title: "HashMap $O(1)$ Bucket Indexing",
+                        badge: "⚡ Internal Working",
+                        front: "How does HashMap find values in $O(1)$ time complexity?",
+                        back: "1. Calculates `key.hashCode()`.\n2. Computes `bucketIndex = hash % capacity`.\n3. Searches bucket linked list/tree node for matching `equals()` key!"
+                    }
+                ],
+                editorLines: [
+                    'import java.util.*;',
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        Map<String, Integer> scores = new HashMap<>();',
+                    '        scores.put("Java", 98);',
+                    '        System.out.println("Java Score: " + scores.get("Java"));',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'HashMap Hash: 2301592 -> Bucket 4',
+                    'Java Score: 98'
+                ],
+                wrongSnippet: 'List list = new ArrayList(); list.add(10); String s = (String)list.get(0); // ClassCastException',
+                wrongWhy: "Raw collections without Generics cause runtime type cast exceptions!",
+                correctSnippet: 'List<Integer> list = new ArrayList<>(); // Type-Safe Generics',
+                correctWhy: "Generics enforce compile-time type safety.",
+                interviewQs: [
+                    {
+                        q: "What is the difference between ArrayList and LinkedList?",
+                        a: "ArrayList uses a resizable array ($O(1)$ index access). LinkedList uses doubly-linked nodes ($O(1)$ insertion/deletion at ends).",
+                        diff: "Medium"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "What is the time complexity of HashMap `.get(key)` in average case?",
+                        options: ["O(N)", "O(log N)", "O(1)", "O(N^2)"],
+                        correct: 2,
+                        exp: "HashMap achieves O(1) average lookup time via hash bucket calculation."
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "6. Multithreading & Concurrency",
+                badge: "High Performance",
+                desc: "Master Thread Lifecycles, `synchronized`, Volatile, and ExecutorService thread pools.",
+                storyTitle: "The Multi-Chef Kitchen of Modern CPUs",
+                storyBody: "A single-threaded program is one chef cooking one dish at a time. Multithreading is 8 chefs cooking in parallel in the same kitchen!",
+                whyTitle: "Why Concurrency Powers Cloud Servers",
+                whyAnalogy: "Multiple cashier counters serving hundreds of customers simultaneously in a supermarket!",
+                whyIndustry: "Web servers (Tomcat, Spring Boot) spawn thread pool threads to handle concurrent HTTP requests.",
+                flashcards: [
+                    {
+                        title: "Race Conditions & `synchronized`",
+                        badge: "🔒 Thread Safety",
+                        front: "What is a Race Condition and how does `synchronized` fix it?",
+                        back: "A Race Condition occurs when multiple threads mutate shared data simultaneously.\n`synchronized` acquires a monitor lock, ensuring only 1 thread executes at a time!"
+                    }
+                ],
+                editorLines: [
+                    'public class Main {',
+                    '    public static void main(String[] args) {',
+                    '        Thread t1 = new Thread(() -> System.out.println("Thread 1 running!"));',
+                    '        t1.start();',
+                    '    }',
+                    '}'
+                ],
+                consoleLogs: [
+                    'JVM Thread Spawned: Thread-0',
+                    'Thread 1 running!'
+                ],
+                wrongSnippet: 't1.run(); // Incorrect Thread Start',
+                wrongWhy: "`t1.run()` executes code on the CURRENT thread! Use `t1.start()` to spawn a new worker thread.",
+                correctSnippet: 't1.start(); // Spawns OS Thread',
+                correctWhy: "`start()` invokes JVM native `start0()` thread creation.",
+                interviewQs: [
+                    {
+                        q: "What is the difference between `volatile` and `synchronized`?",
+                        a: "`volatile` ensures variable visibility across CPU caches. `synchronized` ensures visibility AND mutual exclusion atomic execution!",
+                        diff: "Hard"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Which method starts a new thread of execution in Java?",
+                        options: ["run()", "start()", "execute()", "init()"],
+                        correct: 1,
+                        exp: "`start()` registers and initiates thread execution with the OS/JVM thread scheduler."
+                    }
+                ]
+            }
+        ];
+
+        // State
+        let activeModuleIndex = 0;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        function loadModule(index) {
+            activeModuleIndex = index;
+            const m = javaModules[index];
+
+            // Render Hero
+            document.getElementById('module-hero-badge').textContent = m.badge;
+            document.getElementById('module-hero-title').textContent = m.title;
+            document.getElementById('module-hero-desc').textContent = m.desc;
+
+            // Render Story & Why
+            document.getElementById('story-title').textContent = m.storyTitle;
+            document.getElementById('story-body').textContent = m.storyBody;
+            document.getElementById('why-title').textContent = m.whyTitle;
+            document.getElementById('why-analogy').textContent = m.whyAnalogy;
+            document.getElementById('why-industry').textContent = m.whyIndustry;
+
+            // Render 3D Flashcards
+            renderFlashcards(m.flashcards);
+
+            // Render Code Playground
+            renderCodeEditor(m.editorLines);
+            document.getElementById('console-output').textContent = "Press 'Run Code' to execute Java main...";
+
+            // Render Common Mistakes
+            document.getElementById('wrong-code-snippet').textContent = m.wrongSnippet;
+            document.getElementById('wrong-code-why').textContent = m.wrongWhy;
+            document.getElementById('correct-code-snippet').textContent = m.correctSnippet;
+            document.getElementById('correct-code-why').textContent = m.correctWhy;
+
+            // Render Interview Corner
+            renderInterviewQs(m.interviewQs);
+
+            // Render Quiz
+            currentQuizIndex = 0;
+            quizScore = 0;
+            loadQuizQuestion();
+
+            renderSidebar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function completeTopic() {
-            if (currentQuizAnswer !== null && selectedQuizOption !== currentQuizAnswer) {
-                document.getElementById('quiz-result').innerHTML = `<span class="text-rose-400">❌ Incorrect quiz answer. Try selecting the correct option!</span>`;
+        function renderSidebar() {
+            const container = document.getElementById('modules-list');
+            container.innerHTML = javaModules.map((m, i) => {
+                const isActive = i === activeModuleIndex;
+                return `
+                    <button onclick="loadModule(${i})" class="w-full text-left p-3.5 rounded-2xl transition flex items-center justify-between text-xs font-bold ${
+                        isActive 
+                        ? 'bg-indigo-600 text-white shadow-md' 
+                        : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                    }">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <span class="w-6 h-6 rounded-lg ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                                ${i + 1}
+                            </span>
+                            <span class="truncate">${m.title.split('. ')[1] || m.title}</span>
+                        </div>
+                        <i class="fa-solid ${isActive ? 'fa-chevron-right' : 'fa-circle-check text-emerald-500'}"></i>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderFlashcards(cards) {
+            const grid = document.getElementById('flashcards-grid');
+            grid.innerHTML = cards.map((c, i) => `
+                <div class="flip-card" onclick="flipCard(${i})">
+                    <div class="flip-card-inner" id="fc-inner-${i}">
+                        <div class="flip-card-front">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">${c.badge}</span>
+                                <span class="text-xs text-indigo-600 font-bold">Tap to Flip 🔄</span>
+                            </div>
+                            <div class="my-auto space-y-2">
+                                <h4 class="text-sm font-extrabold text-slate-900">${c.title}</h4>
+                                <p class="text-xs text-slate-600 font-semibold leading-relaxed">${c.front}</p>
+                            </div>
+                            <div class="text-[10px] text-slate-400 text-right">Card ${i+1} of ${cards.length}</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-200 text-indigo-900">💡 Deep Java Concept</span>
+                                <span class="text-xs text-indigo-600 font-bold">Tap to Flip 🔄</span>
+                            </div>
+                            <div class="my-auto">
+                                <p class="text-xs text-indigo-950 font-bold leading-relaxed whitespace-pre-line">${c.back}</p>
+                            </div>
+                            <div class="text-[10px] text-indigo-400 text-right">Mastered ✨</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function flipCard(idx) {
+            const el = document.getElementById(`fc-inner-${idx}`);
+            if (el) el.classList.toggle('is-flipped');
+        }
+
+        function renderCodeEditor(lines) {
+            const body = document.getElementById('code-editor-body');
+            body.innerHTML = lines.map((line, i) => `
+                <div class="flex items-start gap-4">
+                    <span class="text-slate-600 select-none w-6 text-right shrink-0">${i + 1}</span>
+                    <span class="text-indigo-300 font-medium">${escapeHtml(line)}</span>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function runCodeSimulator() {
+            const m = javaModules[activeModuleIndex];
+            const out = document.getElementById('console-output');
+            out.textContent = "Compiling & Executing Java Bytecode on JVM...";
+            out.className = "text-amber-400 font-mono animate-pulse";
+
+            setTimeout(() => {
+                out.innerHTML = m.consoleLogs.join('<br>');
+                out.className = "text-emerald-400 font-mono font-bold";
+                confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
+            }, 800);
+        }
+
+        function renderInterviewQs(qs) {
+            const list = document.getElementById('interview-questions-list');
+            list.innerHTML = qs.map((item, i) => `
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between cursor-pointer" onclick="toggleInterviewAnswer(${i})">
+                        <h5 class="text-xs font-bold text-slate-900 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center text-[10px] font-extrabold">Q${i+1}</span>
+                            ${item.q}
+                        </h5>
+                        <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                            item.diff === 'Easy' ? 'bg-emerald-100 text-emerald-800' : item.diff === 'Medium' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
+                        }">${item.diff}</span>
+                    </div>
+                    <div id="interview-ans-${i}" class="hidden pt-2 border-t border-slate-200 text-xs text-slate-700 font-medium whitespace-pre-line">
+                        ${item.a}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleInterviewAnswer(i) {
+            const el = document.getElementById(`interview-ans-${i}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        function animateMemoryTrace() {
+            const stack = document.getElementById('stack-container');
+            const heap = document.getElementById('heap-container');
+
+            stack.innerHTML = `
+                <div class="stack-frame bg-indigo-900/40 border border-indigo-500/50 p-2.5 rounded-lg text-xs font-mono text-indigo-200">
+                    <code>main() frame: active</code>
+                </div>
+                <div class="stack-frame bg-emerald-900/40 border border-emerald-500/50 p-2.5 rounded-lg text-xs font-mono text-emerald-200">
+                    <code>local var: ptr -> @0x7f8a</code>
+                </div>
+            `;
+            heap.innerHTML = `
+                <div class="heap-object bg-purple-900/40 border border-purple-500/50 p-3 rounded-lg text-xs font-mono text-purple-200 text-center">
+                    <code>Heap Object allocated @0x7f8a</code>
+                </div>
+            `;
+        }
+
+        function loadQuizQuestion() {
+            const m = javaModules[activeModuleIndex];
+            const q = m.questions[currentQuizIndex];
+            document.getElementById('quiz-live-score').textContent = `Score: ${quizScore}/${m.questions.length}`;
+
+            if (!q) {
+                document.getElementById('quiz-q-text').textContent = "All challenges completed for this module! 🎉";
+                document.getElementById('quiz-options-grid').innerHTML = "";
+                document.getElementById('quiz-next-btn').disabled = true;
                 return;
             }
 
-            try {
-                const res = await axios.post(`${API}/questions/java-quest/topics/${currentTopicSlug}/complete/`, {}, getHeaders());
-                alert(`🎉 ${res.data.message} You earned +${res.data.new_xp} XP!`);
-                backToMap();
-            } catch (err) {
-                alert("Error marking level complete.");
+            document.getElementById('quiz-q-text').textContent = q.text;
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+            document.getElementById('quiz-next-btn').disabled = true;
+
+            const grid = document.getElementById('quiz-options-grid');
+            const labels = ['A', 'B', 'C', 'D'];
+            grid.innerHTML = q.options.map((opt, i) => `
+                <button onclick="selectQuizOption(${i})" class="option-btn text-left p-4 rounded-xl border border-slate-200 bg-white font-semibold text-xs text-slate-800 flex items-center gap-3 w-full">
+                    <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">${labels[i]}</span>
+                    <span>${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectQuizOption(i) {
+            const m = javaModules[activeModuleIndex];
+            const q = m.questions[currentQuizIndex];
+            const buttons = document.querySelectorAll('#quiz-options-grid button');
+            buttons.forEach(b => b.disabled = true);
+
+            if (i === q.correct) {
+                buttons[i].classList.add('option-correct');
+                quizScore++;
+            } else {
+                buttons[i].classList.add('option-incorrect');
+                buttons[q.correct].classList.add('option-correct');
+            }
+
+            document.getElementById('quiz-live-score').textContent = `Score: ${quizScore}/${m.questions.length}`;
+
+            if (q.exp) {
+                document.getElementById('quiz-explanation-box').textContent = q.exp;
+                document.getElementById('quiz-explanation-box').classList.remove('hidden');
+            }
+
+            document.getElementById('quiz-next-btn').disabled = false;
+        }
+
+        function nextLessonQuiz() {
+            const m = javaModules[activeModuleIndex];
+            currentQuizIndex++;
+            if (currentQuizIndex < m.questions.length) {
+                loadQuizQuestion();
+            } else {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('quiz-q-text').textContent = "Module Quiz Completed! Excellent job! 🏆";
+                document.getElementById('quiz-options-grid').innerHTML = "";
+                document.getElementById('quiz-next-btn').disabled = true;
             }
         }
 
-        function backToMap() {
-            document.getElementById('topic-reader-view').classList.add('hidden');
-            document.getElementById('quest-map-view').classList.remove('hidden');
-            loadTopics();
+        function generateCertificateModal() {
+            const m = javaModules[activeModuleIndex];
+            document.getElementById('cert-module-name').textContent = m.title;
+            document.getElementById('certificate-modal').classList.remove('hidden');
         }
 
-        loadTopics();
+        function closeCertModal() {
+            document.getElementById('certificate-modal').classList.add('hidden');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadModule(0);
+        });
     </script>
 </body>
 </html>
