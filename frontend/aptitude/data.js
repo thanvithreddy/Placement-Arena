@@ -1,6 +1,6 @@
 const aptitudeTopics = [
     {
-        "id": 16,
+        "id": 1,
         "slug": "speed-math",
         "name": "Speed Math & Shortcuts",
         "description": "Master squares, cubes, cube roots, and fraction conversions instantly.",
@@ -10,2035 +10,7 @@ const aptitudeTopics = [
         "questions": []
     },
     {
-        "id": 1,
-        "slug": "averages",
-        "name": "Averages (PDF Placeholder)",
-        "description": "Learn shortcut methods for calculating averages, weighted averages, and replacement problems.",
-        "icon": "\u2696\ufe0f",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Averages (PDF Placeholder)\n\n# Averages\n\n## Basic Formulas\n- **Average** = Sum of obs. / No. of obs.\n- **No. of obs** = Sum of obs. / Avg\n- **Sum** = No. of obs * Avg\n\n## Core Concepts\n- **Equality Concept**: If every value is equal, Each value = Average.\n- Average is a concept of Assumption, not reality.\n- **Replacement**: A concept in Averages, that in a set an element is removed and adds new element which causes a replacement and this replacement causes averages differences.\n- Averages is all about maintaining and distributing equality.\n\n## Weighted Average\n- Weighted Average is used when there are entities with different types and different count of entities.\n- Formula: `(A1N1 + A2N2 + ...) / (N1 + N2 + ...)`\n- You can convert the number of corresponding entities into Ratios in the formula: `N_i = R_i`\n\n## Consecutive Numbers & Progressions\n- If there is a common difference among the observations: \n  - `Average = (first obs. + last obs.) / 2`\n  - OR exactly the middle number.\n- **Average of first 'n' even numbers** = `n + 1`\n- **Average of first 'n' odd numbers** = `n`\n\n## Important Notes\n1. If every element in the observation is increased equally, Then the average will increase by that value (Previous Avg + increased value).\n2. If anything implies to each person/element, Then follow the mathematical operation in the question on the average directly (e.g. multiplied by 3, new average is Old Avg * 3).",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "There are 28 students in a class. Their Avg. wt is 33 Kg. If one new student joins the class, the avg. wt increases by 2Kg. Find the wt. of new student.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Original sum: 28 * 33 = 924 Kg. New sum: 29 * 35 = 1015 Kg. New student wt = 1015 - 924 = 91 Kg. Alternative shortcut: Take 35 & make 35 -> 35 + 56 = 91 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "There are 25 students in a class. Their Average wt is 75 Kg. If 2 new students join the class, the avg wt increased by 1Kg. Find the total wt. of new students.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Old average 75. New average 76. Sum for 2 students = 76 + 76 + 25 = 177 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average salary of 35 workers is Rs. 1800. When the salary of the manager is also included, the avg. will be increased by Rs. 125, what is the salary of the manager?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average 1925. Manager's salary = 1925 + 35 * 125 = 1925 + 4375 = 6300."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The batting average for 40 innings of a cricketer is 50 Runs. His highest score exceeds the lowest score by 172 runs. If these two innings are excluded, the avg of remaining innings is 48 Runs. Find the highest score & lowest score.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum of 40 innings = 40 * 50 = 2000. Sum of 38 innings = 38 * 48 = 1824. H + L = 2000 - 1824 = 176. Given H - L = 172. H = (176+172)/2 = 174, L = 176 - 174 = 2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A batsman in his 17th innings makes a score of 85 and thereby increases his average by 3 Runs. What is his average after 17th innings? Before 17th innings?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Before 17th Innings -> 85 - (3 * 17) = 85 - 51 = 34. After 17th Innings -> 34 + 3 = 37. (Using equation: 16x + 85 = 17(x+3) => 16x + 85 = 17x + 51 => x = 34)"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average weight of 15 men has increased by 1Kg when one of them whose wt is 60Kg is replaced by a new man. What is the weight of the new man?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The new man's weight will be obviously greater than 60. He should distribute the extra 1Kg to all the 15 members. So, 60 + (1 * 15) = 75 Kg."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Average height of 15 students is 159cm. Later on, it was found that while calculating the avg, the reading of 147cm was wrongly read as 177cm. Find the correct average.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Correct value = 147cm. Mistaken value = 177cm. Difference = 177 - 147 = 30. This difference of 30 was distributed to 15 students. Correct average = 159 - (30/15) = 159 - 2 = 157 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In a set of 4 Numbers, Average of 1st 3 numbers = 48, Average of last 3 numbers = 52. If Last No. is 58, find first number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total of first 3 = 48 * 3 = 144. Total of last 3 = 52 * 3 = 156. Last - First = 156 - 144 = 12. 58 - A = 12 => A = 46."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Average weight of A, B, C is 80Kg. If fourth man D joins them, the average weight for four becomes 82Kg. If E whose weight is 4 Kg less than D replaces A, then the average weight of B, C, D and E becomes 84Kg. What is the weight of A?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum ABC = 3 * 80 = 240. Sum ABCD = 4 * 82 = 328. D = 328 - 240 = 88Kg. E = 88 - 4 = 84Kg. Avg B,C,D,E = 84. Diff between ABCD (82) and BCDE (84). E is 8 more than A => A is 8 less than E. A = 84 - 8 = 76 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 7 numbers is 53. Average of 1st 3 numbers is 47. Average of last 3 numbers is 55. Find the missing middle number?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum of 7 = 7 * 53 = 371. Sum of 1st 3 = 3 * 47 = 141. Sum of last 3 = 3 * 55 = 165. Missing number = 371 - (141 + 165) = 371 - 306 = 65."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Average of 9 numbers is 48. Average of 1st 5 numbers 45, Average of last 5 numbers 52. Find the middle number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "5 * 45 = 225. 5 * 52 = 260. Sum of 10 numbers = 485. Sum of 9 = 9 * 48 = 432. Middle = 485 - 432 = 53. Shortcut: 9-48, 5-45(-15), 5-52(+20), Middle No = 48 - 15 + 20 = 53."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Virat Kohli scored at an Average of 30 Runs in his first 25 matches. He scored at an average of 70 Runs in his next 75 matches. Find his overall Average?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Weighted Average: Ratio of matches is 25:75 = 1:3. Avg = (30*1 + 70*3) / (1+3) = (30 + 210) / 4 = 240 / 4 = 60 Runs."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of Prime Number between 23 and 53.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Between 23 and 53 excludes boundaries. Primes: 29, 31, 37, 41, 43, 47. Avg = (29+31+37+41+43+47) / 6 = 228 / 6 = 38."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of Prime Number from 23 to 53.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From 23 to 53 includes boundaries. Primes: 23, 29, 31, 37, 41, 43, 47, 53. Avg = (23+29+31+37+41+43+47+53) / 8 = 38."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 7 consecutive natural numbers is 43. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Average is the middle value. The 4th value out of 7 is 43. The 1st value is 43 - 3 = 40."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 8 consecutive natural numbers is 84.5. Find the largest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Values are 81, 82, 83, 84, (84.5), 85, 86, 87, 88. Largest number is 88."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 5 consecutive Even numbers is 48. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The 5 numbers are 44, 46, 48, 50, 52. The smallest number is 44."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 6 consecutive odd numbers is 98. Find the largest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The 6 numbers are 93, 95, 97, 99, 101, 103 (with 98 in middle of 97 and 99). The largest number is 103."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sum of 5 consecutive natural numbers is 145. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Avg = 145 / 5 = 29. The numbers are 27, 28, 29, 30, 31. Smallest is 27."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sum of 7 consecutive Even numbers is 224. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Avg = 224 / 7 = 32. The numbers are 26, 28, 30, 32, 34, 36, 38. Smallest is 26."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average of 28 numbers is 25. If each number is multiplied by 3, then the new average is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average = 25 * 3 = 75."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If each number is increased by 6 (for the set where avg is 25), the new average is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average = 25 + 6 = 31."
-            }
-        ]
-    },
-    {
         "id": 2,
-        "slug": "alligations-mixtures",
-        "name": "Alligations & Mixtures (PDF Placeholder)",
-        "description": "Master the rule of alligation and mixture concentration problems.",
-        "icon": "\ud83e\uddea",
-        "xp_reward": 110,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Alligations & Mixtures (PDF Placeholder)\n\n# Alligations and Mixtures\n\n- **Alligations and mixtures** is a rule that can be applied to Percentages, Profit and Loss, and Averages.\n- It is mostly used when the **Result** (or average/mixture value) is given.\n- In Alligation and mixtures, a total of three values (Result and two categories) will be given in the question.\n\n## The Alligation Rule (Cross-Difference Method)\nIf two categories $A$ and $B$ are mixed to get a Result $R$:\n```\n  A          B\n   \\        /\n    Result(R)\n   /        \\\n(B-R)  :  (R-A)\n```\n- Take the positive difference between the Result and each category.\n- The ratio of the quantities of $A$ and $B$ is $(B - R) : (R - A)$.\n- **Important Note:** All the values must be of the same style/format (i.e., either all percentages or all direct numerics like cost price).\n\n## Handling Successive Replacement\nWhen a quantity $x$ is removed from a total volume $V$ of pure liquid and replaced with water, and this is repeated $n$ times:\n- Use percentages or fractions to track the remaining amount.\n- Example: If 10% is removed, then 90% of the previous amount remains after each step.\n- You can step-by-step calculate the remaining amount: $m_{new} = m_{old} - (x/V) \\times m_{old}$.\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "The cost of Type 'A' sugar is Rs. 15 per kg. The cost of Type 'B' sugar is Rs. 30 per kg. In what ratio these two sugars should be mixed to get a mixture costing Rs. 25 per kg?",
-                "options": [
-                    "1:2",
-                    "2:1",
-                    "1:3",
-                    "3:1"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Using alligation: Category A is 15, Category B is 30, Result is 25. The cross difference for A is 30 - 25 = 5. The cross difference for B is 25 - 15 = 10. The ratio is 5:10, which simplifies to 1:2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The cost of Type 'A' sugar is Rs. 15 per kg and Type 'B' is Rs. 30 per kg. If both are mixed to get a mixture costing Rs. 25 per kg and the resultant quantity is 75 kgs, find the quantity of B.",
-                "options": [
-                    "25 kgs",
-                    "50 kgs",
-                    "45 kgs",
-                    "30 kgs"
-                ],
-                "correct_option_index": 1,
-                "explanation": "From the alligation rule, the ratio of A:B is 1:2. The total parts are 1+2 = 3. 3 parts correspond to 75 kgs (multiply by 25). The quantity of B is 2 parts, so 2 * 25 = 50 kgs."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The average age of a class is 16 years. When 10 new students with an average age of 15 years joins the class, the average age of the class is decreased by 3 months. Find the original strength of the class and the new strength of the class.",
-                "options": [
-                    "20 and 30",
-                    "30 and 40",
-                    "40 and 50",
-                    "25 and 35"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Original average = 16 years. Joined average = 15 years. New average = 15 years 9 months (since it decreased by 3 months). Using alligation: Original diff = 15y 9m - 15y = 9 months. Joined diff = 16y - 15y 9m = 3 months. Ratio of Original : Joined = 9 : 3 = 3 : 1. Joined strength is 1 part = 10 students. Original strength is 3 parts = 30 students. New strength = 30 + 10 = 40 students."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A part of sum of Rs. 3000 is invested at 5% p.a. S.I and the rest at 6% p.a. S.I. The whole annual interest received was Rs. 162. Find the money lent at 6% p.a.",
-                "options": [
-                    "Rs. 1800",
-                    "Rs. 1200",
-                    "Rs. 1500",
-                    "Rs. 1000"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Convert everything to the same format (percentages). Overall interest % = (162 / 3000) * 100 = 5.4%. Using alligation with 5% and 6% and result 5.4%: Diff for 5% is 6 - 5.4 = 0.6. Diff for 6% is 5.4 - 5 = 0.4. Ratio = 0.6 : 0.4 = 6:4 = 3:2. Total parts = 5. 5 parts = 3000, so 1 part = 600. The money lent at 6% corresponds to 2 parts = 2 * 600 = Rs. 1200."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A part of sum of Rs. 8000 is invested at 10% p.a. C.I and the rest at 20% p.a. C.I. The whole interest received after 2 years is Rs. 2048. Find the money lent at 20% p.a.",
-                "options": [
-                    "Rs. 1600",
-                    "Rs. 2000",
-                    "Rs. 6400",
-                    "Rs. 4000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Effective C.I for 2 years at 10% = 10+10+(10*10/100) = 21%. Effective C.I for 2 years at 20% = 20+20+(20*20/100) = 44%. Overall interest % = (2048 / 8000) * 100 = 25.6%. Using alligation: Diff for 10% is 44 - 25.6 = 18.4. Diff for 20% is 25.6 - 21 = 4.6. Ratio = 18.4 : 4.6 = 4:1. Total parts = 5. 5 parts = 8000. 1 part = 1600. Money lent at 20% corresponds to 1 part = Rs. 1600."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A part of sum of Rs. 58000 is invested at 30% per annum C.I and the rest at 20% p.a S.I. The whole interest received after 2 years is Rs. 29000. Find the money lent at C.I.",
-                "options": [
-                    "Rs. 38000",
-                    "Rs. 29000",
-                    "Rs. 20000",
-                    "Rs. 10000"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Effective C.I for 2 years at 30% = 30+30+(900/100) = 69%. Effective S.I for 2 years at 20% = 20+20 = 40%. Overall interest % = (29000 / 58000) * 100 = 50%. Using alligation on 69% and 40% with result 50%: Ratio = (50-40) : (69-50) = 10 : 19. Total parts = 29. 29 parts = 58000 => 1 part = 2000. Money lent at C.I corresponds to 10 parts = 10 * 2000 = Rs. 20000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "How much water must be added to 60 litres of milk at 1 1/2 litres for Rs. 20 so as to have a mixture worth Rs. 10 2/3 per litre?",
-                "options": [
-                    "10 litres",
-                    "12 litres",
-                    "15 litres",
-                    "20 litres"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Convert all money to per 1.5 litres. Rs. 10 2/3 per litre = 32/3 per litre, so for 1.5 litres it's (32/3) * (3/2) = Rs. 16. Water costs Rs. 0. Milk costs Rs. 20 per 1.5L. Result is Rs. 16. Alligation: Water(0) and Milk(20) giving Result(16). Ratio of Water:Milk = (20-16) : (16-0) = 4:16 = 1:4. Milk is 4 parts = 60 litres, so 1 part = 15 litres. We need to add 15 litres of water."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many kgs of wheat costing Rs. 8 per kg must be mixed with 36 kgs of rice costing Rs. 5.40 per kg, so that 20% gain may be obtained by selling the mixture at Rs. 7.20 per kg?",
-                "options": [
-                    "10.8 kgs",
-                    "12 kgs",
-                    "15.5 kgs",
-                    "18 kgs"
-                ],
-                "correct_option_index": 0,
-                "explanation": "First, convert the selling price to cost price. CP = SP / 1.2 = 7.20 / 1.2 = Rs. 6 per kg. Now use alligation on CPs: Wheat(8) and Rice(5.40) giving Result(6). Ratio of Wheat:Rice = (6 - 5.40) : (8 - 6) = 0.60 : 2 = 60 : 200 = 3 : 10. Rice is 10 parts = 36 kgs, so 1 part = 3.6 kgs. Wheat is 3 parts = 3 * 3.6 = 10.8 kgs."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In what ratio must water be mixed with milk to gain 20% by selling the mixture at cost price?",
-                "options": [
-                    "1:4",
-                    "1:5",
-                    "2:5",
-                    "1:6"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Let CP of milk be 100. Since we sell at CP (100) and gain 20%, the actual cost price of the mixture is 100 / 1.2 = 83.33. Alternatively, assume SP is 120 and CP is 100. Using alligation: Water (0) and Milk (120) with result 100. Ratio = (120-100) : (100-0) = 20 : 100 = 1 : 5."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The milk and water in two vessels A and B are in the ratio 4:3 and 2:3 respectively. In what ratio the liquids in both the vessels be mixed to obtain a new mixture in vessel 'C' containing half milk and half water?",
-                "options": [
-                    "7:5",
-                    "5:7",
-                    "1:1",
-                    "4:3"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total parts in A = 7, B = 5, C = 2. Equate the total parts by taking LCM(7, 5, 2) = 70. Multiply A's ratio by 10 (40:30), B's ratio by 14 (28:42), and C's ratio by 35 (35:35). Now consider only milk: A(40) and B(28) with Result(35). Ratio = (35-28) : (40-35) = 7 : 5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In what ratio must water be mixed with milk to gain 16 2/3% on selling the mixture at cost price?",
-                "options": [
-                    "1:5",
-                    "1:6",
-                    "1:7",
-                    "1:8"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Gain is 16 2/3% = 50/3 %. Let CP of milk be 100. Selling at CP means mixture SP = 100. Gain is 50/3 %. The ratio of water to milk is directly the gain percentage to 100%. So Water : Milk = 50/3 : 100 = 1 : 6."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many kgs of sugar costing Rs. 9 per kg must be mixed with 27 kg of sugar costing Rs. 7 per kg so that there may be a gain of 10% by selling a mixture at Rs. 9.24 per kg?",
-                "options": [
-                    "54 kgs",
-                    "60 kgs",
-                    "63 kgs",
-                    "72 kgs"
-                ],
-                "correct_option_index": 2,
-                "explanation": "We can convert CP to SP with 10% gain. Sugar A SP = 9 + 0.9 = 9.90. Sugar B SP = 7 + 0.7 = 7.70. Target SP = 9.24. Alligation on A(9.90) and B(7.70) with Result(9.24): Ratio = (9.24 - 7.70) : (9.90 - 9.24) = 1.54 : 0.66 = 154 : 66 = 14 : 6 = 7 : 3. B is 3 parts = 27 kg. So A is 7 parts = 7 * 9 = 63 kgs."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The cost of Type 1 rice is Rs. 15 per kg. Type 2 Rice is Rs. 20 per kg. If both Type 1 and Type 2 are mixed in the ratio 2:3, then the price per kg of the mixed variety rice is:",
-                "options": [
-                    "Rs. 16",
-                    "Rs. 17",
-                    "Rs. 18",
-                    "Rs. 19"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Using weighted average: (15*2 + 20*3) / (2+3) = (30 + 60) / 5 = 90 / 5 = Rs. 18 per kg."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Tea worth Rs. 126 per kg & Rs. 135 per kg are mixed with third variety in the ratio 1:1:2. If the mixture is worth Rs. 153 per kg, the price of third variety per kg will be:",
-                "options": [
-                    "Rs. 165.5",
-                    "Rs. 175.5",
-                    "Rs. 185.5",
-                    "Rs. 195.5"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Let the price of the third variety be C. Weighted average equation: [(126 * 1) + (135 * 1) + (C * 2)] / (1+1+2) = 153. => 126 + 135 + 2C = 153 * 4 = 612. => 261 + 2C = 612 => 2C = 351 => C = 175.5."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two vessels A and B contain milk and water in the ratio 8:5 and 5:2 respectively. The ratio in which these two mixtures must be mixed to get a new mixture containing 69 3/13 % milk is:",
-                "options": [
-                    "2:7",
-                    "3:5",
-                    "5:2",
-                    "7:2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Convert to milk fractions: A = 8/13 = 56/91. B = 5/7 = 65/91. Result = 69 3/13% = 900/1300 = 9/13 = 63/91. Using alligation on A(56/91) and B(65/91) with Result(63/91): Ratio = (65/91 - 63/91) : (63/91 - 56/91) = 2/91 : 7/91 = 2 : 7."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "From 300 litres of pure milk, 30 litres is removed and replaced with water. From the resultant solution, 30 litres is again removed & replaced with water. If this procedure is repeated for another time, find the quantity of milk in the resultant solution.",
-                "options": [
-                    "243 litres",
-                    "218.7 litres",
-                    "200 litres",
-                    "180.5 litres"
-                ],
-                "correct_option_index": 1,
-                "explanation": "30 litres is 10% of 300 litres. Step 1: Remove 10% of 300 = 30. Milk remaining = 270. Step 2: Remove 10% of 270 = 27. Milk remaining = 243. Step 3: Remove 10% of 243 = 24.3. Milk remaining = 218.7 litres."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A can contains a mixture of two liquids A & B in the ratio 7:5. When 9 litres of mixture is drawn off and the can is filled with B, the ratio of A and B becomes 7:9. How many litres of liquid A was contained in the can initially?",
-                "options": [
-                    "20 litres",
-                    "21 litres",
-                    "25 litres",
-                    "28 litres"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Before drawing off, A:B = 7:5 (Total 12). After drawing and replacing with B, A:B = 7:9 (Total 16). Equate parts: Before = 12 * 4 = 48 parts (A=28, B=20). After = 16 * 3 = 48 parts (A=21, B=27). The decrease in A is 7 parts (28 to 21), which corresponds to the 9 litres drawn off. Total parts = 48. But wait, the 7 parts decrease is exactly 25% of 28. If 100% of mixture is 36 litres, initially 7/12 of 36 = 21 litres. The solution filters using multiples."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "8 litres are drawn from a cask full of wine and is then filled with water. This operation is performed three more times. The ratio of quantity of wine now left in cask to that of water is 16:65. How much wine did the cask hold originally?",
-                "options": [
-                    "18 lit",
-                    "24 lit",
-                    "32 lit",
-                    "42 lit"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Final wine ratio = 16 / (16+65) = 16/81. Total operations = 4. Let initial volume be V. (1 - 8/V)^4 = 16/81. Taking the fourth root: 1 - 8/V = 2/3 => 8/V = 1/3 => V = 24 litres. The notes suggest filtering options by checking which one leaves ~20% (16/81) after 4 removals of 8L."
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "slug": "ages",
-        "name": "Problems on Ages (PDF Placeholder)",
-        "description": "Learn algebraic and ratio-based shortcuts for age gap problems.",
-        "icon": "\u23f3",
-        "xp_reward": 90,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Problems on Ages (PDF Placeholder)\n\n# Ages\n\n## Core Concepts\n* In Ages, the age gap is always constant/same between the entities.\n* The equations of age (i.e. double, triple, 4 times, etc.) among the entities happens only a single time across life.\n\n## Problem Solving Approaches\n1. **Using Age Gaps:** Two person's age gap will be given. And how the ages relate with them (double, triple, 4 times, etc...). As we know, age gap is constant and only once in a lifetime a certain relation is possible. So, we equate the ages accordingly and calculate further.\n2. **Using Ratios:** The ages are given as ratio at present and again age will be given as ratio after some years. Find the present age. Equate the ratios w.r.t to each other (mostly according to the latest age ratio). By this, we get difference between them as years, with parts.",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "Father's present age is 28 years more than his son. Before 3y 5months, Father's age would become double the age of son. Find the present age of 1.son 2.father.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Age gap = 28. Before 3y 5m, Father's age = 2 x son age (double). Let 2 = n (multiple of difference age gap). son = 28, Father = 56. Diff (n-1) = 28. Present ages: 31y 5m and 59y 5m."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Father's present age is 27 years more than his son. Before 2 years, father's age would become 5.5 times the age of son. Find the present age of 1.son 2.father.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Diff: Father - Son = 27. 5.5 = age multiplicity, 27 = age gap. 27 / (5.5 - 1) = 6. Before 2 years son age is 6. Present ages = 8 years, 35 years respectively."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The ratio of present ages of man and his daughter is 3:1. After 12 years, the ratio of their ages would be 11:5. Find the present age of man.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let at present man : daughter = 3 : 1 => 9 : 3. After 12 years 11 : 5. Equate them: 9-11 (2 parts) = 12 years. 9 parts = 54 years. Present age of man = 9 parts = 54 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "At present Anil's Age is 1.5 times the age of Ravi. Eight years hence, the ratio of their ages will be 25:18. What is Ravi's Present Age?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let Anil : Ravi = 1.5 : 1 => 21 : 14. After 8 years 25 : 18. Increased 4 parts -> 8 years. 14 (consider updated ratio) -> 28 years. Ravi's Present Age = 28 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "To the two numbers are in the ratio 2:3. If 14 is added to each of the numbers, then the ratio between 12:17. Find the small number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Note: If same number is added to both the numbers, the difference between them is same. Initially 2:3 => 10:15. After 14 added 12:17. Equating: 2 parts -> 14. 10 parts -> 70. Smallest Number = 70."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average age of husband and his wife was 23 years at the time of their marriage. Today, after 5 years, they have two children a boy and girl with age 2 years and 1 year respectively. The average age of family now is",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "After 5 years, (23+5, 23+5, 2 years, 1 year). Average age of family now = (28 + 28 + 2 + 1) / 4 (total members) = 59 / 4 = 14.75 = 14 3/4 = 14 (3/4 x 12) = 14 years 9 months."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average age of husband & wife who were named 7yrs ago, was 25 years then. The average age of a family including a child who was born during the interval is 22 years now. How old is the child now?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "7 years ago -> Husband 25, wife 25. Present -> 32, 32. Average now is 22, includes the child. Present sum, 22x3 = 66 years. Husband + wife + child = 66 years. Husband + wife = 64 years. child age = 2 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average age of husband and wife, who were named 7yrs ago was 25 years then. The average age of family including a 2 children Boy and Girl is 18 years. If Boy is 5 yrs old, find the age of girl now?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "((25+7) + (25+7) + 5 + Girl Age) / 4 = 18. 18 = Present Average Age of the family. Girl Age = 3."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The average age of a couple at the time of their marriage was 24 years. Today, after 11 1/2 yrs, they have 4 children, two boys & two girls. Girls are twins each 3y 4m old. If one boy is 2y 3m more than the other & Avg age of family today is 15y 2m. Find the ages of two boys individually.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let's form the equation. 35y 6m + 35y 6m + 3y 4m + 3y 4m + B + b / 6 = 15y 2m => 77y 8m + B + b = 91y. B+b = 13y 4m. B-b = 2y 3m. B = (13y 4m + 2y 3m) / 2 = 7y 9.5m. b = (13y 4m - 2y 3m) / 2 = 5y 6.5m. Ages of Boys are 7y 9 1/2m, 5y 6 1/2m."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two years ago, the average age of a family of 8 members was 18 years. On addition of a child, the average age is still the same. What is the present age of the child?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "2 years Ago -> Average Age = 18 years / 8 members. At Present -> Average Age = 20 years / 8 members. sum of 8 members = 20 x 8 = 160 years. sum of 9 members = 18 x 9 = 162 years. Age of the child -> 2 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "7 years Ago, the difference between the ages of A and B was 14 years. After 7 years, their ages will be 3:4. What is the present age of A?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "After 7 years A:B = 3:4. Difference 1 -> 14 years. 3 -> 42 years. Today the Age = 42 - 7 = 35 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "7 years Ago, the sum of ages of A & B was 74 years. At present, the ratio of their ages is 5:6. Find the present Age of B.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "7 years ago sum = 74 years. At Present, 74 + 7 + 7 = 88 years. Given Ratio 5:6. 88 / (5+6) = 8. B -> 6 x 8 = 48. Present Age of B = 48 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Ratio of Present Ages of Madan and Kamal is 8:5. After 8 years, Madan's Age is 40 years. What was Kamal's Age 6 years Ago.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Present Age of madan -> 40 - 8 = 32 years. M:K = 8:5. M=8 -> 32 years. K=5 -> 20 years. Kamal's Present Age = 20. 6 years ago = 20 - 6 = 14 years."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Four years Ago, A's age was twice that of B's. After 4 years, their ages will be in the ratio 3:2. What is the present age of A.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "4 years Ago = 2:1. 4 years After 3:2. 1 part = 8 years. 2 -> 16 years. Present Age = 16 + 4 = 20 years. A's Present Age = 20 years."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Ayesha's father was 38 years old when she was born while her mother was 36 years old when her brother 4 years younger to her was born. What is the difference between Ages of her Parents?",
-                "options": [
-                    "2",
-                    "4",
-                    "6",
-                    "8"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Let Ayesha's age be x. Father = 38+x. Brother = x-4. Mother = 36+(x-4) = 32+x. Difference = (38+x) - (32+x) = 6."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "My brother is 3 years elder to me. My father was 28 years of age when my sister was born while my mother was 26 years of age when I was born. If my sister was 4 years of age when my brother was born, then what was the age of my father and respectively when my brother was born?",
-                "options": [
-                    "32y 23y",
-                    "32y 29y",
-                    "35y 29y",
-                    "35y 33y"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Based on the options and standard calculation for this common problem, 32y and 29y is the correct answer."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A person was asked to state his age in years. His reply was 'Take my age three years hence, multiply it by 3 and then subtract three times my age three years ago and you will know how old I am.' What was the age of the person?",
-                "options": [
-                    "18y",
-                    "20y",
-                    "24y",
-                    "32y"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let age be x. 3(x+3) - 3(x-3) = 3x + 9 - 3x + 9 = 18."
-            }
-        ]
-    },
-    {
-        "id": 4,
-        "slug": "ratios-proportions",
-        "name": "Ratios & Proportions (PDF Placeholder)",
-        "description": "Master ratio combining, direct/inverse proportionality, and distribution problems.",
-        "icon": "\u2797",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Ratios & Proportions (PDF Placeholder)\n\n# Ratios and Proportions\n\nA ratio is a part of dividing the quantities in a proportion.\nIf $a:b :: c:d$, it states that two fractions are equal: $\\frac{a}{b} = \\frac{c}{d}$.\n\n* **Product of Extremes = Product of Means**: If $a:b = c:d$, then $a \\times d = b \\times c$\n* **Mean Proportional**: $\\sqrt{ab}$\n* **Third Proportional**: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$\n* **Compounded Ratio**: $ac:bd$\n\n## Types of Questionings:\n1. **Duplicate Ratio** $\\rightarrow$ find the square of the numbers\n2. **Sub-Duplicate Ratio** $\\rightarrow$ find the square root of the numbers\n3. **Triplicate Ratio** $\\rightarrow$ finds the cube of the numbers\n4. **Sub-Triplicate Ratio** $\\rightarrow$ finds the cube root of the numbers\n\n## Compound Ratio\nArrange all the ratios in $\\frac{P}{Q}$ form and multiply. The resultant $\\frac{P}{Q}$ form is the ratio.\n\n## Inverse Ratios\n* If $a:b$, then Inverse Ratio $\\Rightarrow b:a$\n* If $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$\n\n## Proportions Standard Formula\n* $D = \\frac{B \\times C}{A}$ (for 4th Proportion)\n* $C = \\frac{B^2}{A}$ (for 3rd Proportion)\n* $B = \\sqrt{AC}$ (for Mean Proportion)\n\n## Equation Oriented\n* If an equation is given $xA : yB : zC$, then $A:B:C = xy:yz:xz$.\n* If $\\frac{1}{x}A : \\frac{1}{y}B : \\frac{1}{z}C$, then $A:B:C = x:y:z$.\n\n## Mixture Type Questions\nEquate the ratios (if quantities/conditions are equal). And procedure will be sum up by the according ratios.",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "Find the compound Ratio of 2:5, 10:7, 14:9",
-                "options": [
-                    "8:9",
-                    "9:8",
-                    "4:5",
-                    "5:4"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let's form in P/q form and multiply:\n2/5 * 10/7 * 14/9 = 8/9 => 8:9\nCompound Ratio = 8:9"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the 4th proportion of 20, 21, 40?",
-                "options": [
-                    "40",
-                    "41",
-                    "42",
-                    "44"
-                ],
-                "correct_option_index": 2,
-                "explanation": "A:B = C:D => 20:21 = 40:D\n20 * D = 21 * 40\nD = (21 * 40) / 20 = 42."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the mean proportional of 8 and 18?",
-                "options": [
-                    "10",
-                    "12",
-                    "14",
-                    "16"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Mean Proportional B = sqrt(AC)\nB = sqrt(8 * 18)\nB = sqrt(144) = 12"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The c.p of mobile and tablet are in the ratio 4:7. If the tablet c.p is Rs. 15000 more than the mobile c.p, then what is the c.p of the tablet?",
-                "options": [
-                    "Rs. 20000",
-                    "Rs. 25000",
-                    "Rs. 30000",
-                    "Rs. 35000"
-                ],
-                "correct_option_index": 3,
-                "explanation": "Difference in ratio = 7 - 4 = 3.\n3 parts -> 15000 (more)\nThen 7 parts -> 35000.\nc.p of tablet = Rs. 35000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Abhi's monthly income is two-seventh of Ram's monthly income. Ram's Annual income is 4.2 lakh. What is Abhi's Annual Income?",
-                "options": [
-                    "1.2 Lakh",
-                    "1.4 Lakh",
-                    "2.1 Lakh",
-                    "2.4 Lakh"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Abhi = 2/7 Ram => Abhi : Ram = 2 : 7.\nAlso having same ratio for annual income.\n7 parts (Ram's) -> 4.2 Lakh\n2 parts (Abhi's) -> 1.2 Lakh\nAnnual Income of Abhi = 1.2 Lakh."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Ratio of Sita's, Riya's and Kunal's monthly income is 84:76:89. If Riya's Annual income is Rs. 4,56,000, what is the sum of Sita's and Kunal's Annual income?",
-                "options": [
-                    "Rs. 9,00,000",
-                    "Rs. 10,38,000",
-                    "Rs. 12,00,000",
-                    "Rs. 15,00,000"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Sita : Riya : Kunal = 84 : 76 : 89.\n76 parts -> 4,56,000 (x6000)\nSum of Sita's and Kunal's parts = 84 + 89 = 173.\n173 parts -> 173 x 6000 = 10,38,000.\nSum of Sita's and Kunal's Annual income = Rs. 10,38,000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two numbers are in the ratio 7:12. If 15 is subtracted from both the numbers, then the ratio becomes 16:31. Find the largest number.",
-                "options": [
-                    "36",
-                    "72",
-                    "108",
-                    "144"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Before (-15): 7:12 (Difference = 12-7 = 5)\nAfter (-15): 16:31 (Difference = 31-16 = 15)\nIf same quantity is removed/added, we need to equate the ratios according to the differences before and after in them.\nMultiply before ratio by 3: (7:12) x 3 => 21:36 (Difference is 15).\n21 - 16 = 5 parts = 15 => 1 part = 3.\nNow, Largest Number = 36 x 3 = 108."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The incomes of A and B are in the ratio 4:5 and their expenses are in the ratio 5:7. If each of them saves Rs. 1500, then what is the income of B?",
-                "options": [
-                    "Rs. 4000",
-                    "Rs. 4500",
-                    "Rs. 5000",
-                    "Rs. 6000"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Income - Expenditure = Savings.\nIncome => 4:5\nExpenditure => 5:7\nEquate difference: (4:5) x 2 => 8:10\nExp => 5:7\nSavings = 8-5 : 10-7 = 3:3.\n3 parts -> Rs. 1500 => 1 part -> 500.\nB's Income = 10 parts -> Rs. 5000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Ratio of milk and water in a vessel containing 60 litres of mixture is 3:2. Find the quantity of water to be added to make the ratio 2:3.",
-                "options": [
-                    "20 Litres",
-                    "24 Litres",
-                    "30 Litres",
-                    "36 Litres"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Total mixture = 60 Litres. Milk : Water = 3 : 2.\nMilk = (3/5) * 60 = 36 lit. Water = (2/5) * 60 = 24 lit.\nNeed to make the ratio 2:3.\nThen, 2 parts -> 36 lit (Milk remains same).\nThen, 3 parts -> 54 Litres.\nAlready 24 lit of water exists. So, we need to add (54 - 24) = 30 litres of water to make it 2:3."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Three equal capacity vessels contain liquor and water in the ratio 1:2, 2:1, 3:1 respectively. If all are mixed into a big vessel, find the ratio of liquor and water in the big vessel.",
-                "options": [
-                    "5:7",
-                    "7:5",
-                    "3:4",
-                    "4:3"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Liquor : Water\nVessel 1: 1:2 (Total 3) -> multiply by 4 => 4:8\nVessel 2: 2:1 (Total 3) -> multiply by 4 => 8:4\nVessel 3: 3:1 (Total 4) -> multiply by 3 => 9:3\nTotal = (4+8+9) : (8+4+3) = 21 : 15 => 7:5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If A:B is 2:3, B:C is 4:3, then find A:B:C?",
-                "options": [
-                    "8:12:9",
-                    "6:12:9",
-                    "8:10:9",
-                    "4:6:3"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A:B = 2:3\nB:C = 4:3\nMultiply A:B by 4 and B:C by 3 to make B equal (12).\nA:B:C = 8:12:9."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If A:B = 2:3, B:C = 4:3, C:D = 2:3, then find A:B:C:D.",
-                "options": [
-                    "16:24:18:27",
-                    "8:12:9:27",
-                    "16:24:18:9",
-                    "8:24:18:27"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A:B = 2:3, B:C = 4:3, C:D = 2:3.\nA:B:C = 8:12:9\nC:D = 2:3\nMultiply A:B:C by 2 and C:D by 9 to make C equal (18).\nA:B:C:D = 16:24:18:27."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If A:B = 3:4, B:C = 8:10, C:D = 15:17, then find A:D.",
-                "options": [
-                    "7:17",
-                    "9:17",
-                    "15:17",
-                    "3:17"
-                ],
-                "correct_option_index": 1,
-                "explanation": "A/D = A/B * B/C * C/D = (3/4) * (8/10) * (15/17) = 360 / 680 = 9:17."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "10 tables cost as much as 24 stools, 9 stools cost as much as 15 chairs. 9 chairs cost as much as 3 benches, 7 benches cost as much as 14 Desks, if one desk cost Rs. 500, what is the cost of one Table?",
-                "options": [
-                    "Rs. 1000",
-                    "Rs. 1200",
-                    "Rs. 1500",
-                    "Rs. 2000"
-                ],
-                "correct_option_index": 2,
-                "explanation": "10 tables = 24 stools\n9 stools = 15 chairs\n9 chairs = 3 benches\n7 benches = 14 desks\nCost of one Desk = Rs. 500\n7 benches = 14 * 500 = 7000 => 1 bench = 1000.\n9 chairs = 3 * 1000 = 3000 => 1 chair = 1000/3.\n9 stools = 15 * (1000/3) = 5000 => 1 stool = 5000/9.\n10 tables = 24 * (5000/9) => 1 table = Rs. 1500."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 3A = 4B = 5C, then find A:B:C",
-                "options": [
-                    "12:15:20",
-                    "20:15:12",
-                    "15:20:12",
-                    "12:20:15"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Let 3A = 4B = 5C = k. A = k/3, B = k/4, C = k/5.\nA:B:C = 1/3 : 1/4 : 1/5. LCM of 3,4,5 is 60.\nA:B:C = 20 : 15 : 12."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rs. 1870 is divided into three parts such that half of first part, one third of second part and one sixth of third part are equal. Find third part.",
-                "options": [
-                    "Rs. 340",
-                    "Rs. 510",
-                    "Rs. 680",
-                    "Rs. 1020"
-                ],
-                "correct_option_index": 3,
-                "explanation": "1/2 A = 1/3 B = 1/6 C\nThen A:B:C = 2:3:6\nTotal parts = 11.\nThird part = (6/11) * 1870 = 6 * 170 = 1020."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rs. 3900 is divided among A, B and C such that 2 times of A's amount, three times of B's Amount and four times of C's amount are equal, what is A's Amount?",
-                "options": [
-                    "Rs. 900",
-                    "Rs. 1200",
-                    "Rs. 1500",
-                    "Rs. 1800"
-                ],
-                "correct_option_index": 3,
-                "explanation": "2A = 3B = 4C\nA:B:C = 1/2 : 1/3 : 1/4 = 12:8:6 = 6:4:3\nTotal parts = 13 -> 3900 => 1 part = 300.\nA's Amount = 6 parts = 6 * 300 = 1800."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Rs. 425 is divided among 4 men, 5 women and 6 Boys such that the wages 1 man, 1 women and 1 Boy are in the ratio 9:8:4. what are the wages of one women?",
-                "options": [
-                    "Rs. 34",
-                    "Rs. 40",
-                    "Rs. 45",
-                    "Rs. 50"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Multiply 9:8:4 with 4,5,6 respectively gives the ratio of total wages for each group.\n36 : 40 : 24 => 9 : 10 : 6.\nTotal parts = 9 + 10 + 6 = 25.\n25 parts -> 425 => 1 part = 17.\nTotal wages of 5 women = 10 parts = 10 * 17 = 170.\nWage of 1 woman = 170 / 5 = Rs. 34."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "In a bag, 1 Rupee, 50 Paise, 25 Paise coins are in the Ratio 5:6:7. If the total sum in the bag is Rs. 78. then find the no of 50 Paise coins in the bag?",
-                "options": [
-                    "24",
-                    "36",
-                    "48",
-                    "60"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Rs 1 : 50P : 25P\nNumber Ratio: 5 : 6 : 7\nValue Ratio (in Rs): 5(1) : 6(0.5) : 7(0.25) = 5 : 3 : 1.75\nMultiply by 100: 500 : 300 : 175 = 20 : 12 : 7.\nTotal parts = 39 -> Rs. 78 => 1 part = 2.\nValue of 50 Paise coins = 12 parts = Rs. 24.\nNumber of 50 Paise coins = 24 / 0.5 = 48."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two numbers are in the ratio 5:9. The first number is decreased by 19% and the second number is increased by 10%. find the ratio of resultant values.",
-                "options": [
-                    "9:22",
-                    "9:20",
-                    "8:21",
-                    "10:23"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let numbers be 500 and 900.\nFirst number decreased by 19%: 500 - (19% of 500) = 500 - 95 = 405.\nSecond number increased by 10%: 900 + (10% of 900) = 900 + 90 = 990.\nRatio = 405 : 990 = 81 : 198 = 9 : 22."
-            }
-        ]
-    },
-    {
-        "id": 5,
-        "slug": "partnerships",
-        "name": "Partnerships (PDF Placeholder)",
-        "description": "Learn investment x time = profit ratio calculations.",
-        "icon": "\ud83e\udd1d",
-        "xp_reward": 90,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Partnerships (PDF Placeholder)\n\n# Partnerships\n\n## Profit Sharing Ratio\n- **Profit sharing Ratio = Investment $\\times$ Time (months/years)**\n- It will be calculated for each investment individually.\n- Profit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.\n- Then, **Investment Ratio = Profits / Time**\n- **Time Ratio = Profits / Investment**\n\n## Sleeping Partner and Working Partner\n- One partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.\n\n## Withdrawing Investments\n- In case, if either of the partner withdraw some amount after some time. Then we will add the withdrawn amount and withdrawn time with existing left.\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "A and B invested Rs. 12000 and Rs. 18000 respectively. A invested for 12 months and B invested for 6 months. If the total profit earned is Rs. 21,00,000, find A's and B's shares.",
-                "options": [
-                    "A: 12,00,000, B: 9,00,000",
-                    "A: 10,00,000, B: 11,00,000",
-                    "A: 9,00,000, B: 12,00,000",
-                    "A: 15,00,000, B: 6,00,000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment ratio: 12000 : 18000. Time ratio: 12 : 6. Profit sharing ratio = (12000 * 12) : (18000 * 6) = 144000 : 108000 = 4 : 3. Total profit = 21,00,000. A's share = (4/7) * 2100000 = 12,00,000. B's share = (3/7) * 2100000 = 9,00,000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Ajay, Vijay and Jai invested Rs. 8000, Rs. 4000 and Rs. 8000 respectively in a business. Ajay left after 6 months. At the end of 8 months, if there is a gain of Rs. 4005, find the share of Vijay?",
-                "options": [
-                    "Rs. 890",
-                    "Rs. 1000",
-                    "Rs. 790",
-                    "Rs. 950"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment: Ajay=8000, Vijay=4000, Jai=8000. Time: Ajay=6, Vijay=8, Jai=8. Profit ratio = (8000*6) : (4000*8) : (8000*8) = 48 : 32 : 64 = 3 : 2 : 4. Total ratio = 3+2+4 = 9. Total gain = 4005. 9 units = 4005 -> 1 unit = 445. Vijay's share (2 units) = 2 * 445 = Rs. 890."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Purna started a business with Rs. 98000. After 4 months, Vishal joined the business with a capital of Rs. 63000. Find the total profit, if Profit shared by Vishal at the end of the year was Rs. 15000?",
-                "options": [
-                    "Rs. 45000",
-                    "Rs. 50000",
-                    "Rs. 60000",
-                    "Rs. 55000"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Investment: Purna=98000, Vishal=63000. Time: Purna=12, Vishal=8 (joined after 4 months). Profit sharing ratio (PSR) = (98000*12) : (63000*8) = 7 : 3. Vishal's share (3 units) = 15000. Total profit (10 units) = (15000/3) * 10 = 50000. So, total profit = Rs. 50000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners start a business with Rs. 60000, Rs. 40000, and Rs. 100000 respectively. Find the ratio of their profits at the end of the business.",
-                "options": [
-                    "3:2:5",
-                    "6:4:1",
-                    "1:2:3",
-                    "5:2:3"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, the investment time of all partners are equal. So, their shares also same as investment Ratio. Inv: 60000 : 40000 : 100000. Time: 1 : 1 : 1. Profit sharing Ratio = 6:4:10 = 3:2:5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners A, B, and C put equal investments into a business for 1 year, 10 months and 6 months respectively. Find the profit sharing Ratio at the end of a year.",
-                "options": [
-                    "6:5:3",
-                    "12:10:6",
-                    "3:2:1",
-                    "1:1:1"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, the investments are equal but time is different. So, the share also same different as Time Ratio. Inv: 1 : 1 : 1. Time: 12 : 10 : 6. Profit Ratio = 12 : 10 : 6 = 6 : 5 : 3."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The capitals of 3 partners are in the ratio 5:2:3 and their profits sharing Ratio is 10:8:9. Find the ratio of terms of their investment.",
-                "options": [
-                    "2:4:3",
-                    "4:2:3",
-                    "1:2:3",
-                    "3:4:2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "We have, PSR = Inv * Time. Time Ratio = Profit share Ratio / Investment. PSR = 10 : 8 : 9. Inv = 5 : 2 : 3. Time Ratio = 10/5 : 8/2 : 9/3 = 2 : 4 : 3."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners invest their capitals for time periods which are in the ratio 2:3:4 and they have shared the total Profit in the ratio 5:4:3. Find the ratio of their respective investments.",
-                "options": [
-                    "30:16:9",
-                    "15:8:9",
-                    "30:9:16",
-                    "9:16:30"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Inv = PSR / Time. PSR = 5 : 4 : 3. Time = 2 : 3 : 4. Inv Ratio = 5/2 : 4/3 : 3/4. Multiply by 12 (LCM of 2,3,4): 30 : 16 : 9. Investment Ratio = 30 : 16 : 9."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A and B, being working and sleeping partners, start a business with Rs. 5000 and Rs. 8000 respectively. It is agreed to give 22% of total Profit to A for managing the business and the remaining is shared in the ratio of their capitals. Find the total Profit if A's share is Rs. 2028/-.",
-                "options": [
-                    "Rs. 3900/-",
-                    "Rs. 4000/-",
-                    "Rs. 3500/-",
-                    "Rs. 4500/-"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A will get his share + 22% of overall 100%. A = 22% + his actual share. 78% -> Total share. A's Inv = 5000, B's Inv = 8000. A's share from remaining = (5/13) * 78% = 30%. B's share = (8/13) * 78% = 48%. A's total share = 30% + 22% = 52%. 52% of Total Profit = 2028. Total Profit = (2028 * 100) / 52 = Rs. 3900/-."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two partners P and Q start a business with 1.50 Lakhs and 1.20 Lakhs respectively. But, after 8 months, Q has withdrawn Rs. 30,000 from the business. Find the total Profit at the end of 1 year, if Q's share is Rs. 44000.",
-                "options": [
-                    "Rs. 104000",
-                    "Rs. 95000",
-                    "Rs. 110000",
-                    "Rs. 100000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Inv: P = 1,50,000, Q = 1,20,000 (for 8 months) and 90,000 (for 4 months). Time: P = 12 months. P's share = 150000 * 12 = 1800000. Q's share = (120000 * 8) + (90000 * 4) = 960000 + 360000 = 1320000. Ratio = 1800000 : 1320000 = 180 : 132 = 45 : 33 = 15 : 11. Profit sharing Ratio = 15:11. Q's Profit -> 11 units = 44000 (x4000). Total Profit = 26 units * 4000 = Rs. 104000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Fully connected Problem: Two partners Surya and Chandu started a business with Rs. 85000 and Rs. 90000 respectively. But after 4 months, Chandu invests Rs. 56250 more into the business. Find, by much does Chandu get more profit than Surya out of total Profit of Rs. 98000 out of which 20% is given to charity and the remaining is shared in their profit sharing Ratio at the end of one year.",
-                "options": [
-                    "Rs. 15680",
-                    "Rs. 16580",
-                    "Rs. 14500",
-                    "Rs. 18000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Surya Inv: 85000 * 12 = 1020000. Chandu Inv: (90000 * 4) + ((90000+56250) * 8) = 360000 + (146250 * 8) = 360000 + 1170000 = 1530000. PSR = 1020000 : 1530000 = 102 : 153 = 2 : 3. Total profit = 98000. After 20% charity (19600), remaining = 78400 is total profit shared. Total 2+3=5 units = 78400. 1 unit = 15680. Difference = Chandu (3) - Surya (2) = 1 unit = Rs. 15680."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A started a business with Rs. 70000. After some months, B joined the business with Rs. 60000. If they shared the total Profit at the end of one year in the ratio 2:1, find after how many months B joined the business.",
-                "options": [
-                    "5 months",
-                    "7 months",
-                    "6 months",
-                    "4 months"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment: A=70000, B=60000. Time: A=12, B=? Ratio of Profit share = 2 : 1. A's profit share part = 7 * 12 = 84. Since Ratio is 2:1, 84 is 2 parts. 1 part = 42. So B's profit share part = 42. B's Investment is 6 (60000), so Time = 42 / 6 = 7 months. This means B invested for 7 months. Therefore, B joined after (12 - 7) = 5 months."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A put 2/3 of capital and gets 3/4 of total Profit at the end of one year. If A invests for one year, find how long does B put his capital?",
-                "options": [
-                    "8 months",
-                    "6 months",
-                    "4 months",
-                    "10 months"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A's capital = 2/3, so B's capital = 1/3. A's profit = 3/4, so B's profit = 1/4. Inv ratio A:B = 2/3 : 1/3 = 2:1. Profit ratio A:B = 3/4 : 1/4 = 3:1. Time ratio A:B = (3/2) : (1/1) = 3:2. A invests for 12 months (3 parts = 12 -> 1 part = 4). B's time = 2 parts = 2 * 4 = 8. So B puts for 8 months."
-            }
-        ]
-    },
-    {
-        "id": 6,
-        "slug": "time-work",
-        "name": "Time & Work (PDF Placeholder)",
-        "description": "Master LCM method and efficiency concepts for time & work problems.",
-        "icon": "\u2699\ufe0f",
-        "xp_reward": 120,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Time & Work (PDF Placeholder)\n\n# Time and Work\n\n## Core Concepts\n* **Time and work** are directly proportional to each other. ($Time \\propto work$)\n* **Men and work** are directly proportional to each other. ($Men \\propto work$)\n* **Time and men** are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)\n\n## The Universal MDH Formula\n$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$\nWhere:\n* **M** = Person who does the work\n* **D** = Days of work\n* **H** = Hours of work in the day\n* **W** = Work Done\n* M, D, H are inversely proportional to each other.\n* W is directly proportional to them.\n\n## Efficiency\n* If a person can finish a piece of work in $n$ days, then their work done in 1 day is $\\frac{1}{n}$.\n* $Efficiency = \\frac{Total\\ work}{Time\\ taken}$\n* $Time \\propto \\frac{1}{Efficiency}$\n* $Work = Time \\times Efficiency$\n\n## Group Work & Leaving/Joining (Middle of Work)\n* We add the \"before\" and \"after\" situations.\n* **Concept:** Equate the equations and find the updated result.\n* **Alternative:** Only calculate the days for the updated men in work. Total Days of work = Remaining work days + Previous work days.\n\n## Combining Different Entities (AND/OR Type)\n* Generally, if \"men and women\" or \"men or women\" is given, deduce the equations accordingly and form the equation in one of the quantities (either men or women).\n* Then apply the standard formula/rules.\n\n## LCM Method for Individual Work\n* **Concept:** If A can finish the work in $x$ time, and B can finish the work in $y$ time.\n* Then together they can finish in $\\frac{xy}{x+y}$ time.\n* If together they can finish in $x$ time, and one can finish in $y$ time, then the other can finish in $\\frac{xy}{y-x}$ time.\n* **Logic behind this:** Take the LCM of $x$ and $y$ to get the total number of work units. Divide total work by individual days to get their per-day efficiency (work parts per day). Add their efficiencies to get the combined work done in a day, which gives the total time taken.\n\n## Alternate Days Concept\n* The concept is based on \"who started the work\". The final answer depends on who started.\n* Consider the work done by them for 1 cycle (e.g., 2 days for 2 people).\n* Take the value nearer to the total work units.\n* The leftover work will be done by the one who started the cycle.\n\n## Leftover Work at the End Concept\n* When a group starts together, but at the end, some leave and the remaining finish the work.\n* Calculate the leftover days' work done by a certain person and then together work done. Follow the routine process.\n\n## Work and Wages\n* When the total wages paid for a work are given, the wages will divide in their work unit per day's ratio (efficiency ratio).",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "If 24 men can do a piece of work in 36 days. In how many days can 54 men do it?",
-                "options": [
-                    "16 Days",
-                    "18 Days",
-                    "20 Days",
-                    "24 Days"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$24 \\times 36 = M_2 \\times D_2$\n$\\Rightarrow D_2 = \\frac{24 \\times 36}{54}$\n$D_2 = 16\\ Days$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 18 binders can bind 900 books in 10 days. How many binders will be required to bind 660 books in 12 days?",
-                "options": [
-                    "10 binders",
-                    "11 binders",
-                    "12 binders",
-                    "14 binders"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Using $\\frac{M_1 D_1}{W_1} = \\frac{M_2 D_2}{W_2}$\n$\\Rightarrow \\frac{18 \\times 10}{900} = \\frac{M_2 \\times 12}{660}$\n$M_2 = 11\\ men$\n$\\therefore 11$ Binders are required to bind 660 books in 12 days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A fodder stock lasts for 36 Days for 20 cows. How long will it last for 15 cows?",
-                "options": [
-                    "40 Days",
-                    "45 Days",
-                    "48 Days",
-                    "50 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$20 \\times 36 = 15 \\times D_2$\n$D_2 = 48\\ Days$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 6 men working 8 hours a day earn Rs. 840 per week, then 9 men working 6 hours a day will earn how much per week?",
-                "options": [
-                    "Rs. 900",
-                    "Rs. 945",
-                    "Rs. 1000",
-                    "Rs. 1050"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Using $\\frac{M_1 H_1}{W_1} = \\frac{M_2 H_2}{W_2}$\n$\\frac{6 \\times 8}{840} = \\frac{9 \\times 6}{W_2}$\n$W_2 = 9 \\times 105$\n$W_2 = Rs.\\ 945$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "16 men can do a job in 30 Days. After 10 Days, 6 men left. In how many Days, the remaining work will be finished?",
-                "options": [
-                    "28 Days",
-                    "30 Days",
-                    "32 Days",
-                    "35 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Using $M_1 D_1 = M_2 D_2$\nAfter 10 Days, 6 men left.\n$\\Rightarrow 16 \\times 30 = (16 \\times 10) + (10 \\times D_2)$\n$480 = 160 + 10 D_2$\n$\\Rightarrow 10 D_2 = 480 - 160 = 320$\n$\\Rightarrow D_2 = 32$\nRemaining work will be completed in 32 Days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "12 men can complete the work in 8 days. 3 days after they started the work, 3 more men joined them. In how many days, remaining work will be completed.",
-                "options": [
-                    "3 Days",
-                    "4 Days",
-                    "5 Days",
-                    "6 Days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 12 \\times 8 = (12 \\times 3) + (15 \\times D_2)$\n$\\Rightarrow 96 = 36 + (15 \\times D_2)$\n$\\Rightarrow 15 \\times D_2 = 60$\n$D_2 = 4\\ days$\nRemaining work will be done in 4 Days."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A certain work can be done in a certain time by 36 men. But had there been 9 men more, it could have been done in 5 days less. In how many Days, 20 men can do the same work?",
-                "options": [
-                    "35 Days",
-                    "40 Days",
-                    "45 Days",
-                    "50 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "$M_1 D_1 = M_2 D_2$\n$36 \\times D_1 = (36+9) \\times (D_1-5)$\n$36 D_1 = 45(D_1-5)$\n$36 D_1 = 45 D_1 - 225$\n$\\Rightarrow 45 D_1 - 36 D_1 = 225$\n$\\Rightarrow 9 D_1 = 225$\n$D_1 = 25\\ Days$\nNow, $M_1 D_1 = M_2 D_2$\n$36 \\times 25 = 20 \\times D_2$\n$D_2 = 45\\ Days$\n20 men will complete in 45 Days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 10 men or 12 women can do a work in 16 days. In how many days can 15 men and 6 women together do it?",
-                "options": [
-                    "6 days",
-                    "8 days",
-                    "10 days",
-                    "12 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "10 men OR 12 women $\\rightarrow$ 16 days.\ni.e. 10 men = 12 women, which means 5 men = 6 women.\nFind for 15 men + 6 women:\n15 men + 5 men = 20 men.\nSince 10 men = 16 days,\n$M_1 D_1 = M_2 D_2$\n$10 \\times 16 = 20 \\times D_2$\n$\\Rightarrow D_2 = 8\\ days$.\nIn 8 days, 15 men and 6 women can do it together."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If 2 men and 3 women can do a work in 8 days. 3 men and 2 women can do the same work in 7 days. How many days will 5 men and 4 women take to do it?",
-                "options": [
-                    "3 days",
-                    "4 days",
-                    "5 days",
-                    "6 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Consider the whole work as:\n$(2m + 3w)8 = (3m + 2w)7$\n$16m + 24w = 21m + 14w$\n$24w - 14w = 21m - 16m$\n$10w = 5m \\Rightarrow 2w = 1m$\nSubstitute in the given: $4w + 3w \\rightarrow 8\\ days$ ($7\\ women \\rightarrow 8\\ days$)\nAsked: $5m + 4w = 10w + 4w = 14\\ women$.\n$14\\ women = \\frac{7 \\times 8}{14} = 4\\ days$.\n$\\therefore D_2 = 4\\ days$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A can complete 3/7th of work in 24 days. In how many days, he can complete the remaining work?",
-                "options": [
-                    "24 days",
-                    "28 days",
-                    "32 days",
-                    "56 days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "$3 \\rightarrow 24\\ days$\n$7 \\rightarrow 56\\ days$\nTotal work can be done in 56 days.\nRemaining work = $56 - 24 = 32\\ days$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A can complete the work in 60 days. If B is 50% more efficient than A, then B can complete the work in how many Days?",
-                "options": [
-                    "30 days",
-                    "40 days",
-                    "45 days",
-                    "50 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$M_1 D_1 = M_2 \\times D_2$\n$100 \\times 60 = 150 \\times D_2$\n$\\therefore D_2 = 40\\ days$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A can complete the work in 188 days. B is 20% more efficient than A. C is 30% more efficient than B. find A,B,C together can complete the work in how many Days?",
-                "options": [
-                    "40 Days",
-                    "45 Days",
-                    "50 Days",
-                    "60 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Let's consider A $\\rightarrow$ 100%\nB $\\rightarrow$ 120% (20% of 100)\nC $\\rightarrow$ 156% (30% of 120 = 36, 120+36 = 156)\nTogether, A+B+C = 376%.\nSince A (100%) $\\rightarrow$ 188 days.\n$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 100 \\times 188 = 376 \\times D_2$\n$\\Rightarrow D_2 = 50\\ Days$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two workers A and B completed the job in 5 days. If A works twice as efficiently as he actually did and B worked 1/3 as efficiently, the work would have completed in 3 days. A alone could complete the work in",
-                "options": [
-                    "5 days",
-                    "6 1/4 days",
-                    "7 days",
-                    "8 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$A+B \\rightarrow 5\\ days$\n$2A + \\frac{1}{3}B \\rightarrow 3\\ days$\n$M_1 D_1 = M_2 D_2$\n$(A+B)5 = (2A + \\frac{1}{3}B)3$\n$5A + 5B = 6A + B$\n$\\Rightarrow A = 4B \\Rightarrow B = \\frac{1}{4}A$\n$(A + \\frac{1}{4}A) \\rightarrow 5\\ days$\n$1.25A \\rightarrow 5\\ days$\n$M_1 D_1 = M_2 D_2$\n$125 \\times 5 = 100 \\times D_2$\n$\\Rightarrow D_2 = \\frac{25}{4} = 6 \\frac{1}{4}\\ days$."
-            }
-        ]
-    },
-    {
-        "id": 7,
-        "slug": "pipes-cisterns",
-        "name": "Pipes & Cisterns (PDF Placeholder)",
-        "description": "Learn LCM method applied to inlets (positive) and outlets (negative).",
-        "icon": "\ud83d\udeb0",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Pipes & Cisterns (PDF Placeholder)\n\n# Pipes and Cisterns\n\nPipes and cisterns are an example of an extension of Time and Work.\nBut here, there is an element of destroying the work, i.e., sometimes pipes will be filling and emptying simultaneously.\nThe procedure here is similar to what we have done in Time and Work.\n\n## Concepts and Formulas\n\n### i) When A, B are filling\n- A fills in $x$ time\n- B fills in $y$ time\n- Then total time taken to fill when $A+B = \\frac{xy}{x+y}$\n\n### ii) When A, B - one is filling and one is emptying\n- Then total time taken to fill when $A+B = \\frac{xy}{x-y}$\n\n### iii) When more pipes are involved and some are filling and some are emptying\n- Then entities which are responsible for emptying are taken in negative.\n- Rest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.\n\n**Note:** If all the filling pipes are closed before, then the tank will be never get filled. Then, there is a chance of knowing time taken to empty the tank. And it is calculated and considered only by the work units filled upto then. And also if the emptying pipes are bigger, then also the tank will be never filled.\n\n### Concept: Alternate days concept in Time and Work\nHere also, the pipes (both emptying and filling) will be closed and opened in an order.\n**Note:** Unlike in time and work, here we take the multiple that makes the difference nearer to the total work units by maintaining minimum difference of the highest work unit in all the existing pipes.",
-        "questions": [
-            {
-                "difficulty": "advanced",
-                "text": "For instance,\nA -> 25 mins (fill)\nB -> 30 mins (fill)\nC -> 50 mins (empty)\n-> All pipes are opened simultaneously when the tank is empty\n-> After 7 mins, pipe 'A' closed\n-> After 4 more mins, pipe 'C' closed.\n-> B can fill remaining in how many minutes?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "As similar to previous,\nA -> 6 units\nB -> 5 units\nC -> (-3) units\nTotal 150 units.\nTherefore Remaining time to fill by B = 17 1/5 mins."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Example scenario:\nA -> 20 mins (fill)\nB -> 30 mins (fill)\nC -> 40 mins (empty)\nThese pipes are opened in a cycle of ABC. Then, total time to fill the tank is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total = 120 parts.\ni.e. per 3 minutes -> 7 parts will be filled.\n7 parts -> 3 minutes\nx 16       x 16\n112 -> 48 mins\n+6 -> 1 min (A opened)\n+2 (out of 4) -> 1 min (B opened).\nTherefore Total time = 49 1/2 mins."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "miscelleanous:\nTwo pipes A and B can fill the tank in 24 mins and 32 mins respectively. If both pipes are opened simultaneously, after how much time, B should be closed so that the tank is full in 18 mins.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, it is clear that A will work completely 18 mins. Let's find out that.\nA will do 4 units/min out of 96 total units.\nRest of the units will be completely by B based on its capacity.\nWork units by A -> 72\nRemaining 24. per Perminty by B = 24/3 = 8 mins.\nTherefore After 8 mins, we should close pipe B."
-            }
-        ]
-    },
-    {
-        "id": 8,
-        "slug": "speed-distance-time",
-        "name": "Speed, Distance, Time (PDF)",
-        "description": "Master relative speed, average speed, and basic kinematic equations.",
-        "icon": "\ud83c\udfc3",
-        "xp_reward": 120,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Speed, Distance, Time (PDF)\n\n# Time, Distance and Speed\n\n## Basic Relationships\n- **Time**: Time taken to cover a distance.\n- **Distance**: Travelled in a certain time with a speed.\n- **Speed**: Travelling speed of the moving body.\n- `Time \u221d Distance`\n- `Speed \u221d Distance`\n- `Speed \u221d 1/Time`\n- **Formula**: `Speed = Distance / Time`\n  - Speed tells how much distance is covered in a unit time.\n\n## Unit Conversion\n- **km/hr to m/s**: Multiply by `5/18`\n- **m/s to km/hr**: Multiply by `18/5`\n\n## Cases of Trains Crossing\n1. **Train crossing a man standing / Electric Pole**\n   - Here the man/electric pole doesn't have any length (their distance to be placed on ground is zero).\n   - `Distance = Length of the train` (to be covered crossing the man/pole).\n   - `Speed = Speed of the train`\n2. **Train crossing a Platform**\n   - Here, the Platform will have a specific length.\n   - `Distance = Train length + Platform length` (to be covered crossing the platform).\n3. **Train crossing a Person Running**\n   - *In Same Direction*: If a train and a person running in the same direction, we subtract the person's speed from the train's speed.\n     - `Relative speed = Train speed - Person speed`\n   - *In Opposite Direction*: If a train and a person running in the opposite direction, we add them up.\n     - `Relative speed = sum of speeds`\n4. **Train crossing another Train**\n   - Lengths are always same irrespective of direction (summed), because however trains should be crossed each other by covering both their lengths.\n   - *Opposite Direction*: `Time taken = (L1 + L2) / (S1 + S2)`\n   - *Same Direction*: `Time taken = (L1 + L2) / |S1 - S2|`\n   - Note: Denominator is similar to the case of a Person Running. A slow train will never overtake the faster train.\n\n## Core Logic for Distant Places\n- If two vehicles start from respective places towards each other, we sum up their speeds to get Relative Speed.\n- If they travel in the same direction, we get their relative speed by subtracting one from another.\n\n## Average Speed\n- `Average Speed = Total Distance / Total Time`\n- When the total distance travelled is equal for two speeds (x and y): `Average speed = 2xy / (x + y)`\n- Another method: By the LCM of the speeds as the distance covered, we can get the time, and then apply `Total distance / Total time`.\n\n## Special Formulas\n- **Stoppages**: `Time of stoppage per hour (min) = (Diff of speeds / Speed excluding stoppages) * 60`\n- **Late/Early to School**: `Distance = (Product of speeds / Difference of speeds) * (Time difference in mins / 60)`\n- **Trains starting simultaneously and reaching destinations after meeting**: `S1 / S2 = \u221a(T2 / T1)`\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "A train travelling at constant speed crosses a 96m long platform in 12 sec and another 141m long platform in 15 secs. Find the length of the train.",
-                "options": [
-                    "72 m",
-                    "84 m",
-                    "96 m",
-                    "100 m"
-                ],
-                "correct_option_index": 1,
-                "explanation": "First, we will find out the speed. In 3 seconds it covers 45m (141m - 96m in 15s - 12s). Then speed = 15 m/s. Train length = (Speed * Time) - Platform length = (15 * 12) - 96 = 180 - 96 = 84m."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The distance between A and B is 440km. P starts from A at a speed of 30 kmph at 4 AM towards B. Q starts from B at a speed of 40 kmph at 7 AM towards A. Find at what time they meet, distance from A they meet, and distance from B they meet.",
-                "options": [
-                    "12:00 PM, 240km, 200km",
-                    "1:00 PM, 270km, 170km",
-                    "11:00 AM, 210km, 230km",
-                    "12:30 PM, 250km, 190km"
-                ],
-                "correct_option_index": 0,
-                "explanation": "P travels for 3 hrs before Q starts. Distance covered by P = 30 * 3 = 90 km. Remaining distance at 7 AM = 440 - 90 = 350 km. Relative speed = 30 + 40 = 70 kmph. Time to meet after 7 AM = 350 / 70 = 5 hrs. Thus, they meet at 7 AM + 5 hrs = 12:00 PM. Distance from A = 30 kmph * (3 + 5) hrs = 240 km. Distance from B = 40 kmph * 5 hrs = 200 km."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rajdhani Express started from Delhi to Mumbai at 14:30 travelling at a speed of 60 kmph. Duronto Express started from Delhi to Mumbai at 16:30, travelling at a speed of 80 kmph. How far away from Delhi do they meet?",
-                "options": [
-                    "360 kms",
-                    "400 kms",
-                    "480 kms",
-                    "540 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "By the time of 16:30, the two trains are at a distance of 120 km (Rajdhani travelled for 2 hrs at 60 kmph). Relative speed = 80 - 60 = 20 kmph. It takes 120 / 20 = 6 hours to meet from 16:30. So they will meet at 480 kms from Delhi (80 kmph * 6 hrs)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "I have to cover a distance of 240km of which 1/4th of the distance at 30 kmph, 1/3rd of the distance at 40 kmph and the remaining at a speed of 50 kmph. What is my average speed?",
-                "options": [
-                    "35 kmph",
-                    "38 kmph",
-                    "40 kmph",
-                    "42 kmph"
-                ],
-                "correct_option_index": 2,
-                "explanation": "1/4th of 240 = 60 km @ 30 kmph => 2 hrs. 1/3rd of 240 = 80 km @ 40 kmph => 2 hrs. Remaining distance = 240 - 60 - 80 = 100 km @ 50 kmph => 2 hrs. Total time = 2 + 2 + 2 = 6 hrs. Average speed = Total Distance / Total Time = 240 / 6 = 40 kmph."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average speed of a train including stoppages is 25 kmph. Excluding stoppages, it is 40 kmph. How many minutes per hour did the train stop?",
-                "options": [
-                    "15 min",
-                    "20 min",
-                    "22.5 min",
-                    "25 min"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Time of stoppage per hour = (Diff in speeds / Speed excluding stoppages) * 60 = ((40 - 25) / 40) * 60 = (15 / 40) * 60 = 22.5 minutes."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man takes 5h 45m in walking to a certain place and riding back. He would have gained 2hrs by riding both the ways. The time he would have taken walking both the ways?",
-                "options": [
-                    "7h 45m",
-                    "8h 15m",
-                    "6h 45m",
-                    "9h 30m"
-                ],
-                "correct_option_index": 0,
-                "explanation": "2 hrs saved by riding, 2 hrs lost by walking. Total time taken if he walks = 5h 45m + 2 hrs = 7h 45m. Logic: Total time for both ways riding = 3 hr 45 min. One side ride = 1 hr 52.5 min. One side walk = 5 hr 45 min - 1 hr 52.5 min = 3 hr 52.5 min. Both ways walk = 3 hr 52.5 min * 2 = 7 hr 45 min."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Walking at 5/6th of his usual speed, a man is 10 mins late. The usual time taken by him to cover the distance is?",
-                "options": [
-                    "40 min",
-                    "50 min",
-                    "60 min",
-                    "70 min"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Speed ratio = 5/6 (Present -> Usual). Time ratio = 6/5 (Present -> Usual). Difference in time = 1 unit = 10 mins. Usual time = 5 units = 50 mins."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A boy goes to school from his village at a speed of 3 kmph. He returns to his village from school at a speed of 2 kmph. If he spends 5 hrs in the journey, find the distance between his school and village?",
-                "options": [
-                    "4 kms",
-                    "5 kms",
-                    "6 kms",
-                    "12 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Average speed = 2xy / (x+y) = 2*3*2 / (3+2) = 12/5 kmph. Total distance covered (both ways) = Avg speed * Total time = (12/5) * 5 = 12 kms. Therefore, the distance between school and house (one way) is 6 kms."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A boy goes to school from his village at a speed of 30 kmph and he is late to his school by 10 mins. Next day, he travelled at a speed of 40 kmph and reached his school 5 min early. What is the distance between his school and village?",
-                "options": [
-                    "20 kms",
-                    "25 kms",
-                    "30 kms",
-                    "40 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Distance = (Product of speeds / Difference in speeds) * (Time difference in mins / 60). Time difference = 15 mins (10 mins late vs 5 mins early). Distance = ((30 * 40) / 10) * (15 / 60) = 1200/10 * 1/4 = 120 * 1/4 = 30 kms."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two trains, one from Hyderabad to Chennai and another from Chennai to Hyderabad start simultaneously. After they meet, the trains reach their destinations in 9 hours and 16 hours respectively. If the speed of the first train is 80 kmph, find the speed of the second train.",
-                "options": [
-                    "50 kmph",
-                    "60 kmph",
-                    "70 kmph",
-                    "90 kmph"
-                ],
-                "correct_option_index": 1,
-                "explanation": "S1 / S2 = \u221a(T2 / T1). So, 80 / S2 = \u221a(16 / 9) = 4 / 3. S2 = 80 * 3 / 4 = 60 kmph."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two persons A and B walk from P to Q, which are at a distance of 21km, at 3kmph and 4kmph respectively. B reaches Q and returns immediately and meets A at R. Find the distance from P to R.",
-                "options": [
-                    "15 km",
-                    "16 km",
-                    "18 km",
-                    "20 km"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Overall, both of them together finish twice of the PQ's distance i.e. 42km. Relative speed (since they are moving towards each other eventually) = 3 + 4 = 7 kmph. Time taken for them to cover 42 km = 42 / 7 = 6 hours. Distance covered by A in 6 hours = 3 kmph * 6 hrs = 18 kms from P i.e. Point R."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sound travels 330 mts per second. If the sound of a thunder cloud follows the flash after 10 seconds, the thunder cloud is at a distance of how many kms?",
-                "options": [
-                    "3.3 kms",
-                    "33 kms",
-                    "330 kms",
-                    "3300 kms"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Distance = Speed * Time = 330 m/s * 10 sec = 3300 m = 3.3 kms."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A walks around a circular field at a rate of 1 round per hour, while B runs around it at a rate of 6 rounds per hour. They start in the same direction from the same point at 7:30 AM. They shall first cross each other at?",
-                "options": [
-                    "7:40 AM",
-                    "7:42 AM",
-                    "7:45 AM",
-                    "7:50 AM"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Relative speed = 6 - 1 = 5 Rounds Per Hour. Thus, they complete 1 relative round in 1/5 of an hour = 12 minutes. So they shall first cross each other at 7:30 AM + 12 mins = 7:42 AM."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The speed of the car increases by 2 km after every one hour. If the distance travelled in first hour is 35 km, what was the total distance covered in 12 hrs.",
-                "options": [
-                    "530 kms",
-                    "540 kms",
-                    "552 kms",
-                    "564 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "This forms an Arithmetic Progression where a = 35, d = 2, n = 12. Using sum formula: S = n/2 [2a + (n-1)d] = 12/2 [2(35) + 11(2)] = 6 * [70 + 22] = 6 * 92 = 552 kms. Also written as (35*12) + (12*11) = 420 + 132 = 552."
-            }
-        ]
-    },
-    {
-        "id": 9,
-        "slug": "trains",
-        "name": "Problems on Trains (PDF)",
-        "description": "Learn relative speed and object length crossing problems.",
-        "icon": "\ud83d\ude86",
-        "xp_reward": 110,
-        "formula_sheet": "### \ud83d\udcc4 User PDF Complete Master Cheat Sheet: Trains\n\n> **[TODO: Paste your handwritten PDF text here]**",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "[TODO: Add Question Text]",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "[TODO: Add handwritten PDF explanation here]"
-            }
-        ]
-    },
-    {
-        "id": 10,
-        "slug": "boats-streams",
-        "name": "Boats & Streams (PDF)",
-        "description": "Master upstream and downstream calculations.",
-        "icon": "\u26f5",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Boats & Streams (PDF)\n\n# Boats and Streams\n\nWhen a boat moves in water:\n- Water flow affects speed\n\n1. **Downstream speed** = Boat speed + stream speed\n2. **Upstream speed** = Boat speed - stream speed\n\nIf downstream and upstream are given:\n- Let downstream speed be $D$\n- Let upstream speed be $U$\n- Then, **Boat speed** = $\\frac{D + U}{2}$\n- **Stream speed** = $\\frac{D - U}{2}$\n\nWhen 2 speeds are given and total time is given:\n- **Distance** = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "A person can row at a speed of 8 Kmph in still water. He takes 8 hours to row from A to B and return. What is the distance between A and B if speed of the stream is 2 Kmph?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "We have to find upstream and downstream speeds.\nDownstream speed = 8 + 2 = 10 Kmph\nUpstream speed = 8 - 2 = 6 Kmph\nUsing the formula for distance when total time is given:\nDistance = (Product of speeds / Sum of speeds) * time\nDistance between A and B = ((10 * 6) / (10 + 6)) * 8 = (60 / 16) * 8 = 30 Km"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man can row 40 Km upstream and 55 Km downstream in 13 hours. Also, he can row 30 Km upstream and 44 Km downstream in 10 hours. Find speed of the man in still water and speed of the current?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let upstream speed be (x-y) and downstream speed be (x+y).\nEq 1: 40 Km upstream + 55 Km downstream = 13 hrs\nEq 2: 30 Km upstream + 44 Km downstream = 10 hrs\n\nTaking difference and manipulating:\nWe get a difference of 10 Km upstream + 11 Km downstream = 3 hrs.\nEquate this with any of the above equations (e.g., multiply by 3):\n30 Km upstream + 33 Km downstream = 9 hrs.\n\nSubtract this from Eq 2:\n(44 - 33) Km downstream = (10 - 9) hrs\n11 Km downstream = 1 hr\nDownstream speed (x+y) = 11 Kmph.\n\nSubstitute downstream time in Eq 2:\n30 Km upstream + 44 Km / 11 Kmph = 10 hrs\n30 Km upstream + 4 hrs = 10 hrs\n30 Km upstream = 6 hrs\nUpstream speed (x-y) = 30 / 6 = 5 Kmph.\n\nx + y = 11 Kmph\nx - y = 5 Kmph\nSpeed of man (x) = (11 + 5) / 2 = 8 Kmph\nSpeed of current (y) = (11 - 5) / 2 = 3 Kmph"
-            }
-        ]
-    },
-    {
-        "id": 11,
-        "slug": "permutations-combinations",
-        "name": "Permutations & Combinations (PDF)",
-        "description": "Learn factorial tricks, arrangement rules, and selection combinations.",
-        "icon": "\ud83c\udfb2",
-        "xp_reward": 130,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Permutations & Combinations (PDF)\n\n# Permutations and Combinations\n\n*   **Permutations**: Arrangements (Position matters)\n    *   $nP_r$\n*   **Combinations**: Selection (Just selection)\n    *   $nC_r$\n*   Multiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"\n\n### Important Identities\n1.  $nP_n = n!$\n2.  $nP_{n-1} = n!$\n3.  $nP_1 = n$\n4.  $nP_0 = 1$\n5.  $nC_r = nC_{n-r}$\n6.  $nC_n = nC_0 = 1$\n7.  $nC_1 = n$\n8.  $nC_{n-1} = nC_1 = n$\n\n### Key Relations\n*   $nP_r = nC_r \\times r!$\n*   When objects are identical: $\\frac{n!}{p!q!r!}$\n*   **Not together** = Total arrangements - Together arrangements\n\n### GAP METHOD\n*   Used when \"No two elements are together\"\n\n### Circular Permutations\n*   Normal circle: $(n-1)!$\n*   Necklace (clockwise = anticlockwise same): $\\frac{(n-1)!}{2}$\n\n### Miscellaneous\n*   **Atleast** $\\rightarrow \\ge$\n*   **Atmost** $\\rightarrow \\le$\n*   To find the number of diagonals: $\\frac{n(n-3)}{2}$ where $n = $ number of vertices.\n*   Number of Triangles = $nC_3$\n*   Handshakes and matches $\\rightarrow$ Combinations\n*   Gifts and Tickets $\\rightarrow$ Permutations\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways the letters of the word YUVRAJ be arranged.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, Total Letters = 6. From 6 letters we have to arrange with 6 letters. So, $6P_6 = 6! = 720$ ways. If they ask to form 3-letter words, select 3 letters $\\Rightarrow 6P_3 = 6 \\times 5 \\times 4 = 120$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways can the letters of the word BALLOON be arranged?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total letters = 7; L=2, O=2. Then, we can arrange by $\\frac{7!}{2!2!} = 1260$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways 'TENDULKAR' can be arranged such that vowels are always together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total we have 9 letters with No repetition. Consider all the vowels as a single unit. Vowels: EUA. So, we have EUA + other 6 = (6+1) = 7. In $7! \\times 3! = 5040 \\times 6 = 30240$. 3! because of Principle of multiplication, 3 vowels."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Arrange 3 boys and 2 girls such that girls are not together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. Arrange Boys $\\Rightarrow 3! = 6$ ways. Positions: _ B _ B _ B _ $\\Rightarrow 4$ Gaps. 2. Place girls in gaps. choose 2 gaps from 4: $4P_2$. Total $\\Rightarrow 3! \\times 4P_2 = 72$ ways. (Note: Student mistakenly wrote 36 ways)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Arrange the letters of the word in TENDULKAR such that vowels occupy even places.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total 6 consonants. Arrange these in $6!$ ways. In 7 spaces, we arrange 3 vowels in $7P_3$ ways. $\\Rightarrow 6! \\times 7P_3 = 151200$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "6 Girls and 4 Boys joined a Maths Tution. In how many ways, they can sit in a straight line such that all girls are together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "4 Boys + (1) single unit of 6 Girls $\\Rightarrow 5! \\times 6! = 86400$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many different ways can letters of the word PROBLEM be arranged such that vowels occupy only odd places.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "word = PROBLEM, vowels = O, E (2), consonants = 5. Odd Positions: 1, 3, 5, 7 $\\Rightarrow 4$ places. $\\Rightarrow 5! \\times 4P_2 = 120 \\times 12 = 1440$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} without repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$5P_3 = 60$ (from 5 arrange 3)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3 digit Numbers from digits {0, 1, 2, 3, 4} without repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Note: first digit cannot be 0. Then, first digit choices = {1, 2, 3, 4} $\\rightarrow 4$ options. Remaining 4 digits. Then, Remaining 3 digits. $4 \\times 4 \\times 3 = 48$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} with repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$5^3 = 125$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {0, 1, 2, 3, 4} with repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "first digit cannot be 0 $\\rightarrow 4$ choices. Remaining digits Repetition allowed $\\rightarrow 5$ choices each. $4 \\times 5 \\times 5 = 100$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many 4-digit ATM PINS are Possible?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$10^4 = 10000$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Out of 5 men and 4 women, a committee of 6 members has to be formed. Find the number of ways in which this can be done, such that there has to be atleast 2 women.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$4C_2 \\times 5C_4 + 4C_3 \\times 5C_3 + 4C_4 \\times 5C_2 \\Rightarrow 60 + 40 + 5 = 105$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "10 students are Participating in a Race. In how many ways, can the first 3 prizes be won?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$10P_3 = 10 \\times 9 \\times 8 = 720$ ways. Or $10C_3 \\times 3! = \\frac{10 \\times 9 \\times 8}{3!} \\times 3! = 720$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many Triangles can be formed by joining the vertices of octagon.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$8C_3 = 56$ (No Priority for arrangements)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many Diagonals can be formed by joining the vertices of Hexagon?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$\\frac{n(n-3)}{2} \\Rightarrow \\frac{6(6-3)}{2} = 9$ Diagonals."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways can one or more of six friends be invited for a dinner?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$2^6 - 1 = 64 - 1 = 63$. Or, Intuition: $6C_1 + 6C_2 + 6C_3 + 6C_4 + 6C_5 + 6C_6 = 6 + 15 + 20 + 15 + 6 + 1 = 63$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Out of 9 consonants and 4 vowels, how many words of 3 consonants and 2 vowels are formed?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "First we'll select them and then arrange them. $9C_3 \\times 4C_2 \\times 5! = 25200$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "20 members attended the Party. If each person in the party shakes hand with every other person once, find the total no. of hand shakes?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Order doesn't matter. $20C_2 = \\frac{20 \\times 19}{2 \\times 1} = 190$ ways."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "There are 20 Railway stations between Chennai and Bangalore. How many different Kinds of tickets must be Printed so as to enable a passenger to travel from one place to another?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$22P_2 = 22 \\times 21 = 462$ ways. (Chennai and Bangalore included makes 22 total stations)."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "There are 20 Teams participating in a cricket tournament. They are divided into two groups of 10 Teams each. If each team plays one match with every other team within the group before qualifying for quarter finals, find the total no. of matches played in the tournament including quarters, semis and finals?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Group A: $10C_2$, Group B: $10C_2$. Quarters (4), Semis (2), Final (1). Total: $45 + 45 + 4 + 2 + 1 = 97$ matches."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "After each Participant Played one game against every other Participant in a chess tournament. The total count of games was 325. Find the no of Participants.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$nC_2 = 325 \\Rightarrow \\frac{n(n-1)}{2} = 325 \\Rightarrow n(n-1) = 650 \\Rightarrow 26 \\times 25$. Total 26 Participants."
-            }
-        ]
-    },
-    {
-        "id": 12,
-        "slug": "probability",
-        "name": "Probability (PDF)",
-        "description": "Master coin tosses, dice rolls, card decks, and conditional probability.",
-        "icon": "\ud83c\udfb0",
-        "xp_reward": 130,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Probability (PDF)\n\n# Probability\n\n- Probability measures the chance of an event happening.\n- **Probability** = Favorable outcomes / Total outcomes\n- **Range of Probability**:\n  - `0` = Impossible Event\n  - `1` = Certain Event\n  - `0 <= P <= 1` => Possible Event\n- By Permutations and Combinations, Probability = our selections / Total selections\n\n## Rules\n- **Complement Rule**: `P(not E) = 1 - P(E)` (used for \"At least one\")\n- **Addition Rule (OR)**: If events are mutually exclusive, `P(A or B) = P(A) + P(B)`\n- **Multiplication Rule (AND)**: For independent events, `P(A and B) = P(A) * P(B)`\n- **Intersection (AND)**: A and B -> Both events happen together.\n- **Union (OR)**: A or B -> at least one of the events occurs.\n  - `P(A U B) = P(A) + P(B) - P(A \u2229 B)`\n  - `P(A \u2229 B) = P(A) * P(B)`\n\n## Coins\n- For `n` coins, Probability of exactly `r` heads: `nCr / 2^n`\n\n## Dice Probability\n- Total outcomes = `6^n`, where `n` = number of dice\n- Concept: If they ask even/odd outcomes, just use analogy with coins concept (i.e. No. of Dice -> coins, No. of odds -> No. of heads, No. of evens -> No. of tails).\n- Irrespective of the number of dice rolled, the odd product occurs \"only\" when all the dice return odd numbers.\n- **Even Product Probability** = `1 - (3/6)^n = 1 - (1/2)^n = (2^n - 1) / 2^n`\n- **6 sides consideration type models (Required output on some tables)**:\n  - **Sum of 2 dice**:\n    - Sum: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\n    - Prob (out of 36): 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1\n  - **Sum of 3 dice**:\n    - Sum: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18\n    - Prob (out of 216): 1, 3, 6, 10, 15, 21, 25, 27, 27, 25, 21, 15, 10, 6, 3, 1\n- Doublet and Triplet happens 6 times.\n\n## Cards Concept\n- Total 52 cards: 26 cards Red, 26 cards Black\n- Red -> Diamond (13), Heart (13)\n- Black -> Spade (13), Club (13)\n- Total 16 face cards:\n  - Kings -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Queens -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Jacks -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Ace -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n- 36 Non face cards (2 to 10)",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "What is the Probability of having 53 Sundays in a non-leap year?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Answer is 1/7."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "2 Numbers are selected at random from a set of 1 to 100, what is the probability of getting a Prime number?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Select 2 numbers = 25C2. From 100 numbers = 100C2. Probability = 25C2 / 100C2 = (25 x 24 / 2) / (100 x 99 / 2) = 2/33."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "From 8 Red balls and 4 Green Balls, 3 Balls are picked randomly. What is the Probability that there is at least one Red Ball?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Usually: (8C1 * 4C2 + 8C2 * 4C1 + 8C3) / 12C3 = (48 + 112 + 56) / 220 = 54/55.\nOR use complement Rule: 1 - 4C3 / 12C3 = 1 - 4/220 = 1 - 1/55 = 54/55."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "6 coins are tossed. Find Probability of getting All Heads or All tails.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total outcomes = 2^6. Probability = 1/2^6 + 1/2^6 = 1/32."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "5 coins are tossed. Find the Probability of getting exactly 3 Heads and 2 Tails.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let n = number of coins. Then n! / (H! T!) / 2^n = 5! / (3! 2!) / 2^5 = 10 / 32 = 5/16. OR choose which 3 of the positions are Heads = 5C3 = 10. P = 5C3 / 2^5 = 10/32 = 5/16."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "8 coins are tossed. At least 6 Heads?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "6H 2T OR 7H 1T OR 8H. => (8C6 + 8C7 + 8C8) / 2^8 = (28 + 8 + 1) / 256 = 37/256."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "5 coins tossed. Atmost 2 Heads Probability?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "2H 3T OR 1H 4T OR 5T. (5!/(2!3!) + 5!/(1!4!) + 5!/5!) / 2^5 = (10 + 5 + 1) / 32 = 16/32 = 1/2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A card is drawn from a pack of cards. What is the Probability that the card is 1. Black suit colour 2. A spade card 3. A red face card 4. A face card of club 5. Diamond or King",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. 26C1 / 52C1 = 26/52 = 1/2.\n2. 13C1 / 52C1 = 13/52 = 1/4.\n3. 8C1 / 52C1 = 8/52 = 2/13.\n4. 4C1 / 52C1 = 4/52 = 1/13.\n5. (13C1 + 4C1 - 1C1) / 52C1 = (13+4-1)/52 = 16/52 = 4/13."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two cards are drawn at Random what is the Probability that 1. Both are aces. 2. No face card 3. Atleast one King 4. No Diamond 5. one king and one Queen",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. 4C2 / 52C2 = 6/1326 = 1/221.\n2. 36C2 / 52C2 = 105/221.\n3. Atleast one = Total - None = 1 - 48C2 / 52C2 = 1 - 188/221 = 33/221.\n4. 39C2 / 52C2 = 19/34.\n5. (4C1 * 4C1) / 52C2 = 16/1326 = 8/663."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A Bag contains 6 Red Balls, 4 Blue Balls, 2 Green Balls and 3 Yellow Balls. If 4 Bales are Picked at Random, what is the Probability that one is green, two are blue and one is red.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "(2C1 * 4C2 * 6C1) / 15C4 = (2 * 6 * 6) / 1365 = 72/1365 = 24/455."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two Persons wife and Husband appear in an interview for two vacancies. If the Probabilities of their selections are 1/4 and 1/6 respectively. then the Probability that 1. None of them selected 2. Exactly one of them selected 3. Atleast one of them selected 4. Both of them selected",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. None of them selected -> (3/4) * (5/6) = 15/24 = 5/8.\n2. Exactly one of them selected => (1/4 * 5/6) + (3/4 * 1/6) = 5/24 + 3/24 = 8/24 = 1/3.\n3. Atleast one of them selected => Total - None = 1 - 5/8 = 3/8.\n4. Both of them selected => 1/4 * 1/6 = 1/24."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A speaks truth in 60% cases and B speaks truth in 45% of the cases. In what % of cases are they likely to contradict each other, in narrating.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Contradict means \"not on the same statement\".\nA: True 60/100, False 40/100.\nB: True 45/100, False 55/100.\n=> (60/100 * 55/100) + (45/100 * 40/100) = 3300/10000 + 1800/10000 = 5100/10000 = 51%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Probability of Solving a Problem by 3 students A, B, C is 1/2, 1/3 and 1/4 respectively. The Probability that the Problem will be solved is",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A solving 1/2, Not solving 1/2. B solving 1/3, Not solving 2/3. C solving 1/4, Not solving 3/4. Atleast one = Total - None. 1 - (1/2 * 2/3 * 3/4) = 1 - 1/4 = 3/4."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Tickets numbered 1 to 50 are mixed up and then a ticket is drawn at random. what is the Probability that the ticket drawn is a number which is multiple of a) 3 or 7 b) 3 and 7",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "a) 16 + 7 - 2 = 21. => 21/50.\nb) 2/50 = 1/25."
-            }
-        ]
-    },
-    {
-        "id": 13,
         "slug": "percentages",
         "name": "Percentages (PDF)",
         "description": "Learn fraction-to-percentage conversions and successive percentage changes.",
@@ -2301,7 +273,7 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 14,
+        "id": 3,
         "slug": "profit-loss",
         "name": "Profit & Loss (PDF)",
         "description": "Master cost price, selling price, marked price, and discount calculations.",
@@ -2624,7 +596,2070 @@ const aptitudeTopics = [
         ]
     },
     {
+        "id": 4,
+        "slug": "si-ci",
+        "name": "Simple Interest & Compound Interest (SI & CI)",
+        "description": "Master annual, semi-annual, quarterly interest rates and effective rate shortcuts.",
+        "icon": "\ud83c\udfe6",
+        "xp_reward": 120,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Simple & Compound Interest\n\n#### 1. Simple Interest (SI)\n- **Formula**: $SI = \\frac{P \\times R \\times T}{100}$\n- **Total Amount**: $A = P + SI = P\\left(1 + \\frac{R \\times T}{100}\\right)$\n- **Shortcut**: If a sum doubles itself in $T$ years at SI, Rate $R = \\frac{100}{T}\\%$.\n\n#### 2. Compound Interest (CI)\n- **Formula**: $A = P\\left(1 + \\frac{R}{100}\\right)^T$\n- **Compound Interest**: $CI = A - P$\n- **Compounded Half-Yearly**: Rate = $R/2$, Time = $2T$ ==> $A = P\\left(1 + \\frac{R}{200}\\right)^{2T}$\n- **Compounded Quarterly**: Rate = $R/4$, Time = $4T$ ==> $A = P\\left(1 + \\frac{R}{400}\\right)^{4T}$\n\n#### 3. Difference Between CI and SI\n- **For 2 Years**: $Difference = P \\times \\left(\\frac{R}{100}\\right)^2$\n- **For 3 Years**: $Difference = P \\times \\left(\\frac{R}{100}\\right)^2 \\times \\left(\\frac{300 + R}{100}\\right)$",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "Find the difference between CI and SI on Rs. 10,000 for 2 years at 10% per annum.",
+                "options": [
+                    "Rs. 100",
+                    "Rs. 200",
+                    "Rs. 150",
+                    "Rs. 50"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Shortcut Formula for 2 Years: Diff = P * (R/100)^2 = 10000 * (10/100)^2 = 10000 * (1/100) = Rs. 100!"
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A sum of money doubles itself in 5 years at Simple Interest. What is the rate of interest per annum?",
+                "options": [
+                    "20%",
+                    "25%",
+                    "15%",
+                    "10%"
+                ],
+                "correct_option_index": 0,
+                "explanation": "SI Doubling Shortcut: Rate R = 100 / T = 100 / 5 = 20% per annum!"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "slug": "averages",
+        "name": "Averages (PDF Placeholder)",
+        "description": "Learn shortcut methods for calculating averages, weighted averages, and replacement problems.",
+        "icon": "\u2696\ufe0f",
+        "xp_reward": 100,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Averages (PDF Placeholder)\n\n# Averages\n\n## Basic Formulas\n- **Average** = Sum of obs. / No. of obs.\n- **No. of obs** = Sum of obs. / Avg\n- **Sum** = No. of obs * Avg\n\n## Core Concepts\n- **Equality Concept**: If every value is equal, Each value = Average.\n- Average is a concept of Assumption, not reality.\n- **Replacement**: A concept in Averages, that in a set an element is removed and adds new element which causes a replacement and this replacement causes averages differences.\n- Averages is all about maintaining and distributing equality.\n\n## Weighted Average\n- Weighted Average is used when there are entities with different types and different count of entities.\n- Formula: `(A1N1 + A2N2 + ...) / (N1 + N2 + ...)`\n- You can convert the number of corresponding entities into Ratios in the formula: `N_i = R_i`\n\n## Consecutive Numbers & Progressions\n- If there is a common difference among the observations: \n  - `Average = (first obs. + last obs.) / 2`\n  - OR exactly the middle number.\n- **Average of first 'n' even numbers** = `n + 1`\n- **Average of first 'n' odd numbers** = `n`\n\n## Important Notes\n1. If every element in the observation is increased equally, Then the average will increase by that value (Previous Avg + increased value).\n2. If anything implies to each person/element, Then follow the mathematical operation in the question on the average directly (e.g. multiplied by 3, new average is Old Avg * 3).",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "There are 28 students in a class. Their Avg. wt is 33 Kg. If one new student joins the class, the avg. wt increases by 2Kg. Find the wt. of new student.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Original sum: 28 * 33 = 924 Kg. New sum: 29 * 35 = 1015 Kg. New student wt = 1015 - 924 = 91 Kg. Alternative shortcut: Take 35 & make 35 -> 35 + 56 = 91 Kg."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "There are 25 students in a class. Their Average wt is 75 Kg. If 2 new students join the class, the avg wt increased by 1Kg. Find the total wt. of new students.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Old average 75. New average 76. Sum for 2 students = 76 + 76 + 25 = 177 Kg."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average salary of 35 workers is Rs. 1800. When the salary of the manager is also included, the avg. will be increased by Rs. 125, what is the salary of the manager?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "New average 1925. Manager's salary = 1925 + 35 * 125 = 1925 + 4375 = 6300."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The batting average for 40 innings of a cricketer is 50 Runs. His highest score exceeds the lowest score by 172 runs. If these two innings are excluded, the avg of remaining innings is 48 Runs. Find the highest score & lowest score.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Sum of 40 innings = 40 * 50 = 2000. Sum of 38 innings = 38 * 48 = 1824. H + L = 2000 - 1824 = 176. Given H - L = 172. H = (176+172)/2 = 174, L = 176 - 174 = 2."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A batsman in his 17th innings makes a score of 85 and thereby increases his average by 3 Runs. What is his average after 17th innings? Before 17th innings?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Before 17th Innings -> 85 - (3 * 17) = 85 - 51 = 34. After 17th Innings -> 34 + 3 = 37. (Using equation: 16x + 85 = 17(x+3) => 16x + 85 = 17x + 51 => x = 34)"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average weight of 15 men has increased by 1Kg when one of them whose wt is 60Kg is replaced by a new man. What is the weight of the new man?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "The new man's weight will be obviously greater than 60. He should distribute the extra 1Kg to all the 15 members. So, 60 + (1 * 15) = 75 Kg."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The Average height of 15 students is 159cm. Later on, it was found that while calculating the avg, the reading of 147cm was wrongly read as 177cm. Find the correct average.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Correct value = 147cm. Mistaken value = 177cm. Difference = 177 - 147 = 30. This difference of 30 was distributed to 15 students. Correct average = 159 - (30/15) = 159 - 2 = 157 cm."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In a set of 4 Numbers, Average of 1st 3 numbers = 48, Average of last 3 numbers = 52. If Last No. is 58, find first number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total of first 3 = 48 * 3 = 144. Total of last 3 = 52 * 3 = 156. Last - First = 156 - 144 = 12. 58 - A = 12 => A = 46."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The Average weight of A, B, C is 80Kg. If fourth man D joins them, the average weight for four becomes 82Kg. If E whose weight is 4 Kg less than D replaces A, then the average weight of B, C, D and E becomes 84Kg. What is the weight of A?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Sum ABC = 3 * 80 = 240. Sum ABCD = 4 * 82 = 328. D = 328 - 240 = 88Kg. E = 88 - 4 = 84Kg. Avg B,C,D,E = 84. Diff between ABCD (82) and BCDE (84). E is 8 more than A => A is 8 less than E. A = 84 - 8 = 76 Kg."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of 7 numbers is 53. Average of 1st 3 numbers is 47. Average of last 3 numbers is 55. Find the missing middle number?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Sum of 7 = 7 * 53 = 371. Sum of 1st 3 = 3 * 47 = 141. Sum of last 3 = 3 * 55 = 165. Missing number = 371 - (141 + 165) = 371 - 306 = 65."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Average of 9 numbers is 48. Average of 1st 5 numbers 45, Average of last 5 numbers 52. Find the middle number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "5 * 45 = 225. 5 * 52 = 260. Sum of 10 numbers = 485. Sum of 9 = 9 * 48 = 432. Middle = 485 - 432 = 53. Shortcut: 9-48, 5-45(-15), 5-52(+20), Middle No = 48 - 15 + 20 = 53."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Virat Kohli scored at an Average of 30 Runs in his first 25 matches. He scored at an average of 70 Runs in his next 75 matches. Find his overall Average?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Weighted Average: Ratio of matches is 25:75 = 1:3. Avg = (30*1 + 70*3) / (1+3) = (30 + 210) / 4 = 240 / 4 = 60 Runs."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of Prime Number between 23 and 53.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Between 23 and 53 excludes boundaries. Primes: 29, 31, 37, 41, 43, 47. Avg = (29+31+37+41+43+47) / 6 = 228 / 6 = 38."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of Prime Number from 23 to 53.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "From 23 to 53 includes boundaries. Primes: 23, 29, 31, 37, 41, 43, 47, 53. Avg = (23+29+31+37+41+43+47+53) / 8 = 38."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of 7 consecutive natural numbers is 43. Find the smallest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Average is the middle value. The 4th value out of 7 is 43. The 1st value is 43 - 3 = 40."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of 8 consecutive natural numbers is 84.5. Find the largest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Values are 81, 82, 83, 84, (84.5), 85, 86, 87, 88. Largest number is 88."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of 5 consecutive Even numbers is 48. Find the smallest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "The 5 numbers are 44, 46, 48, 50, 52. The smallest number is 44."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Average of 6 consecutive odd numbers is 98. Find the largest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "The 6 numbers are 93, 95, 97, 99, 101, 103 (with 98 in middle of 97 and 99). The largest number is 103."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Sum of 5 consecutive natural numbers is 145. Find the smallest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Avg = 145 / 5 = 29. The numbers are 27, 28, 29, 30, 31. Smallest is 27."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Sum of 7 consecutive Even numbers is 224. Find the smallest number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Avg = 224 / 7 = 32. The numbers are 26, 28, 30, 32, 34, 36, 38. Smallest is 26."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average of 28 numbers is 25. If each number is multiplied by 3, then the new average is:",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "New average = 25 * 3 = 75."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If each number is increased by 6 (for the set where avg is 25), the new average is:",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "New average = 25 + 6 = 31."
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "slug": "alligations-mixtures",
+        "name": "Alligations & Mixtures (PDF Placeholder)",
+        "description": "Master the rule of alligation and mixture concentration problems.",
+        "icon": "\ud83e\uddea",
+        "xp_reward": 110,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Alligations & Mixtures (PDF Placeholder)\n\n# Alligations and Mixtures\n\n- **Alligations and mixtures** is a rule that can be applied to Percentages, Profit and Loss, and Averages.\n- It is mostly used when the **Result** (or average/mixture value) is given.\n- In Alligation and mixtures, a total of three values (Result and two categories) will be given in the question.\n\n## The Alligation Rule (Cross-Difference Method)\nIf two categories $A$ and $B$ are mixed to get a Result $R$:\n```\n  A          B\n   \\        /\n    Result(R)\n   /        \\\n(B-R)  :  (R-A)\n```\n- Take the positive difference between the Result and each category.\n- The ratio of the quantities of $A$ and $B$ is $(B - R) : (R - A)$.\n- **Important Note:** All the values must be of the same style/format (i.e., either all percentages or all direct numerics like cost price).\n\n## Handling Successive Replacement\nWhen a quantity $x$ is removed from a total volume $V$ of pure liquid and replaced with water, and this is repeated $n$ times:\n- Use percentages or fractions to track the remaining amount.\n- Example: If 10% is removed, then 90% of the previous amount remains after each step.\n- You can step-by-step calculate the remaining amount: $m_{new} = m_{old} - (x/V) \\times m_{old}$.\n",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "The cost of Type 'A' sugar is Rs. 15 per kg. The cost of Type 'B' sugar is Rs. 30 per kg. In what ratio these two sugars should be mixed to get a mixture costing Rs. 25 per kg?",
+                "options": [
+                    "1:2",
+                    "2:1",
+                    "1:3",
+                    "3:1"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Using alligation: Category A is 15, Category B is 30, Result is 25. The cross difference for A is 30 - 25 = 5. The cross difference for B is 25 - 15 = 10. The ratio is 5:10, which simplifies to 1:2."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The cost of Type 'A' sugar is Rs. 15 per kg and Type 'B' is Rs. 30 per kg. If both are mixed to get a mixture costing Rs. 25 per kg and the resultant quantity is 75 kgs, find the quantity of B.",
+                "options": [
+                    "25 kgs",
+                    "50 kgs",
+                    "45 kgs",
+                    "30 kgs"
+                ],
+                "correct_option_index": 1,
+                "explanation": "From the alligation rule, the ratio of A:B is 1:2. The total parts are 1+2 = 3. 3 parts correspond to 75 kgs (multiply by 25). The quantity of B is 2 parts, so 2 * 25 = 50 kgs."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The average age of a class is 16 years. When 10 new students with an average age of 15 years joins the class, the average age of the class is decreased by 3 months. Find the original strength of the class and the new strength of the class.",
+                "options": [
+                    "20 and 30",
+                    "30 and 40",
+                    "40 and 50",
+                    "25 and 35"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Original average = 16 years. Joined average = 15 years. New average = 15 years 9 months (since it decreased by 3 months). Using alligation: Original diff = 15y 9m - 15y = 9 months. Joined diff = 16y - 15y 9m = 3 months. Ratio of Original : Joined = 9 : 3 = 3 : 1. Joined strength is 1 part = 10 students. Original strength is 3 parts = 30 students. New strength = 30 + 10 = 40 students."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A part of sum of Rs. 3000 is invested at 5% p.a. S.I and the rest at 6% p.a. S.I. The whole annual interest received was Rs. 162. Find the money lent at 6% p.a.",
+                "options": [
+                    "Rs. 1800",
+                    "Rs. 1200",
+                    "Rs. 1500",
+                    "Rs. 1000"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Convert everything to the same format (percentages). Overall interest % = (162 / 3000) * 100 = 5.4%. Using alligation with 5% and 6% and result 5.4%: Diff for 5% is 6 - 5.4 = 0.6. Diff for 6% is 5.4 - 5 = 0.4. Ratio = 0.6 : 0.4 = 6:4 = 3:2. Total parts = 5. 5 parts = 3000, so 1 part = 600. The money lent at 6% corresponds to 2 parts = 2 * 600 = Rs. 1200."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A part of sum of Rs. 8000 is invested at 10% p.a. C.I and the rest at 20% p.a. C.I. The whole interest received after 2 years is Rs. 2048. Find the money lent at 20% p.a.",
+                "options": [
+                    "Rs. 1600",
+                    "Rs. 2000",
+                    "Rs. 6400",
+                    "Rs. 4000"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Effective C.I for 2 years at 10% = 10+10+(10*10/100) = 21%. Effective C.I for 2 years at 20% = 20+20+(20*20/100) = 44%. Overall interest % = (2048 / 8000) * 100 = 25.6%. Using alligation: Diff for 10% is 44 - 25.6 = 18.4. Diff for 20% is 25.6 - 21 = 4.6. Ratio = 18.4 : 4.6 = 4:1. Total parts = 5. 5 parts = 8000. 1 part = 1600. Money lent at 20% corresponds to 1 part = Rs. 1600."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A part of sum of Rs. 58000 is invested at 30% per annum C.I and the rest at 20% p.a S.I. The whole interest received after 2 years is Rs. 29000. Find the money lent at C.I.",
+                "options": [
+                    "Rs. 38000",
+                    "Rs. 29000",
+                    "Rs. 20000",
+                    "Rs. 10000"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Effective C.I for 2 years at 30% = 30+30+(900/100) = 69%. Effective S.I for 2 years at 20% = 20+20 = 40%. Overall interest % = (29000 / 58000) * 100 = 50%. Using alligation on 69% and 40% with result 50%: Ratio = (50-40) : (69-50) = 10 : 19. Total parts = 29. 29 parts = 58000 => 1 part = 2000. Money lent at C.I corresponds to 10 parts = 10 * 2000 = Rs. 20000."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "How much water must be added to 60 litres of milk at 1 1/2 litres for Rs. 20 so as to have a mixture worth Rs. 10 2/3 per litre?",
+                "options": [
+                    "10 litres",
+                    "12 litres",
+                    "15 litres",
+                    "20 litres"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Convert all money to per 1.5 litres. Rs. 10 2/3 per litre = 32/3 per litre, so for 1.5 litres it's (32/3) * (3/2) = Rs. 16. Water costs Rs. 0. Milk costs Rs. 20 per 1.5L. Result is Rs. 16. Alligation: Water(0) and Milk(20) giving Result(16). Ratio of Water:Milk = (20-16) : (16-0) = 4:16 = 1:4. Milk is 4 parts = 60 litres, so 1 part = 15 litres. We need to add 15 litres of water."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "How many kgs of wheat costing Rs. 8 per kg must be mixed with 36 kgs of rice costing Rs. 5.40 per kg, so that 20% gain may be obtained by selling the mixture at Rs. 7.20 per kg?",
+                "options": [
+                    "10.8 kgs",
+                    "12 kgs",
+                    "15.5 kgs",
+                    "18 kgs"
+                ],
+                "correct_option_index": 0,
+                "explanation": "First, convert the selling price to cost price. CP = SP / 1.2 = 7.20 / 1.2 = Rs. 6 per kg. Now use alligation on CPs: Wheat(8) and Rice(5.40) giving Result(6). Ratio of Wheat:Rice = (6 - 5.40) : (8 - 6) = 0.60 : 2 = 60 : 200 = 3 : 10. Rice is 10 parts = 36 kgs, so 1 part = 3.6 kgs. Wheat is 3 parts = 3 * 3.6 = 10.8 kgs."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In what ratio must water be mixed with milk to gain 20% by selling the mixture at cost price?",
+                "options": [
+                    "1:4",
+                    "1:5",
+                    "2:5",
+                    "1:6"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Let CP of milk be 100. Since we sell at CP (100) and gain 20%, the actual cost price of the mixture is 100 / 1.2 = 83.33. Alternatively, assume SP is 120 and CP is 100. Using alligation: Water (0) and Milk (120) with result 100. Ratio = (120-100) : (100-0) = 20 : 100 = 1 : 5."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The milk and water in two vessels A and B are in the ratio 4:3 and 2:3 respectively. In what ratio the liquids in both the vessels be mixed to obtain a new mixture in vessel 'C' containing half milk and half water?",
+                "options": [
+                    "7:5",
+                    "5:7",
+                    "1:1",
+                    "4:3"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total parts in A = 7, B = 5, C = 2. Equate the total parts by taking LCM(7, 5, 2) = 70. Multiply A's ratio by 10 (40:30), B's ratio by 14 (28:42), and C's ratio by 35 (35:35). Now consider only milk: A(40) and B(28) with Result(35). Ratio = (35-28) : (40-35) = 7 : 5."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In what ratio must water be mixed with milk to gain 16 2/3% on selling the mixture at cost price?",
+                "options": [
+                    "1:5",
+                    "1:6",
+                    "1:7",
+                    "1:8"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Gain is 16 2/3% = 50/3 %. Let CP of milk be 100. Selling at CP means mixture SP = 100. Gain is 50/3 %. The ratio of water to milk is directly the gain percentage to 100%. So Water : Milk = 50/3 : 100 = 1 : 6."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "How many kgs of sugar costing Rs. 9 per kg must be mixed with 27 kg of sugar costing Rs. 7 per kg so that there may be a gain of 10% by selling a mixture at Rs. 9.24 per kg?",
+                "options": [
+                    "54 kgs",
+                    "60 kgs",
+                    "63 kgs",
+                    "72 kgs"
+                ],
+                "correct_option_index": 2,
+                "explanation": "We can convert CP to SP with 10% gain. Sugar A SP = 9 + 0.9 = 9.90. Sugar B SP = 7 + 0.7 = 7.70. Target SP = 9.24. Alligation on A(9.90) and B(7.70) with Result(9.24): Ratio = (9.24 - 7.70) : (9.90 - 9.24) = 1.54 : 0.66 = 154 : 66 = 14 : 6 = 7 : 3. B is 3 parts = 27 kg. So A is 7 parts = 7 * 9 = 63 kgs."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The cost of Type 1 rice is Rs. 15 per kg. Type 2 Rice is Rs. 20 per kg. If both Type 1 and Type 2 are mixed in the ratio 2:3, then the price per kg of the mixed variety rice is:",
+                "options": [
+                    "Rs. 16",
+                    "Rs. 17",
+                    "Rs. 18",
+                    "Rs. 19"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Using weighted average: (15*2 + 20*3) / (2+3) = (30 + 60) / 5 = 90 / 5 = Rs. 18 per kg."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Tea worth Rs. 126 per kg & Rs. 135 per kg are mixed with third variety in the ratio 1:1:2. If the mixture is worth Rs. 153 per kg, the price of third variety per kg will be:",
+                "options": [
+                    "Rs. 165.5",
+                    "Rs. 175.5",
+                    "Rs. 185.5",
+                    "Rs. 195.5"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Let the price of the third variety be C. Weighted average equation: [(126 * 1) + (135 * 1) + (C * 2)] / (1+1+2) = 153. => 126 + 135 + 2C = 153 * 4 = 612. => 261 + 2C = 612 => 2C = 351 => C = 175.5."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two vessels A and B contain milk and water in the ratio 8:5 and 5:2 respectively. The ratio in which these two mixtures must be mixed to get a new mixture containing 69 3/13 % milk is:",
+                "options": [
+                    "2:7",
+                    "3:5",
+                    "5:2",
+                    "7:2"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Convert to milk fractions: A = 8/13 = 56/91. B = 5/7 = 65/91. Result = 69 3/13% = 900/1300 = 9/13 = 63/91. Using alligation on A(56/91) and B(65/91) with Result(63/91): Ratio = (65/91 - 63/91) : (63/91 - 56/91) = 2/91 : 7/91 = 2 : 7."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "From 300 litres of pure milk, 30 litres is removed and replaced with water. From the resultant solution, 30 litres is again removed & replaced with water. If this procedure is repeated for another time, find the quantity of milk in the resultant solution.",
+                "options": [
+                    "243 litres",
+                    "218.7 litres",
+                    "200 litres",
+                    "180.5 litres"
+                ],
+                "correct_option_index": 1,
+                "explanation": "30 litres is 10% of 300 litres. Step 1: Remove 10% of 300 = 30. Milk remaining = 270. Step 2: Remove 10% of 270 = 27. Milk remaining = 243. Step 3: Remove 10% of 243 = 24.3. Milk remaining = 218.7 litres."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A can contains a mixture of two liquids A & B in the ratio 7:5. When 9 litres of mixture is drawn off and the can is filled with B, the ratio of A and B becomes 7:9. How many litres of liquid A was contained in the can initially?",
+                "options": [
+                    "20 litres",
+                    "21 litres",
+                    "25 litres",
+                    "28 litres"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Before drawing off, A:B = 7:5 (Total 12). After drawing and replacing with B, A:B = 7:9 (Total 16). Equate parts: Before = 12 * 4 = 48 parts (A=28, B=20). After = 16 * 3 = 48 parts (A=21, B=27). The decrease in A is 7 parts (28 to 21), which corresponds to the 9 litres drawn off. Total parts = 48. But wait, the 7 parts decrease is exactly 25% of 28. If 100% of mixture is 36 litres, initially 7/12 of 36 = 21 litres. The solution filters using multiples."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "8 litres are drawn from a cask full of wine and is then filled with water. This operation is performed three more times. The ratio of quantity of wine now left in cask to that of water is 16:65. How much wine did the cask hold originally?",
+                "options": [
+                    "18 lit",
+                    "24 lit",
+                    "32 lit",
+                    "42 lit"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Final wine ratio = 16 / (16+65) = 16/81. Total operations = 4. Let initial volume be V. (1 - 8/V)^4 = 16/81. Taking the fourth root: 1 - 8/V = 2/3 => 8/V = 1/3 => V = 24 litres. The notes suggest filtering options by checking which one leaves ~20% (16/81) after 4 removals of 8L."
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "slug": "ages",
+        "name": "Problems on Ages (PDF Placeholder)",
+        "description": "Learn algebraic and ratio-based shortcuts for age gap problems.",
+        "icon": "\u23f3",
+        "xp_reward": 90,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Problems on Ages (PDF Placeholder)\n\n# Ages\n\n## Core Concepts\n* In Ages, the age gap is always constant/same between the entities.\n* The equations of age (i.e. double, triple, 4 times, etc.) among the entities happens only a single time across life.\n\n## Problem Solving Approaches\n1. **Using Age Gaps:** Two person's age gap will be given. And how the ages relate with them (double, triple, 4 times, etc...). As we know, age gap is constant and only once in a lifetime a certain relation is possible. So, we equate the ages accordingly and calculate further.\n2. **Using Ratios:** The ages are given as ratio at present and again age will be given as ratio after some years. Find the present age. Equate the ratios w.r.t to each other (mostly according to the latest age ratio). By this, we get difference between them as years, with parts.",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "Father's present age is 28 years more than his son. Before 3y 5months, Father's age would become double the age of son. Find the present age of 1.son 2.father.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Age gap = 28. Before 3y 5m, Father's age = 2 x son age (double). Let 2 = n (multiple of difference age gap). son = 28, Father = 56. Diff (n-1) = 28. Present ages: 31y 5m and 59y 5m."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Father's present age is 27 years more than his son. Before 2 years, father's age would become 5.5 times the age of son. Find the present age of 1.son 2.father.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Diff: Father - Son = 27. 5.5 = age multiplicity, 27 = age gap. 27 / (5.5 - 1) = 6. Before 2 years son age is 6. Present ages = 8 years, 35 years respectively."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The ratio of present ages of man and his daughter is 3:1. After 12 years, the ratio of their ages would be 11:5. Find the present age of man.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let at present man : daughter = 3 : 1 => 9 : 3. After 12 years 11 : 5. Equate them: 9-11 (2 parts) = 12 years. 9 parts = 54 years. Present age of man = 9 parts = 54 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "At present Anil's Age is 1.5 times the age of Ravi. Eight years hence, the ratio of their ages will be 25:18. What is Ravi's Present Age?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let Anil : Ravi = 1.5 : 1 => 21 : 14. After 8 years 25 : 18. Increased 4 parts -> 8 years. 14 (consider updated ratio) -> 28 years. Ravi's Present Age = 28 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "To the two numbers are in the ratio 2:3. If 14 is added to each of the numbers, then the ratio between 12:17. Find the small number.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Note: If same number is added to both the numbers, the difference between them is same. Initially 2:3 => 10:15. After 14 added 12:17. Equating: 2 parts -> 14. 10 parts -> 70. Smallest Number = 70."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average age of husband and his wife was 23 years at the time of their marriage. Today, after 5 years, they have two children a boy and girl with age 2 years and 1 year respectively. The average age of family now is",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "After 5 years, (23+5, 23+5, 2 years, 1 year). Average age of family now = (28 + 28 + 2 + 1) / 4 (total members) = 59 / 4 = 14.75 = 14 3/4 = 14 (3/4 x 12) = 14 years 9 months."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average age of husband & wife who were named 7yrs ago, was 25 years then. The average age of a family including a child who was born during the interval is 22 years now. How old is the child now?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "7 years ago -> Husband 25, wife 25. Present -> 32, 32. Average now is 22, includes the child. Present sum, 22x3 = 66 years. Husband + wife + child = 66 years. Husband + wife = 64 years. child age = 2 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average age of husband and wife, who were named 7yrs ago was 25 years then. The average age of family including a 2 children Boy and Girl is 18 years. If Boy is 5 yrs old, find the age of girl now?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "((25+7) + (25+7) + 5 + Girl Age) / 4 = 18. 18 = Present Average Age of the family. Girl Age = 3."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The average age of a couple at the time of their marriage was 24 years. Today, after 11 1/2 yrs, they have 4 children, two boys & two girls. Girls are twins each 3y 4m old. If one boy is 2y 3m more than the other & Avg age of family today is 15y 2m. Find the ages of two boys individually.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let's form the equation. 35y 6m + 35y 6m + 3y 4m + 3y 4m + B + b / 6 = 15y 2m => 77y 8m + B + b = 91y. B+b = 13y 4m. B-b = 2y 3m. B = (13y 4m + 2y 3m) / 2 = 7y 9.5m. b = (13y 4m - 2y 3m) / 2 = 5y 6.5m. Ages of Boys are 7y 9 1/2m, 5y 6 1/2m."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Two years ago, the average age of a family of 8 members was 18 years. On addition of a child, the average age is still the same. What is the present age of the child?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "2 years Ago -> Average Age = 18 years / 8 members. At Present -> Average Age = 20 years / 8 members. sum of 8 members = 20 x 8 = 160 years. sum of 9 members = 18 x 9 = 162 years. Age of the child -> 2 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "7 years Ago, the difference between the ages of A and B was 14 years. After 7 years, their ages will be 3:4. What is the present age of A?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "After 7 years A:B = 3:4. Difference 1 -> 14 years. 3 -> 42 years. Today the Age = 42 - 7 = 35 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "7 years Ago, the sum of ages of A & B was 74 years. At present, the ratio of their ages is 5:6. Find the present Age of B.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "7 years ago sum = 74 years. At Present, 74 + 7 + 7 = 88 years. Given Ratio 5:6. 88 / (5+6) = 8. B -> 6 x 8 = 48. Present Age of B = 48 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The Ratio of Present Ages of Madan and Kamal is 8:5. After 8 years, Madan's Age is 40 years. What was Kamal's Age 6 years Ago.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Present Age of madan -> 40 - 8 = 32 years. M:K = 8:5. M=8 -> 32 years. K=5 -> 20 years. Kamal's Present Age = 20. 6 years ago = 20 - 6 = 14 years."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Four years Ago, A's age was twice that of B's. After 4 years, their ages will be in the ratio 3:2. What is the present age of A.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "4 years Ago = 2:1. 4 years After 3:2. 1 part = 8 years. 2 -> 16 years. Present Age = 16 + 4 = 20 years. A's Present Age = 20 years."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Ayesha's father was 38 years old when she was born while her mother was 36 years old when her brother 4 years younger to her was born. What is the difference between Ages of her Parents?",
+                "options": [
+                    "2",
+                    "4",
+                    "6",
+                    "8"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Let Ayesha's age be x. Father = 38+x. Brother = x-4. Mother = 36+(x-4) = 32+x. Difference = (38+x) - (32+x) = 6."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "My brother is 3 years elder to me. My father was 28 years of age when my sister was born while my mother was 26 years of age when I was born. If my sister was 4 years of age when my brother was born, then what was the age of my father and respectively when my brother was born?",
+                "options": [
+                    "32y 23y",
+                    "32y 29y",
+                    "35y 29y",
+                    "35y 33y"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Based on the options and standard calculation for this common problem, 32y and 29y is the correct answer."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A person was asked to state his age in years. His reply was 'Take my age three years hence, multiply it by 3 and then subtract three times my age three years ago and you will know how old I am.' What was the age of the person?",
+                "options": [
+                    "18y",
+                    "20y",
+                    "24y",
+                    "32y"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let age be x. 3(x+3) - 3(x-3) = 3x + 9 - 3x + 9 = 18."
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "slug": "ratios-proportions",
+        "name": "Ratios & Proportions (PDF Placeholder)",
+        "description": "Master ratio combining, direct/inverse proportionality, and distribution problems.",
+        "icon": "\u2797",
+        "xp_reward": 100,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Ratios & Proportions (PDF Placeholder)\n\n# Ratios and Proportions\n\nA ratio is a part of dividing the quantities in a proportion.\nIf $a:b :: c:d$, it states that two fractions are equal: $\\frac{a}{b} = \\frac{c}{d}$.\n\n* **Product of Extremes = Product of Means**: If $a:b = c:d$, then $a \\times d = b \\times c$\n* **Mean Proportional**: $\\sqrt{ab}$\n* **Third Proportional**: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$\n* **Compounded Ratio**: $ac:bd$\n\n## Types of Questionings:\n1. **Duplicate Ratio** $\\rightarrow$ find the square of the numbers\n2. **Sub-Duplicate Ratio** $\\rightarrow$ find the square root of the numbers\n3. **Triplicate Ratio** $\\rightarrow$ finds the cube of the numbers\n4. **Sub-Triplicate Ratio** $\\rightarrow$ finds the cube root of the numbers\n\n## Compound Ratio\nArrange all the ratios in $\\frac{P}{Q}$ form and multiply. The resultant $\\frac{P}{Q}$ form is the ratio.\n\n## Inverse Ratios\n* If $a:b$, then Inverse Ratio $\\Rightarrow b:a$\n* If $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$\n\n## Proportions Standard Formula\n* $D = \\frac{B \\times C}{A}$ (for 4th Proportion)\n* $C = \\frac{B^2}{A}$ (for 3rd Proportion)\n* $B = \\sqrt{AC}$ (for Mean Proportion)\n\n## Equation Oriented\n* If an equation is given $xA : yB : zC$, then $A:B:C = xy:yz:xz$.\n* If $\\frac{1}{x}A : \\frac{1}{y}B : \\frac{1}{z}C$, then $A:B:C = x:y:z$.\n\n## Mixture Type Questions\nEquate the ratios (if quantities/conditions are equal). And procedure will be sum up by the according ratios.",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "Find the compound Ratio of 2:5, 10:7, 14:9",
+                "options": [
+                    "8:9",
+                    "9:8",
+                    "4:5",
+                    "5:4"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let's form in P/q form and multiply:\n2/5 * 10/7 * 14/9 = 8/9 => 8:9\nCompound Ratio = 8:9"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Find the 4th proportion of 20, 21, 40?",
+                "options": [
+                    "40",
+                    "41",
+                    "42",
+                    "44"
+                ],
+                "correct_option_index": 2,
+                "explanation": "A:B = C:D => 20:21 = 40:D\n20 * D = 21 * 40\nD = (21 * 40) / 20 = 42."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Find the mean proportional of 8 and 18?",
+                "options": [
+                    "10",
+                    "12",
+                    "14",
+                    "16"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Mean Proportional B = sqrt(AC)\nB = sqrt(8 * 18)\nB = sqrt(144) = 12"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The c.p of mobile and tablet are in the ratio 4:7. If the tablet c.p is Rs. 15000 more than the mobile c.p, then what is the c.p of the tablet?",
+                "options": [
+                    "Rs. 20000",
+                    "Rs. 25000",
+                    "Rs. 30000",
+                    "Rs. 35000"
+                ],
+                "correct_option_index": 3,
+                "explanation": "Difference in ratio = 7 - 4 = 3.\n3 parts -> 15000 (more)\nThen 7 parts -> 35000.\nc.p of tablet = Rs. 35000."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Abhi's monthly income is two-seventh of Ram's monthly income. Ram's Annual income is 4.2 lakh. What is Abhi's Annual Income?",
+                "options": [
+                    "1.2 Lakh",
+                    "1.4 Lakh",
+                    "2.1 Lakh",
+                    "2.4 Lakh"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Abhi = 2/7 Ram => Abhi : Ram = 2 : 7.\nAlso having same ratio for annual income.\n7 parts (Ram's) -> 4.2 Lakh\n2 parts (Abhi's) -> 1.2 Lakh\nAnnual Income of Abhi = 1.2 Lakh."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The Ratio of Sita's, Riya's and Kunal's monthly income is 84:76:89. If Riya's Annual income is Rs. 4,56,000, what is the sum of Sita's and Kunal's Annual income?",
+                "options": [
+                    "Rs. 9,00,000",
+                    "Rs. 10,38,000",
+                    "Rs. 12,00,000",
+                    "Rs. 15,00,000"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Sita : Riya : Kunal = 84 : 76 : 89.\n76 parts -> 4,56,000 (x6000)\nSum of Sita's and Kunal's parts = 84 + 89 = 173.\n173 parts -> 173 x 6000 = 10,38,000.\nSum of Sita's and Kunal's Annual income = Rs. 10,38,000."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two numbers are in the ratio 7:12. If 15 is subtracted from both the numbers, then the ratio becomes 16:31. Find the largest number.",
+                "options": [
+                    "36",
+                    "72",
+                    "108",
+                    "144"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Before (-15): 7:12 (Difference = 12-7 = 5)\nAfter (-15): 16:31 (Difference = 31-16 = 15)\nIf same quantity is removed/added, we need to equate the ratios according to the differences before and after in them.\nMultiply before ratio by 3: (7:12) x 3 => 21:36 (Difference is 15).\n21 - 16 = 5 parts = 15 => 1 part = 3.\nNow, Largest Number = 36 x 3 = 108."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The incomes of A and B are in the ratio 4:5 and their expenses are in the ratio 5:7. If each of them saves Rs. 1500, then what is the income of B?",
+                "options": [
+                    "Rs. 4000",
+                    "Rs. 4500",
+                    "Rs. 5000",
+                    "Rs. 6000"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Income - Expenditure = Savings.\nIncome => 4:5\nExpenditure => 5:7\nEquate difference: (4:5) x 2 => 8:10\nExp => 5:7\nSavings = 8-5 : 10-7 = 3:3.\n3 parts -> Rs. 1500 => 1 part -> 500.\nB's Income = 10 parts -> Rs. 5000."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The Ratio of milk and water in a vessel containing 60 litres of mixture is 3:2. Find the quantity of water to be added to make the ratio 2:3.",
+                "options": [
+                    "20 Litres",
+                    "24 Litres",
+                    "30 Litres",
+                    "36 Litres"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Total mixture = 60 Litres. Milk : Water = 3 : 2.\nMilk = (3/5) * 60 = 36 lit. Water = (2/5) * 60 = 24 lit.\nNeed to make the ratio 2:3.\nThen, 2 parts -> 36 lit (Milk remains same).\nThen, 3 parts -> 54 Litres.\nAlready 24 lit of water exists. So, we need to add (54 - 24) = 30 litres of water to make it 2:3."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Three equal capacity vessels contain liquor and water in the ratio 1:2, 2:1, 3:1 respectively. If all are mixed into a big vessel, find the ratio of liquor and water in the big vessel.",
+                "options": [
+                    "5:7",
+                    "7:5",
+                    "3:4",
+                    "4:3"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Liquor : Water\nVessel 1: 1:2 (Total 3) -> multiply by 4 => 4:8\nVessel 2: 2:1 (Total 3) -> multiply by 4 => 8:4\nVessel 3: 3:1 (Total 4) -> multiply by 3 => 9:3\nTotal = (4+8+9) : (8+4+3) = 21 : 15 => 7:5."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If A:B is 2:3, B:C is 4:3, then find A:B:C?",
+                "options": [
+                    "8:12:9",
+                    "6:12:9",
+                    "8:10:9",
+                    "4:6:3"
+                ],
+                "correct_option_index": 0,
+                "explanation": "A:B = 2:3\nB:C = 4:3\nMultiply A:B by 4 and B:C by 3 to make B equal (12).\nA:B:C = 8:12:9."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "If A:B = 2:3, B:C = 4:3, C:D = 2:3, then find A:B:C:D.",
+                "options": [
+                    "16:24:18:27",
+                    "8:12:9:27",
+                    "16:24:18:9",
+                    "8:24:18:27"
+                ],
+                "correct_option_index": 0,
+                "explanation": "A:B = 2:3, B:C = 4:3, C:D = 2:3.\nA:B:C = 8:12:9\nC:D = 2:3\nMultiply A:B:C by 2 and C:D by 9 to make C equal (18).\nA:B:C:D = 16:24:18:27."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "If A:B = 3:4, B:C = 8:10, C:D = 15:17, then find A:D.",
+                "options": [
+                    "7:17",
+                    "9:17",
+                    "15:17",
+                    "3:17"
+                ],
+                "correct_option_index": 1,
+                "explanation": "A/D = A/B * B/C * C/D = (3/4) * (8/10) * (15/17) = 360 / 680 = 9:17."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "10 tables cost as much as 24 stools, 9 stools cost as much as 15 chairs. 9 chairs cost as much as 3 benches, 7 benches cost as much as 14 Desks, if one desk cost Rs. 500, what is the cost of one Table?",
+                "options": [
+                    "Rs. 1000",
+                    "Rs. 1200",
+                    "Rs. 1500",
+                    "Rs. 2000"
+                ],
+                "correct_option_index": 2,
+                "explanation": "10 tables = 24 stools\n9 stools = 15 chairs\n9 chairs = 3 benches\n7 benches = 14 desks\nCost of one Desk = Rs. 500\n7 benches = 14 * 500 = 7000 => 1 bench = 1000.\n9 chairs = 3 * 1000 = 3000 => 1 chair = 1000/3.\n9 stools = 15 * (1000/3) = 5000 => 1 stool = 5000/9.\n10 tables = 24 * (5000/9) => 1 table = Rs. 1500."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If 3A = 4B = 5C, then find A:B:C",
+                "options": [
+                    "12:15:20",
+                    "20:15:12",
+                    "15:20:12",
+                    "12:20:15"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Let 3A = 4B = 5C = k. A = k/3, B = k/4, C = k/5.\nA:B:C = 1/3 : 1/4 : 1/5. LCM of 3,4,5 is 60.\nA:B:C = 20 : 15 : 12."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Rs. 1870 is divided into three parts such that half of first part, one third of second part and one sixth of third part are equal. Find third part.",
+                "options": [
+                    "Rs. 340",
+                    "Rs. 510",
+                    "Rs. 680",
+                    "Rs. 1020"
+                ],
+                "correct_option_index": 3,
+                "explanation": "1/2 A = 1/3 B = 1/6 C\nThen A:B:C = 2:3:6\nTotal parts = 11.\nThird part = (6/11) * 1870 = 6 * 170 = 1020."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Rs. 3900 is divided among A, B and C such that 2 times of A's amount, three times of B's Amount and four times of C's amount are equal, what is A's Amount?",
+                "options": [
+                    "Rs. 900",
+                    "Rs. 1200",
+                    "Rs. 1500",
+                    "Rs. 1800"
+                ],
+                "correct_option_index": 3,
+                "explanation": "2A = 3B = 4C\nA:B:C = 1/2 : 1/3 : 1/4 = 12:8:6 = 6:4:3\nTotal parts = 13 -> 3900 => 1 part = 300.\nA's Amount = 6 parts = 6 * 300 = 1800."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Rs. 425 is divided among 4 men, 5 women and 6 Boys such that the wages 1 man, 1 women and 1 Boy are in the ratio 9:8:4. what are the wages of one women?",
+                "options": [
+                    "Rs. 34",
+                    "Rs. 40",
+                    "Rs. 45",
+                    "Rs. 50"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Multiply 9:8:4 with 4,5,6 respectively gives the ratio of total wages for each group.\n36 : 40 : 24 => 9 : 10 : 6.\nTotal parts = 9 + 10 + 6 = 25.\n25 parts -> 425 => 1 part = 17.\nTotal wages of 5 women = 10 parts = 10 * 17 = 170.\nWage of 1 woman = 170 / 5 = Rs. 34."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "In a bag, 1 Rupee, 50 Paise, 25 Paise coins are in the Ratio 5:6:7. If the total sum in the bag is Rs. 78. then find the no of 50 Paise coins in the bag?",
+                "options": [
+                    "24",
+                    "36",
+                    "48",
+                    "60"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Rs 1 : 50P : 25P\nNumber Ratio: 5 : 6 : 7\nValue Ratio (in Rs): 5(1) : 6(0.5) : 7(0.25) = 5 : 3 : 1.75\nMultiply by 100: 500 : 300 : 175 = 20 : 12 : 7.\nTotal parts = 39 -> Rs. 78 => 1 part = 2.\nValue of 50 Paise coins = 12 parts = Rs. 24.\nNumber of 50 Paise coins = 24 / 0.5 = 48."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Two numbers are in the ratio 5:9. The first number is decreased by 19% and the second number is increased by 10%. find the ratio of resultant values.",
+                "options": [
+                    "9:22",
+                    "9:20",
+                    "8:21",
+                    "10:23"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let numbers be 500 and 900.\nFirst number decreased by 19%: 500 - (19% of 500) = 500 - 95 = 405.\nSecond number increased by 10%: 900 + (10% of 900) = 900 + 90 = 990.\nRatio = 405 : 990 = 81 : 198 = 9 : 22."
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "slug": "partnerships",
+        "name": "Partnerships (PDF Placeholder)",
+        "description": "Learn investment x time = profit ratio calculations.",
+        "icon": "\ud83e\udd1d",
+        "xp_reward": 90,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Partnerships (PDF Placeholder)\n\n# Partnerships\n\n## Profit Sharing Ratio\n- **Profit sharing Ratio = Investment $\\times$ Time (months/years)**\n- It will be calculated for each investment individually.\n- Profit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.\n- Then, **Investment Ratio = Profits / Time**\n- **Time Ratio = Profits / Investment**\n\n## Sleeping Partner and Working Partner\n- One partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.\n\n## Withdrawing Investments\n- In case, if either of the partner withdraw some amount after some time. Then we will add the withdrawn amount and withdrawn time with existing left.\n",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "A and B invested Rs. 12000 and Rs. 18000 respectively. A invested for 12 months and B invested for 6 months. If the total profit earned is Rs. 21,00,000, find A's and B's shares.",
+                "options": [
+                    "A: 12,00,000, B: 9,00,000",
+                    "A: 10,00,000, B: 11,00,000",
+                    "A: 9,00,000, B: 12,00,000",
+                    "A: 15,00,000, B: 6,00,000"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Investment ratio: 12000 : 18000. Time ratio: 12 : 6. Profit sharing ratio = (12000 * 12) : (18000 * 6) = 144000 : 108000 = 4 : 3. Total profit = 21,00,000. A's share = (4/7) * 2100000 = 12,00,000. B's share = (3/7) * 2100000 = 9,00,000."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Ajay, Vijay and Jai invested Rs. 8000, Rs. 4000 and Rs. 8000 respectively in a business. Ajay left after 6 months. At the end of 8 months, if there is a gain of Rs. 4005, find the share of Vijay?",
+                "options": [
+                    "Rs. 890",
+                    "Rs. 1000",
+                    "Rs. 790",
+                    "Rs. 950"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Investment: Ajay=8000, Vijay=4000, Jai=8000. Time: Ajay=6, Vijay=8, Jai=8. Profit ratio = (8000*6) : (4000*8) : (8000*8) = 48 : 32 : 64 = 3 : 2 : 4. Total ratio = 3+2+4 = 9. Total gain = 4005. 9 units = 4005 -> 1 unit = 445. Vijay's share (2 units) = 2 * 445 = Rs. 890."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Purna started a business with Rs. 98000. After 4 months, Vishal joined the business with a capital of Rs. 63000. Find the total profit, if Profit shared by Vishal at the end of the year was Rs. 15000?",
+                "options": [
+                    "Rs. 45000",
+                    "Rs. 50000",
+                    "Rs. 60000",
+                    "Rs. 55000"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Investment: Purna=98000, Vishal=63000. Time: Purna=12, Vishal=8 (joined after 4 months). Profit sharing ratio (PSR) = (98000*12) : (63000*8) = 7 : 3. Vishal's share (3 units) = 15000. Total profit (10 units) = (15000/3) * 10 = 50000. So, total profit = Rs. 50000."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Three partners start a business with Rs. 60000, Rs. 40000, and Rs. 100000 respectively. Find the ratio of their profits at the end of the business.",
+                "options": [
+                    "3:2:5",
+                    "6:4:1",
+                    "1:2:3",
+                    "5:2:3"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Here, the investment time of all partners are equal. So, their shares also same as investment Ratio. Inv: 60000 : 40000 : 100000. Time: 1 : 1 : 1. Profit sharing Ratio = 6:4:10 = 3:2:5."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Three partners A, B, and C put equal investments into a business for 1 year, 10 months and 6 months respectively. Find the profit sharing Ratio at the end of a year.",
+                "options": [
+                    "6:5:3",
+                    "12:10:6",
+                    "3:2:1",
+                    "1:1:1"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Here, the investments are equal but time is different. So, the share also same different as Time Ratio. Inv: 1 : 1 : 1. Time: 12 : 10 : 6. Profit Ratio = 12 : 10 : 6 = 6 : 5 : 3."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The capitals of 3 partners are in the ratio 5:2:3 and their profits sharing Ratio is 10:8:9. Find the ratio of terms of their investment.",
+                "options": [
+                    "2:4:3",
+                    "4:2:3",
+                    "1:2:3",
+                    "3:4:2"
+                ],
+                "correct_option_index": 0,
+                "explanation": "We have, PSR = Inv * Time. Time Ratio = Profit share Ratio / Investment. PSR = 10 : 8 : 9. Inv = 5 : 2 : 3. Time Ratio = 10/5 : 8/2 : 9/3 = 2 : 4 : 3."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Three partners invest their capitals for time periods which are in the ratio 2:3:4 and they have shared the total Profit in the ratio 5:4:3. Find the ratio of their respective investments.",
+                "options": [
+                    "30:16:9",
+                    "15:8:9",
+                    "30:9:16",
+                    "9:16:30"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Inv = PSR / Time. PSR = 5 : 4 : 3. Time = 2 : 3 : 4. Inv Ratio = 5/2 : 4/3 : 3/4. Multiply by 12 (LCM of 2,3,4): 30 : 16 : 9. Investment Ratio = 30 : 16 : 9."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A and B, being working and sleeping partners, start a business with Rs. 5000 and Rs. 8000 respectively. It is agreed to give 22% of total Profit to A for managing the business and the remaining is shared in the ratio of their capitals. Find the total Profit if A's share is Rs. 2028/-.",
+                "options": [
+                    "Rs. 3900/-",
+                    "Rs. 4000/-",
+                    "Rs. 3500/-",
+                    "Rs. 4500/-"
+                ],
+                "correct_option_index": 0,
+                "explanation": "A will get his share + 22% of overall 100%. A = 22% + his actual share. 78% -> Total share. A's Inv = 5000, B's Inv = 8000. A's share from remaining = (5/13) * 78% = 30%. B's share = (8/13) * 78% = 48%. A's total share = 30% + 22% = 52%. 52% of Total Profit = 2028. Total Profit = (2028 * 100) / 52 = Rs. 3900/-."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two partners P and Q start a business with 1.50 Lakhs and 1.20 Lakhs respectively. But, after 8 months, Q has withdrawn Rs. 30,000 from the business. Find the total Profit at the end of 1 year, if Q's share is Rs. 44000.",
+                "options": [
+                    "Rs. 104000",
+                    "Rs. 95000",
+                    "Rs. 110000",
+                    "Rs. 100000"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Inv: P = 1,50,000, Q = 1,20,000 (for 8 months) and 90,000 (for 4 months). Time: P = 12 months. P's share = 150000 * 12 = 1800000. Q's share = (120000 * 8) + (90000 * 4) = 960000 + 360000 = 1320000. Ratio = 1800000 : 1320000 = 180 : 132 = 45 : 33 = 15 : 11. Profit sharing Ratio = 15:11. Q's Profit -> 11 units = 44000 (x4000). Total Profit = 26 units * 4000 = Rs. 104000."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Fully connected Problem: Two partners Surya and Chandu started a business with Rs. 85000 and Rs. 90000 respectively. But after 4 months, Chandu invests Rs. 56250 more into the business. Find, by much does Chandu get more profit than Surya out of total Profit of Rs. 98000 out of which 20% is given to charity and the remaining is shared in their profit sharing Ratio at the end of one year.",
+                "options": [
+                    "Rs. 15680",
+                    "Rs. 16580",
+                    "Rs. 14500",
+                    "Rs. 18000"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Surya Inv: 85000 * 12 = 1020000. Chandu Inv: (90000 * 4) + ((90000+56250) * 8) = 360000 + (146250 * 8) = 360000 + 1170000 = 1530000. PSR = 1020000 : 1530000 = 102 : 153 = 2 : 3. Total profit = 98000. After 20% charity (19600), remaining = 78400 is total profit shared. Total 2+3=5 units = 78400. 1 unit = 15680. Difference = Chandu (3) - Surya (2) = 1 unit = Rs. 15680."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A started a business with Rs. 70000. After some months, B joined the business with Rs. 60000. If they shared the total Profit at the end of one year in the ratio 2:1, find after how many months B joined the business.",
+                "options": [
+                    "5 months",
+                    "7 months",
+                    "6 months",
+                    "4 months"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Investment: A=70000, B=60000. Time: A=12, B=? Ratio of Profit share = 2 : 1. A's profit share part = 7 * 12 = 84. Since Ratio is 2:1, 84 is 2 parts. 1 part = 42. So B's profit share part = 42. B's Investment is 6 (60000), so Time = 42 / 6 = 7 months. This means B invested for 7 months. Therefore, B joined after (12 - 7) = 5 months."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A put 2/3 of capital and gets 3/4 of total Profit at the end of one year. If A invests for one year, find how long does B put his capital?",
+                "options": [
+                    "8 months",
+                    "6 months",
+                    "4 months",
+                    "10 months"
+                ],
+                "correct_option_index": 0,
+                "explanation": "A's capital = 2/3, so B's capital = 1/3. A's profit = 3/4, so B's profit = 1/4. Inv ratio A:B = 2/3 : 1/3 = 2:1. Profit ratio A:B = 3/4 : 1/4 = 3:1. Time ratio A:B = (3/2) : (1/1) = 3:2. A invests for 12 months (3 parts = 12 -> 1 part = 4). B's time = 2 parts = 2 * 4 = 8. So B puts for 8 months."
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "slug": "time-work",
+        "name": "Time & Work (PDF Placeholder)",
+        "description": "Master LCM method and efficiency concepts for time & work problems.",
+        "icon": "\u2699\ufe0f",
+        "xp_reward": 120,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Time & Work (PDF Placeholder)\n\n# Time and Work\n\n## Core Concepts\n* **Time and work** are directly proportional to each other. ($Time \\propto work$)\n* **Men and work** are directly proportional to each other. ($Men \\propto work$)\n* **Time and men** are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)\n\n## The Universal MDH Formula\n$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$\nWhere:\n* **M** = Person who does the work\n* **D** = Days of work\n* **H** = Hours of work in the day\n* **W** = Work Done\n* M, D, H are inversely proportional to each other.\n* W is directly proportional to them.\n\n## Efficiency\n* If a person can finish a piece of work in $n$ days, then their work done in 1 day is $\\frac{1}{n}$.\n* $Efficiency = \\frac{Total\\ work}{Time\\ taken}$\n* $Time \\propto \\frac{1}{Efficiency}$\n* $Work = Time \\times Efficiency$\n\n## Group Work & Leaving/Joining (Middle of Work)\n* We add the \"before\" and \"after\" situations.\n* **Concept:** Equate the equations and find the updated result.\n* **Alternative:** Only calculate the days for the updated men in work. Total Days of work = Remaining work days + Previous work days.\n\n## Combining Different Entities (AND/OR Type)\n* Generally, if \"men and women\" or \"men or women\" is given, deduce the equations accordingly and form the equation in one of the quantities (either men or women).\n* Then apply the standard formula/rules.\n\n## LCM Method for Individual Work\n* **Concept:** If A can finish the work in $x$ time, and B can finish the work in $y$ time.\n* Then together they can finish in $\\frac{xy}{x+y}$ time.\n* If together they can finish in $x$ time, and one can finish in $y$ time, then the other can finish in $\\frac{xy}{y-x}$ time.\n* **Logic behind this:** Take the LCM of $x$ and $y$ to get the total number of work units. Divide total work by individual days to get their per-day efficiency (work parts per day). Add their efficiencies to get the combined work done in a day, which gives the total time taken.\n\n## Alternate Days Concept\n* The concept is based on \"who started the work\". The final answer depends on who started.\n* Consider the work done by them for 1 cycle (e.g., 2 days for 2 people).\n* Take the value nearer to the total work units.\n* The leftover work will be done by the one who started the cycle.\n\n## Leftover Work at the End Concept\n* When a group starts together, but at the end, some leave and the remaining finish the work.\n* Calculate the leftover days' work done by a certain person and then together work done. Follow the routine process.\n\n## Work and Wages\n* When the total wages paid for a work are given, the wages will divide in their work unit per day's ratio (efficiency ratio).",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "If 24 men can do a piece of work in 36 days. In how many days can 54 men do it?",
+                "options": [
+                    "16 Days",
+                    "18 Days",
+                    "20 Days",
+                    "24 Days"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$24 \\times 36 = M_2 \\times D_2$\n$\\Rightarrow D_2 = \\frac{24 \\times 36}{54}$\n$D_2 = 16\\ Days$"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If 18 binders can bind 900 books in 10 days. How many binders will be required to bind 660 books in 12 days?",
+                "options": [
+                    "10 binders",
+                    "11 binders",
+                    "12 binders",
+                    "14 binders"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Using $\\frac{M_1 D_1}{W_1} = \\frac{M_2 D_2}{W_2}$\n$\\Rightarrow \\frac{18 \\times 10}{900} = \\frac{M_2 \\times 12}{660}$\n$M_2 = 11\\ men$\n$\\therefore 11$ Binders are required to bind 660 books in 12 days."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A fodder stock lasts for 36 Days for 20 cows. How long will it last for 15 cows?",
+                "options": [
+                    "40 Days",
+                    "45 Days",
+                    "48 Days",
+                    "50 Days"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$20 \\times 36 = 15 \\times D_2$\n$D_2 = 48\\ Days$"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If 6 men working 8 hours a day earn Rs. 840 per week, then 9 men working 6 hours a day will earn how much per week?",
+                "options": [
+                    "Rs. 900",
+                    "Rs. 945",
+                    "Rs. 1000",
+                    "Rs. 1050"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Using $\\frac{M_1 H_1}{W_1} = \\frac{M_2 H_2}{W_2}$\n$\\frac{6 \\times 8}{840} = \\frac{9 \\times 6}{W_2}$\n$W_2 = 9 \\times 105$\n$W_2 = Rs.\\ 945$"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "16 men can do a job in 30 Days. After 10 Days, 6 men left. In how many Days, the remaining work will be finished?",
+                "options": [
+                    "28 Days",
+                    "30 Days",
+                    "32 Days",
+                    "35 Days"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Using $M_1 D_1 = M_2 D_2$\nAfter 10 Days, 6 men left.\n$\\Rightarrow 16 \\times 30 = (16 \\times 10) + (10 \\times D_2)$\n$480 = 160 + 10 D_2$\n$\\Rightarrow 10 D_2 = 480 - 160 = 320$\n$\\Rightarrow D_2 = 32$\nRemaining work will be completed in 32 Days."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "12 men can complete the work in 8 days. 3 days after they started the work, 3 more men joined them. In how many days, remaining work will be completed.",
+                "options": [
+                    "3 Days",
+                    "4 Days",
+                    "5 Days",
+                    "6 Days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 12 \\times 8 = (12 \\times 3) + (15 \\times D_2)$\n$\\Rightarrow 96 = 36 + (15 \\times D_2)$\n$\\Rightarrow 15 \\times D_2 = 60$\n$D_2 = 4\\ days$\nRemaining work will be done in 4 Days."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A certain work can be done in a certain time by 36 men. But had there been 9 men more, it could have been done in 5 days less. In how many Days, 20 men can do the same work?",
+                "options": [
+                    "35 Days",
+                    "40 Days",
+                    "45 Days",
+                    "50 Days"
+                ],
+                "correct_option_index": 2,
+                "explanation": "$M_1 D_1 = M_2 D_2$\n$36 \\times D_1 = (36+9) \\times (D_1-5)$\n$36 D_1 = 45(D_1-5)$\n$36 D_1 = 45 D_1 - 225$\n$\\Rightarrow 45 D_1 - 36 D_1 = 225$\n$\\Rightarrow 9 D_1 = 225$\n$D_1 = 25\\ Days$\nNow, $M_1 D_1 = M_2 D_2$\n$36 \\times 25 = 20 \\times D_2$\n$D_2 = 45\\ Days$\n20 men will complete in 45 Days."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "If 10 men or 12 women can do a work in 16 days. In how many days can 15 men and 6 women together do it?",
+                "options": [
+                    "6 days",
+                    "8 days",
+                    "10 days",
+                    "12 days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "10 men OR 12 women $\\rightarrow$ 16 days.\ni.e. 10 men = 12 women, which means 5 men = 6 women.\nFind for 15 men + 6 women:\n15 men + 5 men = 20 men.\nSince 10 men = 16 days,\n$M_1 D_1 = M_2 D_2$\n$10 \\times 16 = 20 \\times D_2$\n$\\Rightarrow D_2 = 8\\ days$.\nIn 8 days, 15 men and 6 women can do it together."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "If 2 men and 3 women can do a work in 8 days. 3 men and 2 women can do the same work in 7 days. How many days will 5 men and 4 women take to do it?",
+                "options": [
+                    "3 days",
+                    "4 days",
+                    "5 days",
+                    "6 days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Consider the whole work as:\n$(2m + 3w)8 = (3m + 2w)7$\n$16m + 24w = 21m + 14w$\n$24w - 14w = 21m - 16m$\n$10w = 5m \\Rightarrow 2w = 1m$\nSubstitute in the given: $4w + 3w \\rightarrow 8\\ days$ ($7\\ women \\rightarrow 8\\ days$)\nAsked: $5m + 4w = 10w + 4w = 14\\ women$.\n$14\\ women = \\frac{7 \\times 8}{14} = 4\\ days$.\n$\\therefore D_2 = 4\\ days$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A can complete 3/7th of work in 24 days. In how many days, he can complete the remaining work?",
+                "options": [
+                    "24 days",
+                    "28 days",
+                    "32 days",
+                    "56 days"
+                ],
+                "correct_option_index": 2,
+                "explanation": "$3 \\rightarrow 24\\ days$\n$7 \\rightarrow 56\\ days$\nTotal work can be done in 56 days.\nRemaining work = $56 - 24 = 32\\ days$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A can complete the work in 60 days. If B is 50% more efficient than A, then B can complete the work in how many Days?",
+                "options": [
+                    "30 days",
+                    "40 days",
+                    "45 days",
+                    "50 days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "$M_1 D_1 = M_2 \\times D_2$\n$100 \\times 60 = 150 \\times D_2$\n$\\therefore D_2 = 40\\ days$."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A can complete the work in 188 days. B is 20% more efficient than A. C is 30% more efficient than B. find A,B,C together can complete the work in how many Days?",
+                "options": [
+                    "40 Days",
+                    "45 Days",
+                    "50 Days",
+                    "60 Days"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Let's consider A $\\rightarrow$ 100%\nB $\\rightarrow$ 120% (20% of 100)\nC $\\rightarrow$ 156% (30% of 120 = 36, 120+36 = 156)\nTogether, A+B+C = 376%.\nSince A (100%) $\\rightarrow$ 188 days.\n$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 100 \\times 188 = 376 \\times D_2$\n$\\Rightarrow D_2 = 50\\ Days$."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two workers A and B completed the job in 5 days. If A works twice as efficiently as he actually did and B worked 1/3 as efficiently, the work would have completed in 3 days. A alone could complete the work in",
+                "options": [
+                    "5 days",
+                    "6 1/4 days",
+                    "7 days",
+                    "8 days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "$A+B \\rightarrow 5\\ days$\n$2A + \\frac{1}{3}B \\rightarrow 3\\ days$\n$M_1 D_1 = M_2 D_2$\n$(A+B)5 = (2A + \\frac{1}{3}B)3$\n$5A + 5B = 6A + B$\n$\\Rightarrow A = 4B \\Rightarrow B = \\frac{1}{4}A$\n$(A + \\frac{1}{4}A) \\rightarrow 5\\ days$\n$1.25A \\rightarrow 5\\ days$\n$M_1 D_1 = M_2 D_2$\n$125 \\times 5 = 100 \\times D_2$\n$\\Rightarrow D_2 = \\frac{25}{4} = 6 \\frac{1}{4}\\ days$."
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "slug": "speed-distance-time",
+        "name": "Speed, Distance, Time (PDF)",
+        "description": "Master relative speed, average speed, and basic kinematic equations.",
+        "icon": "\ud83c\udfc3",
+        "xp_reward": 120,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Speed, Distance, Time (PDF)\n\n# Time, Distance and Speed\n\n## Basic Relationships\n- **Time**: Time taken to cover a distance.\n- **Distance**: Travelled in a certain time with a speed.\n- **Speed**: Travelling speed of the moving body.\n- `Time \u221d Distance`\n- `Speed \u221d Distance`\n- `Speed \u221d 1/Time`\n- **Formula**: `Speed = Distance / Time`\n  - Speed tells how much distance is covered in a unit time.\n\n## Unit Conversion\n- **km/hr to m/s**: Multiply by `5/18`\n- **m/s to km/hr**: Multiply by `18/5`\n\n## Cases of Trains Crossing\n1. **Train crossing a man standing / Electric Pole**\n   - Here the man/electric pole doesn't have any length (their distance to be placed on ground is zero).\n   - `Distance = Length of the train` (to be covered crossing the man/pole).\n   - `Speed = Speed of the train`\n2. **Train crossing a Platform**\n   - Here, the Platform will have a specific length.\n   - `Distance = Train length + Platform length` (to be covered crossing the platform).\n3. **Train crossing a Person Running**\n   - *In Same Direction*: If a train and a person running in the same direction, we subtract the person's speed from the train's speed.\n     - `Relative speed = Train speed - Person speed`\n   - *In Opposite Direction*: If a train and a person running in the opposite direction, we add them up.\n     - `Relative speed = sum of speeds`\n4. **Train crossing another Train**\n   - Lengths are always same irrespective of direction (summed), because however trains should be crossed each other by covering both their lengths.\n   - *Opposite Direction*: `Time taken = (L1 + L2) / (S1 + S2)`\n   - *Same Direction*: `Time taken = (L1 + L2) / |S1 - S2|`\n   - Note: Denominator is similar to the case of a Person Running. A slow train will never overtake the faster train.\n\n## Core Logic for Distant Places\n- If two vehicles start from respective places towards each other, we sum up their speeds to get Relative Speed.\n- If they travel in the same direction, we get their relative speed by subtracting one from another.\n\n## Average Speed\n- `Average Speed = Total Distance / Total Time`\n- When the total distance travelled is equal for two speeds (x and y): `Average speed = 2xy / (x + y)`\n- Another method: By the LCM of the speeds as the distance covered, we can get the time, and then apply `Total distance / Total time`.\n\n## Special Formulas\n- **Stoppages**: `Time of stoppage per hour (min) = (Diff of speeds / Speed excluding stoppages) * 60`\n- **Late/Early to School**: `Distance = (Product of speeds / Difference of speeds) * (Time difference in mins / 60)`\n- **Trains starting simultaneously and reaching destinations after meeting**: `S1 / S2 = \u221a(T2 / T1)`\n",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "A train travelling at constant speed crosses a 96m long platform in 12 sec and another 141m long platform in 15 secs. Find the length of the train.",
+                "options": [
+                    "72 m",
+                    "84 m",
+                    "96 m",
+                    "100 m"
+                ],
+                "correct_option_index": 1,
+                "explanation": "First, we will find out the speed. In 3 seconds it covers 45m (141m - 96m in 15s - 12s). Then speed = 15 m/s. Train length = (Speed * Time) - Platform length = (15 * 12) - 96 = 180 - 96 = 84m."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The distance between A and B is 440km. P starts from A at a speed of 30 kmph at 4 AM towards B. Q starts from B at a speed of 40 kmph at 7 AM towards A. Find at what time they meet, distance from A they meet, and distance from B they meet.",
+                "options": [
+                    "12:00 PM, 240km, 200km",
+                    "1:00 PM, 270km, 170km",
+                    "11:00 AM, 210km, 230km",
+                    "12:30 PM, 250km, 190km"
+                ],
+                "correct_option_index": 0,
+                "explanation": "P travels for 3 hrs before Q starts. Distance covered by P = 30 * 3 = 90 km. Remaining distance at 7 AM = 440 - 90 = 350 km. Relative speed = 30 + 40 = 70 kmph. Time to meet after 7 AM = 350 / 70 = 5 hrs. Thus, they meet at 7 AM + 5 hrs = 12:00 PM. Distance from A = 30 kmph * (3 + 5) hrs = 240 km. Distance from B = 40 kmph * 5 hrs = 200 km."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Rajdhani Express started from Delhi to Mumbai at 14:30 travelling at a speed of 60 kmph. Duronto Express started from Delhi to Mumbai at 16:30, travelling at a speed of 80 kmph. How far away from Delhi do they meet?",
+                "options": [
+                    "360 kms",
+                    "400 kms",
+                    "480 kms",
+                    "540 kms"
+                ],
+                "correct_option_index": 2,
+                "explanation": "By the time of 16:30, the two trains are at a distance of 120 km (Rajdhani travelled for 2 hrs at 60 kmph). Relative speed = 80 - 60 = 20 kmph. It takes 120 / 20 = 6 hours to meet from 16:30. So they will meet at 480 kms from Delhi (80 kmph * 6 hrs)."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "I have to cover a distance of 240km of which 1/4th of the distance at 30 kmph, 1/3rd of the distance at 40 kmph and the remaining at a speed of 50 kmph. What is my average speed?",
+                "options": [
+                    "35 kmph",
+                    "38 kmph",
+                    "40 kmph",
+                    "42 kmph"
+                ],
+                "correct_option_index": 2,
+                "explanation": "1/4th of 240 = 60 km @ 30 kmph => 2 hrs. 1/3rd of 240 = 80 km @ 40 kmph => 2 hrs. Remaining distance = 240 - 60 - 80 = 100 km @ 50 kmph => 2 hrs. Total time = 2 + 2 + 2 = 6 hrs. Average speed = Total Distance / Total Time = 240 / 6 = 40 kmph."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The average speed of a train including stoppages is 25 kmph. Excluding stoppages, it is 40 kmph. How many minutes per hour did the train stop?",
+                "options": [
+                    "15 min",
+                    "20 min",
+                    "22.5 min",
+                    "25 min"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Time of stoppage per hour = (Diff in speeds / Speed excluding stoppages) * 60 = ((40 - 25) / 40) * 60 = (15 / 40) * 60 = 22.5 minutes."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A man takes 5h 45m in walking to a certain place and riding back. He would have gained 2hrs by riding both the ways. The time he would have taken walking both the ways?",
+                "options": [
+                    "7h 45m",
+                    "8h 15m",
+                    "6h 45m",
+                    "9h 30m"
+                ],
+                "correct_option_index": 0,
+                "explanation": "2 hrs saved by riding, 2 hrs lost by walking. Total time taken if he walks = 5h 45m + 2 hrs = 7h 45m. Logic: Total time for both ways riding = 3 hr 45 min. One side ride = 1 hr 52.5 min. One side walk = 5 hr 45 min - 1 hr 52.5 min = 3 hr 52.5 min. Both ways walk = 3 hr 52.5 min * 2 = 7 hr 45 min."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Walking at 5/6th of his usual speed, a man is 10 mins late. The usual time taken by him to cover the distance is?",
+                "options": [
+                    "40 min",
+                    "50 min",
+                    "60 min",
+                    "70 min"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Speed ratio = 5/6 (Present -> Usual). Time ratio = 6/5 (Present -> Usual). Difference in time = 1 unit = 10 mins. Usual time = 5 units = 50 mins."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A boy goes to school from his village at a speed of 3 kmph. He returns to his village from school at a speed of 2 kmph. If he spends 5 hrs in the journey, find the distance between his school and village?",
+                "options": [
+                    "4 kms",
+                    "5 kms",
+                    "6 kms",
+                    "12 kms"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Average speed = 2xy / (x+y) = 2*3*2 / (3+2) = 12/5 kmph. Total distance covered (both ways) = Avg speed * Total time = (12/5) * 5 = 12 kms. Therefore, the distance between school and house (one way) is 6 kms."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A boy goes to school from his village at a speed of 30 kmph and he is late to his school by 10 mins. Next day, he travelled at a speed of 40 kmph and reached his school 5 min early. What is the distance between his school and village?",
+                "options": [
+                    "20 kms",
+                    "25 kms",
+                    "30 kms",
+                    "40 kms"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Distance = (Product of speeds / Difference in speeds) * (Time difference in mins / 60). Time difference = 15 mins (10 mins late vs 5 mins early). Distance = ((30 * 40) / 10) * (15 / 60) = 1200/10 * 1/4 = 120 * 1/4 = 30 kms."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Two trains, one from Hyderabad to Chennai and another from Chennai to Hyderabad start simultaneously. After they meet, the trains reach their destinations in 9 hours and 16 hours respectively. If the speed of the first train is 80 kmph, find the speed of the second train.",
+                "options": [
+                    "50 kmph",
+                    "60 kmph",
+                    "70 kmph",
+                    "90 kmph"
+                ],
+                "correct_option_index": 1,
+                "explanation": "S1 / S2 = \u221a(T2 / T1). So, 80 / S2 = \u221a(16 / 9) = 4 / 3. S2 = 80 * 3 / 4 = 60 kmph."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two persons A and B walk from P to Q, which are at a distance of 21km, at 3kmph and 4kmph respectively. B reaches Q and returns immediately and meets A at R. Find the distance from P to R.",
+                "options": [
+                    "15 km",
+                    "16 km",
+                    "18 km",
+                    "20 km"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Overall, both of them together finish twice of the PQ's distance i.e. 42km. Relative speed (since they are moving towards each other eventually) = 3 + 4 = 7 kmph. Time taken for them to cover 42 km = 42 / 7 = 6 hours. Distance covered by A in 6 hours = 3 kmph * 6 hrs = 18 kms from P i.e. Point R."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Sound travels 330 mts per second. If the sound of a thunder cloud follows the flash after 10 seconds, the thunder cloud is at a distance of how many kms?",
+                "options": [
+                    "3.3 kms",
+                    "33 kms",
+                    "330 kms",
+                    "3300 kms"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Distance = Speed * Time = 330 m/s * 10 sec = 3300 m = 3.3 kms."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A walks around a circular field at a rate of 1 round per hour, while B runs around it at a rate of 6 rounds per hour. They start in the same direction from the same point at 7:30 AM. They shall first cross each other at?",
+                "options": [
+                    "7:40 AM",
+                    "7:42 AM",
+                    "7:45 AM",
+                    "7:50 AM"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Relative speed = 6 - 1 = 5 Rounds Per Hour. Thus, they complete 1 relative round in 1/5 of an hour = 12 minutes. So they shall first cross each other at 7:30 AM + 12 mins = 7:42 AM."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "The speed of the car increases by 2 km after every one hour. If the distance travelled in first hour is 35 km, what was the total distance covered in 12 hrs.",
+                "options": [
+                    "530 kms",
+                    "540 kms",
+                    "552 kms",
+                    "564 kms"
+                ],
+                "correct_option_index": 2,
+                "explanation": "This forms an Arithmetic Progression where a = 35, d = 2, n = 12. Using sum formula: S = n/2 [2a + (n-1)d] = 12/2 [2(35) + 11(2)] = 6 * [70 + 22] = 6 * 92 = 552 kms. Also written as (35*12) + (12*11) = 420 + 132 = 552."
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "slug": "trains",
+        "name": "Problems on Trains (PDF)",
+        "description": "Learn relative speed and object length crossing problems.",
+        "icon": "\ud83d\ude86",
+        "xp_reward": 110,
+        "formula_sheet": "### \ud83d\udcc4 User PDF Complete Master Cheat Sheet: Trains\n\n> **[TODO: Paste your handwritten PDF text here]**",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "[TODO: Add Question Text]",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "[TODO: Add handwritten PDF explanation here]"
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "slug": "boats-streams",
+        "name": "Boats & Streams (PDF)",
+        "description": "Master upstream and downstream calculations.",
+        "icon": "\u26f5",
+        "xp_reward": 100,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Boats & Streams (PDF)\n\n# Boats and Streams\n\nWhen a boat moves in water:\n- Water flow affects speed\n\n1. **Downstream speed** = Boat speed + stream speed\n2. **Upstream speed** = Boat speed - stream speed\n\nIf downstream and upstream are given:\n- Let downstream speed be $D$\n- Let upstream speed be $U$\n- Then, **Boat speed** = $\\frac{D + U}{2}$\n- **Stream speed** = $\\frac{D - U}{2}$\n\nWhen 2 speeds are given and total time is given:\n- **Distance** = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "A person can row at a speed of 8 Kmph in still water. He takes 8 hours to row from A to B and return. What is the distance between A and B if speed of the stream is 2 Kmph?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "We have to find upstream and downstream speeds.\nDownstream speed = 8 + 2 = 10 Kmph\nUpstream speed = 8 - 2 = 6 Kmph\nUsing the formula for distance when total time is given:\nDistance = (Product of speeds / Sum of speeds) * time\nDistance between A and B = ((10 * 6) / (10 + 6)) * 8 = (60 / 16) * 8 = 30 Km"
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A man can row 40 Km upstream and 55 Km downstream in 13 hours. Also, he can row 30 Km upstream and 44 Km downstream in 10 hours. Find speed of the man in still water and speed of the current?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let upstream speed be (x-y) and downstream speed be (x+y).\nEq 1: 40 Km upstream + 55 Km downstream = 13 hrs\nEq 2: 30 Km upstream + 44 Km downstream = 10 hrs\n\nTaking difference and manipulating:\nWe get a difference of 10 Km upstream + 11 Km downstream = 3 hrs.\nEquate this with any of the above equations (e.g., multiply by 3):\n30 Km upstream + 33 Km downstream = 9 hrs.\n\nSubtract this from Eq 2:\n(44 - 33) Km downstream = (10 - 9) hrs\n11 Km downstream = 1 hr\nDownstream speed (x+y) = 11 Kmph.\n\nSubstitute downstream time in Eq 2:\n30 Km upstream + 44 Km / 11 Kmph = 10 hrs\n30 Km upstream + 4 hrs = 10 hrs\n30 Km upstream = 6 hrs\nUpstream speed (x-y) = 30 / 6 = 5 Kmph.\n\nx + y = 11 Kmph\nx - y = 5 Kmph\nSpeed of man (x) = (11 + 5) / 2 = 8 Kmph\nSpeed of current (y) = (11 - 5) / 2 = 3 Kmph"
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "slug": "pipes-cisterns",
+        "name": "Pipes & Cisterns (PDF Placeholder)",
+        "description": "Learn LCM method applied to inlets (positive) and outlets (negative).",
+        "icon": "\ud83d\udeb0",
+        "xp_reward": 100,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Pipes & Cisterns (PDF Placeholder)\n\n# Pipes and Cisterns\n\nPipes and cisterns are an example of an extension of Time and Work.\nBut here, there is an element of destroying the work, i.e., sometimes pipes will be filling and emptying simultaneously.\nThe procedure here is similar to what we have done in Time and Work.\n\n## Concepts and Formulas\n\n### i) When A, B are filling\n- A fills in $x$ time\n- B fills in $y$ time\n- Then total time taken to fill when $A+B = \\frac{xy}{x+y}$\n\n### ii) When A, B - one is filling and one is emptying\n- Then total time taken to fill when $A+B = \\frac{xy}{x-y}$\n\n### iii) When more pipes are involved and some are filling and some are emptying\n- Then entities which are responsible for emptying are taken in negative.\n- Rest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.\n\n**Note:** If all the filling pipes are closed before, then the tank will be never get filled. Then, there is a chance of knowing time taken to empty the tank. And it is calculated and considered only by the work units filled upto then. And also if the emptying pipes are bigger, then also the tank will be never filled.\n\n### Concept: Alternate days concept in Time and Work\nHere also, the pipes (both emptying and filling) will be closed and opened in an order.\n**Note:** Unlike in time and work, here we take the multiple that makes the difference nearer to the total work units by maintaining minimum difference of the highest work unit in all the existing pipes.",
+        "questions": [
+            {
+                "difficulty": "advanced",
+                "text": "For instance,\nA -> 25 mins (fill)\nB -> 30 mins (fill)\nC -> 50 mins (empty)\n-> All pipes are opened simultaneously when the tank is empty\n-> After 7 mins, pipe 'A' closed\n-> After 4 more mins, pipe 'C' closed.\n-> B can fill remaining in how many minutes?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "As similar to previous,\nA -> 6 units\nB -> 5 units\nC -> (-3) units\nTotal 150 units.\nTherefore Remaining time to fill by B = 17 1/5 mins."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Example scenario:\nA -> 20 mins (fill)\nB -> 30 mins (fill)\nC -> 40 mins (empty)\nThese pipes are opened in a cycle of ABC. Then, total time to fill the tank is:",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total = 120 parts.\ni.e. per 3 minutes -> 7 parts will be filled.\n7 parts -> 3 minutes\nx 16       x 16\n112 -> 48 mins\n+6 -> 1 min (A opened)\n+2 (out of 4) -> 1 min (B opened).\nTherefore Total time = 49 1/2 mins."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "miscelleanous:\nTwo pipes A and B can fill the tank in 24 mins and 32 mins respectively. If both pipes are opened simultaneously, after how much time, B should be closed so that the tank is full in 18 mins.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Here, it is clear that A will work completely 18 mins. Let's find out that.\nA will do 4 units/min out of 96 total units.\nRest of the units will be completely by B based on its capacity.\nWork units by A -> 72\nRemaining 24. per Perminty by B = 24/3 = 8 mins.\nTherefore After 8 mins, we should close pipe B."
+            }
+        ]
+    },
+    {
         "id": 15,
+        "slug": "permutations-combinations",
+        "name": "Permutations & Combinations (PDF)",
+        "description": "Learn factorial tricks, arrangement rules, and selection combinations.",
+        "icon": "\ud83c\udfb2",
+        "xp_reward": 130,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Permutations & Combinations (PDF)\n\n# Permutations and Combinations\n\n*   **Permutations**: Arrangements (Position matters)\n    *   $nP_r$\n*   **Combinations**: Selection (Just selection)\n    *   $nC_r$\n*   Multiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"\n\n### Important Identities\n1.  $nP_n = n!$\n2.  $nP_{n-1} = n!$\n3.  $nP_1 = n$\n4.  $nP_0 = 1$\n5.  $nC_r = nC_{n-r}$\n6.  $nC_n = nC_0 = 1$\n7.  $nC_1 = n$\n8.  $nC_{n-1} = nC_1 = n$\n\n### Key Relations\n*   $nP_r = nC_r \\times r!$\n*   When objects are identical: $\\frac{n!}{p!q!r!}$\n*   **Not together** = Total arrangements - Together arrangements\n\n### GAP METHOD\n*   Used when \"No two elements are together\"\n\n### Circular Permutations\n*   Normal circle: $(n-1)!$\n*   Necklace (clockwise = anticlockwise same): $\\frac{(n-1)!}{2}$\n\n### Miscellaneous\n*   **Atleast** $\\rightarrow \\ge$\n*   **Atmost** $\\rightarrow \\le$\n*   To find the number of diagonals: $\\frac{n(n-3)}{2}$ where $n = $ number of vertices.\n*   Number of Triangles = $nC_3$\n*   Handshakes and matches $\\rightarrow$ Combinations\n*   Gifts and Tickets $\\rightarrow$ Permutations\n",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "In how many ways the letters of the word YUVRAJ be arranged.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Here, Total Letters = 6. From 6 letters we have to arrange with 6 letters. So, $6P_6 = 6! = 720$ ways. If they ask to form 3-letter words, select 3 letters $\\Rightarrow 6P_3 = 6 \\times 5 \\times 4 = 120$ ways."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In how many ways can the letters of the word BALLOON be arranged?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total letters = 7; L=2, O=2. Then, we can arrange by $\\frac{7!}{2!2!} = 1260$ ways."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In how many ways 'TENDULKAR' can be arranged such that vowels are always together.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total we have 9 letters with No repetition. Consider all the vowels as a single unit. Vowels: EUA. So, we have EUA + other 6 = (6+1) = 7. In $7! \\times 3! = 5040 \\times 6 = 30240$. 3! because of Principle of multiplication, 3 vowels."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Arrange 3 boys and 2 girls such that girls are not together.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "1. Arrange Boys $\\Rightarrow 3! = 6$ ways. Positions: _ B _ B _ B _ $\\Rightarrow 4$ Gaps. 2. Place girls in gaps. choose 2 gaps from 4: $4P_2$. Total $\\Rightarrow 3! \\times 4P_2 = 72$ ways. (Note: Student mistakenly wrote 36 ways)."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Arrange the letters of the word in TENDULKAR such that vowels occupy even places.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total 6 consonants. Arrange these in $6!$ ways. In 7 spaces, we arrange 3 vowels in $7P_3$ ways. $\\Rightarrow 6! \\times 7P_3 = 151200$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "6 Girls and 4 Boys joined a Maths Tution. In how many ways, they can sit in a straight line such that all girls are together.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "4 Boys + (1) single unit of 6 Girls $\\Rightarrow 5! \\times 6! = 86400$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In how many different ways can letters of the word PROBLEM be arranged such that vowels occupy only odd places.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "word = PROBLEM, vowels = O, E (2), consonants = 5. Odd Positions: 1, 3, 5, 7 $\\Rightarrow 4$ places. $\\Rightarrow 5! \\times 4P_2 = 120 \\times 12 = 1440$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} without repetition.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$5P_3 = 60$ (from 5 arrange 3)."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Form 3 digit Numbers from digits {0, 1, 2, 3, 4} without repetition.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Note: first digit cannot be 0. Then, first digit choices = {1, 2, 3, 4} $\\rightarrow 4$ options. Remaining 4 digits. Then, Remaining 3 digits. $4 \\times 4 \\times 3 = 48$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} with repetition.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$5^3 = 125$"
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Form 3-digit numbers from digits {0, 1, 2, 3, 4} with repetition.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "first digit cannot be 0 $\\rightarrow 4$ choices. Remaining digits Repetition allowed $\\rightarrow 5$ choices each. $4 \\times 5 \\times 5 = 100$."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "How many 4-digit ATM PINS are Possible?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$10^4 = 10000$."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Out of 5 men and 4 women, a committee of 6 members has to be formed. Find the number of ways in which this can be done, such that there has to be atleast 2 women.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$4C_2 \\times 5C_4 + 4C_3 \\times 5C_3 + 4C_4 \\times 5C_2 \\Rightarrow 60 + 40 + 5 = 105$ ways."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "10 students are Participating in a Race. In how many ways, can the first 3 prizes be won?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$10P_3 = 10 \\times 9 \\times 8 = 720$ ways. Or $10C_3 \\times 3! = \\frac{10 \\times 9 \\times 8}{3!} \\times 3! = 720$ ways."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "How many Triangles can be formed by joining the vertices of octagon.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$8C_3 = 56$ (No Priority for arrangements)."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "How many Diagonals can be formed by joining the vertices of Hexagon?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$\\frac{n(n-3)}{2} \\Rightarrow \\frac{6(6-3)}{2} = 9$ Diagonals."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "In how many ways can one or more of six friends be invited for a dinner?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$2^6 - 1 = 64 - 1 = 63$. Or, Intuition: $6C_1 + 6C_2 + 6C_3 + 6C_4 + 6C_5 + 6C_6 = 6 + 15 + 20 + 15 + 6 + 1 = 63$."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Out of 9 consonants and 4 vowels, how many words of 3 consonants and 2 vowels are formed?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "First we'll select them and then arrange them. $9C_3 \\times 4C_2 \\times 5! = 25200$ ways."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "20 members attended the Party. If each person in the party shakes hand with every other person once, find the total no. of hand shakes?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Order doesn't matter. $20C_2 = \\frac{20 \\times 19}{2 \\times 1} = 190$ ways."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "There are 20 Railway stations between Chennai and Bangalore. How many different Kinds of tickets must be Printed so as to enable a passenger to travel from one place to another?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$22P_2 = 22 \\times 21 = 462$ ways. (Chennai and Bangalore included makes 22 total stations)."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "There are 20 Teams participating in a cricket tournament. They are divided into two groups of 10 Teams each. If each team plays one match with every other team within the group before qualifying for quarter finals, find the total no. of matches played in the tournament including quarters, semis and finals?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Group A: $10C_2$, Group B: $10C_2$. Quarters (4), Semis (2), Final (1). Total: $45 + 45 + 4 + 2 + 1 = 97$ matches."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "After each Participant Played one game against every other Participant in a chess tournament. The total count of games was 325. Find the no of Participants.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "$nC_2 = 325 \\Rightarrow \\frac{n(n-1)}{2} = 325 \\Rightarrow n(n-1) = 650 \\Rightarrow 26 \\times 25$. Total 26 Participants."
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "slug": "probability",
+        "name": "Probability (PDF)",
+        "description": "Master coin tosses, dice rolls, card decks, and conditional probability.",
+        "icon": "\ud83c\udfb0",
+        "xp_reward": 130,
+        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Probability (PDF)\n\n# Probability\n\n- Probability measures the chance of an event happening.\n- **Probability** = Favorable outcomes / Total outcomes\n- **Range of Probability**:\n  - `0` = Impossible Event\n  - `1` = Certain Event\n  - `0 <= P <= 1` => Possible Event\n- By Permutations and Combinations, Probability = our selections / Total selections\n\n## Rules\n- **Complement Rule**: `P(not E) = 1 - P(E)` (used for \"At least one\")\n- **Addition Rule (OR)**: If events are mutually exclusive, `P(A or B) = P(A) + P(B)`\n- **Multiplication Rule (AND)**: For independent events, `P(A and B) = P(A) * P(B)`\n- **Intersection (AND)**: A and B -> Both events happen together.\n- **Union (OR)**: A or B -> at least one of the events occurs.\n  - `P(A U B) = P(A) + P(B) - P(A \u2229 B)`\n  - `P(A \u2229 B) = P(A) * P(B)`\n\n## Coins\n- For `n` coins, Probability of exactly `r` heads: `nCr / 2^n`\n\n## Dice Probability\n- Total outcomes = `6^n`, where `n` = number of dice\n- Concept: If they ask even/odd outcomes, just use analogy with coins concept (i.e. No. of Dice -> coins, No. of odds -> No. of heads, No. of evens -> No. of tails).\n- Irrespective of the number of dice rolled, the odd product occurs \"only\" when all the dice return odd numbers.\n- **Even Product Probability** = `1 - (3/6)^n = 1 - (1/2)^n = (2^n - 1) / 2^n`\n- **6 sides consideration type models (Required output on some tables)**:\n  - **Sum of 2 dice**:\n    - Sum: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\n    - Prob (out of 36): 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1\n  - **Sum of 3 dice**:\n    - Sum: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18\n    - Prob (out of 216): 1, 3, 6, 10, 15, 21, 25, 27, 27, 25, 21, 15, 10, 6, 3, 1\n- Doublet and Triplet happens 6 times.\n\n## Cards Concept\n- Total 52 cards: 26 cards Red, 26 cards Black\n- Red -> Diamond (13), Heart (13)\n- Black -> Spade (13), Club (13)\n- Total 16 face cards:\n  - Kings -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Queens -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Jacks -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Ace -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n- 36 Non face cards (2 to 10)",
+        "questions": [
+            {
+                "difficulty": "intermediate",
+                "text": "What is the Probability of having 53 Sundays in a non-leap year?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Answer is 1/7."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "2 Numbers are selected at random from a set of 1 to 100, what is the probability of getting a Prime number?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Select 2 numbers = 25C2. From 100 numbers = 100C2. Probability = 25C2 / 100C2 = (25 x 24 / 2) / (100 x 99 / 2) = 2/33."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "From 8 Red balls and 4 Green Balls, 3 Balls are picked randomly. What is the Probability that there is at least one Red Ball?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Usually: (8C1 * 4C2 + 8C2 * 4C1 + 8C3) / 12C3 = (48 + 112 + 56) / 220 = 54/55.\nOR use complement Rule: 1 - 4C3 / 12C3 = 1 - 4/220 = 1 - 1/55 = 54/55."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "6 coins are tossed. Find Probability of getting All Heads or All tails.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Total outcomes = 2^6. Probability = 1/2^6 + 1/2^6 = 1/32."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "5 coins are tossed. Find the Probability of getting exactly 3 Heads and 2 Tails.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Let n = number of coins. Then n! / (H! T!) / 2^n = 5! / (3! 2!) / 2^5 = 10 / 32 = 5/16. OR choose which 3 of the positions are Heads = 5C3 = 10. P = 5C3 / 2^5 = 10/32 = 5/16."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "8 coins are tossed. At least 6 Heads?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "6H 2T OR 7H 1T OR 8H. => (8C6 + 8C7 + 8C8) / 2^8 = (28 + 8 + 1) / 256 = 37/256."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "5 coins tossed. Atmost 2 Heads Probability?",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "2H 3T OR 1H 4T OR 5T. (5!/(2!3!) + 5!/(1!4!) + 5!/5!) / 2^5 = (10 + 5 + 1) / 32 = 16/32 = 1/2."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "A card is drawn from a pack of cards. What is the Probability that the card is 1. Black suit colour 2. A spade card 3. A red face card 4. A face card of club 5. Diamond or King",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "1. 26C1 / 52C1 = 26/52 = 1/2.\n2. 13C1 / 52C1 = 13/52 = 1/4.\n3. 8C1 / 52C1 = 8/52 = 2/13.\n4. 4C1 / 52C1 = 4/52 = 1/13.\n5. (13C1 + 4C1 - 1C1) / 52C1 = (13+4-1)/52 = 16/52 = 4/13."
+            },
+            {
+                "difficulty": "intermediate",
+                "text": "Two cards are drawn at Random what is the Probability that 1. Both are aces. 2. No face card 3. Atleast one King 4. No Diamond 5. one king and one Queen",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "1. 4C2 / 52C2 = 6/1326 = 1/221.\n2. 36C2 / 52C2 = 105/221.\n3. Atleast one = Total - None = 1 - 48C2 / 52C2 = 1 - 188/221 = 33/221.\n4. 39C2 / 52C2 = 19/34.\n5. (4C1 * 4C1) / 52C2 = 16/1326 = 8/663."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A Bag contains 6 Red Balls, 4 Blue Balls, 2 Green Balls and 3 Yellow Balls. If 4 Bales are Picked at Random, what is the Probability that one is green, two are blue and one is red.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "(2C1 * 4C2 * 6C1) / 15C4 = (2 * 6 * 6) / 1365 = 72/1365 = 24/455."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Two Persons wife and Husband appear in an interview for two vacancies. If the Probabilities of their selections are 1/4 and 1/6 respectively. then the Probability that 1. None of them selected 2. Exactly one of them selected 3. Atleast one of them selected 4. Both of them selected",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "1. None of them selected -> (3/4) * (5/6) = 15/24 = 5/8.\n2. Exactly one of them selected => (1/4 * 5/6) + (3/4 * 1/6) = 5/24 + 3/24 = 8/24 = 1/3.\n3. Atleast one of them selected => Total - None = 1 - 5/8 = 3/8.\n4. Both of them selected => 1/4 * 1/6 = 1/24."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "A speaks truth in 60% cases and B speaks truth in 45% of the cases. In what % of cases are they likely to contradict each other, in narrating.",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Contradict means \"not on the same statement\".\nA: True 60/100, False 40/100.\nB: True 45/100, False 55/100.\n=> (60/100 * 55/100) + (45/100 * 40/100) = 3300/10000 + 1800/10000 = 5100/10000 = 51%."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "The Probability of Solving a Problem by 3 students A, B, C is 1/2, 1/3 and 1/4 respectively. The Probability that the Problem will be solved is",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "A solving 1/2, Not solving 1/2. B solving 1/3, Not solving 2/3. C solving 1/4, Not solving 3/4. Atleast one = Total - None. 1 - (1/2 * 2/3 * 3/4) = 1 - 1/4 = 3/4."
+            },
+            {
+                "difficulty": "advanced",
+                "text": "Tickets numbered 1 to 50 are mixed up and then a ticket is drawn at random. what is the Probability that the ticket drawn is a number which is multiple of a) 3 or 7 b) 3 and 7",
+                "options": [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                ],
+                "correct_option_index": 0,
+                "explanation": "a) 16 + 7 - 2 = 21. => 21/50.\nb) 2/50 = 1/25."
+            }
+        ]
+    },
+    {
+        "id": 17,
         "slug": "mensuration",
         "name": "Mensuration 2D & 3D (PDF Master Edition)",
         "description": "Master 2D/3D formulas, Ratio Side-Area-Volume conversions, Cow Ungrazed Field, Wheel Revolutions, & Hollow Pipe metal rules.",
