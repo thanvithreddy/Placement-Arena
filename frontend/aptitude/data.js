@@ -51,308 +51,93 @@ const aptitudeTopics = [
     {
         "id": 2,
         "slug": "percentages",
-        "name": "Percentages (PDF)",
-        "description": "Learn fraction-to-percentage conversions and successive percentage changes.",
+        "name": "Percentages (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 15 Handwritten PDF pages: Fraction Tricks, Symmetry Rule, 10% & 1% Decimal Shift, Equal Increase/Decrease Square Loss, Venn Diagrams, Sugar Solutions, Election & Salary Problems.",
         "icon": "\ud83d\udcaf",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcaf Master Cheat Sheet: Percentages\n\n#### 1. Core Concept & Fraction Equivalents\n> **Percentage to Fraction**: $x\\% = \\frac{x}{100}$ | **Fraction to Percentage**: $\\frac{a}{b} \\times 100\\%$\n\n| Fraction | Percentage | Fraction | Percentage |\n| :---: | :---: | :---: | :---: |\n| $\\frac{1}{2}$ | $50\\%$ | $\\frac{1}{7}$ | $14.28\\%$ |\n| $\\frac{1}{3}$ | $33.33\\%$ | $\\frac{1}{8}$ | $12.5\\%$ |\n| $\\frac{1}{4}$ | $25\\%$ | $\\frac{1}{9}$ | $11.11\\%$ |\n| $\\frac{1}{5}$ | $20\\%$ | $\\frac{1}{11}$ | $9.09\\%$ |\n| $\\frac{1}{6}$ | $16.66\\%$ | $\\frac{1}{12}$ | $8.33\\%$ |\n\n#### 2. Symmetry Rule & Mental Calculation\n- **Symmetry Rule**: $a\\% \\text{ of } b = b\\% \\text{ of } a$\n  - Example: $13\\% \\text{ of } 200 = 200\\% \\text{ of } 13 = 26$\n- **Quick 10% and 1% Tricks**:\n  - $10\\% \\text{ of } N$: Shift decimal point 1 place left ($10\\% \\text{ of } 7432 = 743.2$).\n  - $1\\% \\text{ of } N$: Shift decimal point 2 places left ($1\\% \\text{ of } 7432 = 74.32$).\n\n#### 3. Successive Percentage Changes\n- If a quantity is changed by $a\\%$ and then by $b\\%$, Net Change = $\\left(a + b + \\frac{ab}{100}\\right)\\%$.\n- **Equal Increase and Decrease**: If an entity increases by $x\\%$ and then decreases by $x\\%$, there is ALWAYS a net loss:\n  $$\\text{Net Loss} = \\left(\\frac{x}{10}\\right)^2\\%$$\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "When the number is increased by 20% by itself, the result is 480. Find the number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let the number be x%.\nThen x% is increased by 20%, then x% + 20% = 480.\n120% -> 480 (Here 120 * 4 = 480)\n100% -> 400 (Then 100 * 4 = 400)\nMultiplying with the common Relation number (Here it is 4)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 40% of a number is 20 more than 30% of a number, find the number?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Diff between 40% and 30% -> 20\n40% - 30% => 10% -> 20\nThen Number = 100% => 100 * 2 = 200.\nNumber = 200"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "'A' won the election by a majority of 150 votes, if only two candidates contested & 'A' secured 60% of total votes, find the total no. of votes?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A -> 60%\nB -> 40%\nMajority -> 20% -> 150 votes\nTotal -> 100% -> 750 votes."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Price of sugar first increased by 30% and then decreased by 30%. Find the original price if present price is Rs. 273.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let original price is x% = 100%\nNow increase in 30% = 130%\nNow decrease in 30% = 130% - (30% of 130) => 130 - 39 = 91%.\nRs. 273 = 91%\nThen 91% -> 273 (91 * 3 = 273).\n100% (original price) -> 300."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Side of the square has increased by 20%. Area will increase by what %?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let side = 12.\nThe area = 12 * 12 = 144\nIf side is increased by 20%,\nThen side = 12 + 2.4 = 14.4.\nThen new area = 207.36.\nThen % increase = diff / Initial value * 100 = 63.36 / 144 * 100\n% increase = 44%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If the area of a square becomes 3380 sq. units after one side of the square increases by 30%, find the original Area?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "If side -> 30% increase\nArea -> 30 + 30 + 3^2 => 69% increase\nThen original Area ->\n169% -> 3380\n100% -> 2000 sq. units"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Surya spends 60% of his salary on food, 20% of remaining on Petrol, 10% of the remaining on entertainment & saves the remaining amount. If he saves Rs. 288, find the salary?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Income - expenditure = savings\nSalary - 100%\nFood - 60%. (60% of 100) - food\nRemaining - 40%\nConsider 20% of 40 (because 40% was remaining) => 8% on petrol\nNow, Remaining = 32%\nConsider 10% of 32% = 3.2% on entertainment.\nNow % of savings =>\n100% - 60% - 8% - 3.2% = 28.8%\nNow, % of savings = 28.8%.\n=> 28.8% of 100 = Rs. 288.\nIf 28.8% -> 288 (28.8 * 10)\nThen 100% -> 1000 (100 * 10)\nSurya's total salary = Rs. 1000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In a competitive exam in state A, 6% got selected from appeared candidates, state B had equal no. of candidates appeared & 7% got selected with 80 more candidates got selected than A. What was the no. of candidates appeared from each state?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "State A: 6%\nState B: 7%\n7% - 6% = 1% = 80.\nThen, total students = 80 * 100 = 8000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In an election between two candidates, one got 55% of total valid votes, 20% of the votes were invalid. Total no. of votes were 7500, the no. of valid votes that the other candidate got?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total No. of votes = 100% = 7500\n20% -> Invalid\n80% -> Valid\nTotal no. of valid votes = 80% of 7500 = 6000\nCandidate A got 55% of valid votes = 55% of 6000 = 3300\nCandidate B got 45% of valid votes = 6000 - 3300 = 2700."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A's salary is 80% more than B. B's salary is % less than A?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "(diff / B) * 100 = (80 / (100+80)) * 100 = 44.44%\n(Here, denominator = diff + B (total B) '+' -> because A is more than B)"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A's price is 10% less than B. B's price is ?% more than A?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "diff / A = 10 / (100-10) = 11.11%\n(Here denominator = diff = A '-' -> because A is less than B)"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Price of sugar increased by 40%. By what % should the family reduce the consumption of sugar so that the expenditure on sugar remains same.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "=> (40 / 140) * 100 = 28.57%\n(or)\nExpenditure = Price x Consumption\n=> E = 100 * 100 = 10000\n=> 140 * x = 10000\n=> x = 10000 / 140 = (5/7) * 100 = 71.42%\nReduction is 100 - 71.42 = 28.57%"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Salary of A decreased by 40%. By what % should the salary get increased so that his salary would come back to the original salary?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "=> (40 / (100-40)) * 100 = 66.66%"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In an exam, it is required to get 55% to pass. A student get 520 marks and declared as failed by 5%. Find maximum marks.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Pass percentage marks = 55%\n520 -> failed by 5%\n=> 50% -> 520\nThen 100% -> 1040\nmax marks = 1040."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Abhinav got 38% & failed by 14 marks. Ravi got 43% which is 21 marks more than pass mark. Find Pass % & max marks.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "diff in % -> diff in marks\n43% - 38% = 5%\n21 - (-14) = 35 (should compare with Passmark)\nTherefore 5% -> 35\n100% -> 700\nMaximum marks = 700\nFrom Abhinav: 14 = 2%\nPass Percentage = 38% + 2% = 40%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man spends 75% of his income. His income increased by 20%, he increased his expenditure by 10%. Find the % change in his savings.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Income - Expenditure = Savings\n=> 100 - 75 = 25% savings\n=> 120 - 82.5 = 37.5% savings\n=> savings will increase from\n=> expenditure will be increased from 75%.\n% change in savings = 50%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In a town 70% of citizens read Hindu, 40% read TOI & 30% read both. Find % of citizens who read neither.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Venn diagram:\nIntersection = 30\nHindu only = 40\nTOI only = 10\nUnion = 40 + 30 + 10 = 80%\nNeither = 100 - 80% = 20%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "To a sugar solution of 3 litres containing 40% sugar, one litre of pure water added. The % of sugar in new solution.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "=> 40% of 3 litres = 1.2\nThen, after adding 1 litre pure water\n=> x% of 4 litres = 1.2 => x = 30%\nNow % of sugar = 30%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "One type of liquid contains 20% of water and second type of liquid contains 35% water. A glass is filled with 10 parts of first liquid and 4 parts of second liquid. The % of water in the new mixture in the glass is.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "=> ((10 * 20) + (4 * 35)) / (14 * 100) * 100 = 340 / 14 = 170 / 7 = 24 2/7"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "An empty fuel tank of a car was filled with Type A petrol. When the tank was half empty, it was filled with Type B petrol. When the tank was half empty again, it was filled with Type A petrol. When the tank was half empty again, it was filled with Type B petrol. What is the % of Type A petrol at present in the tank?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Type A    Type B\n100       0\n50        0\n50        50\n25        25\n75        25\n37.5      12.5\n37.5      62.5\nAt present: Type A - 37.5, Type B - 62.5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A reduction of 20% enables a person to purchase 2 more apples for Rs. 100. Find the reduced price for one apple & find the original price for one Apple.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "20% -> 2 apples\n100% -> 10 apples\n80% -> 8 apples\nReduced Price = Rs. 100 / 10 = 10/-\nOriginal Price = Rs. 100 / 8 = 12.5/-"
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Percentages (15 Pages Transcribed)\n\n#### Page 1: Base Fractions & Symmetry Rule\n- **Fraction Reduction Trick**: Knowing some fractions makes calculating percentages easier!\n  - Example: $28.5\\% \\text{ of } 1400 = 400 \\implies \\frac{2}{7} \\text{ of } 1400 = \\frac{2}{7} \\times 1400 = 400$.\n- **Rule of Symmetry**: $a\\% \\text{ of } b = b\\% \\text{ of } a$\n  - Example: $13\\% \\text{ of } 200 = 200\\% \\text{ of } 13 = 26$.\n- **10% & 1% Decimal Shift**:\n  - $10\\%$ of any number: Place decimal point before the unit digit ($10\\% \\text{ of } 7432 = 743.2$).\n  - $1\\%$ of any number: Place decimal point before the one's digit ($1\\% \\text{ of } 7432 = 74.32$).\n\n#### Page 2: Combination Techniques & Practiced Examples\n- **Combination Method**:\n  - $21\\% \\text{ of } 6400$: $10\\% \\to 640.0 \\implies 20\\% \\to 1280$. Add $1\\% (64) \\implies 1280 + 64 = 1344$.\n  - $19\\% \\text{ of } 7200$: $20\\% - 1\\% = 1440 - 72 = 1368$.\n- **Practiced Examples from Notes**:\n  1. $24\\% \\text{ of } 8800 = 20\\% + 4\\% = 2112$ (or $25\\% - 1\\%$).\n  2. $91\\% \\text{ of } 3500 = 90\\% + 1\\% = 3150 + 35 = 3185$.\n  3. $28.2\\% \\text{ of } 1100 = 27.2\\% + 1\\% = 310.2$.\n  4. $61\\% \\text{ of } 12400 = 50\\% + 10\\% + 1\\% = 7564$.\n  5. $18\\% \\text{ of } 77.77 = 20\\% - 2\\% = 15.554 - 1.5554 = 13.9986$.\n\n#### Page 3: Problematic Understanding of Percentages\n- **Problem 1**: When a number is increased by $20\\%$ by itself, the result is 480. Find the number.\n  - Let number be $x\\% = 100\\%$.\n  - $x\\% + 20\\% = 120\\% \\to 480$ (Common multiplier: $120 \\times 4 = 480$).\n  - $100\\% \\to 100 \\times 4 = 400$. **Number = 400**.\n- **Problem 2**: If $40\\%$ of a number is 20 more than $30\\%$ of a number, find the number.\n  - Diff: $40\\% - 30\\% = 10\\% \\to 20$.\n  - Number $= 100\\% \\to 100 \\times 2 = 200$. **Number = 200**.\n- **Problem 3**: Candidate A won election by majority of 150 votes. Candidate A secured $60\\%$ of total votes.\n  - $A \\to 60\\%$, $B \\to 40\\%$. Majority $= 20\\% \\to 150$ votes.\n  - Total $= 100\\% \\to 750$ votes.\n\n#### Page 4 & 5: Equal Increase & Decrease Square Loss Rule\n- **Highly Important Concept**: If an entity is increased by $x\\%$ and then decreased by the same $x\\%$, we FINALLY end up with a **LOSS**.\n  - $(\\uparrow \\downarrow \\text{ or } \\downarrow \\uparrow \\implies \\text{Finally Loss})$\n  - $\\text{Loss} = \\text{Square of } 10^{\\text{th}} \\text{ multiple}$.\n  - $10\\% \\implies (1.0)^2 = 1\\%$ Loss.\n  - $20\\% \\implies (2.0)^2 = 4\\%$ Loss.\n  - $30\\% \\implies (3.0)^2 = 9\\%$ Loss.\n  - $5\\% \\implies (0.5)^2 = 0.25\\%$ Loss.\n  - $12\\% \\implies (1.2)^2 = 1.44\\%$ Loss.\n- **Sugar Price Worked Example**: Price of sugar increased by $30\\%$ then decreased by $30\\%$. Present price is Rs. 273.\n  - Original $= 100\\% \\implies +30\\% \\to 130\\%$.\n  - $-30\\% \\text{ of } 130 = 39 \\implies 130 - 39 = 91\\%$.\n  - $91\\% \\to 273$ ($91 \\times 3 = 273$).\n  - $100\\% (\\text{Original Price}) \\to 100 \\times 3 = \\text{Rs. } 300$.\n\n#### Page 6 & 7: Questioning Pattern Types & Area Expansion Rules\n- **3 Question Patterns**:\n  1. Initial Value + $\\%$ Given $\\implies$ Find Final Value (Calculation).\n  2. Initial Value + Final Value Given $\\implies$ Find $\\%$ (Fraction).\n  3. $\\%$ + Final Value Given $\\implies$ Find Initial Value (Equation).\n- **Square Area Increase Example**: Side of square increased by $20\\%$. Area increases by what $\\%$?\n  - Pattern $\\uparrow \\uparrow \\implies 20 + 20 + (2.0)^2 = 44\\%$ Increase!\n- **Square Area Reversal**: Area becomes 3380 sq. units after side increases by $30\\%$.\n  - Side $30\\% \\uparrow \\implies$ Area $30 + 30 + 3^2 = 69\\% \\uparrow \\implies 169\\% \\to 3380$.\n  - Original Area ($100\\%$) $= 2000$ sq. units.\n\n#### Page 8, 9 & 10: Salary, Election, & Comparison Formulas\n- **Remaining Expenditure Rule**: Expenditure can be from OVERALL salary OR REMAINING salary.\n  - Surya Salary Problem: Spends $60\\%$ on food (Rem $40\\%$). Spends $20\\%$ of remaining on petrol ($8\\%$, Rem $32\\%$). Spends $10\\%$ of remaining on entertainment ($3.2\\%$).\n  - Total Savings $= 100\\% - 60\\% - 8\\% - 3.2\\% = 28.8\\%$.\n  - $28.8\\% \\to \\text{Rs. } 288 \\implies 100\\% \\to \\text{Rs. } 1000$ Total Salary!\n- **Two Numbers Comparison Rules**:\n  - $A$ is what $\\%$ of $B \\implies \\left(\\frac{A}{B}\\right) \\times 100$.\n  - $A$ is how much $\\%$ MORE than $B \\implies \\frac{\\text{diff}}{\\text{diff} + B} \\times 100$.\n  - $A$ is how much $\\%$ LESS than $B \\implies \\frac{\\text{diff}}{\\text{diff} - A} \\times 100$.\n\n#### Page 11, 12 & 13: Expenditure Consumption & Venn Diagrams\n- **Consumption Reduction Formula**: Price of sugar increased by $40\\%$. To keep expenditure same:\n  - $\\text{Reduction}\\% = \\frac{40}{100 + 40} \\times 100 = \\frac{40}{140} \\times 100 = 28.57\\%$.\n- **Venn Diagram Problem**: In a town, $70\\%$ read Hindu, $40\\%$ read TOI, $30\\%$ read both.\n  - Hindu only $= 40\\%$, TOI only $= 10\\%$, Both $= 30\\%$.\n  - Total reading at least one $= 40 + 30 + 10 = 80\\%$.\n  - Neither $= 100\\% - 80\\% = 20\\%$.\n\n#### Page 14 & 15: Sugar Solution, Fuel Tank & Apple Price Reduction\n- **Sugar Solution**: 3 litres of $40\\%$ sugar solution ($1.2$L sugar). Add 1L pure water $\\implies 4$L total.\n  - New $\\%$ of sugar $= \\frac{1.2}{4} \\times 100 = 30\\%$.\n- **Fuel Tank Replacement Table**:\n  - Tank filled with Type A (100A, 0B). Half empty (50A). Fill B (50A, 50B). Half empty (25A, 25B). Fill B (25A, 75B). Half empty (12.5A, 37.5B). Fill B (37.5A, 62.5B).\n  - Present petrol state: Type A $= 37.5\\%$, Type B $= 62.5\\%$.\n- **Apple Price Reduction**: $20\\%$ price reduction enables buying 2 more apples for Rs. 100.\n  - $20\\% \\to 2 \\text{ apples} \\implies 100\\% \\to 10 \\text{ apples (Present)}, 80\\% \\to 8 \\text{ apples (Original)}$.\n  - Reduced Price $= \\frac{\\text{Rs. } 100}{10} = \\text{Rs. } 10 / \\text{apple}$.\n  - Original Price $= \\frac{\\text{Rs. } 100}{8} = \\text{Rs. } 12.5 / \\text{apple}$.\n",
         "flashcards": [
             {
-                "title": "1. Percentage Base Definition",
-                "front": "What does percent mean and how is it converted to a fraction?",
-                "evolution_origin": "Percent means 'per hundred'. $x\\% = \\frac{x}{100}$",
-                "back": "To convert fraction $\\frac{a}{b}$ to percentage, multiply by $100\\%$.\nExample: $\\frac{1}{2} \\times 100\\% = 50\\%$.",
-                "badge": "\ud83d\udcca Base Rule"
+                "title": "Page 1: Symmetry Rule",
+                "front": "What is the handwritten shortcut rule for $a\\% \\text{ of } b$?",
+                "back": "$a\\% \\text{ of } b = b\\% \\text{ of } a$\nHandwritten Example: $13\\% \\text{ of } 200 = 200\\% \\text{ of } 13 = 26$!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "2. Rule of Symmetry",
-                "front": "How does $a\\% \\text{ of } b = b\\% \\text{ of } a$ simplify hard calculations?",
-                "back": "Example: $13\\% \\text{ of } 200$ looks tricky, but $200\\% \\text{ of } 13$ is simply $2 \\times 13 = 26$!",
-                "badge": "\ud83d\udd04 Symmetry Rule"
+                "title": "Page 1: 10% & 1% Shift",
+                "front": "How do you find 10% and 1% of 7432 using the handwritten decimal shift rule?",
+                "back": "\u2022 10%: Place decimal point before unit digit $\\implies 743.2$\n\u2022 1%: Place decimal point before one's digit $\\implies 74.32$",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "3. Fractional Equivalents Deck 1",
-                "front": "What are the percentage values of $\\frac{1}{2}, \\frac{1}{3}, \\frac{1}{4}, \\frac{1}{5}, \\frac{1}{6}$?",
-                "back": "\u2022 $\\frac{1}{2} = 50\\%$\n\u2022 $\\frac{1}{3} = 33.33\\%$\n\u2022 $\\frac{1}{4} = 25\\%$\n\u2022 $\\frac{1}{5} = 20\\%$\n\u2022 $\\frac{1}{6} = 16.66\\%$",
-                "badge": "\ud83d\udd22 Fraction Deck"
+                "title": "Page 4: Square Loss Rule",
+                "front": "If an entity is increased by $x\\%$ and then decreased by $x\\%$, what is the final result?",
+                "back": "It ALWAYS ends in a LOSS equal to the square of the $10^{\\text{th}}$ multiple!\nExample: $30\\% \\uparrow 30\\% \\downarrow \\implies (3.0)^2 = 9\\%$ Net Loss!",
+                "badge": "\ud83d\udcc4 Page 4"
             },
             {
-                "title": "4. Fractional Equivalents Deck 2",
-                "front": "What are the percentage values of $\\frac{1}{7}, \\frac{1}{8}, \\frac{1}{9}, \\frac{1}{11}, \\frac{1}{12}$?",
-                "back": "\u2022 $\\frac{1}{7} = 14.28\\%$\n\u2022 $\\frac{1}{8} = 12.5\\%$\n\u2022 $\\frac{1}{9} = 11.11\\%$\n\u2022 $\\frac{1}{11} = 9.09\\%$\n\u2022 $\\frac{1}{12} = 8.33\\%$",
-                "badge": "\ud83d\udd22 Fraction Deck"
+                "title": "Page 6: Pattern Matrix",
+                "front": "What is the handwritten solving methodology when Initial Value & Final Value are given?",
+                "back": "Use the **Fraction** methodology!\nFormula: $\\text{Percentage} = \\frac{\\text{Diff}}{\\text{Initial Value}} \\times 100$",
+                "badge": "\ud83d\udcc4 Page 6"
             },
             {
-                "title": "5. Mental 10% & 1% Decimal Shift",
-                "front": "How do you find $10\\%$ and $1\\%$ of any number in 1 second?",
-                "back": "\u2022 $10\\%$: Shift decimal point 1 place left ($10\\% \\text{ of } 7432 = 743.2$).\n\u2022 $1\\%$: Shift decimal point 2 places left ($1\\% \\text{ of } 7432 = 74.32$).",
-                "badge": "\u26a1 Mental Trick"
+                "title": "Page 10: Salary Comparison Formula",
+                "front": "If A's salary is $80\\%$ MORE than B, by what $\\%$ is B's salary less than A?",
+                "back": "$\\text{Formula} = \\frac{\\text{diff}}{\\text{diff} + B} \\times 100 = \\frac{80}{180} \\times 100 = 44.44\\% = 44\\frac{4}{9}\\%$!",
+                "badge": "\ud83d\udcc4 Page 10"
             },
             {
-                "title": "6. Successive Percentage Change",
-                "front": "What is the net effect of two successive percentage changes $a\\%$ and $b\\%$?",
-                "back": "Net Change = $\\left(a + b + \\frac{ab}{100}\\right)\\%$\nExample: $+20\\%$ then $-20\\% \\implies -4\\%$ net loss!",
-                "badge": "\ud83d\udcc8 Successive Change"
+                "title": "Page 15: Apple Price Reduction Trick",
+                "front": "A $20\\%$ reduction enables buying 2 more apples for Rs. 100. What are Reduced and Original prices?",
+                "back": "\u2022 $20\\% \\to 2 \\text{ apples} \\implies 100\\% \\to 10 \\text{ apples (New)}, 80\\% \\to 8 \\text{ apples (Old)}$\n\u2022 Reduced Price $= 100 / 10 = \\text{Rs. } 10$\n\u2022 Original Price $= 100 / 8 = \\text{Rs. } 12.50$",
+                "badge": "\ud83d\udcc4 Page 15"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 4 Notes: If the price of sugar increases by 30% and then decreases by 30%, what is the net percentage loss?",
+                "options": [
+                    "0%",
+                    "6%",
+                    "9%",
+                    "12%"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 4 Rule: Equal increase and decrease always yields a net loss equal to (3.0)^2 = 9%!"
             },
             {
-                "title": "7. Equal Increase & Decrease Net Loss",
-                "front": "If an entity increases by $x\\%$ and then decreases by $x\\%$, what is the result?",
-                "back": "There is ALWAYS a net loss!\n$\\text{Net Loss} = \\left(\\frac{x}{10}\\right)^2\\%$\nExample: $x=30\\% \\implies (30/10)^2 = 9\\%$ net loss!",
-                "badge": "\ud83d\udcc9 Net Loss Rule"
+                "text": "From Page 1 Handwritten Notes: What is 28.5% of 1400 using the fraction trick?",
+                "options": [
+                    "300",
+                    "400",
+                    "500",
+                    "350"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 1 Handwritten Note: 28.5% = 2/7. So (2/7) * 1400 = 400!"
+            },
+            {
+                "text": "From Page 11 Notes: Sugar price increased by 40%. By what % should consumption be reduced so expenditure remains same?",
+                "options": [
+                    "25%",
+                    "28.57%",
+                    "33.33%",
+                    "40%"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 11 Formula: Reduction % = (40 / (100 + 40)) * 100 = (40 / 140) * 100 = 28.57%!"
+            },
+            {
+                "text": "From Page 15 Notes: A 20% reduction enables buying 2 more apples for Rs. 100. What is the original price per apple?",
+                "options": [
+                    "Rs. 10",
+                    "Rs. 12.50",
+                    "Rs. 15",
+                    "Rs. 8"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 15 Solution: 20% -> 2 apples => 80% (Original) -> 8 apples. Original Price = Rs. 100 / 8 = Rs. 12.50!"
             }
         ]
     },
