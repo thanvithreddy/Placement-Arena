@@ -415,10 +415,11 @@ class PurgeAllDataView(APIView):
         return Response({'message': 'All questions, exams, submissions, and logs have been completely purged!'})
 
 
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.core.management import call_command
 
 class AptitudeTopicsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         if AptitudeTopic.objects.count() == 0:
@@ -428,7 +429,9 @@ class AptitudeTopicsView(APIView):
                 print("Auto-seeding error:", e)
 
         topics = AptitudeTopic.objects.all().order_by('order')
-        user_progress = {p.topic_id: p for p in UserAptitudeProgress.objects.filter(user=request.user)}
+        user_progress = {}
+        if request.user and request.user.is_authenticated:
+            user_progress = {p.topic_id: p for p in UserAptitudeProgress.objects.filter(user=request.user)}
 
         data = []
         for t in topics:
@@ -530,7 +533,7 @@ class AptitudeSubmitAnswerView(APIView):
 # ==========================================
 
 class JavaTopicsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         if JavaTopic.objects.count() == 0:
@@ -540,12 +543,15 @@ class JavaTopicsView(APIView):
                 print("Auto-seeding error:", e)
 
         topics = JavaTopic.objects.all().order_by('order')
-        completed_ids = set(UserJavaProgress.objects.filter(user=request.user, is_completed=True).values_list('java_topic_id', flat=True))
-        profile, _ = UserGamificationProfile.objects.get_or_create(user=request.user)
+        completed_ids = set()
+        profile = None
+
+        if request.user and request.user.is_authenticated:
+            completed_ids = set(UserJavaProgress.objects.filter(user=request.user, is_completed=True).values_list('java_topic_id', flat=True))
+            profile, _ = UserGamificationProfile.objects.get_or_create(user=request.user)
 
         data = []
         for index, t in enumerate(topics):
-            # Unlock rules: Level 1 is always unlocked. Next level unlocks when previous level is completed.
             is_unlocked = (index == 0) or (topics[index - 1].id in completed_ids)
             is_completed = (t.id in completed_ids)
 
@@ -562,10 +568,10 @@ class JavaTopicsView(APIView):
 
         return Response({
             'gamification': {
-                'total_xp': profile.total_xp,
-                'current_level': profile.current_level,
-                'streak_days': profile.streak_days,
-                'badges': profile.badges_json
+                'total_xp': profile.total_xp if profile else 0,
+                'current_level': profile.current_level if profile else 1,
+                'streak_days': profile.streak_days if profile else 1,
+                'badges': profile.badges_json if profile else []
             },
             'topics': data
         })

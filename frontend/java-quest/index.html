@@ -179,10 +179,9 @@
         const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000' || window.location.port === '5501') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
 
         function getToken() { return localStorage.getItem('access_token'); }
-        function getHeaders() { return { headers: { Authorization: `Bearer ${getToken()}` } }; }
-
-        if (!getToken()) {
-            window.location.href = '/login/index.html';
+        function getHeaders() {
+            const token = getToken();
+            return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
         }
 
         // Axios 401 Interceptor
@@ -202,7 +201,6 @@
                         return axios(originalRequest);
                     } catch(e) {
                         localStorage.clear();
-                        window.location.href = '/login/index.html';
                         return Promise.reject(e);
                     }
                 }
