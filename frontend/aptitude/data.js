@@ -10,27 +10,40 @@ const aptitudeTopics = [
         "questions": [],
         "flashcards": [
             {
-                "title": "Squares Ending in 5",
-                "front": "How do you calculate $(10n + 5)^2$ mentally in 2 seconds?",
-                "back": "Formula: Multiply tens digit $n$ by $(n+1)$, then append 25!\nExample: $35^2 \\implies 3 \\times 4 = 12$, append $25 \\implies 1225$!",
+                "title": "1. Squares Ending in 5",
+                "front": "How do you calculate $(10n + 5)^2$ mentally?",
+                "evolution_origin": "Formula Origin: $(10n + 5)^2 = 100n(n+1) + 25$",
+                "back": "Shortcut Trick: Multiply $n \\times (n+1)$, then append 25 at the end!\nExample: $45^2 \\implies 4 \\times 5 = 20$, append $25 \\implies 2025$!",
                 "badge": "\u26a1 Mental Trick"
             },
             {
-                "title": "Squares Near Base 50",
-                "front": "How do you calculate $(50 \\pm d)^2$ using base 25?",
-                "back": "Answer = $(25 \\pm d)$ followed by $d^2$.\nExample $47^2$ ($d = 3$): $25 - 3 = 22$, $3^2 = 09 \\implies 2209$!",
+                "title": "2. Squares Near Base 50 (Below 50)",
+                "front": "How do you calculate $(50 - d)^2$ using base 25?",
+                "back": "Shortcut Trick: Subtract $d$ from 25, followed by $d^2$.\nExample $47^2$ ($d = 3$): $25 - 3 = 22$, $3^2 = 09 \\implies 2209$!",
                 "badge": "\ud83c\udfaf Base 50 Trick"
             },
             {
-                "title": "Squares Near Base 100",
-                "front": "How do you calculate $(100 \\pm d)^2$?",
-                "back": "Answer = $(N \\pm d)$ followed by $d^2$.\nExample $94^2$ ($d = 6$): $94 - 6 = 88$, $6^2 = 36 \\implies 8836$!",
+                "title": "3. Squares Near Base 50 (Above 50)",
+                "front": "How do you calculate $(50 + d)^2$ using base 25?",
+                "back": "Shortcut Trick: Add $d$ to 25, followed by $d^2$.\nExample $53^2$ ($d = 3$): $25 + 3 = 28$, $3^2 = 09 \\implies 2809$!",
+                "badge": "\ud83c\udfaf Base 50 Trick"
+            },
+            {
+                "title": "4. Squares Near Base 100 (Below 100)",
+                "front": "How do you calculate $(100 - d)^2$?",
+                "back": "Shortcut Trick: Subtract $d$ from the number $N$, followed by $d^2$.\nExample $94^2$ ($d = 6$): $94 - 6 = 88$, $6^2 = 36 \\implies 8836$!",
                 "badge": "\ud83d\udcaf Base 100 Trick"
             },
             {
-                "title": "Cube Root Digit Rules",
-                "front": "What are the unit digit mapping rules for Cube Roots?",
-                "back": "1, 4, 5, 6, 9, 0 stay the SAME.\n2 \u2194 8 and 3 \u2194 7 swap!\nExample: $\\sqrt[3]{97336}$ ends in 6, preceding cube of 97 is $4^3 = 64 \\implies 46$!",
+                "title": "5. Squares Near Base 100 (Above 100)",
+                "front": "How do you calculate $(100 + d)^2$?",
+                "back": "Shortcut Trick: Add $d$ to the number $N$, followed by $d^2$.\nExample $107^2$ ($d = 7$): $107 + 7 = 114$, $7^2 = 49 \\implies 11449$!",
+                "badge": "\ud83d\udcaf Base 100 Trick"
+            },
+            {
+                "title": "6. Cube Root Mapping Rules",
+                "front": "Which unit digits remain the same vs which digits swap for Cube Roots?",
+                "back": "1, 4, 5, 6, 9, 0 STAY SAME.\nSwaps: 2 \u2194 8 and 3 \u2194 7!\nExample: $\\sqrt[3]{97336}$ ends in 6, remaining 97 is between $4^3=64$ and $5^3=125 \\implies 46$!",
                 "badge": "\ud83d\udce6 Cube Root Rule"
             }
         ]
@@ -299,22 +312,47 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Rule of Symmetry",
-                "front": "What is the Symmetry Rule of Percentages?",
-                "back": "$a\\% \\text{ of } b = b\\% \\text{ of } a$\nExample: $13\\% \\text{ of } 200 = 200\\% \\text{ of } 13 = 2 \\times 13 = 26$!",
-                "badge": "\ud83d\udd04 Symmetry"
+                "title": "1. Percentage Base Definition",
+                "front": "What does percent mean and how is it converted to a fraction?",
+                "evolution_origin": "Percent means 'per hundred'. $x\\% = \\frac{x}{100}$",
+                "back": "To convert fraction $\\frac{a}{b}$ to percentage, multiply by $100\\%$.\nExample: $\\frac{1}{2} \\times 100\\% = 50\\%$.",
+                "badge": "\ud83d\udcca Base Rule"
             },
             {
-                "title": "Common Fraction Equivalents",
-                "front": "What are the fraction values for $12.5\\%$, $33.33\\%$, $16.66\\%$, $14.28\\%$?",
-                "back": "\u2022 $12.5\\% = \\frac{1}{8}$\n\u2022 $33.33\\% = \\frac{1}{3}$\n\u2022 $16.66\\% = \\frac{1}{6}$\n\u2022 $14.28\\% = \\frac{1}{7}$",
-                "badge": "\ud83d\udcca Fractions"
+                "title": "2. Rule of Symmetry",
+                "front": "How does $a\\% \\text{ of } b = b\\% \\text{ of } a$ simplify hard calculations?",
+                "back": "Example: $13\\% \\text{ of } 200$ looks tricky, but $200\\% \\text{ of } 13$ is simply $2 \\times 13 = 26$!",
+                "badge": "\ud83d\udd04 Symmetry Rule"
             },
             {
-                "title": "Successive Percentage Formula",
-                "front": "If a value changes by $a\\%$ then $b\\%$, what is the net percentage change?",
+                "title": "3. Fractional Equivalents Deck 1",
+                "front": "What are the percentage values of $\\frac{1}{2}, \\frac{1}{3}, \\frac{1}{4}, \\frac{1}{5}, \\frac{1}{6}$?",
+                "back": "\u2022 $\\frac{1}{2} = 50\\%$\n\u2022 $\\frac{1}{3} = 33.33\\%$\n\u2022 $\\frac{1}{4} = 25\\%$\n\u2022 $\\frac{1}{5} = 20\\%$\n\u2022 $\\frac{1}{6} = 16.66\\%$",
+                "badge": "\ud83d\udd22 Fraction Deck"
+            },
+            {
+                "title": "4. Fractional Equivalents Deck 2",
+                "front": "What are the percentage values of $\\frac{1}{7}, \\frac{1}{8}, \\frac{1}{9}, \\frac{1}{11}, \\frac{1}{12}$?",
+                "back": "\u2022 $\\frac{1}{7} = 14.28\\%$\n\u2022 $\\frac{1}{8} = 12.5\\%$\n\u2022 $\\frac{1}{9} = 11.11\\%$\n\u2022 $\\frac{1}{11} = 9.09\\%$\n\u2022 $\\frac{1}{12} = 8.33\\%$",
+                "badge": "\ud83d\udd22 Fraction Deck"
+            },
+            {
+                "title": "5. Mental 10% & 1% Decimal Shift",
+                "front": "How do you find $10\\%$ and $1\\%$ of any number in 1 second?",
+                "back": "\u2022 $10\\%$: Shift decimal point 1 place left ($10\\% \\text{ of } 7432 = 743.2$).\n\u2022 $1\\%$: Shift decimal point 2 places left ($1\\% \\text{ of } 7432 = 74.32$).",
+                "badge": "\u26a1 Mental Trick"
+            },
+            {
+                "title": "6. Successive Percentage Change",
+                "front": "What is the net effect of two successive percentage changes $a\\%$ and $b\\%$?",
                 "back": "Net Change = $\\left(a + b + \\frac{ab}{100}\\right)\\%$\nExample: $+20\\%$ then $-20\\% \\implies -4\\%$ net loss!",
                 "badge": "\ud83d\udcc8 Successive Change"
+            },
+            {
+                "title": "7. Equal Increase & Decrease Net Loss",
+                "front": "If an entity increases by $x\\%$ and then decreases by $x\\%$, what is the result?",
+                "back": "There is ALWAYS a net loss!\n$\\text{Net Loss} = \\left(\\frac{x}{10}\\right)^2\\%$\nExample: $x=30\\% \\implies (30/10)^2 = 9\\%$ net loss!",
+                "badge": "\ud83d\udcc9 Net Loss Rule"
             }
         ]
     },
@@ -642,16 +680,28 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Profit & Loss Base Rule",
-                "front": "Cost Price ($CP$) is always considered what percentage?",
-                "back": "Cost Price ($CP$) = $100\\%$ base!\nSelling Price ($SP$) = $100\\% + P\\%$ or $100\\% - L\\%$.",
-                "badge": "\ud83c\udff7\ufe0f Base Rule"
+                "title": "1. Cost Price Base Principle",
+                "front": "Why is Cost Price ($CP$) always set as $100\\%$?",
+                "back": "$CP = 100\\%$.\nIf Profit is $P\\%$, $SP = 100\\% + P\\%$.\nIf Loss is $L\\%$, $SP = 100\\% - L\\%$.",
+                "badge": "\ud83c\udff7\ufe0f CP Base"
             },
             {
-                "title": "CP to MP Relation",
-                "front": "What is the direct shortcut formula relating $CP$, $MP$, Profit $\\%$, and Discount $\\%$?",
-                "back": "$\\frac{\\text{Marked Price}}{\\text{Cost Price}} = \\frac{100 + \\text{Profit}\\%}{100 - \\text{Discount}\\%}$",
-                "badge": "\ud83d\udc8e Marked Price Formula"
+                "title": "2. Profit & Loss % Formulas",
+                "front": "What are the formulas for Profit $\\%$ and Loss $\\%$?",
+                "back": "$\\text{Profit}\\% = \\left(\\frac{SP - CP}{CP}\\right) \\times 100\\%$\n$\\text{Loss}\\% = \\left(\\frac{CP - SP}{CP}\\right) \\times 100\\%$",
+                "badge": "\ud83d\udcd0 Formulas"
+            },
+            {
+                "title": "3. Marked Price & Discount Relation",
+                "front": "How are Marked Price ($MP$) and Cost Price ($CP$) related?",
+                "back": "$\\frac{MP}{CP} = \\frac{100 + P\\%}{100 - D\\%}$\nExample: $P=20\\%, D=10\\% \\implies \\frac{MP}{CP} = \\frac{120}{90} = \\frac{4}{3}$!",
+                "badge": "\ud83d\udc8e MP/CP Shortcut"
+            },
+            {
+                "title": "4. Dishonest Shopkeeper Trick",
+                "front": "If a shopkeeper sells at CP but uses $g$ grams instead of $1000g$, what is his profit %?",
+                "back": "$\\text{Gain}\\% = \\left(\\frac{\\text{Error}}{\\text{True Weight} - \\text{Error}}\\right) \\times 100\\%$",
+                "badge": "\u2696\ufe0f Shopkeeper Trick"
             }
         ]
     },
@@ -691,16 +741,34 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Simple Interest Formula",
-                "front": "What is the formula for Simple Interest ($SI$) and Total Amount ($A$)?",
-                "back": "$SI = \\frac{P \\times R \\times T}{100}$\n$A = P \\times \\left(1 + \\frac{R \\times T}{100}\\right)$",
+                "title": "1. Simple Interest ($SI$)",
+                "front": "What is the formula for Simple Interest and Total Amount?",
+                "back": "$SI = \\frac{P \\times R \\times T}{100}$\n$Amount (A) = P + SI = P \\times \\left(1 + \\frac{RT}{100}\\right)$",
                 "badge": "\ud83c\udfe6 Simple Interest"
             },
             {
-                "title": "Difference CI vs SI (2 Years)",
-                "front": "What is the shortcut for difference between CI and SI for 2 years?",
-                "back": "$\\text{Difference} = P \\times \\left(\\frac{R}{100}\\right)^2$\nExample: $P=10,000, R=10\\% \\implies 10000 \\times (0.1)^2 = \\text{Rs. } 100$!",
-                "badge": "\u26a1 2-Year Difference"
+                "title": "2. Doubling Sum SI Shortcut",
+                "front": "If a sum doubles itself in $T$ years at Simple Interest, what is Rate $R$?",
+                "back": "$R = \\frac{100}{T}\\%$\nExample: Doubles in 5 years $\\implies R = \\frac{100}{5} = 20\\%$ per annum!",
+                "badge": "\u26a1 Doubling Shortcut"
+            },
+            {
+                "title": "3. Compound Interest ($CI$)",
+                "front": "What is the formula for Compound Amount ($A$) and $CI$?",
+                "back": "$A = P \\times \\left(1 + \\frac{R}{100}\\right)^T$\n$CI = A - P$",
+                "badge": "\ud83d\udcc8 Compound Interest"
+            },
+            {
+                "title": "4. Difference Between CI & SI (2 Years)",
+                "front": "What is the shortcut formula for difference between CI and SI for 2 years?",
+                "back": "$\\text{Difference} = P \\times \\left(\\frac{R}{100}\\right)^2$\nExample: $P=10000, R=10\\% \\implies 10000 \\times (0.1)^2 = \\text{Rs. } 100$!",
+                "badge": "\u26a1 2-Yr Difference"
+            },
+            {
+                "title": "5. Difference Between CI & SI (3 Years)",
+                "front": "What is the shortcut formula for difference between CI and SI for 3 years?",
+                "back": "$\\text{Difference} = P \\times \\left(\\frac{R}{100}\\right)^2 \\times \\left(\\frac{300 + R}{100}\\right)$",
+                "badge": "\u26a1 3-Yr Difference"
             }
         ]
     },
@@ -980,16 +1048,22 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Average Definition & Sum",
-                "front": "How do you calculate Sum from Average?",
-                "back": "$\\text{Average} = \\frac{\\text{Sum}}{N} \\implies \\text{Sum} = \\text{Average} \\times N$",
+                "title": "1. Average Base Formula",
+                "front": "How do you find Average and Total Sum?",
+                "back": "$\\text{Average} = \\frac{\\sum X}{N} \\implies \\text{Sum} = \\text{Average} \\times N$",
                 "badge": "\u2696\ufe0f Base Formula"
             },
             {
-                "title": "Replacement Shortcut",
-                "front": "When a new person replaces an old person, how do you find the new weight?",
+                "title": "2. Consecutive Numbers Average Shortcuts",
+                "front": "What are the shortcuts for Average of first $n$ natural, even, and odd numbers?",
+                "back": "\u2022 First $n$ Natural: $\\frac{n+1}{2}$\n\u2022 First $n$ Even: $n+1$\n\u2022 First $n$ Odd: $n$\n\u2022 Any AP Series: $\\frac{\\text{First Term} + \\text{Last Term}}{2}$",
+                "badge": "\u26a1 AP Shortcuts"
+            },
+            {
+                "title": "3. Replacement Formula",
+                "front": "When a new person replaces an old person in a group, what is the new weight?",
                 "back": "$\\text{Weight}_{\\text{New}} = \\text{Weight}_{\\text{Old}} + (N \\times \\Delta \\text{Average})$",
-                "badge": "\ud83d\udd04 Replacement Rule"
+                "badge": "\ud83d\udd04 Replacement"
             }
         ]
     },
@@ -1221,16 +1295,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Alligations & Mixtures (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Alligations & Mixtures (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Alligations and mixtures is a rule ",
+                "front": "What is the rule or formula for: Alligations and mixtures is a rule that can be applied to Percentages, Profit and Loss, and Averages.?",
+                "back": "Handwritten PDF Rule:\nAlligations and mixtures is a rule that can be applied to Percentages, Profit and Loss, and Averages.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: It is mostly used when the Result (",
+                "front": "What is the rule or formula for: It is mostly used when the Result (or average/mixture value) is given.?",
+                "back": "Handwritten PDF Rule:\nIt is mostly used when the Result (or average/mixture value) is given.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: In Alligation and mixtures, a total",
+                "front": "What is the rule or formula for: In Alligation and mixtures, a total of three values (Result and two categories) will be given in the question.?",
+                "back": "Handwritten PDF Rule:\nIn Alligation and mixtures, a total of three values (Result and two categories) will be given in the question.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: Take the positive difference betwee",
+                "front": "What is the rule or formula for: Take the positive difference between the Result and each category.?",
+                "back": "Handwritten PDF Rule:\nTake the positive difference between the Result and each category.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: The ratio of the quantities of $A$ ",
+                "front": "What is the rule or formula for: The ratio of the quantities of $A$ and $B$ is $(B  R) : (R  A)$.?",
+                "back": "Handwritten PDF Rule:\nThe ratio of the quantities of $A$ and $B$ is $(B  R) : (R  A)$.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: Important Note: All the values must",
+                "front": "What is the rule or formula for: Important Note: All the values must be of the same style/format (i.e., either all percentages or all direct numerics like cost price).?",
+                "back": "Handwritten PDF Rule:\nImportant Note: All the values must be of the same style/format (i.e., either all percentages or all direct numerics like cost price).\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -1450,16 +1548,16 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Problems on Ages (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Problems on Ages (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: In Ages, the age gap is always cons",
+                "front": "What is the rule or formula for: In Ages, the age gap is always constant/same between the entities.?",
+                "back": "Handwritten PDF Rule:\nIn Ages, the age gap is always constant/same between the entities.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: The equations of age (i.e. double, ",
+                "front": "What is the rule or formula for: The equations of age (i.e. double, triple, 4 times, etc.) among the entities happens only a single time across life.?",
+                "back": "Handwritten PDF Rule:\nThe equations of age (i.e. double, triple, 4 times, etc.) among the entities happens only a single time across life.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
             }
         ]
     },
@@ -1715,16 +1813,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Ratios & Proportions (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Ratios & Proportions (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Product of Extremes = Product of Me",
+                "front": "What is the rule or formula for: Product of Extremes = Product of Means: If $a:b = c:d$, then $a \\times d = b \\times c$?",
+                "back": "Handwritten PDF Rule:\nProduct of Extremes = Product of Means: If $a:b = c:d$, then $a \\times d = b \\times c$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Mean Proportional: $\\sqrt{ab}$",
+                "front": "What is the rule or formula for: Mean Proportional: $\\sqrt{ab}$?",
+                "back": "Handwritten PDF Rule:\nMean Proportional: $\\sqrt{ab}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Third Proportional: If $a:b :: b:c$",
+                "front": "What is the rule or formula for: Third Proportional: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$?",
+                "back": "Handwritten PDF Rule:\nThird Proportional: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: Compounded Ratio: $ac:bd$",
+                "front": "What is the rule or formula for: Compounded Ratio: $ac:bd$?",
+                "back": "Handwritten PDF Rule:\nCompounded Ratio: $ac:bd$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: If $a:b$, then Inverse Ratio $\\Righ",
+                "front": "What is the rule or formula for: If $a:b$, then Inverse Ratio $\\Rightarrow b:a$?",
+                "back": "Handwritten PDF Rule:\nIf $a:b$, then Inverse Ratio $\\Rightarrow b:a$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: If $a:b:c$, then Inverse Ratio $\\Ri",
+                "front": "What is the rule or formula for: If $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$?",
+                "back": "Handwritten PDF Rule:\nIf $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -1884,16 +2006,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Partnerships (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Partnerships (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Profit sharing Ratio = Investment $",
+                "front": "What is the rule or formula for: Profit sharing Ratio = Investment $\\times$ Time (months/years)?",
+                "back": "Handwritten PDF Rule:\nProfit sharing Ratio = Investment $\\times$ Time (months/years)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: It will be calculated for each inve",
+                "front": "What is the rule or formula for: It will be calculated for each investment individually.?",
+                "back": "Handwritten PDF Rule:\nIt will be calculated for each investment individually.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Profit sharing Ratio is the ratio t",
+                "front": "What is the rule or formula for: Profit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.?",
+                "back": "Handwritten PDF Rule:\nProfit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: Then, Investment Ratio = Profits / ",
+                "front": "What is the rule or formula for: Then, Investment Ratio = Profits / Time?",
+                "back": "Handwritten PDF Rule:\nThen, Investment Ratio = Profits / Time\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: Time Ratio = Profits / Investment",
+                "front": "What is the rule or formula for: Time Ratio = Profits / Investment?",
+                "back": "Handwritten PDF Rule:\nTime Ratio = Profits / Investment\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: One partner just invests the money ",
+                "front": "What is the rule or formula for: One partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.?",
+                "back": "Handwritten PDF Rule:\nOne partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2065,16 +2211,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Time & Work (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Time & Work (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Time and work are directly proporti",
+                "front": "What is the rule or formula for: Time and work are directly proportional to each other. ($Time \\propto work$)?",
+                "back": "Handwritten PDF Rule:\nTime and work are directly proportional to each other. ($Time \\propto work$)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Men and work are directly proportio",
+                "front": "What is the rule or formula for: Men and work are directly proportional to each other. ($Men \\propto work$)?",
+                "back": "Handwritten PDF Rule:\nMen and work are directly proportional to each other. ($Men \\propto work$)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Time and men are inversely proporti",
+                "front": "What is the rule or formula for: Time and men are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)?",
+                "back": "Handwritten PDF Rule:\nTime and men are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: M = Person who does the work",
+                "front": "What is the rule or formula for: M = Person who does the work?",
+                "back": "Handwritten PDF Rule:\nM = Person who does the work\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: D = Days of work",
+                "front": "What is the rule or formula for: D = Days of work?",
+                "back": "Handwritten PDF Rule:\nD = Days of work\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: H = Hours of work in the day",
+                "front": "What is the rule or formula for: H = Hours of work in the day?",
+                "back": "Handwritten PDF Rule:\nH = Hours of work in the day\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2258,16 +2428,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Speed, Distance, Time (PDF) Core Concept",
-                "front": "What is the foundational concept for Speed, Distance, Time (PDF)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Time: Time taken to cover a distanc",
+                "front": "What is the rule or formula for: Time: Time taken to cover a distance.?",
+                "back": "Handwritten PDF Rule:\nTime: Time taken to cover a distance.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Distance: Travelled in a certain ti",
+                "front": "What is the rule or formula for: Distance: Travelled in a certain time with a speed.?",
+                "back": "Handwritten PDF Rule:\nDistance: Travelled in a certain time with a speed.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Speed: Travelling speed of the movi",
+                "front": "What is the rule or formula for: Speed: Travelling speed of the moving body.?",
+                "back": "Handwritten PDF Rule:\nSpeed: Travelling speed of the moving body.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: `Time \u221d Distance`",
+                "front": "What is the rule or formula for: `Time \u221d Distance`?",
+                "back": "Handwritten PDF Rule:\n`Time \u221d Distance`\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: `Speed \u221d Distance`",
+                "front": "What is the rule or formula for: `Speed \u221d Distance`?",
+                "back": "Handwritten PDF Rule:\n`Speed \u221d Distance`\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: `Speed \u221d 1/Time`",
+                "front": "What is the rule or formula for: `Speed \u221d 1/Time`?",
+                "back": "Handwritten PDF Rule:\n`Speed \u221d 1/Time`\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2295,16 +2489,10 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Problems on Trains (PDF) Core Concept",
-                "front": "What is the foundational concept for Problems on Trains (PDF)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "title": "1. Problems on Trains (PDF) Core Principle",
+                "front": "What is the main formula for Problems on Trains (PDF)?",
+                "back": "Master core formulas and shortcut tricks for placement speed!",
                 "badge": "\ud83d\udca1 Core Rule"
-            },
-            {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -2344,16 +2532,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Boats & Streams (PDF) Core Concept",
-                "front": "What is the foundational concept for Boats & Streams (PDF)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Water flow affects speed",
+                "front": "What is the rule or formula for: Water flow affects speed?",
+                "back": "Handwritten PDF Rule:\nWater flow affects speed\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Let downstream speed be $D$",
+                "front": "What is the rule or formula for: Let downstream speed be $D$?",
+                "back": "Handwritten PDF Rule:\nLet downstream speed be $D$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Let upstream speed be $U$",
+                "front": "What is the rule or formula for: Let upstream speed be $U$?",
+                "back": "Handwritten PDF Rule:\nLet upstream speed be $U$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: Then, Boat speed = $\\frac{D + U}{2}",
+                "front": "What is the rule or formula for: Then, Boat speed = $\\frac{D + U}{2}$?",
+                "back": "Handwritten PDF Rule:\nThen, Boat speed = $\\frac{D + U}{2}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: Stream speed = $\\frac{D  U}{2}$",
+                "front": "What is the rule or formula for: Stream speed = $\\frac{D  U}{2}$?",
+                "back": "Handwritten PDF Rule:\nStream speed = $\\frac{D  U}{2}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: Distance = $\\frac{\\text{Product of ",
+                "front": "What is the rule or formula for: Distance = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$?",
+                "back": "Handwritten PDF Rule:\nDistance = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2405,16 +2617,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Pipes & Cisterns (PDF Placeholder) Core Concept",
-                "front": "What is the foundational concept for Pipes & Cisterns (PDF Placeholder)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: A fills in $x$ time",
+                "front": "What is the rule or formula for: A fills in $x$ time?",
+                "back": "Handwritten PDF Rule:\nA fills in $x$ time\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: B fills in $y$ time",
+                "front": "What is the rule or formula for: B fills in $y$ time?",
+                "back": "Handwritten PDF Rule:\nB fills in $y$ time\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Then total time taken to fill when ",
+                "front": "What is the rule or formula for: Then total time taken to fill when $A+B = \\frac{xy}{x+y}$?",
+                "back": "Handwritten PDF Rule:\nThen total time taken to fill when $A+B = \\frac{xy}{x+y}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: Then total time taken to fill when ",
+                "front": "What is the rule or formula for: Then total time taken to fill when $A+B = \\frac{xy}{xy}$?",
+                "back": "Handwritten PDF Rule:\nThen total time taken to fill when $A+B = \\frac{xy}{xy}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: Then entities which are responsible",
+                "front": "What is the rule or formula for: Then entities which are responsible for emptying are taken in negative.?",
+                "back": "Handwritten PDF Rule:\nThen entities which are responsible for emptying are taken in negative.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: Rest of the process is similar to T",
+                "front": "What is the rule or formula for: Rest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.?",
+                "back": "Handwritten PDF Rule:\nRest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2694,16 +2930,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Permutations & Combinations (PDF) Core Concept",
-                "front": "What is the foundational concept for Permutations & Combinations (PDF)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Permutations: Arrangements (Positio",
+                "front": "What is the rule or formula for: Permutations: Arrangements (Position matters)?",
+                "back": "Handwritten PDF Rule:\nPermutations: Arrangements (Position matters)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Combinations: Selection (Just selec",
+                "front": "What is the rule or formula for: Combinations: Selection (Just selection)?",
+                "back": "Handwritten PDF Rule:\nCombinations: Selection (Just selection)\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Multiply \"r\" numbers from \"n\" towar",
+                "front": "What is the rule or formula for: Multiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"?",
+                "back": "Handwritten PDF Rule:\nMultiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: $nP_r = nC_r \\times r!$",
+                "front": "What is the rule or formula for: $nP_r = nC_r \\times r!$?",
+                "back": "Handwritten PDF Rule:\n$nP_r = nC_r \\times r!$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: When objects are identical: $\\frac{",
+                "front": "What is the rule or formula for: When objects are identical: $\\frac{n!}{p!q!r!}$?",
+                "back": "Handwritten PDF Rule:\nWhen objects are identical: $\\frac{n!}{p!q!r!}$\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: Not together = Total arrangements  ",
+                "front": "What is the rule or formula for: Not together = Total arrangements  Together arrangements?",
+                "back": "Handwritten PDF Rule:\nNot together = Total arrangements  Together arrangements\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -2887,16 +3147,40 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Probability (PDF) Core Concept",
-                "front": "What is the foundational concept for Probability (PDF)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "Rule 1: Probability measures the chance of ",
+                "front": "What is the rule or formula for: Probability measures the chance of an event happening.?",
+                "back": "Handwritten PDF Rule:\nProbability measures the chance of an event happening.\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 1"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "Rule 2: Probability = Favorable outcomes / ",
+                "front": "What is the rule or formula for: Probability = Favorable outcomes / Total outcomes?",
+                "back": "Handwritten PDF Rule:\nProbability = Favorable outcomes / Total outcomes\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 2"
+            },
+            {
+                "title": "Rule 3: Range of Probability:",
+                "front": "What is the rule or formula for: Range of Probability:?",
+                "back": "Handwritten PDF Rule:\nRange of Probability:\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 3"
+            },
+            {
+                "title": "Rule 4: By Permutations and Combinations, P",
+                "front": "What is the rule or formula for: By Permutations and Combinations, Probability = our selections / Total selections?",
+                "back": "Handwritten PDF Rule:\nBy Permutations and Combinations, Probability = our selections / Total selections\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 4"
+            },
+            {
+                "title": "Rule 5: Complement Rule: `P(not E) = 1  P(E",
+                "front": "What is the rule or formula for: Complement Rule: `P(not E) = 1  P(E)` (used for \"At least one\")?",
+                "back": "Handwritten PDF Rule:\nComplement Rule: `P(not E) = 1  P(E)` (used for \"At least one\")\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 5"
+            },
+            {
+                "title": "Rule 6: Addition Rule (OR): If events are m",
+                "front": "What is the rule or formula for: Addition Rule (OR): If events are mutually exclusive, `P(A or B) = P(A) + P(B)`?",
+                "back": "Handwritten PDF Rule:\nAddition Rule (OR): If events are mutually exclusive, `P(A or B) = P(A) + P(B)`\nMaster this concept for high-speed placement problem solving!",
+                "badge": "\ud83d\udca1 Concept 6"
             }
         ]
     },
@@ -3260,16 +3544,34 @@ const aptitudeTopics = [
         ],
         "flashcards": [
             {
-                "title": "Mensuration 2D & 3D (PDF Master Edition) Core Concept",
-                "front": "What is the foundational concept for Mensuration 2D & 3D (PDF Master Edition)?",
-                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
-                "badge": "\ud83d\udca1 Core Rule"
+                "title": "1. Square & Rectangle Formulas",
+                "front": "What are the Area, Perimeter, and Diagonal formulas for Square & Rectangle?",
+                "back": "\u2022 **Square**: Area $= a^2 = \\frac{1}{2}d^2$ | Perim $= 4a$ | Diag $= a\\sqrt{2}$\n\u2022 **Rectangle**: Area $= l \\times b$ | Perim $= 2(l+b)$ | Diag $= \\sqrt{l^2+b^2}$",
+                "badge": "\ud83d\udcd0 2D Geometry"
             },
             {
-                "title": "PDF Shortcut Method",
-                "front": "How do you solve these problems in under 30 seconds?",
-                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
-                "badge": "\u26a1 Shortcut Trick"
+                "title": "2. Circle & Sector Formulas",
+                "front": "What are Circumference, Area, and Sector Area formulas?",
+                "back": "\u2022 **Circle**: Circum $= 2\\pi r$ | Area $= \\pi r^2$\n\u2022 **Sector**: Area $= \\frac{\\pi r^2 \\theta}{360^\\circ}$ | Arc Length $= \\frac{2\\pi r \\theta}{360^\\circ}$",
+                "badge": "\u2b55 Circle Rules"
+            },
+            {
+                "title": "3. Ratio Conversion Rules (Side vs Area vs Volume)",
+                "front": "If side ratio is $a:b$, what are the Area ratio and Volume ratio?",
+                "back": "\u2022 Side Ratio $= a:b$\n\u2022 Area Ratio $= a^2:b^2$\n\u2022 Volume Ratio $= a^3:b^3$\nExample: Area ratio $36:121 \\implies$ Side ratio $\\sqrt{36:121} = 6:11 \\implies$ Volume ratio $6^3:11^3 = 216:1331$!",
+                "badge": "\u26a1 PDF Ratio Rule"
+            },
+            {
+                "title": "4. Cow Ungrazed Field Shortcut",
+                "front": "A cow is tied to a corner of a square field side $S$ with rope length $R$. What is the ungrazed area?",
+                "back": "$\\text{Ungrazed Area} = \\text{Area of Square} - \\text{Area of Sector}(90^\\circ)$\n$= S^2 - \\frac{\\pi R^2 \\times 90^\\circ}{360^\\circ} = S^2 - \\frac{1}{4}\\pi R^2$\nExample: $S=30, R=14 \\implies 900 - 154 = 746 \\text{ sq.m}$!",
+                "badge": "\ud83d\udc04 Cow Ungrazed Trick"
+            },
+            {
+                "title": "5. Melting Solid Cubes",
+                "front": "When 3 solid cubes of sides $a_1, a_2, a_3$ are melted into a single cube, what is new side $a$?",
+                "back": "$a^3 = a_1^3 + a_2^3 + a_3^3 \\implies a = \\sqrt[3]{a_1^3 + a_2^3 + a_3^3}$\nExample: $6^3 + 8^3 + 10^3 = 216 + 512 + 1000 = 1728 \\implies a = 12 \\text{ cm}$!",
+                "badge": "\ud83e\uddca Melting Cubes"
             }
         ]
     }
