@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .models import Question, Option, Answer, SectionQuestionAssignment
+from .models import Question, Option, Answer, SectionQuestionAssignment, AptitudeTopic, AptitudeQuestion, UserAptitudeProgress, JavaTopic, UserJavaProgress, UserGamificationProfile
 from .serializers import QuestionSerializer, AnswerSerializer, AdminQuestionSerializer
+from django.shortcuts import get_object_or_404
 from exams.models import SectionAttempt
 from django.db import connection
 import openpyxl
