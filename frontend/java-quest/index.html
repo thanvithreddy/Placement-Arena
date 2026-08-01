@@ -486,336 +486,1254 @@
     <script>
         // Full Java Mastery Modules Dataset
         const javaModules = [
+    {
+        "id": 1,
+        "title": "1. Arrays & Memory Indexing",
+        "badge": "Data Structure Base",
+        "desc": "Master contiguous memory allocation, zero-based indexing, and ArrayIndexOutOfBoundsException.",
+        "storyTitle": "The Apartment Complex of Contiguous Memory",
+        "storyBody": "An Array is like a modern apartment building with 10 identical rooms numbered 0 through 9 built right next to each other. Because every room is the exact same size, the JVM can jump to Room 7 instantly!",
+        "whyTitle": "Why Arrays Provide O(1) Instant Access",
+        "whyAnalogy": "If each room is 4 meters wide, Room #k is located at offset: Address + (k * 4 meters)!",
+        "whyIndustry:": "Used in high-frequency trading engines and audio buffer streaming for zero-overhead performance.",
+        "flashcards": [
             {
-                id: 1,
-                title: "1. Variables & JVM Memory",
-                badge: "Foundational Java",
-                desc: "Explore primitive data types, Stack vs Heap allocation, and JVM byte storage.",
-                storyTitle: "The Magical Locker Room of Computer Memory",
-                storyBody: "Imagine RAM is a futuristic city with millions of glowing lockers. Declaring `int age = 25` rents a 32-bit locker named 'age' and locks 25 inside! Primitive types live right inside Stack lockers for maximum speed.",
-                whyTitle: "Why Static Typing Keeps Enterprise Systems Safe",
-                whyAnalogy: "Just like a measuring cup only holds liquids, an `int` locker in Java only holds whole numbers!",
-                whyIndustry: "Banks use strict Java types so monetary balances can never accidentally store text!",
-                flashcards: [
-                    {
-                        title: "Primitive vs Reference Types",
-                        badge: "💡 Memory Rule",
-                        front: "Where do primitive variables (`int`, `double`, `boolean`) store their values?",
-                        back: "Primitives store their actual raw values directly inside Stack Memory frames!\nReference types store a 64-bit memory address pointing to Heap objects!"
-                    },
-                    {
-                        title: "The 8 Java Primitives",
-                        badge: "🔢 Syntax Rule",
-                        front: "Name the 8 primitive types in Java.",
-                        back: "1. `byte` (8-bit)\n2. `short` (16-bit)\n3. `int` (32-bit)\n4. `long` (64-bit)\n5. `float` (32-bit IEEE)\n6. `double` (64-bit IEEE)\n7. `char` (16-bit Unicode)\n8. `boolean` (true/false)"
-                    }
-                ],
-                editorLines: [
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        int studentAge = 22;',
-                    '        double gpa = 3.92;',
-                    '        String name = "Placement Hero";',
-                    '        System.out.println(name + " | Age: " + studentAge + " | GPA: " + gpa);',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'Compiling Main.java via javac...',
-                    'Executing bytecode on JVM...',
-                    'Placement Hero | Age: 22 | GPA: 3.92'
-                ],
-                wrongSnippet: 'int age = "Twenty-Two"; // Compilation Error',
-                wrongWhy: "Type Mismatch: Cannot convert String to int. Java checks types at compile time!",
-                correctSnippet: 'int age = 22; // Correct Type Declaration',
-                correctWhy: "int type matches integer literal 22 cleanly.",
-                interviewQs: [
-                    {
-                        q: "What is the size and default value of an `int` and `double` in Java?",
-                        a: "`int`: 32 bits (4 bytes), default value `0`.\n`double`: 64 bits (8 bytes), default value `0.0`.",
-                        diff: "Easy"
-                    },
-                    {
-                        q: "Why is `char` 2 bytes in Java instead of 1 byte like in C?",
-                        a: "Java uses 16-bit Unicode encoding (UTF-16) to support international alphabets (Hindi, Chinese, Japanese, etc.), whereas C uses 8-bit ASCII!",
-                        diff: "Medium"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "Which memory region holds primitive local variables in Java?",
-                        options: ["Heap Memory", "Stack Memory", "Metaspace", "String Constant Pool"],
-                        correct: 1,
-                        exp: "Local primitive variables declared inside method frames live directly in Stack Memory!"
-                    },
-                    {
-                        text: "What is the bit size of a `double` primitive in Java?",
-                        options: ["16 bits", "32 bits", "64 bits", "128 bits"],
-                        correct: 2,
-                        exp: "Java `double` is a 64-bit IEEE 754 floating point number."
-                    }
-                ]
+                "title": "Array Contiguous Allocation",
+                "badge": "\u26a1 Memory Rule",
+                "front": "Why is array index access O(1) constant time?",
+                "back": "Formula: `Memory_Address = Base_Address + (Index * Element_Size)`.\nThe JVM calculates the exact RAM byte address instantly without searching!"
             },
             {
-                id: 2,
-                title: "2. OOP Magic & Classes",
-                badge: "Object-Oriented Programming",
-                desc: "Master Blueprints (Classes), Objects in Heap, Constructors, and `this` reference.",
-                storyTitle: "Architect Blueprints vs Physical Houses",
-                storyBody: "A `Class` is just an architectural blueprint on paper. An `Object` is the actual physical house built in Heap Memory using the `new` keyword!",
-                whyTitle: "Why OOP Powers Large-Scale Software",
-                whyAnalogy: "Car manufacturers use one chassis blueprint to manufacture thousands of individual cars!",
-                whyIndustry: "Amazon uses an `Order` class to instantiate millions of customer orders every minute!",
-                flashcards: [
-                    {
-                        title: "The `new` Keyword",
-                        badge: "🧱 Heap Allocation",
-                        front: "What does the `new` keyword actually do in JVM memory?",
-                        back: "1. Allocates memory in Heap for the object.\n2. Initializes instance fields.\n3. Invokes constructor.\n4. Returns reference address!"
-                    }
-                ],
-                editorLines: [
-                    'class Student {',
-                    '    String name;',
-                    '    Student(String n) { this.name = n; }',
-                    '}',
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        Student s1 = new Student("Alice");',
-                    '        System.out.println("Student created: " + s1.name);',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'Heap Allocation: @0x91fa',
-                    'Student created: Alice'
-                ],
-                wrongSnippet: 'Student s; s.name = "Bob"; // NullPointerException',
-                wrongWhy: "Variable `s` is uninitialized (null). You must instantiate with `new Student()` first!",
-                correctSnippet: 'Student s = new Student("Bob"); s.name = "Bob";',
-                correctWhy: "Allocates a valid Heap object before setting properties.",
-                interviewQs: [
-                    {
-                        q: "What is the difference between a Class and an Object?",
-                        a: "A Class is a logical template/definition. An Object is a physical instance residing in Heap Memory with its own state.",
-                        diff: "Easy"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "Where are Java objects stored in memory when created with `new`?",
-                        options: ["Stack", "Heap", "Register", "Disk"],
-                        correct: 1,
-                        exp: "All objects instantiated with `new` are allocated inside Heap Memory."
-                    }
-                ]
-            },
-            {
-                id: 3,
-                title: "3. Stack vs Heap Memory",
-                badge: "JVM Architecture",
-                desc: "Deep dive into garbage collection, string pool immutability, and stack frames.",
-                storyTitle: "The Dance Between Stack & Heap",
-                storyBody: "Stack Memory handles short-lived method frames and reference variables. Heap Memory stores large shared objects and strings!",
-                whyTitle: "Why String Immutability Matters",
-                whyAnalogy: "Like a published book, once a String is printed in String Pool, it can never be altered!",
-                whyIndustry: "String immutability ensures security for passwords, network sockets, and hashmap keys!",
-                flashcards: [
-                    {
-                        title: "String Pool Mechanics",
-                        badge: "🧵 String Pool",
-                        front: "What is the difference between `String s1 = \"Java\"` and `String s2 = new String(\"Java\")`?",
-                        back: "`s1` reuses the existing instance from String Constant Pool.\n`s2` forces creation of a brand new Object in Heap!"
-                    }
-                ],
-                editorLines: [
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        String a = "Quest";',
-                    '        String b = "Quest";',
-                    '        System.out.println("String Pool Match: " + (a == b));',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'String Pool Check: Same reference address @0x33a',
-                    'String Pool Match: true'
-                ],
-                wrongSnippet: 'if (name == "Alice") { ... } // Risky Reference Check',
-                wrongWhy: "`==` checks reference memory addresses, NOT String content value! Use `.equals()` instead.",
-                correctSnippet: 'if ("Alice".equals(name)) { ... } // Safe Value Comparison',
-                correctWhy: "`.equals()` compares character array values safely.",
-                interviewQs: [
-                    {
-                        q: "Why are Strings immutable in Java?",
-                        a: "Security, thread-safety, HashMap hashing caching, and String Pool memory savings!",
-                        diff: "Hard"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "Which method compares String text content instead of memory references?",
-                        options: ["==", ".equals()", ".compareTo()", "hashCode()"],
-                        correct: 1,
-                        exp: "`.equals()` evaluates text character sequence matching."
-                    }
-                ]
-            },
-            {
-                id: 4,
-                title: "4. Exception Handling",
-                badge: "Production Resilience",
-                desc: "Master `try-catch-finally`, Checked vs Unchecked Exceptions, and Custom Error Classes.",
-                storyTitle: "The Airbag Safety System of Java Code",
-                storyBody: "Exceptions are like car airbags. When a crash occurs (division by zero, null pointer), the airbag deploys (`catch`) to prevent the program from crashing!",
-                whyTitle: "Why Enterprise Systems Rely on Exception Handling",
-                whyAnalogy: "An ATM machine catching network timeout errors so customer cards aren't trapped!",
-                whyIndustry: "Microservices catch runtime errors and return graceful HTTP 500 error payloads.",
-                flashcards: [
-                    {
-                        title: "Checked vs Unchecked Exceptions",
-                        badge: "⚠️ Compiler Rules",
-                        front: "What is the difference between Checked and Unchecked exceptions?",
-                        back: "• **Checked**: Verified at compile-time (e.g., `IOException`). Must be declared or caught!\n• **Unchecked**: Extends `RuntimeException` (e.g., `NullPointerException`). Happens at runtime!"
-                    }
-                ],
-                editorLines: [
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        try {',
-                    '            int res = 10 / 0;',
-                    '        } catch (ArithmeticException e) {',
-                    '            System.out.println("Caught: " + e.getMessage());',
-                    '        }',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'Caught: / by zero'
-                ],
-                wrongSnippet: 'try { ... } catch(Exception e) {} // Silent Catch Trap',
-                wrongWhy: "Swallowing exceptions silently hides bugs and breaks production debugging!",
-                correctSnippet: 'try { ... } catch(Exception e) { logger.error("Failed", e); }',
-                correctWhy: "Logging exceptions ensures trace visibility.",
-                interviewQs: [
-                    {
-                        q: "Does `finally` block execute if `try` has a `return` statement?",
-                        a: "YES! `finally` block ALWAYS executes before returning, unless `System.exit(0)` is invoked!",
-                        diff: "Medium"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "Which keyword is used to explicitly throw an exception object?",
-                        options: ["throws", "throw", "try", "finally"],
-                        correct: 1,
-                        exp: "`throw` is used to throw an exception instance inside a method body."
-                    }
-                ]
-            },
-            {
-                id: 5,
-                title: "5. Collections Framework",
-                badge: "Data Structures",
-                desc: "Master ArrayList, LinkedList, HashMap internal buckets, and HashSet duplicate handling.",
-                storyTitle: "The Organizer Drawers of Enterprise Data",
-                storyBody: "Collections are high-speed organizer drawers. Need fast index lookup? Use `ArrayList`. Need $O(1)$ key-value lookup? Use `HashMap`!",
-                whyTitle: "Why HashMap Powers 90% of Backend Systems",
-                whyAnalogy: "Like a library catalog index where book category code leads straight to the shelf!",
-                whyIndustry: "Used for user session caching, database result indexing, and token validation.",
-                flashcards: [
-                    {
-                        title: "HashMap $O(1)$ Bucket Indexing",
-                        badge: "⚡ Internal Working",
-                        front: "How does HashMap find values in $O(1)$ time complexity?",
-                        back: "1. Calculates `key.hashCode()`.\n2. Computes `bucketIndex = hash % capacity`.\n3. Searches bucket linked list/tree node for matching `equals()` key!"
-                    }
-                ],
-                editorLines: [
-                    'import java.util.*;',
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        Map<String, Integer> scores = new HashMap<>();',
-                    '        scores.put("Java", 98);',
-                    '        System.out.println("Java Score: " + scores.get("Java"));',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'HashMap Hash: 2301592 -> Bucket 4',
-                    'Java Score: 98'
-                ],
-                wrongSnippet: 'List list = new ArrayList(); list.add(10); String s = (String)list.get(0); // ClassCastException',
-                wrongWhy: "Raw collections without Generics cause runtime type cast exceptions!",
-                correctSnippet: 'List<Integer> list = new ArrayList<>(); // Type-Safe Generics',
-                correctWhy: "Generics enforce compile-time type safety.",
-                interviewQs: [
-                    {
-                        q: "What is the difference between ArrayList and LinkedList?",
-                        a: "ArrayList uses a resizable array ($O(1)$ index access). LinkedList uses doubly-linked nodes ($O(1)$ insertion/deletion at ends).",
-                        diff: "Medium"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "What is the time complexity of HashMap `.get(key)` in average case?",
-                        options: ["O(N)", "O(log N)", "O(1)", "O(N^2)"],
-                        correct: 2,
-                        exp: "HashMap achieves O(1) average lookup time via hash bucket calculation."
-                    }
-                ]
-            },
-            {
-                id: 6,
-                title: "6. Multithreading & Concurrency",
-                badge: "High Performance",
-                desc: "Master Thread Lifecycles, `synchronized`, Volatile, and ExecutorService thread pools.",
-                storyTitle: "The Multi-Chef Kitchen of Modern CPUs",
-                storyBody: "A single-threaded program is one chef cooking one dish at a time. Multithreading is 8 chefs cooking in parallel in the same kitchen!",
-                whyTitle: "Why Concurrency Powers Cloud Servers",
-                whyAnalogy: "Multiple cashier counters serving hundreds of customers simultaneously in a supermarket!",
-                whyIndustry: "Web servers (Tomcat, Spring Boot) spawn thread pool threads to handle concurrent HTTP requests.",
-                flashcards: [
-                    {
-                        title: "Race Conditions & `synchronized`",
-                        badge: "🔒 Thread Safety",
-                        front: "What is a Race Condition and how does `synchronized` fix it?",
-                        back: "A Race Condition occurs when multiple threads mutate shared data simultaneously.\n`synchronized` acquires a monitor lock, ensuring only 1 thread executes at a time!"
-                    }
-                ],
-                editorLines: [
-                    'public class Main {',
-                    '    public static void main(String[] args) {',
-                    '        Thread t1 = new Thread(() -> System.out.println("Thread 1 running!"));',
-                    '        t1.start();',
-                    '    }',
-                    '}'
-                ],
-                consoleLogs: [
-                    'JVM Thread Spawned: Thread-0',
-                    'Thread 1 running!'
-                ],
-                wrongSnippet: 't1.run(); // Incorrect Thread Start',
-                wrongWhy: "`t1.run()` executes code on the CURRENT thread! Use `t1.start()` to spawn a new worker thread.",
-                correctSnippet: 't1.start(); // Spawns OS Thread',
-                correctWhy: "`start()` invokes JVM native `start0()` thread creation.",
-                interviewQs: [
-                    {
-                        q: "What is the difference between `volatile` and `synchronized`?",
-                        a: "`volatile` ensures variable visibility across CPU caches. `synchronized` ensures visibility AND mutual exclusion atomic execution!",
-                        diff: "Hard"
-                    }
-                ],
-                questions: [
-                    {
-                        text: "Which method starts a new thread of execution in Java?",
-                        options: ["run()", "start()", "execute()", "init()"],
-                        correct: 1,
-                        exp: "`start()` registers and initiates thread execution with the OS/JVM thread scheduler."
-                    }
-                ]
+                "title": "Default Array Element Values",
+                "badge": "\ud83d\udd22 Defaults",
+                "front": "What are the default values when initializing `int[] arr = new int[5]`?",
+                "back": "Numeric primitives default to `0` / `0.0`, `boolean` defaults to `false`, and Object references default to `null`!"
             }
-        ];
+        ],
+        "editorLines": [
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        int[] scores = {95, 88, 92, 100};",
+            "        System.out.println(\"First Student Score: \" + scores[0]);",
+            "        System.out.println(\"Total Students: \" + scores.length);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Contiguous RAM Allocated: 16 bytes",
+            "First Student Score: 95",
+            "Total Students: 4"
+        ],
+        "wrongSnippet": "int[] arr = new int[3]; System.out.println(arr[3]); // Crash!",
+        "wrongWhy": "ArrayIndexOutOfBoundsException! An array of length 3 has valid indices 0, 1, 2 only.",
+        "correctSnippet": "int[] arr = new int[3]; System.out.println(arr[2]); // Valid",
+        "correctWhy": "Index 2 accesses the last element safely.",
+        "interviewQs": [
+            {
+                "q": "Why are array indices 0-based in Java?",
+                "a": "Index represents the OFFSET distance from the base memory address. Index 0 means offset of 0 elements!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What is the time complexity of reading an element from an array by index in Java?",
+                "options": [
+                    "O(N)",
+                    "O(log N)",
+                    "O(1)",
+                    "O(N^2)"
+                ],
+                "correct": 2,
+                "exp": "Array index lookup is O(1) via base memory offset calculation."
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "2. Strings & String Pool",
+        "badge": "Immutability & Heap",
+        "desc": "Master String Constant Pool, immutability, StringBuilder, and equals() vs == comparison.",
+        "storyTitle": "The Vault of Immutable Gemstone Strings",
+        "storyBody": "In Java, a String object is like a carved gemstone. Once created in the String Constant Pool, its value can NEVER be modified. If you try to change it, JVM creates a brand new gemstone!",
+        "whyTitle": "Why Strings Are Made Immutable",
+        "whyAnalogy": "Like a printed banknote value\u2014once printed, changing the number would cause financial chaos!",
+        "whyIndustry": "Ensures thread safety, security for database URLs/passwords, and hashing stability in HashMaps.",
+        "flashcards": [
+            {
+                "title": "String Constant Pool (SCP)",
+                "badge": "\ud83e\uddf5 SCP Magic",
+                "front": "How does JVM save memory with String literals?",
+                "back": "Literals like `String a = \"Java\"` are cached in the String Pool. Reusing `\"Java\"` points to the SAME memory address!"
+            }
+        ],
+        "editorLines": [
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        String s1 = \"Quest\";",
+            "        String s2 = \"Quest\";",
+            "        System.out.println(\"Pool Match (==): \" + (s1 == s2));",
+            "        System.out.println(\"Text Match (.equals): \" + s1.equals(s2));",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "String Pool Lookup @0x88ab -> Cached",
+            "Pool Match (==): true",
+            "Text Match (.equals): true"
+        ],
+        "wrongSnippet": "String s = \"Hello\"; s.concat(\" World\"); // Value Lost!",
+        "wrongWhy": "Strings are immutable! `concat()` returns a new String that must be assigned to a variable.",
+        "correctSnippet": "String s = \"Hello\"; s = s.concat(\" World\"); // Correct",
+        "correctWhy": "Assigning the returned String reference retains the updated string.",
+        "interviewQs": [
+            {
+                "q": "What is the difference between String, StringBuilder, and StringBuffer?",
+                "a": "\u2022 String: Immutable.\n\u2022 StringBuilder: Mutable & fast (not thread-safe).\n\u2022 StringBuffer: Mutable & thread-safe (`synchronized`).",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Where are literal Strings stored in memory in modern JVMs?",
+                "options": [
+                    "Native Stack",
+                    "String Constant Pool in Heap",
+                    "Metaspace",
+                    "CPUS Registers"
+                ],
+                "correct": 1,
+                "exp": "String Pool resides inside Heap Memory to allow Garbage Collection."
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "3. Static Keyword & Class Memory",
+        "badge": "Shared State",
+        "desc": "Master static variables, static methods, static blocks, and class-level memory allocation.",
+        "storyTitle": "The Town Hall Announcement Speaker",
+        "storyBody": "Instance variables belong to individual houses (Objects). A `static` variable is like the town hall loudspeaker\u2014shared by EVERY house in the town!",
+        "whyTitle": "Why We Need Static Members",
+        "whyAnalogy": "A counter tracking total cars manufactured across all assembly lines!",
+        "whyIndustry": "Used for utility helper methods (`Math.sqrt()`, `Collections.sort()`) and singleton database connections.",
+        "flashcards": [
+            {
+                "title": "Static vs Instance Memory",
+                "badge": "\ud83c\udfdb\ufe0f Static Memory",
+                "front": "When are static variables loaded into JVM memory?",
+                "back": "Static variables are loaded ONCE when the Class is first loaded into Metaspace, BEFORE any objects are instantiated!"
+            }
+        ],
+        "editorLines": [
+            "class Counter {",
+            "    static int count = 0;",
+            "    Counter() { count++; }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        new Counter(); new Counter();",
+            "        System.out.println(\"Total Objects: \" + Counter.count);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Class Loaded into Metaspace",
+            "Total Objects: 2"
+        ],
+        "wrongSnippet": "class Test { static void show() { System.out.println(this.x); } }",
+        "wrongWhy": "Static methods cannot access `this` or instance fields because static methods execute without an object context!",
+        "correctSnippet": "class Test { int x; void show() { System.out.println(this.x); } }",
+        "correctWhy": "Instance methods have access to `this` instance context.",
+        "interviewQs": [
+            {
+                "q": "Can we override static methods in Java?",
+                "a": "No! Static methods are bound at compile-time (method hiding), not run-time polymorphism!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What keyword allows calling a method directly using `ClassName.methodName()`?",
+                "options": [
+                    "final",
+                    "static",
+                    "abstract",
+                    "public"
+                ],
+                "correct": 1,
+                "exp": "`static` methods belong to the Class itself and do not require object instantiation."
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "4. Encapsulation & Data Hiding",
+        "badge": "OOP Security",
+        "desc": "Master private fields, getters/setters, data validation, and JavaBean standards.",
+        "storyTitle": "The Bank Vault Security System",
+        "storyBody": "Encapsulation wraps data inside a protective vault (`private` fields) and only grants access through secure bank tellers (getters and setters) with identity verification!",
+        "whyTitle": "Why Encapsulation Prevents Invalid State",
+        "whyAnalogy": "A thermostat that prevents setting room temperature to -500 degrees!",
+        "whyIndustry": "Prevents unauthorized code from corrupting internal object state in financial and medical systems.",
+        "flashcards": [
+            {
+                "title": "Encapsulation Principle",
+                "badge": "\ud83d\udd12 Security",
+                "front": "What are the two steps to encapsulate a Java class?",
+                "back": "1. Declare instance fields as `private`.\n2. Provide public getter and setter methods with validation logic!"
+            }
+        ],
+        "editorLines": [
+            "class Account {",
+            "    private double balance = 1000;",
+            "    public double getBalance() { return balance; }",
+            "    public void deposit(double amt) {",
+            "        if (amt > 0) balance += amt;",
+            "    }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Account acc = new Account();",
+            "        acc.deposit(500);",
+            "        System.out.println(\"Balance: \" + acc.getBalance());",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Deposit Validated: +500",
+            "Balance: 1500.0"
+        ],
+        "wrongSnippet": "class Bank { public double balance; } // Direct Access Danger",
+        "wrongWhy": "Public fields allow external code to set negative or invalid balances without restriction!",
+        "correctSnippet": "class Bank { private double balance; public void setBalance(double b) { if(b>=0) balance=b; } }",
+        "correctWhy": "Private fields with setters enforce validation logic.",
+        "interviewQs": [
+            {
+                "q": "What is the difference between Abstraction and Encapsulation?",
+                "a": "Abstraction hides complexity (showing WHAT it does). Encapsulation hides data internal state (protecting HOW it is stored).",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which access modifier ensures a field cannot be accessed directly from outside the class?",
+                "options": [
+                    "public",
+                    "protected",
+                    "private",
+                    "default"
+                ],
+                "correct": 2,
+                "exp": "`private` restricts access strictly to within the declaring class."
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "5. Constructors & Initialization",
+        "badge": "Object Lifecycle",
+        "desc": "Master Default vs Parameterized Constructors, Constructor Chaining (`this()`), and Copy Constructors.",
+        "storyTitle": "The Robot Factory Assembly Line",
+        "storyBody": "A Constructor is the automated assembly machine that runs the split-second an object is created to install core parts before the robot powers on!",
+        "whyTitle": "Why Constructors Are Mandatory",
+        "whyAnalogy": "Ensuring a smartphone comes out of the box pre-installed with its serial number and OS!",
+        "whyIndustry": "Spring Framework uses constructor dependency injection for enterprise services.",
+        "flashcards": [
+            {
+                "title": "Default Constructor Rule",
+                "badge": "\u2699\ufe0f Compiler Rule",
+                "front": "When does the Java compiler automatically insert a default constructor?",
+                "back": "ONLY when you write NO constructors yourself! As soon as you write any custom constructor, the compiler default constructor disappears!"
+            }
+        ],
+        "editorLines": [
+            "class Hero {",
+            "    String name; int hp;",
+            "    Hero(String name, int hp) {",
+            "        this.name = name; this.hp = hp;",
+            "    }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Hero h = new Hero(\"Knight\", 100);",
+            "        System.out.println(h.name + \" HP: \" + h.hp);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Constructor Executed for Hero",
+            "Knight HP: 100"
+        ],
+        "wrongSnippet": "class Hero { Hero(String n){} } ... Hero h = new Hero(); // Error",
+        "wrongWhy": "Since a custom `Hero(String)` was defined, the default no-arg `Hero()` is not generated!",
+        "correctSnippet": "class Hero { Hero(){} Hero(String n){} }",
+        "correctWhy": "Explicitly defining no-arg constructor restores default creation.",
+        "interviewQs": [
+            {
+                "q": "Does a constructor return a value in Java?",
+                "a": "Constructors implicitly return the instance of the class created, but they have NO explicit return type (not even `void`)!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Can a constructor be declared with `void` return type?",
+                "options": [
+                    "Yes",
+                    "No, it becomes a regular method",
+                    "Only if static",
+                    "Only if private"
+                ],
+                "correct": 1,
+                "exp": "Adding `void` turns it into a regular method with the same name as the class, not a constructor!"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "6. Anonymous Objects & Memory GC",
+        "badge": "Short-Lived Execution",
+        "desc": "Master nameless temporary objects `new Hero().act()`, Garbage Collection eligibility, and memory optimization.",
+        "storyTitle": "The Single-Use Disposable Camera",
+        "storyBody": "An Anonymous Object is a disposable single-use object created without saving its memory reference address. It performs its action once and is immediately eligible for Garbage Collection!",
+        "whyTitle": "Why Anonymous Objects Save Memory",
+        "whyAnalogy": "Using a single-use ticket to enter a park instead of buying a permanent membership card!",
+        "whyIndustry": "Used for event listeners, temporary calculations, and method chaining.",
+        "flashcards": [
+            {
+                "title": "Anonymous Object Syntax",
+                "badge": "\ud83d\uddd1\ufe0f GC Eligible",
+                "front": "What happens to `new Calculator().calculate(5)` after execution?",
+                "back": "Since there is no reference variable holding its address, it becomes unreferenced and eligible for GC immediately!"
+            }
+        ],
+        "editorLines": [
+            "class Printer {",
+            "    void print(String msg) { System.out.println(\"Printing: \" + msg); }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        new Printer().print(\"Anonymous Execution!\");",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Heap Object Created without Reference",
+            "Printing: Anonymous Execution!",
+            "Eligible for Garbage Collection"
+        ],
+        "wrongSnippet": "new Printer().print(\"A\"); new Printer().print(\"B\"); // 2 Objects Created",
+        "wrongWhy": "Invoking multiple methods with `new` creates separate objects each time instead of reusing 1 object.",
+        "correctSnippet": "Printer p = new Printer(); p.print(\"A\"); p.print(\"B\");",
+        "correctWhy": "Reuses the single referenced object `p` efficiently.",
+        "interviewQs": [
+            {
+                "q": "When does an object become eligible for Garbage Collection in Java?",
+                "a": "When it has no reachable active references in any thread Stack frame!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "How many objects are created in `new Demo().test();`?",
+                "options": [
+                    "0",
+                    "1",
+                    "2",
+                    "Depends on JVM"
+                ],
+                "correct": 1,
+                "exp": "Exactly 1 object is created in Heap without a reference variable."
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "title": "7. Inheritance & Code Reusability",
+        "badge": "OOP Hierarchy",
+        "desc": "Master `extends` keyword, Single vs Multilevel Inheritance, Method Overriding, and why Java forbids Multiple Class Inheritance.",
+        "storyTitle": "The Genetic Tree of Abilities",
+        "storyBody": "Inheritance allows a Child class to inherit fields and methods from a Parent class just like a child inherits traits from parents!",
+        "whyTitle": "Why Inheritance Eliminates Redundant Code",
+        "whyAnalogy": "Creating a base `Vehicle` blueprint so `Car` and `Truck` don't need to re-invent wheels and engines!",
+        "whyIndustry": "Spring Framework base controllers and generic DAO repositories.",
+        "flashcards": [
+            {
+                "title": "Diamond Problem & Multiple Inheritance",
+                "badge": "\ud83d\udeab Class Restriction",
+                "front": "Why does Java NOT support multiple inheritance with classes?",
+                "back": "To avoid the **Diamond Problem**! If Parent A and Parent B both have `draw()`, Child class won't know which method to execute!"
+            }
+        ],
+        "editorLines": [
+            "class Animal {",
+            "    void eat() { System.out.println(\"Eating...\"); }",
+            "}",
+            "class Dog extends Animal {",
+            "    void bark() { System.out.println(\"Woof!\"); }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Dog d = new Dog();",
+            "        d.eat(); d.bark();",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Inherited Method: Eating...",
+            "Subclass Method: Woof!"
+        ],
+        "wrongSnippet": "class Child extends Father, Mother {} // Multiple Class Inheritance",
+        "wrongWhy": "Java classes can only extend ONE superclass!",
+        "correctSnippet": "class Child extends Father implements SkillSet",
+        "correctWhy": "Use Interfaces for multiple behavioral inheritance.",
+        "interviewQs": [
+            {
+                "q": "What is the cosmic superclass of all classes in Java?",
+                "a": "`java.lang.Object` is the root superclass of EVERY class in Java!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which keyword is used to inherit a class in Java?",
+                "options": [
+                    "implements",
+                    "extends",
+                    "inherits",
+                    "super"
+                ],
+                "correct": 1,
+                "exp": "`extends` establishes superclass-subclass relationship."
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "title": "8. `this` & `super` Keywords",
+        "badge": "Reference Keywords",
+        "desc": "Master `this` current object reference, `super` parent reference, `this()` constructor chaining, and `super()` parent constructor call.",
+        "storyTitle": "The Self Mirror vs Parent Telephone",
+        "storyBody": "`this` is looking into a mirror to reference your own fields and constructors. `super` is picking up a phone to call your parent class!",
+        "whyTitle": "Why We Need Shadowing Disambiguation",
+        "whyAnalogy": "Distinguishing between local parameter variable `age` and class field `this.age`!",
+        "whyIndustry": "Used everywhere in setter methods and subclass constructor initialization.",
+        "flashcards": [
+            {
+                "title": "`super()` Placement Rule",
+                "badge": "\u26a0\ufe0f Constructor Rule",
+                "front": "Where must `super()` or `this()` be placed inside a constructor?",
+                "back": "It MUST be the VERY FIRST statement inside the constructor body!"
+            }
+        ],
+        "editorLines": [
+            "class Parent {",
+            "    Parent() { System.out.println(\"Parent Init\"); }",
+            "}",
+            "class Child extends Parent {",
+            "    Child() {",
+            "        super();",
+            "        System.out.println(\"Child Init\");",
+            "    }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) { new Child(); }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Parent Init",
+            "Child Init"
+        ],
+        "wrongSnippet": "Child() { System.out.println(\"Hi\"); super(); } // Error!",
+        "wrongWhy": "`super()` must be the FIRST statement in a constructor!",
+        "correctSnippet": "Child() { super(); System.out.println(\"Hi\"); }",
+        "correctWhy": "Executes parent initialization first.",
+        "interviewQs": [
+            {
+                "q": "Can you use both `this()` and `super()` in the same constructor?",
+                "a": "No! Both must be the first statement, so only one can be used per constructor!",
+                "diff": "Hard"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which keyword accesses superclass hidden fields or overridden methods?",
+                "options": [
+                    "this",
+                    "super",
+                    "parent",
+                    "base"
+                ],
+                "correct": 1,
+                "exp": "`super` refers to the immediate parent class instance."
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "title": "9. Access Modifiers & Packages",
+        "badge": "Encapsulation Scope",
+        "desc": "Master `private`, `default` (package-private), `protected`, and `public` visibility matrix across packages.",
+        "storyTitle": "The Four Security Clearance Passports",
+        "storyBody": "Access modifiers are security passes: `private` stays in your room, `default` stays in your apartment building, `protected` includes relatives, and `public` is visible to the whole world!",
+        "whyTitle": "Why Access Modifiers Protect Framework Integrity",
+        "whyAnalogy": "Restricting access to a nuclear reactor control panel vs public light switches!",
+        "whyIndustry": "Used in Java modules and API libraries to hide internal utility classes.",
+        "flashcards": [
+            {
+                "title": "Access Modifier Visibility Matrix",
+                "badge": "\ud83d\udd12 Security Matrix",
+                "front": "What is the visibility of `protected`?",
+                "back": "Accessible within Same Class, Same Package, AND Subclasses in Different Packages!"
+            }
+        ],
+        "editorLines": [
+            "package com.arena;",
+            "public class Security {",
+            "    private int pin = 1234;",
+            "    protected int code = 999;",
+            "    public int pub = 1;",
+            "}"
+        ],
+        "consoleLogs": [
+            "Private: Class Only",
+            "Protected: Subclasses Allowed",
+            "Public: Global Access"
+        ],
+        "wrongSnippet": "package b; class Sub extends a.Parent { void test(){ System.out.println(defaultVar); } }",
+        "wrongWhy": "Default (package-private) fields are NOT accessible outside the package, even by subclasses!",
+        "correctSnippet": "System.out.println(protectedVar); // Valid for subclass",
+        "correctWhy": "`protected` grants cross-package subclass access.",
+        "interviewQs": [
+            {
+                "q": "What is the default access modifier when no keyword is specified?",
+                "a": "Package-private (default access). Accessible only within the same package!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which access modifier allows access from ANY class anywhere in the application?",
+                "options": [
+                    "private",
+                    "protected",
+                    "default",
+                    "public"
+                ],
+                "correct": 3,
+                "exp": "`public` offers unrestricted global access."
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "title": "10. Packages & Imports",
+        "badge": "Code Organization",
+        "desc": "Master package namespace rules, static imports, `java.lang` auto-import, and jar bundling.",
+        "storyTitle": "The Zipcode Postal System of Code",
+        "storyBody": "Packages are geographic postal zipcodes (`com.amazon.orders`) preventing class name collisions when 100 developers write a `User` class!",
+        "whyTitle": "Why Reverse Domain Naming Prevents Collisions",
+        "whyAnalogy": "Unique postal addresses matching `country.company.project`!",
+        "whyIndustry": "Standard organization for all Maven & Gradle enterprise dependencies.",
+        "flashcards": [
+            {
+                "title": "Static Import Feature",
+                "badge": "\ud83d\udce6 Imports",
+                "front": "What does `import static java.lang.Math.*;` allow you to do?",
+                "back": "Allows using static members directly without class prefix: `sqrt(16)` instead of `Math.sqrt(16)`!"
+            }
+        ],
+        "editorLines": [
+            "import static java.lang.Math.max;",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        System.out.println(\"Max: \" + max(10, 20));",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Static Import Resolved: Math.max",
+            "Max: 20"
+        ],
+        "wrongSnippet": "package com.app; import com.app.util.*; // Redundant",
+        "wrongWhy": "Importing classes from the SAME package is redundant as they are auto-visible!",
+        "correctSnippet": "import com.external.util.Helper; // External Import",
+        "correctWhy": "Imports external package classes cleanly.",
+        "interviewQs": [
+            {
+                "q": "Which package is automatically imported in every Java file?",
+                "a": "`java.lang` (contains String, System, Math, Object, etc.)!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What keyword must be the VERY FIRST non-comment line in a Java source file?",
+                "options": [
+                    "import",
+                    "package",
+                    "public class",
+                    "module"
+                ],
+                "correct": 1,
+                "exp": "The `package` statement must precede all imports and class declarations."
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "title": "11. Dynamic Method Dispatch & Polymorphism",
+        "badge": "Runtime Binding",
+        "desc": "Master Runtime Polymorphism, Upcasted Parent References (`Parent p = new Child()`), Virtual Method Invocation, and vtable dispatch.",
+        "storyTitle": "The Universal Remote Control",
+        "storyBody": "Dynamic Method Dispatch is like a universal remote control (`Parent reference`). When you press the 'Play' button, the actual connected device (`Child object`) determines whether video or audio plays!",
+        "whyTitle": "Why Runtime Binding Enables Plugin Architecture",
+        "whyAnalogy": "A payment gateway taking any `PaymentProcessor` reference (PayPal, Stripe, Visa) and executing its custom `process()`!",
+        "whyIndustry": "Core foundation of Spring dependency injection and strategy design patterns.",
+        "flashcards": [
+            {
+                "title": "Virtual Method Table (vtable)",
+                "badge": "\u26a1 Dynamic Binding",
+                "front": "How does JVM know which overridden method to execute at runtime?",
+                "back": "JVM checks the actual Heap Object's **vtable (Virtual Method Table)** at runtime, NOT the reference variable type!"
+            }
+        ],
+        "editorLines": [
+            "class Shape { void draw() { System.out.println(\"Shape\"); } }",
+            "class Circle extends Shape { void draw() { System.out.println(\"Circle\"); } }",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Shape s = new Circle(); // Upcasting",
+            "        s.draw(); // Dynamic Dispatch!",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Reference Type: Shape",
+            "Heap Object: Circle",
+            "Dynamic Dispatch Result: Circle"
+        ],
+        "wrongSnippet": "Shape s = new Circle(); s.circleOnlyMethod(); // Compilation Error!",
+        "wrongWhy": "The compiler checks the REFERENCE type (`Shape`). If `Shape` doesn't declare the method, compilation fails!",
+        "correctSnippet": "Circle c = (Circle) s; c.circleOnlyMethod(); // Downcast",
+        "correctWhy": "Downcasting exposes subclass-specific methods.",
+        "interviewQs": [
+            {
+                "q": "What is Dynamic Method Dispatch in Java?",
+                "a": "Mechanism where a call to an overridden method is resolved at RUNTIME based on the actual Heap Object, not compile-time reference!",
+                "diff": "Hard"
+            }
+        ],
+        "questions": [
+            {
+                "text": "When is dynamic method dispatch resolved?",
+                "options": [
+                    "Compile Time",
+                    "Runtime",
+                    "Class Loading Time",
+                    "Deployment Time"
+                ],
+                "correct": 1,
+                "exp": "Resolved at Runtime via the object's vtable."
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "title": "12. Final Keyword & Immutability",
+        "badge": "Immutability",
+        "desc": "Master `final` variables (constants), `final` methods (prevent overriding), and `final` classes (prevent inheritance).",
+        "storyTitle": "The Sealed Concrete Vault",
+        "storyBody": "`final` is a permanent tamper-proof seal. A `final` variable cannot be changed, a `final` method cannot be overridden, and a `final` class cannot be inherited!",
+        "whyTitle": "Why Final Enhances Security & JVM Optimizations",
+        "whyAnalogy": "A signed legal contract that cannot be edited after signing!",
+        "whyIndustry": "Java String class is `final` to prevent hackers from subclassing and spoofing string behavior.",
+        "flashcards": [
+            {
+                "title": "Final Variable Rule",
+                "badge": "\ud83d\udd12 Constants",
+                "front": "Can a `final` object reference variable be reassigned vs mutating its fields?",
+                "back": "The reference variable CANNOT point to another object, BUT the internal object state CAN still be mutated!"
+            }
+        ],
+        "editorLines": [
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        final double PI = 3.14159;",
+            "        System.out.println(\"Constant PI: \" + PI);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Constant PI Initialized: 3.14159",
+            "Reassignment Blocked by Compiler"
+        ],
+        "wrongSnippet": "final int MAX = 100; MAX = 200; // Error!",
+        "wrongWhy": "Cannot assign a value to final variable `MAX`!",
+        "correctSnippet": "final int MAX = 100; // Read-Only Value",
+        "correctWhy": "Final variables act as constants.",
+        "interviewQs": [
+            {
+                "q": "What is the difference between `final`, `finally`, and `finalize`?",
+                "a": "\u2022 `final`: Keyword for constants/preventing overrides.\n\u2022 `finally`: Exception handling block.\n\u2022 `finalize()`: Deprecated Object cleanup method before GC.",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What happens when a class is declared `final`?",
+                "options": [
+                    "It cannot be instantiated",
+                    "It cannot be inherited",
+                    "All its methods become private",
+                    "It is loaded into Stack"
+                ],
+                "correct": 1,
+                "exp": "Final classes cannot be extended by any subclass."
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "title": "13. Upcasting & Polymorphic Containers",
+        "badge": "Type Conversion",
+        "desc": "Master Implicit Subclass-to-Superclass conversion, polymorphic collections, and safe widening.",
+        "storyTitle": "The Universal Adapter Plug",
+        "storyBody": "Upcasting is like plugging any specific appliance (Dog, Cat) into a universal power socket (Animal). It automatically treats the subclass as its parent supertype!",
+        "whyTitle": "Why Upcasting Enables Generic Processing",
+        "whyAnalogy": "A parking lot holding a `List<Vehicle>` containing Cars, Trucks, and Motorcycles!",
+        "whyIndustry": "Used in Java Streams, Collections, and Spring MVC controllers.",
+        "flashcards": [
+            {
+                "title": "Upcasting Safety",
+                "badge": "\ud83d\udee1\ufe0f Type Safety",
+                "front": "Is Upcasting implicit or explicit in Java?",
+                "back": "Upcasting is 100% IMPLICIT and safe because a Subclass IS-A Superclass guaranteed!"
+            }
+        ],
+        "editorLines": [
+            "class Animal { void sound() { System.out.println(\"Animal Sound\"); } }",
+            "class Cat extends Animal { void sound() { System.out.println(\"Meow\"); } }",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Animal a = new Cat(); // Implicit Upcast",
+            "        a.sound();",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Implicit Upcast: Cat -> Animal",
+            "Polymorphic Sound: Meow"
+        ],
+        "wrongSnippet": "Animal a = new Cat(); a.purr(); // Error",
+        "wrongWhy": "Method `purr()` is not declared in superclass `Animal`!",
+        "correctSnippet": "((Cat) a).purr(); // Safe Downcast",
+        "correctWhy": "Downcasting restores access to subclass specific methods.",
+        "interviewQs": [
+            {
+                "q": "Why is Upcasting always safe in Java?",
+                "a": "Because of the IS-A relationship! Every instance of Subclass contains all members of Superclass.",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Upcasting converts a reference from...",
+                "options": [
+                    "Parent to Child",
+                    "Child to Parent",
+                    "Primitive to Object",
+                    "Interface to Class"
+                ],
+                "correct": 1,
+                "exp": "Upcasting moves UP the inheritance tree from Child to Parent."
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "title": "14. Downcasting & `instanceof` Guard",
+        "badge": "Type Casting Safety",
+        "desc": "Master Explicit Casting, ClassCastException prevention, and Pattern Matching for `instanceof` (Java 16+).",
+        "storyTitle": "Unpacking a Mystery Delivery Box",
+        "storyBody": "Downcasting is opening a generic delivery box labeled 'Device' to reveal the actual high-end 'Smartphone' inside so you can use phone-specific features!",
+        "whyTitle": "Why `instanceof` Guards Prevent Runtime Crashes",
+        "whyAnalogy": "Checking if a package contains glass before dropping it down a chute!",
+        "whyIndustry": "Used in object mappers, JSON deserializers, and event handlers.",
+        "flashcards": [
+            {
+                "title": "ClassCastException Prevention",
+                "badge": "\u26a0\ufe0f Runtime Error",
+                "front": "What happens if you downcast an object to an incorrect subtype without checking?",
+                "back": "JVM throws a runtime `ClassCastException` and terminates execution!"
+            }
+        ],
+        "editorLines": [
+            "class Vehicle {}",
+            "class Car extends Vehicle { void drive() { System.out.println(\"Driving!\"); } }",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Vehicle v = new Car();",
+            "        if (v instanceof Car c) { // Pattern Matching Java 16+",
+            "            c.drive();",
+            "        }",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "instanceof Check: true",
+            "Safe Downcast Executed",
+            "Driving!"
+        ],
+        "wrongSnippet": "Object obj = \"Hello\"; Integer num = (Integer) obj; // Crash!",
+        "wrongWhy": "ClassCastException! String cannot be cast to Integer.",
+        "correctSnippet": "if (obj instanceof Integer i) { ... }",
+        "correctWhy": "Guarded by instanceof pattern matching.",
+        "interviewQs": [
+            {
+                "q": "What is Pattern Matching for `instanceof` introduced in Java 16?",
+                "a": "Allows checking type and automatically casting in one step: `if (obj instanceof String s)`!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which exception is thrown on invalid downcasting?",
+                "options": [
+                    "NullPointerException",
+                    "ClassCastException",
+                    "IllegalArgumentException",
+                    "TypeMismatchException"
+                ],
+                "correct": 1,
+                "exp": "`ClassCastException` occurs when downcasting incompatible types."
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "title": "15. Wrapper Classes & Autoboxing",
+        "badge": "Primitives to Objects",
+        "desc": "Master `Integer`, `Double`, Autoboxing, Unboxing, Integer Cache (-128 to 127), and Utility Parsing.",
+        "storyTitle": "Gift-Wrapping Primitives for Collections",
+        "storyBody": "Primitives are raw items. Wrapper Classes gift-wrap primitive values inside Object boxes so they can be stored in Collections like `ArrayList<Integer>`!",
+        "whyTitle": "Why Autoboxing Simplifies Object Bridge",
+        "whyAnalogy": "Converting raw coins into digital bank account balances automatically!",
+        "whyIndustry": "Allows primitives to work with Generics, Collections, and Hibernate ORM entities.",
+        "flashcards": [
+            {
+                "title": "Integer Cache Trap",
+                "badge": "\u26a1 JVM Cache Trap",
+                "front": "Why does `Integer a = 100, b = 100; a == b` return `true`, but `200 == 200` return `false`?",
+                "back": "JVM caches Integer objects in the range `-128 to 127`. Outside this range, `new Integer` instances are created, so `==` checks fail!"
+            }
+        ],
+        "editorLines": [
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Integer a = 100; // Autoboxing",
+            "        int b = a; // Unboxing",
+            "        int parsed = Integer.parseInt(\"456\");",
+            "        System.out.println(\"Parsed Int: \" + parsed);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Autoboxed int -> Integer",
+            "Unboxed Integer -> int",
+            "Parsed Int: 456"
+        ],
+        "wrongSnippet": "Integer a = 200, b = 200; if (a == b) {} // Bug!",
+        "wrongWhy": "`==` compares object references! 200 is outside Integer cache (-128 to 127), so references differ.",
+        "correctSnippet": "if (a.equals(b)) { ... } // Correct Value Comparison",
+        "correctWhy": "`.equals()` compares integer primitive values inside wrapper.",
+        "interviewQs": [
+            {
+                "q": "What is Autoboxing and Unboxing?",
+                "a": "Autoboxing: Automatic conversion of primitive to Wrapper Object (`int` -> `Integer`). Unboxing: Automatic conversion of Wrapper Object to primitive (`Integer` -> `int`).",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What is the wrapper class for primitive `char`?",
+                "options": [
+                    "Char",
+                    "Character",
+                    "StringType",
+                    "CharArray"
+                ],
+                "correct": 1,
+                "exp": "`Character` is the wrapper class for primitive `char`."
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "title": "16. Abstract Classes & Partial Implementation",
+        "badge": "Abstraction Base",
+        "desc": "Master `abstract` classes, abstract methods, partial implementation, and template design pattern.",
+        "storyTitle": "The Incomplete Vehicle Skeleton",
+        "storyBody": "An Abstract Class is an incomplete blueprint. It defines common rules (e.g. `startEngine()`), but leaves specific details (`drive()`) for concrete subclasses to complete!",
+        "whyTitle": "Why Abstract Classes Provide Code Reuse + Structure",
+        "whyAnalogy": "A standardized franchise agreement with custom local menu items!",
+        "whyIndustry": "Base classes in frameworks (`HttpServlet`, `AbstractList`).",
+        "flashcards": [
+            {
+                "title": "Abstract Class Instantiation Rule",
+                "badge": "\ud83d\udeab Instantiation",
+                "front": "Can an Abstract Class be instantiated directly with `new`?",
+                "back": "NO! Abstract classes CANNOT be instantiated directly. They can only be extended by concrete subclasses!"
+            }
+        ],
+        "editorLines": [
+            "abstract class Bank {",
+            "    abstract double getRate();",
+            "}",
+            "class SBI extends Bank {",
+            "    double getRate() { return 7.5; }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Bank b = new SBI();",
+            "        System.out.println(\"Rate: \" + b.getRate() + \"%\");",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Abstract Bank Blueprint",
+            "Concrete Subclass Executed: SBI",
+            "Rate: 7.5%"
+        ],
+        "wrongSnippet": "Bank b = new Bank(); // Compilation Error!",
+        "wrongWhy": "Cannot instantiate abstract class `Bank`!",
+        "correctSnippet": "Bank b = new ConcreteBank();",
+        "correctWhy": "Instantiate a concrete subclass instead.",
+        "interviewQs": [
+            {
+                "q": "Can an Abstract class have constructors?",
+                "a": "YES! Abstract classes have constructors to initialize fields when a subclass is instantiated (`super()`)!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What happens if a concrete subclass fails to implement an abstract method?",
+                "options": [
+                    "Runtime Error",
+                    "Compilation Error",
+                    "Method is ignored",
+                    "Returns null"
+                ],
+                "correct": 1,
+                "exp": "Subclass must either implement all abstract methods or be declared abstract itself."
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "title": "17. Inner Classes & Nested Scopes",
+        "badge": "Encapsulated Scope",
+        "desc": "Master Member Inner Classes, Static Nested Classes, Local Inner Classes, and Anonymous Inner Classes.",
+        "storyTitle": "Engine Inside a Car Body",
+        "storyBody": "An Inner Class is like a Car Engine built directly inside the Car frame. It has private access to all outer car components!",
+        "whyTitle": "Why Inner Classes Improve Encapsulation",
+        "whyAnalogy": "A specialized event handler attached exclusively to a UI button!",
+        "whyIndustry": "Used extensively in GUI event handling, Map entry sets, and Builders.",
+        "flashcards": [
+            {
+                "title": "Static Nested vs Non-Static Inner",
+                "badge": "\u2699\ufe0f Memory Link",
+                "front": "Does a Static Nested Class hold an implicit reference to Outer class instance?",
+                "back": "NO! Static Nested classes do NOT hold an outer reference, preventing memory leaks!"
+            }
+        ],
+        "editorLines": [
+            "class Outer {",
+            "    private String msg = \"Hello from Outer!\";",
+            "    class Inner {",
+            "        void print() { System.out.println(msg); }",
+            "    }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Outer.Inner in = new Outer().new Inner();",
+            "        in.print();",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Outer Instance Created",
+            "Inner Class Accessing Outer Private Field",
+            "Hello from Outer!"
+        ],
+        "wrongSnippet": "Outer.Inner in = new Outer.Inner(); // Error for non-static inner",
+        "wrongWhy": "Non-static inner classes require an outer object instance: `outer.new Inner()`!",
+        "correctSnippet": "Outer.Inner in = outerObj.new Inner();",
+        "correctWhy": "Binds inner instance to outer object reference.",
+        "interviewQs": [
+            {
+                "q": "What is an Anonymous Inner Class?",
+                "a": "An inner class declared without a name, used to override methods on-the-fly or implement interfaces!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which nested class type CANNOT access non-static outer members?",
+                "options": [
+                    "Member Inner Class",
+                    "Static Nested Class",
+                    "Local Inner Class",
+                    "Anonymous Class"
+                ],
+                "correct": 1,
+                "exp": "Static nested classes do not have an outer object reference."
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "title": "18. Interfaces & Multiple Inheritance",
+        "badge": "Contract Architecture",
+        "desc": "Master `interface`, `implements`, Default Methods (Java 8+), Static Methods, Private Methods (Java 9+), and Multiple Behavioral Inheritance.",
+        "storyTitle": "The Standard Electrical Plug Contract",
+        "storyBody": "An Interface is a universal contract. Any device (TV, Fridge, Laptop) that implements the plug specification can connect to the power grid!",
+        "whyTitle": "Why Interfaces Achieve Loose Coupling",
+        "whyAnalogy": "A car driver knowing how to drive any car regardless of whether it's electric or gas!",
+        "whyIndustry": "Foundation of Spring Dependency Injection and modern API design.",
+        "flashcards": [
+            {
+                "title": "Default Methods (Java 8+)",
+                "badge": "\u26a1 Interface Evolution",
+                "front": "Why were `default` methods added to Java Interfaces in Java 8?",
+                "back": "To allow adding new methods to existing interfaces without breaking all implementing classes worldwide (e.g. `Collection.stream()`)!"
+            }
+        ],
+        "editorLines": [
+            "interface Flyable { void fly(); }",
+            "interface Swimmable { void swim(); }",
+            "class Duck implements Flyable, Swimmable {",
+            "    public void fly() { System.out.println(\"Flying!\"); }",
+            "    public void swim() { System.out.println(\"Swimming!\"); }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Duck d = new Duck(); d.fly(); d.swim();",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Multiple Interfaces Implemented",
+            "Flying!",
+            "Swimming!"
+        ],
+        "wrongSnippet": "interface A { void run(); } class B implements A { void run(){} } // Error",
+        "wrongWhy": "Interface methods are `public` by default! Overriding methods cannot reduce visibility to package-private.",
+        "correctSnippet": "class B implements A { public void run(){} }",
+        "correctWhy": "Explicit `public` modifier matches interface contract visibility.",
+        "interviewQs": [
+            {
+                "q": "Can an Interface contain variables?",
+                "a": "Yes! All interface variables are implicitly `public static final` constants!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What keyword allows interfaces to provide method implementation bodies in Java 8+?",
+                "options": [
+                    "abstract",
+                    "default",
+                    "native",
+                    "transient"
+                ],
+                "correct": 1,
+                "exp": "`default` methods provide default implementation inside interfaces."
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "title": "19. Enums & Type-Safe Constants",
+        "badge": "Constant Security",
+        "desc": "Master `enum`, custom enum constructors, fields, methods, `values()`, and `valueOf()`.",
+        "storyTitle": "The Traffic Light Controller",
+        "storyBody": "An Enum is a fixed type-safe set of constants. Instead of using error-prone numbers or strings for traffic lights, Enums restrict values strictly to `RED`, `YELLOW`, `GREEN`!",
+        "whyTitle": "Why Enums Prevent Invalid State Bugs",
+        "whyAnalogy": "A drop-down selector that prevents users from typing illegal values!",
+        "whyIndustry": "Used for Order Statuses (`PENDING`, `SHIPPED`), User Roles (`ADMIN`, `USER`), and Days.",
+        "flashcards": [
+            {
+                "title": "Enum Classes Under the Hood",
+                "badge": "\u2699\ufe0f JVM Class",
+                "front": "What does Java Enum extend under the hood?",
+                "back": "Every Enum extends `java.lang.Enum` implicitly! Therefore, Enums CANNOT extend any other Class, but CAN implement Interfaces!"
+            }
+        ],
+        "editorLines": [
+            "enum Status {",
+            "    PENDING(1), APPROVED(2);",
+            "    final int code;",
+            "    Status(int c) { this.code = c; }",
+            "}",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        Status s = Status.APPROVED;",
+            "        System.out.println(s + \" Code: \" + s.code);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Enum Loaded",
+            "APPROVED Code: 2"
+        ],
+        "wrongSnippet": "enum Status { PENDING; public Status(){} } // Error",
+        "wrongWhy": "Enum constructors must be `private` or package-private! Cannot be `public`.",
+        "correctSnippet": "enum Status { PENDING; private Status(){} }",
+        "correctWhy": "Enum constructors are private as instances are fixed.",
+        "interviewQs": [
+            {
+                "q": "Can Enums be used in `switch` statements?",
+                "a": "YES! Java `switch` statements natively support Enums for clean, type-safe branching!",
+                "diff": "Easy"
+            }
+        ],
+        "questions": [
+            {
+                "text": "What method returns an array of all constants in an Enum?",
+                "options": [
+                    "list()",
+                    "values()",
+                    "getAll()",
+                    "toArray()"
+                ],
+                "correct": 1,
+                "exp": "`Enum.values()` returns an array of all defined enum constants."
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "title": "20. Lambda Expressions & Functional Programming",
+        "badge": "Functional Java",
+        "desc": "Master `@FunctionalInterface`, Lambda Syntax `() -> {}`, Method References `::`, and Stream API filter/map.",
+        "storyTitle": "The Streamlined Express Courier",
+        "storyBody": "Lambda Expressions are single-line concise code functions passed like data, replacing verbose anonymous inner classes with clean arrow syntax `(x) -> x * 2`!",
+        "whyTitle": "Why Lambdas Revolutionized Modern Java",
+        "whyAnalogy": "Writing a short text emoji instead of sending a formal 3-page letter!",
+        "whyIndustry": "Core of Java 8 Streams, Reactive Programming (RxJava, Project Reactor), and Spring WebFlux.",
+        "flashcards": [
+            {
+                "title": "Functional Interface Requirement",
+                "badge": "\u26a1 Lambda Rule",
+                "front": "What is a `@FunctionalInterface`?",
+                "back": "An Interface that contains EXACTLY ONE abstract method (SAM - Single Abstract Method)!"
+            }
+        ],
+        "editorLines": [
+            "import java.util.*;",
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        List<String> names = Arrays.asList(\"Java\", \"Quest\", \"Master\");",
+            "        names.stream()",
+            "             .filter(n -> n.startsWith(\"J\"))",
+            "             .forEach(System.out::println);",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Stream Pipeline Initiated",
+            "Filter Match: Java",
+            "Output: Java"
+        ],
+        "wrongSnippet": "interface Math { void a(); void b(); } Math m = () -> {}; // Error!",
+        "wrongWhy": "Lambda expressions can ONLY target Functional Interfaces with exactly 1 abstract method!",
+        "correctSnippet": "@FunctionalInterface interface Math { void calculate(); }",
+        "correctWhy": "Single abstract method interface enables lambda target binding.",
+        "interviewQs": [
+            {
+                "q": "What is a Method Reference in Java 8?",
+                "a": "A shorthand syntax `Class::staticMethod` to refer to an existing method without executing it directly!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "How many abstract methods can a `@FunctionalInterface` have?",
+                "options": [
+                    "0",
+                    "Exactly 1",
+                    "Up to 5",
+                    "Unlimited"
+                ],
+                "correct": 1,
+                "exp": "Functional interfaces must contain exactly one abstract method."
+            }
+        ]
+    },
+    {
+        "id": 21,
+        "title": "21. Exceptions & Production Error Handling",
+        "badge": "Production Resilience",
+        "desc": "Master `try-catch-finally`, Checked vs Unchecked, Custom Exceptions, and Multi-Catch blocks.",
+        "storyTitle": "The Circuit Breaker Safety System",
+        "storyBody": "Exceptions are like industrial circuit breakers. When an electrical surge occurs, the breaker trips to protect the factory from burning down!",
+        "whyTitle": "Why Exception Handling Prevents System Outages",
+        "whyAnalogy": "An e-commerce checkout showing 'Payment Retry' instead of crashing the entire mobile app!",
+        "whyIndustry": "Enterprise resilience pattern used in Spring Boot and Microservices.",
+        "flashcards": [
+            {
+                "title": "Checked vs Unchecked",
+                "badge": "\u26a0\ufe0f Exception Types",
+                "front": "What is the key difference between Checked and Unchecked Exceptions?",
+                "back": "Checked exceptions are checked at compile time (`IOException`). Unchecked exceptions happen at runtime (`NullPointerException`, `ArithmeticException`)."
+            }
+        ],
+        "editorLines": [
+            "public class Main {",
+            "    public static void main(String[] args) {",
+            "        try {",
+            "            int res = 10 / 0;",
+            "        } catch (ArithmeticException e) {",
+            "            System.out.println(\"Caught Exception: \" + e.getMessage());",
+            "        } finally {",
+            "            System.out.println(\"Finally Block Executed!\");",
+            "        }",
+            "    }",
+            "}"
+        ],
+        "consoleLogs": [
+            "Caught Exception: / by zero",
+            "Finally Block Executed!"
+        ],
+        "wrongSnippet": "try { int x = 1/0; } // Missing Catch or Finally!",
+        "wrongWhy": "A `try` block must be accompanied by either a `catch` block or a `finally` block!",
+        "correctSnippet": "try { int x = 1/0; } catch (Exception e) { ... }",
+        "correctWhy": "Valid try-catch structure catches errors safely.",
+        "interviewQs": [
+            {
+                "q": "What is the base class of all Exception and Error classes in Java?",
+                "a": "`java.lang.Throwable` is the root superclass of Exception and Error!",
+                "diff": "Medium"
+            }
+        ],
+        "questions": [
+            {
+                "text": "Which block ALWAYS executes regardless of whether an exception occurred or not?",
+                "options": [
+                    "try",
+                    "catch",
+                    "finally",
+                    "throw"
+                ],
+                "correct": 2,
+                "exp": "`finally` block guarantees execution for resource cleanup."
+            }
+        ]
+    }
+]
 
         // State
         let activeModuleIndex = 0;
