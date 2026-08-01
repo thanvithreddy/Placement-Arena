@@ -144,349 +144,93 @@ const aptitudeTopics = [
     {
         "id": 3,
         "slug": "profit-loss",
-        "name": "Profit & Loss (PDF)",
-        "description": "Master cost price, selling price, marked price, and discount calculations.",
+        "name": "Profit and Loss (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 15 Handwritten PDF pages: Base CP 100%, Equal CP No Profit/No Loss, Equal SP Square Loss Rule, Reverse Term CP=SP, Equating Quantity Methods, Dishonest Dealer Tricks, Fraction Conversions, Egg Broken Problem, and Lemon Transaction Rules.",
         "icon": "\ud83d\udcc8",
-        "xp_reward": 110,
-        "formula_sheet": "### \ud83d\udcc8 Master Cheat Sheet: Profit & Loss\n\n#### 1. Fundamental Definitions\n- **Cost Price ($CP$)**: Base price ($100\\%$).\n- **Selling Price ($SP$)**: $CP + \\text{Profit}$ or $CP - \\text{Loss}$.\n- **Profit ($P$)**: $SP - CP$ (when $SP > CP$).\n- **Loss ($L$)**: $CP - SP$ (when $CP > SP$).\n\n#### 2. Percentage Formulas\n$$\\text{Profit}\\% = \\left(\\frac{SP - CP}{CP}\\right) \\times 100\\%$$\n\n$$\\text{Loss}\\% = \\left(\\frac{CP - SP}{CP}\\right) \\times 100\\%$$\n\n$$SP = CP \\times \\left(\\frac{100 + P\\%}{100}\\right) \\quad \\text{or} \\quad SP = CP \\times \\left(\\frac{100 - L\\%}{100}\\right)$$\n\n#### 3. Discount & Marked Price ($MP$)\n- **Discount ($D$)**: $MP - SP$\n- **Discount %**: $\\left(\\frac{\\text{Discount}}{MP}\\right) \\times 100\\%$\n- **Relation between $CP$ and $MP$**:\n  $$\\frac{MP}{CP} = \\frac{100 + P\\%}{100 - D\\%}$$\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "If Rahul purchased an article for Rs. 1500 & sold it for Rs. 1950. Find his Profit %?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Profit = S.P - C.P = 450. P% = (P / C.P) * 100 = (450 / 1500) * 100 = 30% Profit."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the C.P of dining table if S.P is Rs. 3600 & loss is 10%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "C.P -> 100% (Let). Loss -> 10%. Therefore, S.P -> 90% -> 3600. C.P -> 100% -> 4000. C.P = 4000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Amrutesh marked an article for Rs. 400. He sold it after giving a discount of 10%. If C.P is Rs. 300/-, find P%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Marked price -> 400. Discount -> 40 (10% of 400). (Discount is calculated on marked price). S.P -> 360. C.P -> 300. Profit % = (60 / 300) * 100 = 20%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Dravid purchased two cars each at Rs. 4,59,000. Then he sold one at 13% profit & another at 13% loss. Find his overall profit or loss %.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "If a person purchased two items with equal cost price and sold one with equal profit% and another with same equal loss%. Then the answer will end with NO profit / NO loss. Result is No profit / No loss."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If selling price of two items is Rs 5,43,400 each. One is sold with profit % = 30% and another is sold with loss % = 30%. Find overall loss.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The overall loss = (30/10)^2 (or) (3.0)^2 = 9%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If C.P of 80 articles is equal to S.P of 60 articles. Find profit or loss%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "C.P of 80 = S.P of 60. => C.P / S.P = 60 / 80. C.P < S.P, -> Profit. Profit % = (20 / 60) * 100 = 33.33% Profit."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man bought some fruits at a rate of 16 for 24, and sold them at a rate of 8 for 18. What is the Profit %?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. C.P of 16 = Rs. 24. 2. S.P of 8 = Rs. 18. Now, 2 x (2) = S.P of 16 = Rs. 36. C.P = 24, S.P = 36. % of Profit = (12 / 24) * 100 = 50%."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If an article is sold for Rs. 306, a trader loses 30%, what should be the SP of an article to gain 40%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "C.P will always 100%. 30% loss, Then S.P = 70% -> 306. To get Profit 40%, S.P should 100 + 40% = 140%. S.P -> 70% -> 306, S.P -> 140% -> 612. Answer = Rs 612."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "After giving 20% discount, profit is 12%. If no discount is given, find profit %.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Selling Price -> 112% (marked + profit). 80% (20% discount removed) -> 112%. 100% (without discount i.e marked price) -> 140%. Profit = 40%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "After giving 20% discount, loss is 28%. If discount of 10% given, find Profit % / loss % comparing with C.P.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Discounted S.P 80% -> 72%. 90% -> 81% (72 * 90 / 80 = 81%). Answer = 19% Loss."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A dishonest dealer professes to sell his goods at cost price. But while weighing he uses 1100g instead of 1.5 kg. find his Profit %?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Profit % = (Diff / False wt.) * 100. Diff = 1500 - 1100 = 400. Profit % = (400 / 1100) * 100 = 36.36%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A dealer professes to sell his goods at CP, but gain 25% by his outlay. What weight did he substitute for 1kg.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "less % = (25 / 125) * 100 = 20% less weight. 20% of 1000g = 200g less = 800 grams. (or) ((1000 - x) / x) * 100 = 25 => x = 800."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A T.V set was sold for Rs 1800/- for a loss of 14.28%. Find the C.P?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Loss = 14.28% = 1/7. CP = 7, SP = 7 - 1 = 6. 6 -> 1800, 7 -> 2100. CP = 2100."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The owner of the stationary shop charges his customers 32% more than the C.P. If customer paid Rs. 6600 for the book, find the cost price.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "C.P = 100%, P = 32%, S.P = 132% = 6600. C.P = 100% -> 5000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "By selling a radio for Rs. 400, a man looses 20%, for how much should he sell to gain 20%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Loss 20% => S.P = 80%. Profit 20% => S.P = 120%. 80% -> 400. 120% -> 600. Cost Price = Rs 600."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man sold an article at a loss of 10%. If he had taken Rs. 60 more than before, the gain would have been 10%. Find the C.P of an article.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Loss of 10% => S.P = 90%. Gain of 10% => S.P = 110%. Diff = 20% = 60/-. 100% = Rs 300/-."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A merchant purchases 20kg of rice at Rs. 30 per kg & 80kg of rice at Rs. 25 per kg. He sells the mixture at Rs. 27 per kg. find his profit / loss?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. Loss -> -3 * 20 = -60 (loss). 2. Profit -> +2 * 80 = +160. Overall profit (or) loss = 160 + (-60) = 100. Routine process: C.P = 20 * 30 + 80 * 25 = 600 + 2000 = 2600. S.P = (20 + 80) * 27 = 2700. Overall profit = 2700 - 2600 = 100."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A merchant purchases 50kg of wheat at Rs. 6.40 per kg and 150 kg of wheat at Rs. 7.20 per kg. He sells the mixture at Rs. 7 per kg. find his overall profit or loss?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. Profit => 0.60 * 50 = 30/-. 2. Loss => -0.20 * 150 = -30/-. Overall = 0."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man purchases 80 dozen eggs at Rs. 6 per dozen, of these 160 eggs are broken. At what price per dozen should he sell the remaining eggs to make a profit of 25%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "C.P = 80 * 6 = Rs. 480. Profit = 25% of 480 = 120. S.P = 600. Broken = 160. Available = 80 * 12 - 160 = 960 - 160 = 800 eggs. Price per dozen = (600 / 800) * 12 = 9/- per dozen."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A person sold an article for 20% profit. Had he bought it for 10% less price & sold it for 30% profit, he would have received Rs. 63 less than before. Find the C.P of the model article:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Original: C.P = 100%, S.P = 120%. Assumption: C.P = 90%, S.P = 90% + 27% (30% of 90) = 117%. Difference = 120% - 117% = 3% -> 63. 100% -> 2100. Cost price of the article = Rs. 2100."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The reduction in 20% price of mangoes enables a person to buy 4 mangoes more for Rs. 800. Find i) original price of each mango? ii) Reduced price of each mango?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "20% -> 4. Original Price -> 100% -> 20. Reduced (New) -> 80% -> 16. 1. Original = 800 / 16 = Rs. 50. 2. Reduced Price = 800 / 20 = Rs. 40."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The increase in 20% price of mangoes enables a person to buy 5 mangoes less for Rs. 1800. find i) original price of each mango ii) Increased price of each mango",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "20% -> 5. Original purchase -> 100% -> 30. Increased price qty = 25. Original price = 1800/30 = 60. Increased price = 1800/25 = 72."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "An article was sold for Rs. 144. If the profit % was numerically equal to C.P, the C.P of article was.",
-                "options": [
-                    "1. Rs.72",
-                    "2. Rs.80",
-                    "3. Rs.90",
-                    "4. Rs.100"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Consider by options. => 80 + 80% of 80 = 144. i.e. Here the percentage of profit and the actual cost price (in number) are equal."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "By selling 33 meters of cloth, one gains the S.P of 11 metres. Find the P%.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Profit = SP of 11 meters. Profit = SP - CP. SP of 11 mts = SP of 33 mts - CP of 33 mts. CP of 33 mts = SP of 33 mts - SP of 11 mts = SP of 22 mts. CP -> 22, SP -> 33. Profit % = (11 / 22) * 100 = 50%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A shopkeeper cheats to an extent of 10% while buying and 10% while selling goods by using false weight. find his overall profit %.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Overall percent = 100%. While buying he is cheating 10% -> Profit = 100 + 10 = 110%. Again while selling 10% cheating -> Profit = 10% of 110 = 11%. Overall Profit = 10% + 11% = 21%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "By selling 45 lemons for Rs. 40, a man loses 20%. How many should he sell for Rs. 24 to gain 20% in the transaction.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "45 lemons -> 80% -> 40. 45 lemons -> 120% -> 60/-. (100% is the cost price). Now, for 20% profit, 60/- -> 45 lemons. 24/- -> 18 lemons."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Profit and Loss (15 Pages Transcribed)\n\n#### Page 1: Terminology & Core Principles\n- **Cost Price ($CP$)**: Always considered as $100\\%$ base!\n- **Selling Price ($SP$)**: $CP + P$ (if $SP > CP$, Profit) or $CP - L$ (if $CP > SP$, Loss).\n- **Profit ($P$)**: Difference between $CP$ and $SP$.\n- **Loss ($L$)**: Difference between $CP$ and $SP$.\n- **Profit $\\%$**: $P\\% = \\left(\\frac{P}{CP}\\right) \\times 100$.\n- **Loss $\\%$**: $L\\% = \\left(\\frac{L}{CP}\\right) \\times 100$.\n- **Key Note**: Everything is calculated ONLY on Cost Price, NOT on Selling Price!\n- **3 Question Types**: (1) Initial Value ($CP$), (2) Percentage Profit/Loss, (3) Final Value ($SP$).\n\n#### Page 2: Successive Discounts & Basic Worked Examples\n- **Example 1**: Purchased for Rs. 1500, sold for Rs. 1950.\n  - $\\text{Profit} = 1950 - 1500 = 450 \\implies P\\% = \\frac{450}{1500} \\times 100 = 30\\%$ Profit.\n- **Example 2**: $SP = \\text{Rs. } 3600$, Loss $= 10\\%$. Find $CP$.\n  - $CP = 100\\% \\implies SP = 90\\% \\to 3600 \\implies CP = 100\\% \\to \\mathbf{4000}$.\n- **Successive Discounts**: 3 successive discounts of $10\\%, 20\\%, 30\\%$ on Marked Price ($100\\%$):\n  - $1^{\\text{st}} \\to 10\\% \\implies 90\\%$.\n  - $2^{\\text{nd}} \\to 20\\% \\text{ of } 90 = 18\\% \\implies 72\\%$.\n  - $3^{\\text{rd}} \\to 30\\% \\text{ of } 72 = 21.6\\% \\implies 50.4\\%$.\n  - Total Discount $= 10\\% + 18\\% + 21.6\\% = \\mathbf{49.6\\%}$.\n\n#### Page 3: Equal Cost Price Rule (No Profit / No Loss)\n- **Important Note 1**: If a person purchases two items with **EQUAL COST PRICE** and sells one with $x\\%$ Profit and another with same $x\\%$ Loss:\n  - Result is ALWAYS **NO PROFIT / NO LOSS**!\n  - Example: Dravid bought 2 cars each at Rs. 4,59,000. Sold one at $13\\%$ profit & another at $13\\%$ loss $\\implies \\mathbf{\\text{No Profit / No Loss}}$.\n\n#### Page 4 & 5: Equal SP Square Loss Rule & Equating Terms\n- **Important Note 2**: If **SELLING PRICES of two items are equal** and one is sold at $x\\%$ profit and another at $x\\%$ loss:\n  - Result is ALWAYS a **LOSS** of $\\left(\\frac{x}{10}\\right)^2\\%$ or $(x.0)^2\\%$.\n  - Example: SP Rs. 5,43,400 each, $30\\%$ profit & $30\\%$ loss $\\implies (3.0)^2 = \\mathbf{9\\% \\text{ Loss}}$.\n- **Rule 3 (Equating CP of $x$ items = SP of $y$ items)**:\n  - Reverse the terms and equate $CP \\leftrightarrow SP$.\n  - Example: $CP$ of 80 articles $= SP$ of 60 articles $\\implies SP$ of $80 = CP$ of 60.\n  - $CP = 60, SP = 80 \\implies P\\% = \\frac{20}{60} \\times 100 = \\mathbf{33.33\\% \\text{ Profit}}$.\n- **Rule 4 (Quantity Rates)**:\n  - Example: Bought 16 for 24, sold 8 for 18.\n  - $CP \\text{ of } 16 = 24 \\implies SP \\text{ of } 16 = 36 \\implies P\\% = \\frac{12}{24} \\times 100 = \\mathbf{50\\%}$.\n\n#### Page 6 & 7: SP Target Scaling & Discount without Discount\n- **Question 1**: Sold for Rs. 306 with $30\\%$ loss. Find $SP$ to gain $40\\%$.\n  - $70\\% \\to 306 \\implies 140\\% (100+40) \\to 306 \\times 2 = \\mathbf{\\text{Rs. } 612}$.\n- **CP Average Note**: When SP is given for equal profit & loss: $CP = \\frac{SP_1 + SP_2}{2}$.\n- **Discount & Marked Price Rules**:\n  - Example 1: After $20\\%$ discount, profit is $12\\%$. If no discount is given, find $P\\%$.\n    - Discounted $SP = 80\\% \\to 112\\% \\implies 100\\% (\\text{Marked Price}) \\to 140\\% \\implies \\mathbf{P\\% = 40\\%}$.\n  - Example 2: After $20\\%$ discount, loss is $28\\%$. If $10\\%$ discount is given:\n    - $80\\% \\to 72\\% \\implies 90\\% \\to \\frac{72 \\times 90}{80} = 81\\% \\implies \\mathbf{19\\% \\text{ Loss}}$.\n\n#### Page 8: Dishonest Dealer / Cheating Rules\n- **Dishonest Dealer Formula**: $\\text{Profit } \\% = \\frac{\\text{Diff}}{\\text{False Weight}} \\times 100$.\n  - Example 1: Uses $1100g$ instead of $1.5\\text{ kg}$ ($1500g$).\n    - $P\\% = \\frac{1500 - 1100}{1100} \\times 100 = \\frac{400}{1100} \\times 100 = \\mathbf{36.36\\%}$.\n  - Example 2: Professes $CP$, but gains $25\\%$. Weight substituted for $1\\text{ kg}$?\n    - $\\text{Less } \\% = \\frac{25}{125} \\times 100 = 20\\% \\text{ less} \\implies 1000 - 200 = \\mathbf{800\\text{ grams}}$.\n\n#### Page 9: Simplified Fraction Conversion Method\n- **Fraction Speed Method**:\n  - Example 1: $P = 28.57\\% = \\frac{2}{7}$, $SP = 909$.\n    - $CP = 7, SP = 9 \\implies 9 \\to 909 \\implies 7 \\to \\mathbf{707}$.\n  - Example 2: $\\text{Loss} = 27.27\\% = \\frac{3}{11}$, $SP = 1680$.\n    - $SP = 8 \\to 1680 \\implies CP = 11 \\to \\mathbf{2310}$.\n  - Example 3: TV sold for Rs. 1800 at loss of $14.28\\% = \\frac{1}{7}$.\n    - $SP = 6 \\to 1800 \\implies CP = 7 \\to \\mathbf{2100}$.\n\n#### Page 10, 11 & 12: Price Shifts, Rice Mixture & Broken Eggs\n- **Price Shift Example**: Sold at $10\\%$ loss. If Rs. 60 more, gain would be $10\\%$.\n  - Diff $= 110\\% - 90\\% = 20\\% \\to 60 \\implies 100\\% = \\mathbf{\\text{Rs. } 300}$.\n- **Merchant Rice Mixture**: $20\\text{ kg}$ at Rs. 30/kg ($CP_1 = 600$) + $80\\text{ kg}$ at Rs. 25/kg ($CP_2 = 2000$). Total $CP = 2600$. Sells mixture at Rs. 27/kg ($SP = 2700$).\n  - Overall Profit $= 2700 - 2600 = \\mathbf{\\text{Rs. } 100}$.\n- **Broken Eggs Problem**: 80 dozen eggs at Rs. 6/dozen ($CP = 480$). 160 eggs broken ($800$ available). Target $P = 25\\% \\implies SP = 600$.\n  - Selling Price $= \\left(\\frac{600}{800}\\right) \\times 12 = \\mathbf{\\text{Rs. } 9 / \\text{dozen}}$.\n\n#### Page 13, 14 & 15: Mango Price Reduction, Options Trick & Lemon Transaction\n- **Mango Price Reduction**: $20\\% \\downarrow$ enables buying 4 more for Rs. 800.\n  - Original $= 16 \\implies \\text{Original Price} = 800/16 = \\mathbf{\\text{Rs. } 50}$.\n  - Reduced $= 20 \\implies \\text{Reduced Price} = 800/20 = \\mathbf{\\text{Rs. } 40}$.\n- **Options Consideration Trick**: Article sold for Rs. 144. $P\\%$ numerically equals $CP$.\n  - Option check $80$: $80 + 80\\% \\text{ of } 80 = 80 + 64 = 144 \\implies \\mathbf{CP = \\text{Rs. } 80}$.\n- **Lemon Transaction**: Sells 45 lemons for Rs. 40 (loses $20\\%$). For $20\\%$ profit:\n  - $45 \\to 80\\% \\to \\text{Rs. } 40 \\implies 45 \\to 120\\% \\to \\text{Rs. } 60$.\n  - For Rs. 24: $\\frac{45 \\times 24}{60} = \\mathbf{18\\text{ lemons}}$.\n",
         "flashcards": [
             {
-                "title": "1. Cost Price Base Principle",
-                "front": "Why is Cost Price ($CP$) always set as $100\\%$?",
-                "back": "$CP = 100\\%$.\nIf Profit is $P\\%$, $SP = 100\\% + P\\%$.\nIf Loss is $L\\%$, $SP = 100\\% - L\\%$.",
-                "badge": "\ud83c\udff7\ufe0f CP Base"
+                "title": "Page 1: Cost Price Base Rule",
+                "front": "What is the primary rule for Cost Price in Profit & Loss calculations?",
+                "back": "Cost Price ($CP$) is ALWAYS considered as $100\\%$ base!\nEverything is calculated ONLY on $CP$, never on $SP$!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "2. Profit & Loss % Formulas",
-                "front": "What are the formulas for Profit $\\%$ and Loss $\\%$?",
-                "back": "$\\text{Profit}\\% = \\left(\\frac{SP - CP}{CP}\\right) \\times 100\\%$\n$\\text{Loss}\\% = \\left(\\frac{CP - SP}{CP}\\right) \\times 100\\%$",
-                "badge": "\ud83d\udcd0 Formulas"
+                "title": "Page 3: Equal CP Shortcut",
+                "front": "What is the overall profit or loss when 2 items are bought at EQUAL COST PRICE and sold at equal % profit and loss?",
+                "back": "Result is ALWAYS **NO PROFIT / NO LOSS**!\nExample: 2 cars bought at Rs. 4,59,000 each, sold at $13\\%$ profit & $13\\%$ loss $\\implies \\mathbf{\\text{No Profit No Loss}}$!",
+                "badge": "\ud83d\udcc4 Page 3"
             },
             {
-                "title": "3. Marked Price & Discount Relation",
-                "front": "How are Marked Price ($MP$) and Cost Price ($CP$) related?",
-                "back": "$\\frac{MP}{CP} = \\frac{100 + P\\%}{100 - D\\%}$\nExample: $P=20\\%, D=10\\% \\implies \\frac{MP}{CP} = \\frac{120}{90} = \\frac{4}{3}$!",
-                "badge": "\ud83d\udc8e MP/CP Shortcut"
+                "title": "Page 4: Equal SP Square Loss Rule",
+                "front": "What is the overall profit or loss when 2 items are sold at EQUAL SELLING PRICE with same % profit and loss?",
+                "back": "Result is ALWAYS a **LOSS** equal to $(x.0)^2\\%$.\nExample: SP Rs. 5,43,400 each, $30\\%$ profit & $30\\%$ loss $\\implies (3.0)^2 = \\mathbf{9\\% \\text{ Loss}}$!",
+                "badge": "\ud83d\udcc4 Page 4"
             },
             {
-                "title": "4. Dishonest Shopkeeper Trick",
-                "front": "If a shopkeeper sells at CP but uses $g$ grams instead of $1000g$, what is his profit %?",
-                "back": "$\\text{Gain}\\% = \\left(\\frac{\\text{Error}}{\\text{True Weight} - \\text{Error}}\\right) \\times 100\\%$",
-                "badge": "\u2696\ufe0f Shopkeeper Trick"
+                "title": "Page 5: Reversing CP & SP Rule",
+                "front": "If CP of 80 articles equals SP of 60 articles, what is the profit %?",
+                "back": "Reverse terms: $CP = 60, SP = 80$.\n$\\text{Profit } \\% = \\frac{80 - 60}{60} \\times 100 = \\frac{20}{60} \\times 100 = \\mathbf{33.33\\%}$!",
+                "badge": "\ud83d\udcc4 Page 5"
+            },
+            {
+                "title": "Page 8: Dishonest Dealer Shortcut",
+                "front": "What is the formula for profit % of a dishonest dealer using false weights?",
+                "back": "$\\text{Profit } \\% = \\frac{\\text{Difference}}{\\text{False Weight}} \\times 100$\nExample: $1100g$ used instead of $1500g \\implies \\frac{400}{1100} \\times 100 = \\mathbf{36.36\\%}$!",
+                "badge": "\ud83d\udcc4 Page 8"
+            },
+            {
+                "title": "Page 15: Lemon Transaction Rule",
+                "front": "45 lemons sold for Rs. 40 gives 20% loss. How many lemons for Rs. 24 to gain 20%?",
+                "back": "\u2022 $45 \\to 80\\% \\to \\text{Rs. } 40 \\implies 45 \\to 120\\% \\to \\text{Rs. } 60$\n\u2022 For Rs. 24: $\\frac{45 \\times 24}{60} = \\mathbf{18\\text{ lemons}}$!",
+                "badge": "\ud83d\udcc4 Page 15"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 3 Notes: Dravid purchased two cars each at Rs. 4,59,000. He sold one at 13% profit and another at 13% loss. What is his overall result?",
+                "options": [
+                    "1.69% Loss",
+                    "1.69% Profit",
+                    "No Profit / No Loss",
+                    "13% Profit"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 3 Rule: When items are bought at EQUAL COST PRICE, equal % profit and loss results in NO PROFIT / NO LOSS!"
+            },
+            {
+                "text": "From Page 4 Notes: If selling price of two items is Rs. 5,43,400 each, one sold at 30% profit and another at 30% loss. What is the overall result?",
+                "options": [
+                    "No Profit No Loss",
+                    "9% Loss",
+                    "9% Profit",
+                    "6% Loss"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 4 Rule: When items have EQUAL SELLING PRICE, equal % profit and loss results in a LOSS of (3.0)^2 = 9% Loss!"
+            },
+            {
+                "text": "From Page 5 Notes: If CP of 80 articles is equal to SP of 60 articles, what is the Profit %?",
+                "options": [
+                    "25%",
+                    "33.33%",
+                    "50%",
+                    "20%"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 5 Reversing Rule: Equate terms CP = 60, SP = 80. Profit % = (20 / 60) * 100 = 33.33%!"
+            },
+            {
+                "text": "From Page 15 Notes: 45 lemons sold for Rs. 40 loses 20%. How many lemons for Rs. 24 to gain 20%?",
+                "options": [
+                    "15 lemons",
+                    "18 lemons",
+                    "20 lemons",
+                    "24 lemons"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 15 Solution: 45 lemons -> 120% -> Rs. 60. For Rs. 24 -> (45 * 24) / 60 = 18 lemons!"
             }
         ]
     },
