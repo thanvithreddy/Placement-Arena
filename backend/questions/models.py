@@ -48,47 +48,6 @@ class SectionQuestionAssignment(models.Model):
         ordering = ['order']
 
 
-class AptitudeTopic(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    description = models.TextField(blank=True)
-    icon = models.CharField(max_length=10, default="📊")
-    formula_sheet = models.TextField(blank=True)  # Markdown/HTML cheat sheet
-    order = models.IntegerField(default=1)
-
-    class Meta:
-        ordering = ['order']
-
-    def __str__(self):
-        return self.name
-
-
-class AptitudeQuestion(models.Model):
-    topic = models.ForeignKey(AptitudeTopic, related_name='questions', on_delete=models.CASCADE)
-    difficulty = models.CharField(max_length=15, choices=[('beginner', 'Beginner'), ('intermediate', 'Intermediate'), ('advanced', 'Advanced')], default='intermediate')
-    text = models.TextField()
-    option_a = models.CharField(max_length=300)
-    option_b = models.CharField(max_length=300)
-    option_c = models.CharField(max_length=300)
-    option_d = models.CharField(max_length=300)
-    correct_option = models.CharField(max_length=1, choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')])
-    explanation = models.TextField()
-    order = models.IntegerField(default=1)
-
-    class Meta:
-        ordering = ['order']
-
-
-class UserAptitudeProgress(models.Model):
-    user = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
-    topic = models.ForeignKey(AptitudeTopic, on_delete=models.CASCADE)
-    total_attempted = models.IntegerField(default=0)
-    total_correct = models.IntegerField(default=0)
-    mastery_level = models.CharField(max_length=20, default='Novice')  # Novice, Practitioner, Master
-    last_practiced = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        unique_together = ['user', 'topic']
 
 
 class JavaTopic(models.Model):

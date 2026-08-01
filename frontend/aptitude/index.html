@@ -3,274 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aptitude Topic Mastery - Placement Arena</title>
+    <title>Gamified Aptitude Quest - Placement Arena</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./data.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
-        .card-white { background-color: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); }
-        .gradient-bg { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
-        .badge-master { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-        .badge-practitioner { background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
-        .badge-novice { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-primary { background: linear-gradient(135deg, #4f46e5, #7c3aed, #ec4899); }
+        .level-node-locked { background: #1e293b; border: 2px solid #334155; color: #64748b; }
+        .level-node-unlocked { background: linear-gradient(135deg, #3b82f6, #4f46e5); border: 2px solid #818cf8; color: #ffffff; box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
+        .level-node-completed { background: #10b981; border: 2px solid #34d399; color: #ffffff; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50">
+<body class="min-h-screen bg-slate-950 pb-16">
 
-    <!-- Top Navbar -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <!-- Navbar -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-3">
             <div class="flex items-center gap-3">
                 <a href="/dashboard/index.html" class="flex items-center gap-3">
-                    <div class="w-10 h-10 gradient-bg text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-md">
+                    <div class="w-10 h-10 gradient-primary text-white rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg">
                         ⚡
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Placement Arena</h1>
-                        <p class="text-xs text-indigo-600 font-bold">Quantitative Aptitude Mastery</p>
+                        <h1 class="text-xl font-extrabold text-white tracking-tight">Placement Arena</h1>
+                        <p class="text-xs text-pink-400 font-bold">Gamified Aptitude Quest</p>
                     </div>
                 </a>
             </div>
 
-            <nav class="flex items-center gap-4">
-                <a href="/dashboard/index.html" class="text-sm font-semibold text-slate-600 hover:text-indigo-600 px-3.5 py-2 rounded-xl hover:bg-slate-100 transition">
-                    📊 Dashboard
+            <!-- Gamification Profile Bar -->
+            <div class="flex items-center gap-5">
+                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 text-base">⚡</span>
+                    <span class="text-xs font-bold text-slate-300">XP: <strong id="user-xp" class="text-white">0</strong></span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
+                    <span class="text-indigo-400 text-base">🛡️</span>
+                    <span class="text-xs font-bold text-slate-300">Level: <strong id="user-level" class="text-white">1</strong></span>
+                </div>
+                <a href="/dashboard/index.html" class="text-xs font-bold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+                    Dashboard
                 </a>
-                <a href="/java-quest/index.html" class="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-xl shadow-sm transition flex items-center gap-2">
-                    <span>🎮 Java Quest</span>
-                </a>
-            </nav>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-6 py-8">
-        
-        <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 rounded-3xl p-8 text-white mb-8 shadow-xl relative overflow-hidden">
-            <div class="max-w-2xl relative z-10 space-y-3">
-                <div class="inline-flex items-center gap-2 bg-indigo-500/30 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-indigo-200 border border-indigo-400/30">
-                    <span>🎯 Topic-Wise Practice</span>
+    <main class="max-w-7xl mx-auto px-6 pt-8 space-y-8">
+
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden rounded-3xl p-8 md:p-10 gradient-primary shadow-2xl">
+            <div class="max-w-3xl relative z-10 space-y-3">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
+                    <span>👑 Speed &amp; Accuracy Perfection</span>
                 </div>
-                <h1 class="text-3xl font-extrabold tracking-tight">Master 15 Core Placement Aptitude Topics</h1>
-                <p class="text-indigo-200 text-sm leading-relaxed">
-                    Practice topic-by-topic with instant formula cheat sheets, shortcut tricks, 3 difficulty tiers, and detailed step-by-step solutions.
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Aptitude Mastery RPG Quest</h1>
+                <p class="text-indigo-100 text-sm leading-relaxed">
+                    Master shortcut formulas, time-saving tricks, and core quantitative concepts across 15 sequentially unlocked levels!
                 </p>
+                <div class="flex items-center gap-2 pt-2" id="badges-container">
+                    <!-- Badges rendered via JS -->
+                </div>
             </div>
         </div>
 
-        <!-- Topics Grid View -->
-        <div id="topics-view" class="space-y-6">
+        <!-- Quest Map View -->
+        <div id="quest-map-view" class="space-y-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">All 15 Placement Topics</h2>
-                <span class="text-xs font-semibold text-slate-500 bg-slate-200 px-3 py-1 rounded-full" id="topics-count">15 Topics Available</span>
+                <h2 class="text-xl font-extrabold text-white tracking-tight">15-Level Quest Map</h2>
+                <span class="text-xs font-semibold text-pink-300 bg-pink-900/40 px-3 py-1 rounded-full border border-pink-700/50">Sequential Unlock Mode</span>
             </div>
 
-            <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Topics rendered via JS -->
+            <!-- Levels Grid -->
+            <div id="levels-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <!-- Level cards rendered via JS -->
             </div>
         </div>
 
-        <!-- Practice / Question Player View (Hidden by default) -->
-        <div id="practice-view" class="hidden space-y-6">
-            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                <button onclick="backToTopics()" class="text-sm font-bold text-slate-600 hover:text-indigo-600 flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-slate-100 transition">
-                    ← Back to Topics
+        <!-- Topic Detail & Practice View (Hidden by default) -->
+        <div id="practice-view" class="hidden space-y-8">
+            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-md">
+                <button onclick="backToMap()" class="text-sm font-bold text-slate-300 hover:text-white flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition">
+                    ← Back to Quest Map
                 </button>
-                <h3 class="text-lg font-bold text-slate-900" id="current-topic-title">Percentages Practice</h3>
-                <button onclick="toggleFormulaSheet()" class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl hover:bg-indigo-100 transition flex items-center gap-1.5">
-                    <span>💡 Formula Cheat Sheet</span>
-                </button>
+                <h3 class="text-lg font-extrabold text-white" id="practice-topic-title">Loading...</h3>
+                <span class="text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-700/50 px-3 py-1.5 rounded-xl" id="practice-xp-tag">+0 XP</span>
             </div>
 
-            <!-- Formula Sheet Drawer -->
-            <div id="formula-drawer" class="hidden bg-indigo-50/80 border border-indigo-200 rounded-2xl p-6 text-sm text-slate-800 space-y-3 shadow-inner">
-                <div class="flex items-center justify-between">
-                    <h4 class="font-extrabold text-indigo-900 flex items-center gap-2 text-base">
-                        <span>💡 Concept Cheat Sheet &amp; Formulas</span>
-                    </h4>
-                    <button onclick="toggleFormulaSheet()" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
-                </div>
-                <div id="formula-content" class="prose max-w-none text-sm text-slate-700"></div>
+            <!-- Formula Sheet / Concept Summary -->
+            <div class="glass-card rounded-3xl p-8 space-y-4 border-l-4 border-l-indigo-500">
+                <h4 class="text-base font-extrabold text-indigo-400 flex items-center gap-2 uppercase tracking-wider text-xs">
+                    <span>💡 Concept Cheat Sheet &amp; Formulas</span>
+                </h4>
+                <div id="formula-content" class="prose prose-invert max-w-none text-sm text-slate-300 leading-relaxed"></div>
             </div>
 
-            <!-- Question Card -->
-            <div id="question-card" class="card-white rounded-3xl p-8 space-y-6">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 px-3 py-1 rounded-lg" id="q-difficulty">Intermediate</span>
-                    <span class="text-xs text-slate-400 font-semibold" id="q-counter">Question 1 of 5</span>
+            <!-- Gamified Question Player -->
+            <div id="question-card" class="glass-card rounded-3xl p-8 space-y-6 border border-slate-700">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <span class="text-xs font-black uppercase tracking-wider bg-slate-800 text-slate-300 px-3 py-1 rounded-lg" id="q-difficulty">Intermediate</span>
+                    <span class="text-xs font-bold text-pink-400" id="q-counter">Question 1 of N</span>
                 </div>
 
-                <h4 class="text-lg font-extrabold text-slate-900 leading-snug" id="q-text">Loading question...</h4>
+                <h4 class="text-lg font-extrabold text-white leading-snug" id="q-text">Loading question...</h4>
 
                 <div class="space-y-3" id="options-list">
                     <!-- Options rendered here -->
                 </div>
 
-                <div class="flex items-center justify-end gap-3 pt-4">
-                    <button id="submit-ans-btn" onclick="submitAnswer()" class="gradient-bg text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md hover:opacity-95 transition">
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+                    <div id="result-status" class="flex-1 font-bold text-sm"></div>
+                    <button id="submit-ans-btn" onclick="submitAnswer()" class="gradient-primary text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-xl hover:opacity-95 transition">
                         Submit Answer
                     </button>
-                    <button id="next-q-btn" onclick="nextQuestion()" class="hidden bg-slate-900 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md hover:bg-slate-800 transition">
+                    <button id="next-q-btn" onclick="nextQuestion()" class="hidden bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-md hover:bg-slate-700 transition">
                         Next Question →
+                    </button>
+                    <button id="complete-btn" onclick="completeTopic()" class="hidden bg-emerald-600 text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-md hover:bg-emerald-500 transition">
+                        Complete Level &amp; Claim XP 🚀
                     </button>
                 </div>
 
-                <!-- Explanation Area with Visual PDF Solution Card -->
-                <div id="explanation-box" class="hidden border-t border-slate-200 pt-6 space-y-4">
-                    <div class="flex items-center gap-2 text-sm font-bold" id="result-status"></div>
-                    <div class="bg-gradient-to-r from-indigo-50/90 to-purple-50/90 border border-indigo-200/80 rounded-2xl p-6 text-sm text-slate-800 space-y-3 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-black uppercase tracking-wider text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full border border-indigo-200">📄 Handwritten PDF Special Method Solution</span>
-                            <span class="text-xs font-semibold text-slate-500">100% Strict Note Alignment</span>
-                        </div>
-                        <p id="exp-text" class="leading-relaxed font-medium text-slate-800 whitespace-pre-line"></p>
-                    </div>
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden mt-4 bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2 border-l-4 border-l-pink-500">
+                    <span class="text-xs font-bold text-pink-400 uppercase">📄 Handwritten PDF Special Method Solution</span>
+                    <p id="exp-text" class="text-sm text-slate-300 font-medium whitespace-pre-line leading-relaxed"></p>
                 </div>
             </div>
+
         </div>
 
     </main>
 
     <script>
-        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000' || window.location.port === '5501') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
+        // --- Gamification Local State Management ---
+        let gamificationData = JSON.parse(localStorage.getItem('aptitudeGamification')) || {
+            totalXp: 0,
+            currentLevel: 1,
+            completedTopics: [],
+            badges: []
+        };
 
-        function getToken() { return localStorage.getItem('access_token'); }
-        function getHeaders() {
-            const token = getToken();
-            return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+        function saveGamificationData() {
+            localStorage.setItem('aptitudeGamification', JSON.stringify(gamificationData));
+            updateHeaderUI();
         }
 
-        // Axios 401 Interceptor
-        axios.interceptors.response.use(
-            response => response,
-            async error => {
-                const originalRequest = error.config;
-                if (error.response?.status === 401 && !originalRequest._retry) {
-                    originalRequest._retry = true;
-                    try {
-                        const refresh = localStorage.getItem('refresh_token');
-                        if (!refresh) throw new Error('No refresh token');
-                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
-                        const newAccess = res.data.access;
-                        localStorage.setItem('access_token', newAccess);
-                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
-                        return axios(originalRequest);
-                    } catch(e) {
-                        localStorage.clear();
-                        return Promise.reject(e);
-                    }
-                }
-                return Promise.reject(error);
-            }
-        );
+        function updateHeaderUI() {
+            document.getElementById('user-xp').innerText = gamificationData.totalXp;
+            document.getElementById('user-level').innerText = gamificationData.currentLevel;
 
+            const badgesBox = document.getElementById('badges-container');
+            badgesBox.innerHTML = '';
+            gamificationData.badges.forEach(b => {
+                badgesBox.innerHTML += `<span class="bg-white/20 border border-white/40 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md">${b}</span>`;
+            });
+        }
+
+        function awardBadges() {
+            const count = gamificationData.completedTopics.length;
+            const badges = new Set(gamificationData.badges);
+            if (count >= 1) badges.add("Aptitude Rookie 🐣");
+            if (count >= 5) badges.add("Formula Master 🛡️");
+            if (count >= 10) badges.add("Shortcut Scholar 🎓");
+            if (count >= 15) badges.add("Placement Grandmaster 👑");
+            gamificationData.badges = Array.from(badges);
+        }
+
+        // --- Core UI Logic ---
         let currentTopic = null;
         let questions = [];
         let currentIndex = 0;
-        let selectedOption = null;
+        let selectedOptionIdx = null;
 
-        async function loadTopics() {
-            const grid = document.getElementById('topics-grid');
-            grid.innerHTML = '<div class="col-span-3 text-center py-12 font-bold text-slate-500 flex flex-col items-center gap-3"><div class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div><span>Loading 15 Aptitude Topics...</span></div>';
+        function loadMap() {
+            updateHeaderUI();
+            const grid = document.getElementById('levels-grid');
+            grid.innerHTML = '';
 
-            try {
-                const res = await axios.get(`${API}/questions/aptitude/topics/`, getHeaders());
-                const data = res.data;
-                grid.innerHTML = '';
+            window.aptitudeTopics.forEach((t, index) => {
+                const isCompleted = gamificationData.completedTopics.includes(t.slug);
+                const isUnlocked = index === 0 || gamificationData.completedTopics.includes(window.aptitudeTopics[index - 1].slug);
 
-                if (!data || data.length === 0) {
-                    grid.innerHTML = '<div class="col-span-3 text-center py-12 text-slate-500 font-bold">No topics found. Please refresh in a moment.</div>';
-                    return;
+                let nodeClass = 'level-node-locked';
+                let statusText = '🔒 Locked';
+                let clickAttr = '';
+
+                if (isCompleted) {
+                    nodeClass = 'level-node-completed';
+                    statusText = '✅ Completed';
+                    clickAttr = `onclick="startPractice('${t.slug}')"`;
+                } else if (isUnlocked) {
+                    nodeClass = 'level-node-unlocked';
+                    statusText = '⚔️ Ready to Play';
+                    clickAttr = `onclick="startPractice('${t.slug}')"`;
                 }
 
-                data.forEach(t => {
-                    let badgeClass = 'badge-novice';
-                    if (t.mastery_level === 'Master') badgeClass = 'badge-master';
-                    else if (t.mastery_level === 'Practitioner') badgeClass = 'badge-practitioner';
-
-                    grid.innerHTML += `
-                        <div class="card-white rounded-3xl p-6 flex flex-col justify-between hover:shadow-lg transition-all border border-slate-200/80 hover:border-indigo-200 group">
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center font-extrabold text-2xl group-hover:scale-110 transition-transform">
-                                        ${t.icon}
-                                    </div>
-                                    <span class="text-xs font-bold px-3 py-1 rounded-full ${badgeClass}">${t.mastery_level}</span>
-                                </div>
-
-                                <div>
-                                    <h3 class="text-lg font-extrabold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">${t.name}</h3>
-                                    <p class="text-xs text-slate-500 leading-relaxed">${t.description}</p>
-                                </div>
+                grid.innerHTML += `
+                    <div ${clickAttr} class="${nodeClass} rounded-3xl p-6 flex flex-col justify-between cursor-pointer hover:scale-105 transition-all duration-200 relative group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black uppercase tracking-wider opacity-80">Level ${t.id}</span>
+                                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-black/20">${statusText}</span>
                             </div>
-
-                            <div class="pt-6 border-t border-slate-100 space-y-3 mt-4">
-                                <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
-                                    <span>Accuracy: <strong class="text-slate-800">${t.accuracy}%</strong></span>
-                                    <span>Attempted: <strong class="text-slate-800">${t.total_attempted}</strong></span>
-                                </div>
-
-                                <button onclick="startPractice('${t.slug}')" class="w-full gradient-bg text-white font-bold py-3 rounded-xl text-xs shadow-sm hover:opacity-95 transition flex items-center justify-center gap-2">
-                                    <span>Start Practice</span>
-                                    <span>→</span>
-                                </button>
-                            </div>
+                            <h3 class="text-base font-extrabold leading-snug">${t.icon} ${t.name}</h3>
                         </div>
-                    `;
-                });
-            } catch (err) {
-                console.error("Error loading topics:", err);
-                grid.innerHTML = `
-                    <div class="col-span-3 text-center py-12 space-y-4">
-                        <div class="text-slate-600 font-extrabold text-base">Backend is waking up or updating...</div>
-                        <button onclick="loadTopics()" class="gradient-bg text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow hover:opacity-90">Click to Retry Loading 15 Topics</button>
+                        <div class="pt-4 flex items-center justify-between text-xs font-bold opacity-90 border-t border-white/20 mt-4">
+                            <span>+${t.xp_reward} XP</span>
+                            <span>Play →</span>
+                        </div>
                     </div>
                 `;
-            }
+            });
         }
 
-        async function startPractice(slug) {
-            try {
-                const res = await axios.get(`${API}/questions/aptitude/topics/${slug}/`, getHeaders());
-                currentTopic = res.data.topic;
-                questions = res.data.questions;
-                currentIndex = 0;
+        function startPractice(slug) {
+            currentTopic = window.aptitudeTopics.find(t => t.slug === slug);
+            if (!currentTopic) return;
 
-                document.getElementById('topics-view').classList.add('hidden');
-                document.getElementById('practice-view').classList.remove('hidden');
+            questions = currentTopic.questions;
+            currentIndex = 0;
 
-                document.getElementById('current-topic-title').innerText = `${currentTopic.name} Practice`;
-                document.getElementById('formula-content').innerHTML = marked.parse(currentTopic.formula_sheet || "No formula sheet available for this topic.");
+            document.getElementById('quest-map-view').classList.add('hidden');
+            document.getElementById('practice-view').classList.remove('hidden');
 
-                renderQuestion();
-            } catch (err) {
-                alert("Failed to load topic questions.");
-            }
-        }
+            document.getElementById('practice-topic-title').innerText = currentTopic.name;
+            document.getElementById('practice-xp-tag').innerText = `+${currentTopic.xp_reward} XP`;
+            
+            const rawMarkdown = currentTopic.formula_sheet || "No formula sheet available for this topic.";
+            document.getElementById('formula-content').innerHTML = marked.parse(rawMarkdown);
 
-        function backToTopics() {
-            document.getElementById('practice-view').classList.add('hidden');
-            document.getElementById('topics-view').classList.remove('hidden');
-            loadTopics();
-        }
-
-        function toggleFormulaSheet() {
-            const drawer = document.getElementById('formula-drawer');
-            drawer.classList.toggle('hidden');
+            renderQuestion();
         }
 
         function renderQuestion() {
             if (currentIndex >= questions.length) {
-                alert("Great job! You completed all practice questions in this section.");
-                backToTopics();
+                showCompletionState();
                 return;
             }
 
             const q = questions[currentIndex];
-            selectedOption = null;
+            selectedOptionIdx = null;
 
             document.getElementById('q-difficulty').innerText = q.difficulty;
             document.getElementById('q-counter').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
@@ -279,68 +254,65 @@
             const optsList = document.getElementById('options-list');
             optsList.innerHTML = '';
 
-            const options = [
-                { key: 'A', text: q.option_a },
-                { key: 'B', text: q.option_b },
-                { key: 'C', text: q.option_c },
-                { key: 'D', text: q.option_d }
-            ];
-
-            options.forEach(opt => {
+            const alphabet = ['A', 'B', 'C', 'D'];
+            q.options.forEach((optText, idx) => {
                 optsList.innerHTML += `
-                    <button onclick="selectOption('${opt.key}')" id="opt-btn-${opt.key}" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-400 bg-slate-50/50 hover:bg-indigo-50/30 transition-all font-medium text-sm text-slate-800 flex items-center gap-3">
-                        <span class="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">${opt.key}</span>
-                        <span>${opt.text}</span>
+                    <button onclick="selectOption(${idx})" id="opt-btn-${idx}" class="w-full text-left p-4 rounded-xl border border-slate-700 hover:border-indigo-500 bg-slate-800 hover:bg-slate-700/50 transition-all font-medium text-sm text-slate-200 flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-xs text-slate-400">${alphabet[idx]}</span>
+                        <span>${optText}</span>
                     </button>
                 `;
             });
 
             document.getElementById('explanation-box').classList.add('hidden');
+            document.getElementById('result-status').innerHTML = '';
             document.getElementById('submit-ans-btn').classList.remove('hidden');
             document.getElementById('next-q-btn').classList.add('hidden');
+            document.getElementById('complete-btn').classList.add('hidden');
         }
 
-        function selectOption(key) {
-            selectedOption = key;
-            ['A', 'B', 'C', 'D'].forEach(k => {
-                const btn = document.getElementById(`opt-btn-${k}`);
-                if (k === key) {
-                    btn.className = "w-full text-left p-4 rounded-xl border-2 border-indigo-600 bg-indigo-50/60 font-bold text-sm text-indigo-900 flex items-center gap-3 shadow-xs";
+        function selectOption(idx) {
+            selectedOptionIdx = idx;
+            const alphabet = ['A', 'B', 'C', 'D'];
+            [0, 1, 2, 3].forEach(i => {
+                const btn = document.getElementById(`opt-btn-${i}`);
+                if (!btn) return;
+                
+                if (i === idx) {
+                    btn.className = "w-full text-left p-4 rounded-xl border-2 border-indigo-500 bg-indigo-900/40 font-bold text-sm text-indigo-200 flex items-center gap-3 shadow-md";
                 } else {
-                    btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-400 bg-slate-50/50 transition-all font-medium text-sm text-slate-800 flex items-center gap-3";
+                    btn.className = "w-full text-left p-4 rounded-xl border border-slate-700 hover:border-indigo-500 bg-slate-800 transition-all font-medium text-sm text-slate-200 flex items-center gap-3";
                 }
             });
         }
 
-        async function submitAnswer() {
-            if (!selectedOption) {
+        function submitAnswer() {
+            if (selectedOptionIdx === null) {
                 alert("Please select an option first!");
                 return;
             }
 
             const q = questions[currentIndex];
-            try {
-                const res = await axios.post(`${API}/questions/aptitude/submit-answer/`, {
-                    question_id: q.id,
-                    selected_option: selectedOption
-                }, getHeaders());
+            const isCorrect = (selectedOptionIdx === q.correct_option_index);
+            const statusBox = document.getElementById('result-status');
+            const alphabet = ['A', 'B', 'C', 'D'];
 
-                const data = res.data;
-                const statusBox = document.getElementById('result-status');
-                if (data.is_correct) {
-                    statusBox.className = "flex items-center gap-2 text-sm font-bold text-emerald-600";
-                    statusBox.innerHTML = "<span>✅ Correct Answer!</span>";
-                } else {
-                    statusBox.className = "flex items-center gap-2 text-sm font-bold text-rose-600";
-                    statusBox.innerHTML = `<span>❌ Incorrect. Correct Option is (${data.correct_option})</span>`;
-                }
+            if (isCorrect) {
+                statusBox.className = "flex-1 font-bold text-sm text-emerald-400 flex items-center gap-2";
+                statusBox.innerHTML = "<span>✅ Correct Answer!</span>";
+            } else {
+                statusBox.className = "flex-1 font-bold text-sm text-rose-400 flex items-center gap-2";
+                statusBox.innerHTML = `<span>❌ Incorrect. Correct Option is (${alphabet[q.correct_option_index]})</span>`;
+            }
 
-                document.getElementById('exp-text').innerText = data.explanation;
-                document.getElementById('explanation-box').classList.remove('hidden');
-                document.getElementById('submit-ans-btn').classList.add('hidden');
+            document.getElementById('exp-text').innerText = q.explanation;
+            document.getElementById('explanation-box').classList.remove('hidden');
+            document.getElementById('submit-ans-btn').classList.add('hidden');
+            
+            if (currentIndex === questions.length - 1) {
+                document.getElementById('complete-btn').classList.remove('hidden');
+            } else {
                 document.getElementById('next-q-btn').classList.remove('hidden');
-            } catch (err) {
-                alert("Error submitting answer.");
             }
         }
 
@@ -349,7 +321,61 @@
             renderQuestion();
         }
 
-        loadTopics();
+        function showCompletionState() {
+            document.getElementById('question-card').innerHTML = `
+                <div class="text-center space-y-4 py-8">
+                    <div class="text-5xl">🎉</div>
+                    <h3 class="text-2xl font-extrabold text-white">Level Mastered!</h3>
+                    <p class="text-slate-400">You've successfully completed all questions for this topic.</p>
+                    <button onclick="completeTopic()" class="gradient-primary text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-xl hover:opacity-95 transition mt-6">
+                        Claim +${currentTopic.xp_reward} XP &amp; Return to Map
+                    </button>
+                </div>
+            `;
+        }
+
+        function completeTopic() {
+            const alreadyCompleted = gamificationData.completedTopics.includes(currentTopic.slug);
+            
+            if (!alreadyCompleted) {
+                gamificationData.completedTopics.push(currentTopic.slug);
+                gamificationData.totalXp += currentTopic.xp_reward;
+                gamificationData.currentLevel = Math.floor(gamificationData.totalXp / 300) + 1;
+                awardBadges();
+                saveGamificationData();
+                alert(`🎉 Awesome! You've unlocked the next level and earned +${currentTopic.xp_reward} XP!`);
+            }
+            
+            backToMap();
+        }
+
+        function backToMap() {
+            document.getElementById('practice-view').classList.add('hidden');
+            document.getElementById('quest-map-view').classList.remove('hidden');
+            // Reset question card HTML for next time
+            document.getElementById('question-card').innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <span class="text-xs font-black uppercase tracking-wider bg-slate-800 text-slate-300 px-3 py-1 rounded-lg" id="q-difficulty"></span>
+                    <span class="text-xs font-bold text-pink-400" id="q-counter"></span>
+                </div>
+                <h4 class="text-lg font-extrabold text-white leading-snug pt-4" id="q-text"></h4>
+                <div class="space-y-3 pt-4" id="options-list"></div>
+                <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-800 mt-6">
+                    <div id="result-status" class="flex-1 font-bold text-sm"></div>
+                    <button id="submit-ans-btn" onclick="submitAnswer()" class="gradient-primary text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-xl hover:opacity-95 transition">Submit Answer</button>
+                    <button id="next-q-btn" onclick="nextQuestion()" class="hidden bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-md hover:bg-slate-700 transition">Next Question →</button>
+                    <button id="complete-btn" onclick="completeTopic()" class="hidden bg-emerald-600 text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-md hover:bg-emerald-500 transition">Complete Level &amp; Claim XP 🚀</button>
+                </div>
+                <div id="explanation-box" class="hidden mt-4 bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2 border-l-4 border-l-pink-500">
+                    <span class="text-xs font-bold text-pink-400 uppercase">📄 Handwritten PDF Special Method Solution</span>
+                    <p id="exp-text" class="text-sm text-slate-300 font-medium whitespace-pre-line leading-relaxed"></p>
+                </div>
+            `;
+            loadMap();
+        }
+
+        // Initialize Map
+        loadMap();
     </script>
 </body>
 </html>

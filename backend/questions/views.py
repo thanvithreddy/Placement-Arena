@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .models import Question, Option, Answer, SectionQuestionAssignment, AptitudeTopic, AptitudeQuestion, UserAptitudeProgress, JavaTopic, UserJavaProgress, UserGamificationProfile
+from .models import Question, Option, Answer, SectionQuestionAssignment, JavaTopic, UserJavaProgress, UserGamificationProfile
 from .serializers import QuestionSerializer, AnswerSerializer, AdminQuestionSerializer
 from django.shortcuts import get_object_or_404
 from exams.models import SectionAttempt
@@ -419,114 +419,7 @@ class PurgeAllDataView(APIView):
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.core.management import call_command
 
-class AptitudeTopicsView(APIView):
-    permission_classes = [AllowAny]
-
-    def get(self, request):
-        if AptitudeTopic.objects.count() == 0:
-            try:
-                call_command('seed_aptitude_and_java')
-            except Exception as e:
-                print("Auto-seeding error:", e)
-
-        topics = AptitudeTopic.objects.all().order_by('order')
-        user_progress = {}
-        if request.user and request.user.is_authenticated:
-            user_progress = {p.topic_id: p for p in UserAptitudeProgress.objects.filter(user=request.user)}
-
-        data = []
-        for t in topics:
-            p = user_progress.get(t.id)
-            total_attempted = p.total_attempted if p else 0
-            total_correct = p.total_correct if p else 0
-            accuracy = round((total_correct / total_attempted * 100), 1) if total_attempted > 0 else 0
-            mastery = p.mastery_level if p else 'Novice'
-
-            data.append({
-                'id': t.id,
-                'name': t.name,
-                'slug': t.slug,
-                'description': t.description,
-                'icon': t.icon,
-                'formula_sheet': t.formula_sheet,
-                'order': t.order,
-                'total_questions': t.questions.count(),
-                'total_attempted': total_attempted,
-                'total_correct': total_correct,
-                'accuracy': accuracy,
-                'mastery_level': mastery
-            })
-
-        return Response(data)
-
-
-class AptitudeQuestionsView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, slug):
-        topic = get_object_or_404(AptitudeTopic, slug=slug)
-        difficulty = request.query_params.get('difficulty', 'intermediate')
-
-        questions = AptitudeQuestion.objects.filter(topic=topic, difficulty=difficulty).order_by('order')
-        if not questions.exists():
-            questions = AptitudeQuestion.objects.filter(topic=topic).order_by('order')
-
-        data = []
-        for q in questions:
-            data.append({
-                'id': q.id,
-                'difficulty': q.difficulty,
-                'text': q.text,
-                'option_a': q.option_a,
-                'option_b': q.option_b,
-                'option_c': q.option_c,
-                'option_d': q.option_d,
-                'correct_option': q.correct_option,
-                'explanation': q.explanation
-            })
-
-        return Response({
-            'topic': {
-                'id': topic.id,
-                'name': topic.name,
-                'formula_sheet': topic.formula_sheet
-            },
-            'questions': data
-        })
-
-
-class AptitudeSubmitAnswerView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        question_id = request.data.get('question_id')
-        selected_option = request.data.get('selected_option', '').upper()
-
-        question = get_object_or_404(AptitudeQuestion, id=question_id)
-        is_correct = (selected_option == question.correct_option)
-
-        progress, _ = UserAptitudeProgress.objects.get_or_create(user=request.user, topic=question.topic)
-        progress.total_attempted += 1
-        if is_correct:
-            progress.total_correct += 1
-
-        acc = (progress.total_correct / progress.total_attempted) * 100
-        if acc >= 85 and progress.total_attempted >= 5:
-            progress.mastery_level = 'Master'
-        elif acc >= 60 and progress.total_attempted >= 3:
-            progress.mastery_level = 'Practitioner'
-        else:
-            progress.mastery_level = 'Novice'
-
-        progress.save()
-
-        return Response({
-            'is_correct': is_correct,
-            'correct_option': question.correct_option,
-            'explanation': question.explanation,
-            'topic_accuracy': round(acc, 1),
-            'mastery_level': progress.mastery_level
-        })
+# Aptitude endpoints have been migrated to static frontend data.js
 
 
 # ==========================================
@@ -537,11 +430,7 @@ class JavaTopicsView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        if JavaTopic.objects.count() == 0:
-            try:
-                call_command('seed_aptitude_and_java')
-            except Exception as e:
-                print("Auto-seeding error:", e)
+
 
         topics = JavaTopic.objects.all().order_by('order')
         completed_ids = set()
