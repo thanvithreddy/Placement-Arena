@@ -461,6 +461,13 @@
             }).join('');
         }
 
+        function backToMap() {
+            document.getElementById('practice-view').classList.add('hidden');
+            document.getElementById('quest-map-view').classList.remove('hidden');
+            renderMap();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function openTopic(slug) {
             currentTopic = aptitudeTopics.find(t => t.slug === slug);
             if (!currentTopic) return;
