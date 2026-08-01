@@ -7,7 +7,33 @@ const aptitudeTopics = [
         "icon": "\u26a1",
         "xp_reward": 150,
         "formula_sheet": "### \u26a1 Master Cheat Sheet: Speed Math & Shortcuts\n\n#### 1. Squares Ending with Digit 5\n> **Formula**: $(10n + 5)^2 = 100n(n+1) + 25$\n- **Method**: Multiply the tens digit $n$ with its successor $(n+1)$, then append `25` at the end.\n- $15^2 = (1 \\times 2) \\text{ append } 25 = 225$\n- $25^2 = (2 \\times 3) \\text{ append } 25 = 625$\n- $35^2 = (3 \\times 4) \\text{ append } 25 = 1225$\n- $45^2 = (4 \\times 5) \\text{ append } 25 = 2025$\n- $95^2 = (9 \\times 10) \\text{ append } 25 = 9025$\n\n#### 2. Squares Near Base 50\n- **Numbers Below 50 ($50 - d$)**: Answer = $(25 - d) \\text{ and } d^2$\n  - Example $47^2$ ($d = 3$): $25 - 3 = 22$, $3^2 = 09 \\implies 2209$\n- **Numbers Above 50 ($50 + d$)**: Answer = $(25 + d) \\text{ and } d^2$\n  - Example $53^2$ ($d = 3$): $25 + 3 = 28$, $3^2 = 09 \\implies 2809$\n\n#### 3. Squares Near Base 100\n- **Numbers Below 100 ($100 - d$)**: Answer = $(N - d) \\text{ and } d^2$\n  - Example $94^2$ ($d = 6$): $94 - 6 = 88$, $6^2 = 36 \\implies 8836$\n- **Numbers Above 100 ($100 + d$)**: Answer = $(N + d) \\text{ and } d^2$\n  - Example $107^2$ ($d = 7$): $107 + 7 = 114$, $7^2 = 49 \\implies 11449$\n\n#### 4. Important Cube Roots Shortcut\n| Last Digit of Number | Last Digit of Cube Root |\n| :---: | :---: |\n| 1, 4, 5, 6, 9, 0 | Same (1, 4, 5, 6, 9, 0) |\n| 2 $\\leftrightarrow$ 8 | Swap (2 ends in 8, 8 ends in 2) |\n| 3 $\\leftrightarrow$ 7 | Swap (3 ends in 7, 7 ends in 3) |\n\n- **Example $\\sqrt[3]{97336}$**:\n  1. Last digit is 6 $\\implies$ Root ends in **6**.\n  2. Ignore last 3 digits ($336$), remaining is $97$.\n  3. $4^3 = 64 < 97 < 125 = 5^3$. Preceding cube is $4$.\n  4. Answer = **46**.\n",
-        "questions": []
+        "questions": [],
+        "flashcards": [
+            {
+                "title": "Squares Ending in 5",
+                "front": "How do you calculate $(10n + 5)^2$ mentally in 2 seconds?",
+                "back": "Formula: Multiply tens digit $n$ by $(n+1)$, then append 25!\nExample: $35^2 \\implies 3 \\times 4 = 12$, append $25 \\implies 1225$!",
+                "badge": "\u26a1 Mental Trick"
+            },
+            {
+                "title": "Squares Near Base 50",
+                "front": "How do you calculate $(50 \\pm d)^2$ using base 25?",
+                "back": "Answer = $(25 \\pm d)$ followed by $d^2$.\nExample $47^2$ ($d = 3$): $25 - 3 = 22$, $3^2 = 09 \\implies 2209$!",
+                "badge": "\ud83c\udfaf Base 50 Trick"
+            },
+            {
+                "title": "Squares Near Base 100",
+                "front": "How do you calculate $(100 \\pm d)^2$?",
+                "back": "Answer = $(N \\pm d)$ followed by $d^2$.\nExample $94^2$ ($d = 6$): $94 - 6 = 88$, $6^2 = 36 \\implies 8836$!",
+                "badge": "\ud83d\udcaf Base 100 Trick"
+            },
+            {
+                "title": "Cube Root Digit Rules",
+                "front": "What are the unit digit mapping rules for Cube Roots?",
+                "back": "1, 4, 5, 6, 9, 0 stay the SAME.\n2 \u2194 8 and 3 \u2194 7 swap!\nExample: $\\sqrt[3]{97336}$ ends in 6, preceding cube of 97 is $4^3 = 64 \\implies 46$!",
+                "badge": "\ud83d\udce6 Cube Root Rule"
+            }
+        ]
     },
     {
         "id": 2,
@@ -269,6 +295,26 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "20% -> 2 apples\n100% -> 10 apples\n80% -> 8 apples\nReduced Price = Rs. 100 / 10 = 10/-\nOriginal Price = Rs. 100 / 8 = 12.5/-"
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Rule of Symmetry",
+                "front": "What is the Symmetry Rule of Percentages?",
+                "back": "$a\\% \\text{ of } b = b\\% \\text{ of } a$\nExample: $13\\% \\text{ of } 200 = 200\\% \\text{ of } 13 = 2 \\times 13 = 26$!",
+                "badge": "\ud83d\udd04 Symmetry"
+            },
+            {
+                "title": "Common Fraction Equivalents",
+                "front": "What are the fraction values for $12.5\\%$, $33.33\\%$, $16.66\\%$, $14.28\\%$?",
+                "back": "\u2022 $12.5\\% = \\frac{1}{8}$\n\u2022 $33.33\\% = \\frac{1}{3}$\n\u2022 $16.66\\% = \\frac{1}{6}$\n\u2022 $14.28\\% = \\frac{1}{7}$",
+                "badge": "\ud83d\udcca Fractions"
+            },
+            {
+                "title": "Successive Percentage Formula",
+                "front": "If a value changes by $a\\%$ then $b\\%$, what is the net percentage change?",
+                "back": "Net Change = $\\left(a + b + \\frac{ab}{100}\\right)\\%$\nExample: $+20\\%$ then $-20\\% \\implies -4\\%$ net loss!",
+                "badge": "\ud83d\udcc8 Successive Change"
             }
         ]
     },
@@ -593,6 +639,20 @@ const aptitudeTopics = [
                 "correct_option_index": 0,
                 "explanation": "45 lemons -> 80% -> 40. 45 lemons -> 120% -> 60/-. (100% is the cost price). Now, for 20% profit, 60/- -> 45 lemons. 24/- -> 18 lemons."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Profit & Loss Base Rule",
+                "front": "Cost Price ($CP$) is always considered what percentage?",
+                "back": "Cost Price ($CP$) = $100\\%$ base!\nSelling Price ($SP$) = $100\\% + P\\%$ or $100\\% - L\\%$.",
+                "badge": "\ud83c\udff7\ufe0f Base Rule"
+            },
+            {
+                "title": "CP to MP Relation",
+                "front": "What is the direct shortcut formula relating $CP$, $MP$, Profit $\\%$, and Discount $\\%$?",
+                "back": "$\\frac{\\text{Marked Price}}{\\text{Cost Price}} = \\frac{100 + \\text{Profit}\\%}{100 - \\text{Discount}\\%}$",
+                "badge": "\ud83d\udc8e Marked Price Formula"
+            }
         ]
     },
     {
@@ -627,6 +687,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "SI Doubling Shortcut: Rate R = 100 / T = 100 / 5 = 20% per annum!"
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Simple Interest Formula",
+                "front": "What is the formula for Simple Interest ($SI$) and Total Amount ($A$)?",
+                "back": "$SI = \\frac{P \\times R \\times T}{100}$\n$A = P \\times \\left(1 + \\frac{R \\times T}{100}\\right)$",
+                "badge": "\ud83c\udfe6 Simple Interest"
+            },
+            {
+                "title": "Difference CI vs SI (2 Years)",
+                "front": "What is the shortcut for difference between CI and SI for 2 years?",
+                "back": "$\\text{Difference} = P \\times \\left(\\frac{R}{100}\\right)^2$\nExample: $P=10,000, R=10\\% \\implies 10000 \\times (0.1)^2 = \\text{Rs. } 100$!",
+                "badge": "\u26a1 2-Year Difference"
             }
         ]
     },
@@ -903,6 +977,20 @@ const aptitudeTopics = [
                 "correct_option_index": 0,
                 "explanation": "New average = 25 + 6 = 31."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Average Definition & Sum",
+                "front": "How do you calculate Sum from Average?",
+                "back": "$\\text{Average} = \\frac{\\text{Sum}}{N} \\implies \\text{Sum} = \\text{Average} \\times N$",
+                "badge": "\u2696\ufe0f Base Formula"
+            },
+            {
+                "title": "Replacement Shortcut",
+                "front": "When a new person replaces an old person, how do you find the new weight?",
+                "back": "$\\text{Weight}_{\\text{New}} = \\text{Weight}_{\\text{Old}} + (N \\times \\Delta \\text{Average})$",
+                "badge": "\ud83d\udd04 Replacement Rule"
+            }
         ]
     },
     {
@@ -1130,6 +1218,20 @@ const aptitudeTopics = [
                 "correct_option_index": 1,
                 "explanation": "Final wine ratio = 16 / (16+65) = 16/81. Total operations = 4. Let initial volume be V. (1 - 8/V)^4 = 16/81. Taking the fourth root: 1 - 8/V = 2/3 => 8/V = 1/3 => V = 24 litres. The notes suggest filtering options by checking which one leaves ~20% (16/81) after 4 removals of 8L."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Alligations & Mixtures (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Alligations & Mixtures (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
+            }
         ]
     },
     {
@@ -1344,6 +1446,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "Let age be x. 3(x+3) - 3(x-3) = 3x + 9 - 3x + 9 = 18."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Problems on Ages (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Problems on Ages (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -1596,6 +1712,20 @@ const aptitudeTopics = [
                 "correct_option_index": 0,
                 "explanation": "Let numbers be 500 and 900.\nFirst number decreased by 19%: 500 - (19% of 500) = 500 - 95 = 405.\nSecond number increased by 10%: 900 + (10% of 900) = 900 + 90 = 990.\nRatio = 405 : 990 = 81 : 198 = 9 : 22."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Ratios & Proportions (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Ratios & Proportions (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
+            }
         ]
     },
     {
@@ -1750,6 +1880,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "A's capital = 2/3, so B's capital = 1/3. A's profit = 3/4, so B's profit = 1/4. Inv ratio A:B = 2/3 : 1/3 = 2:1. Profit ratio A:B = 3/4 : 1/4 = 3:1. Time ratio A:B = (3/2) : (1/1) = 3:2. A invests for 12 months (3 parts = 12 -> 1 part = 4). B's time = 2 parts = 2 * 4 = 8. So B puts for 8 months."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Partnerships (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Partnerships (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -1917,6 +2061,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 1,
                 "explanation": "$A+B \\rightarrow 5\\ days$\n$2A + \\frac{1}{3}B \\rightarrow 3\\ days$\n$M_1 D_1 = M_2 D_2$\n$(A+B)5 = (2A + \\frac{1}{3}B)3$\n$5A + 5B = 6A + B$\n$\\Rightarrow A = 4B \\Rightarrow B = \\frac{1}{4}A$\n$(A + \\frac{1}{4}A) \\rightarrow 5\\ days$\n$1.25A \\rightarrow 5\\ days$\n$M_1 D_1 = M_2 D_2$\n$125 \\times 5 = 100 \\times D_2$\n$\\Rightarrow D_2 = \\frac{25}{4} = 6 \\frac{1}{4}\\ days$."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Time & Work (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Time & Work (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -2097,6 +2255,20 @@ const aptitudeTopics = [
                 "correct_option_index": 2,
                 "explanation": "This forms an Arithmetic Progression where a = 35, d = 2, n = 12. Using sum formula: S = n/2 [2a + (n-1)d] = 12/2 [2(35) + 11(2)] = 6 * [70 + 22] = 6 * 92 = 552 kms. Also written as (35*12) + (12*11) = 420 + 132 = 552."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Speed, Distance, Time (PDF) Core Concept",
+                "front": "What is the foundational concept for Speed, Distance, Time (PDF)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
+            }
         ]
     },
     {
@@ -2119,6 +2291,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "[TODO: Add handwritten PDF explanation here]"
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Problems on Trains (PDF) Core Concept",
+                "front": "What is the foundational concept for Problems on Trains (PDF)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -2154,6 +2340,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "Let upstream speed be (x-y) and downstream speed be (x+y).\nEq 1: 40 Km upstream + 55 Km downstream = 13 hrs\nEq 2: 30 Km upstream + 44 Km downstream = 10 hrs\n\nTaking difference and manipulating:\nWe get a difference of 10 Km upstream + 11 Km downstream = 3 hrs.\nEquate this with any of the above equations (e.g., multiply by 3):\n30 Km upstream + 33 Km downstream = 9 hrs.\n\nSubtract this from Eq 2:\n(44 - 33) Km downstream = (10 - 9) hrs\n11 Km downstream = 1 hr\nDownstream speed (x+y) = 11 Kmph.\n\nSubstitute downstream time in Eq 2:\n30 Km upstream + 44 Km / 11 Kmph = 10 hrs\n30 Km upstream + 4 hrs = 10 hrs\n30 Km upstream = 6 hrs\nUpstream speed (x-y) = 30 / 6 = 5 Kmph.\n\nx + y = 11 Kmph\nx - y = 5 Kmph\nSpeed of man (x) = (11 + 5) / 2 = 8 Kmph\nSpeed of current (y) = (11 - 5) / 2 = 3 Kmph"
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Boats & Streams (PDF) Core Concept",
+                "front": "What is the foundational concept for Boats & Streams (PDF)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -2201,6 +2401,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "Here, it is clear that A will work completely 18 mins. Let's find out that.\nA will do 4 units/min out of 96 total units.\nRest of the units will be completely by B based on its capacity.\nWork units by A -> 72\nRemaining 24. per Perminty by B = 24/3 = 8 mins.\nTherefore After 8 mins, we should close pipe B."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Pipes & Cisterns (PDF Placeholder) Core Concept",
+                "front": "What is the foundational concept for Pipes & Cisterns (PDF Placeholder)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -2477,6 +2691,20 @@ const aptitudeTopics = [
                 "correct_option_index": 0,
                 "explanation": "$nC_2 = 325 \\Rightarrow \\frac{n(n-1)}{2} = 325 \\Rightarrow n(n-1) = 650 \\Rightarrow 26 \\times 25$. Total 26 Participants."
             }
+        ],
+        "flashcards": [
+            {
+                "title": "Permutations & Combinations (PDF) Core Concept",
+                "front": "What is the foundational concept for Permutations & Combinations (PDF)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
+            }
         ]
     },
     {
@@ -2655,6 +2883,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "a) 16 + 7 - 2 = 21. => 21/50.\nb) 2/50 = 1/25."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Probability (PDF) Core Concept",
+                "front": "What is the foundational concept for Probability (PDF)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     },
@@ -3014,6 +3256,20 @@ const aptitudeTopics = [
                 ],
                 "correct_option_index": 0,
                 "explanation": "Volume of raised water in cylinder = No. of balls \u00d7 Volume of one sphere. \u03c0R\u00b2h = n \u00d7 (4/3)\u03c0r\u00b3 \u21d2 R\u00b2h = n \u00d7 (4/3)r\u00b3 \u21d2 6\u00b2 \u00d7 36 = n \u00d7 (4/3) \u00d7 1.5\u00b3. n = (36 \u00d7 36 \u00d7 3) / (4 \u00d7 1.5\u00b3) = 3888 / 13.5 = 288 balls."
+            }
+        ],
+        "flashcards": [
+            {
+                "title": "Mensuration 2D & 3D (PDF Master Edition) Core Concept",
+                "front": "What is the foundational concept for Mensuration 2D & 3D (PDF Master Edition)?",
+                "back": "Master the core rules, ratio conversions, and shortcut methods outlined in the concept sheet!",
+                "badge": "\ud83d\udca1 Core Rule"
+            },
+            {
+                "title": "PDF Shortcut Method",
+                "front": "How do you solve these problems in under 30 seconds?",
+                "back": "Use ratio scaling, unit cancellation, and instant formula reduction!",
+                "badge": "\u26a1 Shortcut Trick"
             }
         ]
     }

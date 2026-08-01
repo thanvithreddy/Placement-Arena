@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
-    <!-- MathJax 3 as rendering engine -->
+    <!-- MathJax 3 Engine -->
     <script>
     window.MathJax = {
       tex: {
@@ -59,6 +59,47 @@
             transform: translateY(-1px);
             box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.4);
         }
+
+        /* 3D Flip Flashcard Styles */
+        .flashcard-scene {
+            perspective: 1000px;
+            height: 240px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+        }
+        .flashcard-front {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+        .flashcard-back {
+            background: linear-gradient(135deg, #eef2ff, #f3e8ff);
+            border: 2px solid #c7d2fe;
+            color: #1e1b4b;
+            transform: rotateY(180deg);
+        }
+
         .prose-custom h1, .prose-custom h2, .prose-custom h3, .prose-custom h4 {
             color: #0f172a;
             font-weight: 800;
@@ -69,24 +110,6 @@
             list-style-type: disc;
             padding-left: 1.25rem;
             margin-bottom: 1rem;
-        }
-        .prose-custom li {
-            margin-bottom: 0.35rem;
-        }
-        .prose-custom blockquote {
-            border-left: 4px solid #6366f1;
-            background-color: #f1f5f9;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin: 1rem 0;
-            font-style: italic;
-        }
-        .prose-custom code {
-            background: #e0e7ff;
-            color: #3730a3;
-            padding: 0.15rem 0.4rem;
-            border-radius: 0.25rem;
-            font-weight: 600;
         }
         .prose-custom table {
             width: 100%;
@@ -134,7 +157,7 @@
                     </div>
                     <div>
                         <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Placement Arena</h1>
-                        <p class="text-xs text-indigo-600 font-bold">Aptitude Quest Arena</p>
+                        <p class="text-xs text-indigo-600 font-bold">Interactive Concept Playground</p>
                     </div>
                 </a>
             </div>
@@ -158,30 +181,28 @@
 
     <main class="max-w-7xl mx-auto px-6 pt-8 space-y-8">
 
-        <!-- Hero Section (Light Theme) -->
+        <!-- Hero Section -->
         <div class="relative overflow-hidden rounded-3xl p-8 gradient-banner text-white shadow-lg">
             <div class="max-w-3xl space-y-3 relative z-10">
                 <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    <span>✨ Formatted Mathematical TeX Display</span>
+                    <span>🎮 Interactive Visual Concept Playground</span>
                 </div>
                 <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Gamified Aptitude Quest</h1>
                 <p class="text-indigo-100 text-sm leading-relaxed">
-                    Master formulas, shortcut tricks, and interactive practice problems across all 17 topics. Beautifully typeset mathematical notation and zero locks!
+                    Interact with live concept visualizers, 3D flip flashcards, and gamified practice challenges. All 17 topics are completely unlocked!
                 </p>
                 <div class="flex items-center gap-3 pt-2" id="badges-container">
                     <!-- Badges rendered via JS -->
                 </div>
             </div>
-            <!-- Decorative circle -->
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
         </div>
 
         <!-- Quest Map View -->
         <div id="quest-map-view" class="space-y-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">17 Aptitude Topics</h2>
-                    <p class="text-xs text-slate-500 font-medium">Select any topic to start studying cheat sheets or testing yourself!</p>
+                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">17 Interactive Topics</h2>
+                    <p class="text-xs text-slate-500 font-medium">Select any topic to flip cards, test visual calculators, or take practice quizzes!</p>
                 </div>
                 <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
                     🔓 All 17 Topics Unlocked
@@ -194,7 +215,7 @@
             </div>
         </div>
 
-        <!-- Practice & Study View (Hidden by default) -->
+        <!-- Interactive Playground & Practice View (Hidden by default) -->
         <div id="practice-view" class="hidden space-y-6">
             <!-- Header Bar -->
             <div class="flex items-center justify-between card-white p-4 rounded-2xl">
@@ -203,28 +224,58 @@
                 </button>
                 <div class="text-center">
                     <h3 class="text-lg font-extrabold text-slate-900" id="practice-topic-title">Loading...</h3>
-                    <p class="text-xs text-slate-500 font-medium" id="practice-topic-subtitle">Formula Cheat Sheet &amp; Interactive Practice</p>
+                    <p class="text-xs text-slate-500 font-medium">Interactive Concept Playground &amp; Practice Arena</p>
                 </div>
                 <span class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl" id="practice-xp-tag">+100 XP</span>
             </div>
 
-            <!-- Tab Switching (Cheat Sheet vs Practice Quiz) -->
-            <div class="flex items-center gap-3 border-b border-slate-200 pb-2">
-                <button id="tab-cheatsheet" onclick="switchTab('cheatsheet')" class="px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2">
-                    <span>💡 Concept &amp; Formula Cheat Sheet</span>
+            <!-- Mode Selector Tabs -->
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
+                <button id="tab-flashcards" onclick="switchMode('flashcards')" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0">
+                    <span>🎴 3D Flip Flashcards</span>
                 </button>
-                <button id="tab-quiz" onclick="switchTab('quiz')" class="px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2">
-                    <span>🎯 Interactive Practice Quiz</span>
+                <button id="tab-visualizer" onclick="switchMode('visualizer')" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0">
+                    <span>🧮 Live Concept Playground</span>
+                </button>
+                <button id="tab-cheatsheet" onclick="switchMode('cheatsheet')" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0">
+                    <span>📄 Formula Sheet</span>
+                </button>
+                <button id="tab-quiz" onclick="switchMode('quiz')" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0">
+                    <span>🎯 Practice Quiz</span>
                     <span id="quiz-count-badge" class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full text-[10px]">0 Qs</span>
                 </button>
             </div>
 
-            <!-- Content Area 1: Cheat Sheet -->
-            <div id="view-cheatsheet" class="card-white rounded-3xl p-6 md:p-8 space-y-4">
+            <!-- Mode 1: 3D Flip Flashcards -->
+            <div id="view-flashcards" class="space-y-4">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span>Click any card to flip and reveal the PDF shortcut trick!</span>
+                    <span class="text-indigo-600 font-bold">🔄 Tap Card to Flip</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="flashcards-container">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Mode 2: Live Concept Playground & Visualizer -->
+            <div id="view-visualizer" class="card-white rounded-3xl p-6 md:p-8 space-y-6">
+                <div class="flex items-center justify-between">
+                    <h4 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span>🧮 Interactive Concept Visualizer</span>
+                    </h4>
+                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full">Live Simulation</span>
+                </div>
+                <div id="visualizer-content" class="space-y-6">
+                    <!-- Rendered dynamically by JS depending on topic -->
+                </div>
+            </div>
+
+            <!-- Mode 3: Formula Sheet Reference -->
+            <div id="view-cheatsheet" class="hidden card-white rounded-3xl p-6 md:p-8 space-y-4">
                 <div id="formula-content" class="prose-custom max-w-none text-sm text-slate-700 leading-relaxed"></div>
             </div>
 
-            <!-- Content Area 2: Interactive Quiz -->
+            <!-- Mode 4: Interactive Practice Quiz -->
             <div id="view-quiz" class="hidden space-y-6">
                 <div class="card-white rounded-3xl p-6 md:p-8 space-y-6">
                     <!-- Progress bar -->
@@ -274,7 +325,7 @@
 
     <!-- Completion Modal -->
     <div id="completion-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
-        <div class="card-white rounded-3xl max-w-md w-full p-8 text-center space-y-5 animate-bounce-in shadow-2xl">
+        <div class="card-white rounded-3xl max-w-md w-full p-8 text-center space-y-5 shadow-2xl">
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto border border-emerald-200">
                 🎉
             </div>
@@ -303,10 +354,9 @@
         // State
         let currentTopic = null;
         let currentQuizIndex = 0;
-        let quizAnswers = [];
         let score = 0;
 
-        // Auto Math Rendering Engine (KaTeX + MathJax Dual Renderer)
+        // Auto Math Rendering Engine
         function renderMathInUI() {
             setTimeout(() => {
                 if (window.renderMathInElement) {
@@ -321,12 +371,12 @@
                     });
                 }
                 if (window.MathJax && MathJax.typesetPromise) {
-                    MathJax.typesetPromise().catch(err => console.log('MathJax typeset notice:', err));
+                    MathJax.typesetPromise().catch(err => console.log('MathJax notice:', err));
                 }
             }, 50);
         }
 
-        // User Stats LocalStorage
+        // User Stats
         function getUserStats() {
             return {
                 xp: parseInt(localStorage.getItem('aptitude_xp') || '0'),
@@ -402,7 +452,7 @@
                                 <span class="text-amber-600 font-extrabold">+${topic.xp_reward || 100} XP</span>
                             </div>
                             <button onclick="openTopic('${topic.slug}')" class="gradient-btn text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-xs">
-                                ${isCompleted ? 'Review' : 'Start'}
+                                ${isCompleted ? 'Review' : 'Play'}
                             </button>
                         </div>
                     </div>
@@ -422,46 +472,227 @@
             const markedHtml = marked.parse(currentTopic.formula_sheet || "### Cheat Sheet Coming Soon!");
             document.getElementById('formula-content').innerHTML = markedHtml;
 
-            // Typeset TeX math
-            renderMathInUI();
+            // Render 3D Flashcards
+            renderFlashcards();
 
-            // Prepare Quiz
-            currentQuizIndex = 0;
-            score = 0;
-            quizAnswers = [];
-            
-            switchTab('cheatsheet');
+            // Render Visualizer Widget
+            renderVisualizer();
+
+            // Switch to Flashcards by default
+            switchMode('flashcards');
 
             document.getElementById('quest-map-view').classList.add('hidden');
             document.getElementById('practice-view').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function backToMap() {
-            document.getElementById('practice-view').classList.add('hidden');
-            document.getElementById('quest-map-view').classList.remove('hidden');
-            renderMap();
+        function renderFlashcards() {
+            const container = document.getElementById('flashcards-container');
+            const cards = currentTopic.flashcards || [];
+
+            if (cards.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">No flashcards for this topic.</p>`;
+                return;
+            }
+
+            container.innerHTML = cards.map((fc, i) => `
+                <div class="flashcard-scene" onclick="flipCard(${i})">
+                    <div class="flashcard-inner" id="card-inner-${i}">
+                        <div class="flashcard-front">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">${fc.badge || '💡 Concept'}</span>
+                                <span class="text-xs text-indigo-500 font-bold">Tap to Flip 🔄</span>
+                            </div>
+                            <div class="space-y-2 my-auto">
+                                <h4 class="text-sm font-extrabold text-slate-900">${fc.title}</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed font-medium">${fc.front}</p>
+                            </div>
+                            <div class="text-[10px] text-slate-400 text-right">Card ${i+1} of ${cards.length}</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-200 text-indigo-900">📝 PDF Shortcut Trick</span>
+                                <span class="text-xs text-indigo-600 font-bold">Tap to Flip 🔄</span>
+                            </div>
+                            <div class="space-y-2 my-auto">
+                                <p class="text-xs text-indigo-950 leading-relaxed font-bold whitespace-pre-line">${fc.back}</p>
+                            </div>
+                            <div class="text-[10px] text-indigo-400 text-right">Mastered ✨</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            renderMathInUI();
         }
 
-        function switchTab(tab) {
+        function flipCard(index) {
+            const el = document.getElementById(`card-inner-${index}`);
+            if (el) {
+                el.classList.toggle('is-flipped');
+            }
+        }
+
+        function renderVisualizer() {
+            const container = document.getElementById('visualizer-content');
+            const slug = currentTopic.slug;
+
+            if (slug === 'percentages') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-600">Drag sliders to test the <strong>Symmetry Rule</strong>: $a\\% \\text{ of } b = b\\% \\text{ of } a$ live!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <label class="text-xs font-bold text-slate-700 flex justify-between">
+                                    <span>Percentage ($a\\%$)</span>
+                                    <span class="text-indigo-600 font-extrabold" id="pct-val-a">20%</span>
+                                </label>
+                                <input type="range" min="1" max="100" value="20" id="pct-slider-a" oninput="calcPct()" class="w-full accent-indigo-600">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-xs font-bold text-slate-700 flex justify-between">
+                                    <span>Base Number ($b$)</span>
+                                    <span class="text-indigo-600 font-extrabold" id="pct-val-b">500</span>
+                                </label>
+                                <input type="range" min="10" max="2000" step="10" value="500" id="pct-slider-b" oninput="calcPct()" class="w-full accent-indigo-600">
+                            </div>
+                        </div>
+
+                        <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-2xl space-y-2 text-center">
+                            <h5 class="text-xs font-extrabold text-indigo-900 uppercase">Live Result</h5>
+                            <p class="text-xl font-extrabold text-indigo-700" id="pct-result-text">20% of 500 = 100</p>
+                            <p class="text-xs text-slate-500 font-medium" id="pct-symmetry-text">Symmetry Check: 500% of 20 = 100 ✓</p>
+                        </div>
+                    </div>
+                `;
+                calcPct();
+            } else if (slug === 'speed-math') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-600">Enter any number to see the <strong>Instant Square &amp; Cube Root</strong> breakdown!</p>
+                        <div class="flex items-center gap-3">
+                            <input type="number" id="sm-input" value="97336" placeholder="Enter number..." class="p-3 rounded-xl border border-slate-200 text-sm font-bold w-full max-w-xs focus:ring-2 focus:ring-indigo-500">
+                            <button onclick="calcSpeedMath()" class="gradient-btn text-white px-5 py-3 rounded-xl text-xs font-extrabold">Calculate</button>
+                        </div>
+                        <div id="sm-output" class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-xs text-slate-700 space-y-2">
+                            Enter a number above to see the step-by-step PDF rule!
+                        </div>
+                    </div>
+                `;
+                calcSpeedMath();
+            } else if (slug === 'si-ci') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-600">Compare <strong>Simple Interest ($SI$) vs Compound Interest ($CI$)</strong> over time!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Principal ($P$)</label>
+                                <input type="number" id="sici-p" value="10000" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Rate ($R\\%$)</label>
+                                <input type="number" id="sici-r" value="10" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Years ($T$)</label>
+                                <input type="number" id="sici-t" value="2" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
+                                <span class="text-[10px] uppercase font-bold text-emerald-600">Simple Interest (SI)</span>
+                                <p class="text-lg font-extrabold text-emerald-700" id="sici-out-si">Rs. 2,000</p>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-center">
+                                <span class="text-[10px] uppercase font-bold text-indigo-600">Compound Interest (CI)</span>
+                                <p class="text-lg font-extrabold text-indigo-700" id="sici-out-ci">Rs. 2,100</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcSICI();
+            } else {
+                container.innerHTML = `
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center space-y-3">
+                        <div class="text-3xl">${currentTopic.icon || '💡'}</div>
+                        <h5 class="text-sm font-extrabold text-slate-900">${currentTopic.name} Concept Playground</h5>
+                        <p class="text-xs text-slate-500">Practice with 3D Flip Flashcards or take the Interactive Practice Quiz below!</p>
+                    </div>
+                `;
+            }
+
+            renderMathInUI();
+        }
+
+        function calcPct() {
+            const a = parseFloat(document.getElementById('pct-slider-a').value) || 0;
+            const b = parseFloat(document.getElementById('pct-slider-b').value) || 0;
+            document.getElementById('pct-val-a').textContent = `${a}%`;
+            document.getElementById('pct-val-b').textContent = b;
+
+            const res = (a * b) / 100;
+            document.getElementById('pct-result-text').textContent = `${a}% of ${b} = ${res}`;
+            document.getElementById('pct-symmetry-text').textContent = `Symmetry Check: ${b}% of ${a} = ${res} ✓`;
+        }
+
+        function calcSpeedMath() {
+            const val = parseFloat(document.getElementById('sm-input').value) || 0;
+            const out = document.getElementById('sm-output');
+
+            const sq = val * val;
+            const cb = Math.cbrt(val);
+            out.innerHTML = `
+                <div class="space-y-1">
+                    <p><strong>Square ($N^2$):</strong> $${val}^2 = ${sq}$</p>
+                    <p><strong>Cube Root ($\\sqrt[3]{N}$):</strong> $\\sqrt[3]{${val}} = ${cb.toFixed(2)}$</p>
+                </div>
+            `;
+            renderMathInUI();
+        }
+
+        function calcSICI() {
+            const p = parseFloat(document.getElementById('sici-p').value) || 0;
+            const r = parseFloat(document.getElementById('sici-r').value) || 0;
+            const t = parseFloat(document.getElementById('sici-t').value) || 0;
+
+            const si = (p * r * t) / 100;
+            const ci = p * (Math.pow(1 + (r / 100), t)) - p;
+
+            document.getElementById('sici-out-si').textContent = `Rs. ${si.toLocaleString()}`;
+            document.getElementById('sici-out-ci').textContent = `Rs. ${Math.round(ci).toLocaleString()}`;
+        }
+
+        function switchMode(mode) {
+            const btnFC = document.getElementById('tab-flashcards');
+            const btnVis = document.getElementById('tab-visualizer');
             const btnCheat = document.getElementById('tab-cheatsheet');
             const btnQuiz = document.getElementById('tab-quiz');
+
+            const viewFC = document.getElementById('view-flashcards');
+            const viewVis = document.getElementById('view-visualizer');
             const viewCheat = document.getElementById('view-cheatsheet');
             const viewQuiz = document.getElementById('view-quiz');
 
-            if (tab === 'cheatsheet') {
-                btnCheat.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2";
-                btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2";
+            // Reset all buttons
+            [btnFC, btnVis, btnCheat, btnQuiz].forEach(b => b.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0");
+            [viewFC, viewVis, viewCheat, viewQuiz].forEach(v => v.classList.add('hidden'));
+
+            if (mode === 'flashcards') {
+                btnFC.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+                viewFC.classList.remove('hidden');
+            } else if (mode === 'visualizer') {
+                btnVis.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+                viewVis.classList.remove('hidden');
+            } else if (mode === 'cheatsheet') {
+                btnCheat.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
                 viewCheat.classList.remove('hidden');
-                viewQuiz.classList.add('hidden');
-                renderMathInUI();
             } else {
-                btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2";
-                btnCheat.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2";
-                viewCheat.classList.add('hidden');
+                btnQuiz.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
                 viewQuiz.classList.remove('hidden');
                 loadQuizQuestion();
             }
+
+            renderMathInUI();
         }
 
         function loadQuizQuestion() {
@@ -507,7 +738,6 @@
             if (isCorrect) {
                 buttons[selectedIndex].classList.add('option-correct');
                 score++;
-                // Add instant XP
                 const stats = getUserStats();
                 stats.xp += 20;
                 saveUserStats(stats);
@@ -518,7 +748,6 @@
 
             document.getElementById('quiz-score-live').textContent = `Score: ${score}/${currentQuizIndex + 1}`;
 
-            // Show explanation
             if (q.explanation) {
                 document.getElementById('explanation-text').textContent = q.explanation;
                 document.getElementById('explanation-card').classList.remove('hidden');
