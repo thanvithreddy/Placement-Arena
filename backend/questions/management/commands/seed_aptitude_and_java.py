@@ -2,147 +2,135 @@ from django.core.management.base import BaseCommand
 from questions.models import AptitudeTopic, AptitudeQuestion, JavaTopic
 
 class Command(BaseCommand):
-    help = 'Seeds Aptitude Topics with user handwritten Time & Work and Pipes & Cisterns PDF notes'
+    help = 'Seeds Aptitude Topics with user handwritten Speed/Distance/Trains and Boats/Streams PDF notes'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS("Starting database seeding with Time & Work and Pipes & Cisterns PDF notes..."))
+        self.stdout.write(self.style.SUCCESS("Starting database seeding with Speed/Distance/Trains and Boats/Streams PDF notes..."))
 
         # ----------------------------------------------------
-        # 1. TIME AND WORK - PDF MASTER NOTES
+        # 1. SPEED, DISTANCE & TIME / TRAINS - PDF MASTER NOTES
         # ----------------------------------------------------
-        tnw_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Time and Work
+        sdt_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Speed, Distance, Time & Trains
 
-#### 1. Fundamental Proportionality Laws
-- **Time $\\propto$ Work** (Directly proportional)
-- **Men $\\propto$ Work** (Directly proportional)
-- **Time $\\propto \\frac{1}{\\text{Men}}$** (Inversely proportional)
+#### 1. Core Formulas & Unit Conversions
+- $\\text{Speed} = \\frac{\\text{Distance}}{\\text{Time}}$ | $\\text{Distance} = \\text{Speed} \\times \\text{Time}$ | $\\text{Time} = \\frac{\\text{Distance}}{\\text{Speed}}$
+- **km/h to m/s**: Multiply by $\\frac{5}{18}$
+- **m/s to km/h**: Multiply by $\\frac{18}{5}$
 
-#### 2. Universal MDH Formula
-$$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$$
-- $M_1 D_1 = M_2 D_2$ (when hours and work are constant)
-- $M_1 D_1 H_1 = M_2 D_2 H_2$ (when work is constant)
-- $\\text{Work} = \\text{Time} \\times \\text{Efficiency}$ | $\\text{Efficiency} = \\frac{\\text{Total Work}}{\\text{Time Taken}}$
+#### 2. The 4 Train Cases
+1. **Crossing Standing Man / Pole**: Distance = Length of Train ($L$). Speed = Train Speed ($S$).
+2. **Crossing Platform / Bridge**: Distance = Train Length ($L_1$) + Platform Length ($L_2$).
+3. **Crossing Running Person**:
+   - Same Direction: Relative Speed = $S_{\\text{train}} - S_{\\text{person}}$
+   - Opposite Direction: Relative Speed = $S_{\\text{train}} + S_{\\text{person}}$
+4. **Crossing Another Train**:
+   - Distance is ALWAYS $L_1 + L_2$ regardless of direction.
+   - Same Direction Time = $\\frac{L_1 + L_2}{|S_1 - S_2|}$ | Opposite Direction Time = $\\frac{L_1 + L_2}{S_1 + S_2}$
 
-#### 3. Middle Joining & Middle Leaving (Equation Method)
-- Add before and after situations to find remaining days!
-- *Example*: 16 men do job in 30 days. After 10 days, 6 men left. How many days for remaining work?
-  - Total work $= 16 \\times 30 = 480$.
-  - Work done in 10 days $= 16 \\times 10 = 160 \\implies \\text{Remaining} = 320$.
-  - Remaining 10 men $\\implies D_2 = \\frac{320}{10} = \\mathbf{32 \\text{ days}}$!
+#### 3. Two Distant Places Meeting Concept
+- Two vehicles start from A & B towards each other $\\implies$ Relative Speed $= S_1 + S_2$.
+- **Different Starting Times Trick**: Calculate distance covered by earlier train BEFORE second train starts!
+  - *PDF Example*: A & B 440km apart. Train P starts at 4 AM (30km/h). Train Q starts at 7 AM (40km/h).
+  - From 4-7 AM (3 hrs), P covers $30 \\times 3 = 90\\text{km}$. Remaining $= 350\\text{km}$.
+  - Relative Speed $= 30 + 40 = 70\\text{km/h}$. Time to meet $= \\frac{350}{70} = 5 \\text{ hrs after 7 AM} \\implies \\mathbf{12:00 \\text{ PM (Noon)}}$!
 
-#### 4. "OR" and "AND" Type Questions Shortcut
-- **Direct Shortcut for "AND" from "OR"**:
-  $$\\text{Days} = \\frac{\\text{Given Days}}{\\frac{M_2}{M_1} + \\frac{W_2}{W_1}}$$
-  - *Example*: 10 men OR 12 women do work in 16 days. How many days for 15 men AND 6 women?
-  - $\\text{Days} = \\frac{16}{\\frac{15}{10} + \\frac{6}{12}} = \\frac{16}{1.5 + 0.5} = \\frac{16}{2} = \\mathbf{8 \\text{ days}}$!
+#### 4. Chasing Case (Same Direction)
+- *PDF Example*: Rajdhani leaves at 14:30 (60km/h). Duronto leaves at 16:30 (80km/h).
+  - Gap at 16:30 (2 hrs) $= 60 \\times 2 = 120\\text{km}$.
+  - Relative Speed $= 80 - 60 = 20\\text{km/h}$. Time $= \\frac{120}{20} = 6 \\text{ hrs} \\implies \\mathbf{480\\text{km from Delhi}}$!
 
-#### 5. Pure "AND" Type Equating Method
-- 2M + 3W do in 8 days; 3M + 2W do in 7 days.
-  - $(2M + 3W) \\times 8 = (3M + 2W) \\times 7 \\implies 16M + 24W = 21M + 14W \\implies 1M = 2W$.
-  - Total work $= 7W \\times 8 = 56 \\text{ units}$.
-  - $5M + 4W = 14W \\implies \\text{Days} = \\frac{56}{14} = \\mathbf{4 \\text{ days}}$!
+#### 5. Stoppage Time Formula per Hour
+$$\\mathbf{\\text{Stoppage Time/hr} = \\left(\\frac{\\text{Speed excl. stoppages} - \\text{Speed incl. stoppages}}{\\text{Speed excl. stoppages}}\\right) \\times 60 \\text{ mins}}$$
+- *PDF Example*: Incl = 25km/h, Excl = 40km/h $\\implies \\left(\\frac{40 - 25}{40}\\right) \\times 60 = \\mathbf{22.5 \\text{ mins/hr}}$!
 
-#### 6. Leaving BEFORE Completion (Backwards Leaving Trick)
-- If a worker leaves $X$ days BEFORE completion, **ADD their potential work** to total work!
-  - *Example*: A in 20d, B in 30d (Total 60 units: A=3, B=2). B left 3 days BEFORE completion.
-  - Add B's 3-day work ($3 \\times 2 = 6$) to total $\\to 60 + 6 = 66$ units.
-  - Total time $= \\frac{66}{3+2} = \\frac{66}{5} = \\mathbf{13\\frac{1}{5} \\text{ days}}$!
+#### 6. Late vs Early Distance Formula
+$$\\mathbf{\\text{Distance} = \\frac{S_1 \\times S_2}{|S_1 - S_2|} \\times \\left(\\frac{\\Delta \\text{Time in mins}}{60}\\right)}$$
+- *PDF Example*: 30km/h (10m late) vs 40km/h (5m early) $\\to \\Delta t = 15\\text{m} \\implies \\text{Distance} = \\frac{1200}{10} \\times \\frac{15}{60} = \\mathbf{30\\text{km}}$!
 
-#### 7. Alternate Days Working Concept
-- Calculate work done in a 2-day cycle $(A+B)$. Multiply cycle until near total work, then complete leftover units with the worker who started!
+#### 7. Post-Meeting Time Formula
+$$\\mathbf{\\frac{S_1}{S_2} = \\sqrt{\\frac{T_2}{T_1}}}$$
+- *PDF Example*: After meeting, trains reach destinations in 9 hrs and 16 hrs. $S_1 = 80\\text{km/h} \\implies \\frac{80}{S_2} = \\sqrt{\\frac{16}{9}} = \\frac{4}{3} \\implies S_2 = \\mathbf{60\\text{km/h}}$!
 """
 
-        tnw_topic, _ = AptitudeTopic.objects.update_or_create(
-            slug="time-and-work",
+        sdt_topic, _ = AptitudeTopic.objects.update_or_create(
+            slug="speed-distance-time",
             defaults={
-                "order": 12,
-                "name": "Time and Work (PDF Master Edition)",
-                "description": "Master Proportionality laws, Universal MDH Formula, Middle Joining/Leaving, OR to AND shortcut, & Backwards Leaving trick.",
-                "icon": "⏱️",
-                "formula_sheet": tnw_formula_sheet
+                "order": 13,
+                "name": "Speed, Distance & Time / Trains (PDF Master Edition)",
+                "description": "Master Train Cases, Platform Crossing, Chasing, Stoppage formula, Late/Early formula, & Post-Meeting Time root law.",
+                "icon": "🚀",
+                "formula_sheet": sdt_formula_sheet
             }
         )
 
         # ----------------------------------------------------
-        # 2. PIPES AND CISTERNS - PDF MASTER NOTES
+        # 2. BOATS AND STREAMS - PDF MASTER NOTES
         # ----------------------------------------------------
-        pnc_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Pipes and Cisterns
+        boats_formula_sheet = """### 📄 User PDF Complete Master Cheat Sheet: Boats and Streams
 
-#### 1. Core Principles & Negative Work
-- Extension of Time & Work, but includes **Destroying/Emptying elements** (negative work).
-- **Filling Pipe (Inlet)**: Positive work ($+X$).
-- **Emptying Pipe (Outlet)**: Negative work ($-Y$).
-- **Two Filling Pipes**: Total time $= \\frac{xy}{x+y}$
-- **One Filling & One Emptying**: Total time $= \\frac{xy}{|x-y|}$
+#### 1. Core Speed Definitions & Formulas
+- $B$ = Speed of boat in still water
+- $W$ = Speed of stream / current / water flow
+- **Downstream Speed ($D$)**: $D = B + W$ (moving WITH stream)
+- **Upstream Speed ($U$)**: $U = B - W$ (moving AGAINST stream)
+- **Boat Speed ($B$)**: $B = \\frac{D + U}{2}$
+- **Stream Speed ($W$)**: $W = \\frac{D - U}{2}$
 
-#### 2. LCM Partitioning Method
-- Pipe A (fill 25m), B (fill 30m), C (empty 50m). Total Capacity $= \\text{LCM}(25,30,50) = 150 \\text{ units}$.
-  - $A = +6, B = +5, C = -3$ units/min.
-  - All opened for 7 mins $(+8 \\times 7 = 56)$. A closed. Next 4 mins $(+2 \\times 4 = 8)$. C closed.
-  - Remaining units $= 150 - 64 = 86$ units filled by B ($+5$) $\\implies \\frac{86}{5} = \\mathbf{17\\frac{1}{5} \\text{ mins}}$!
+#### 2. Round-Trip Total Time Distance Formula
+$$\\mathbf{\\text{Distance} = \\frac{D \\times U}{D + U} \\times \\text{Total Time} = \\frac{(B^2 - W^2)}{2B} \\times \\text{Total Time}}$$
+- *PDF Example*: Boat speed = 8km/h, Stream = 2km/h ($D=10, U=6$). Takes 8 hours total round trip.
+  - $\\text{Distance} = \\frac{10 \\times 6}{10 + 6} \\times 8 = \\frac{60}{16} \\times 8 = \\mathbf{30\\text{km}}$!
 
-#### 3. Tank Will NEVER Be Filled Rule
-- If all filling pipes are closed before tank is full, or if emptying rate exceeds filling rate $\\implies$ **Tank will NEVER be filled**!
-
-#### 4. Alternate Minutes Filling & Emptying (Safety Margin Trick)
-- Pipe A (+6), B (+4), C (-3). Total $= 120$ units. Cycle (3 mins) $= +7$ units.
-- **CRITICAL TRICK**: Keep a safety margin equal to peak filling capacity ($6+4 = 10$ units) before multiplying cycles!
-  - Target $= 120 - 10 = 110$ units.
-  - $7 \\times 16 = 112$ units in $16 \\times 3 = 48$ mins.
-  - Min 49 (A opens): $+6 \\to 118$ units.
-  - Min 50 (B opens): Needs 2 units out of 4 $\\implies 1/2$ min.
-  - Total time $= \\mathbf{49\\frac{1}{2} \\text{ minutes}}$!
-
-#### 5. Mid-Way Pipe Closing Trick
-- Pipes A & B fill in 24m and 32m (Total 96 units: A=+4, B=+3). Both opened. When to close B so tank is full in 18 mins?
-  - A works all 18 mins $\\to 4 \\times 18 = 72$ units.
-  - Remaining $= 96 - 72 = 24$ units filled by B ($+3$).
-  - Time for B $= \\frac{24}{3} = \\mathbf{8 \\text{ minutes}}$! Close B after 8 mins.
+#### 3. Simultaneous Equations Factorization Method
+- *PDF Example*: 40km upstream + 55km downstream in 13 hrs; 30km upstream + 44km downstream in 10 hrs.
+  - Try common factors of 55 & 44 $\\implies D = 11\\text{km/h}$.
+  - $55/11 = 5 \\implies 40/U = 8 \\implies U = 5\\text{km/h}$.
+  - Boat Speed $B = \\frac{11 + 5}{2} = \\mathbf{8\\text{km/h}}$, Stream Speed $W = \\frac{11 - 5}{2} = \\mathbf{3\\text{km/h}}$!
 """
 
-        pnc_topic, _ = AptitudeTopic.objects.update_or_create(
-            slug="pipes-and-cisterns",
+        boats_topic, _ = AptitudeTopic.objects.update_or_create(
+            slug="boats-and-streams",
             defaults={
-                "order": 14,
-                "name": "Pipes and Cisterns (PDF Master Edition)",
-                "description": "Master Filling/Emptying signs, LCM Capacity Partitioning, Safety Margin Alternate Cycle trick, & Mid-Way Closing formula.",
-                "icon": "🚰",
-                "formula_sheet": pnc_formula_sheet
+                "order": 15,
+                "name": "Boats and Streams (PDF Master Edition)",
+                "description": "Master Downstream/Upstream laws, Round-Trip Distance formula, & Simultaneous Equations factorization trick.",
+                "icon": "⛵",
+                "formula_sheet": boats_formula_sheet
             }
         )
 
         # Seed PDF Worked Questions
         AptitudeQuestion.objects.get_or_create(
-            topic=tnw_topic,
-            text="If 10 men or 12 women can do a piece of work in 16 days, in how many days can 15 men and 6 women together do the same work?",
+            topic=sdt_topic,
+            text="A train travelling at constant speed crosses a 96m long platform in 12 seconds and another 141m long platform in 15 seconds. Find the length of the train.",
             defaults={
                 "difficulty": "intermediate",
-                "option_a": "6 days", "option_b": "8 days", "option_c": "10 days", "option_d": "12 days",
+                "option_a": "72m", "option_b": "84m", "option_c": "90m", "option_d": "96m",
                 "correct_option": "B",
-                "explanation": "PDF Shortcut Method: Days = Given Days / (M2/M1 + W2/W1) = 16 / (15/10 + 6/12) = 16 / (1.5 + 0.5) = 16 / 2 = 8 days!"
+                "explanation": "PDF Extra Distance Method: Extra distance = 141 - 96 = 45m in extra time = 15 - 12 = 3s.\nTrain Speed = 45 / 3 = 15 m/s.\nDistance in 12s = 15 * 12 = 180m.\nTrain Length = 180 - 96 = 84m!"
             }
         )
 
         AptitudeQuestion.objects.get_or_create(
-            topic=tnw_topic,
-            text="A can do a piece of work in 20 days and B in 30 days. They start together, but B leaves 3 days before the completion of the work. In how many days is the total work completed?",
+            topic=sdt_topic,
+            text="Two trains start simultaneously from Hyderabad to Chennai and Chennai to Hyderabad. After meeting, they reach their destinations in 9 hours and 16 hours respectively. If the first train speed is 80km/h, find the speed of the second train.",
             defaults={
                 "difficulty": "advanced",
-                "option_a": "12 days", "option_b": "13 1/5 days", "option_c": "15 days", "option_d": "14 days",
+                "option_a": "50 km/h", "option_b": "60 km/h", "option_c": "70 km/h", "option_d": "64 km/h",
                 "correct_option": "B",
-                "explanation": "Backwards Leaving Trick: Total Work = LCM(20,30) = 60 units (A=3, B=2).\nAdd B's 3-day work (3 * 2 = 6 units) -> Total = 60 + 6 = 66 units.\nTotal Days = 66 / (3 + 2) = 66 / 5 = 13 1/5 days."
+                "explanation": "Post-Meeting Formula: S1 / S2 = sqrt(T2 / T1) -> 80 / S2 = sqrt(16 / 9) = 4 / 3.\nS2 = 80 * (3 / 4) = 60 km/h!"
             }
         )
 
         AptitudeQuestion.objects.get_or_create(
-            topic=pnc_topic,
-            text="Two pipes A and B can fill a tank in 24 minutes and 32 minutes respectively. If both pipes are opened together, after how much time should B be closed so that the tank is full in 18 minutes?",
+            topic=boats_topic,
+            text="A man can row 40km upstream and 55km downstream in 13 hours. Also, he can row 30km upstream and 44km downstream in 10 hours. Find the speed of the man in still water.",
             defaults={
                 "difficulty": "advanced",
-                "option_a": "6 minutes", "option_b": "8 minutes", "option_c": "10 minutes", "option_d": "12 minutes",
+                "option_a": "6 km/h", "option_b": "8 km/h", "option_c": "10 km/h", "option_d": "7 km/h",
                 "correct_option": "B",
-                "explanation": "Mid-Way Closing Trick: Total Capacity = LCM(24,32) = 96 units (A=+4, B=+3).\nA works for all 18 mins -> A's work = 4 * 18 = 72 units.\nRemaining work for B = 96 - 72 = 24 units.\nTime for B = 24 / 3 = 8 minutes!"
+                "explanation": "PDF Factorization Method: Common factors of 55 and 44 is D = 11 km/h.\n55/11 = 5 hrs -> 40/U = 8 hrs -> U = 5 km/h.\nBoat Speed B = (D + U) / 2 = (11 + 5) / 2 = 8 km/h!"
             }
         )
 
-        self.stdout.write(self.style.SUCCESS("Time & Work and Pipes & Cisterns PDF notes & worked problems successfully seeded!"))
+        self.stdout.write(self.style.SUCCESS("Speed/Distance/Trains and Boats/Streams PDF notes & worked problems successfully seeded!"))
