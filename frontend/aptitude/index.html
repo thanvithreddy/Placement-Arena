@@ -132,10 +132,39 @@
     </main>
 
     <script>
-        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
+        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000' || window.location.port === '5501') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
 
         function getToken() { return localStorage.getItem('access_token'); }
         function getHeaders() { return { headers: { Authorization: `Bearer ${getToken()}` } }; }
+
+        if (!getToken()) {
+            window.location.href = '/login/index.html';
+        }
+
+        // Axios 401 Interceptor
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
 
         let currentTopic = null;
         let questions = [];
@@ -143,11 +172,18 @@
         let selectedOption = null;
 
         async function loadTopics() {
+            const grid = document.getElementById('topics-grid');
+            grid.innerHTML = '<div class="col-span-3 text-center py-12 font-bold text-slate-500">Loading 15 Aptitude Topics...</div>';
+
             try {
                 const res = await axios.get(`${API}/questions/aptitude/topics/`, getHeaders());
                 const data = res.data;
-                const grid = document.getElementById('topics-grid');
                 grid.innerHTML = '';
+
+                if (data.length === 0) {
+                    grid.innerHTML = '<div class="col-span-3 text-center py-12 text-slate-500 font-bold">No topics found. Please run management command to seed topics.</div>';
+                    return;
+                }
 
                 data.forEach(t => {
                     let badgeClass = 'badge-novice';

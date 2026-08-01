@@ -176,16 +176,48 @@
     </main>
 
     <script>
-        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
+        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000' || window.location.port === '5501') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
 
         function getToken() { return localStorage.getItem('access_token'); }
         function getHeaders() { return { headers: { Authorization: `Bearer ${getToken()}` } }; }
+
+        if (!getToken()) {
+            window.location.href = '/login/index.html';
+        }
+
+        // Axios 401 Interceptor
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const originalRequest = error.config;
+                if (error.response?.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    try {
+                        const refresh = localStorage.getItem('refresh_token');
+                        if (!refresh) throw new Error('No refresh token');
+                        const res = await axios.post(`${API}/auth/token/refresh/`, { refresh });
+                        const newAccess = res.data.access;
+                        localStorage.setItem('access_token', newAccess);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+                        return axios(originalRequest);
+                    } catch(e) {
+                        localStorage.clear();
+                        window.location.href = '/login/index.html';
+                        return Promise.reject(e);
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
 
         let currentTopicSlug = null;
         let currentQuizAnswer = null;
         let selectedQuizOption = null;
 
         async function loadTopics() {
+            const grid = document.getElementById('levels-grid');
+            grid.innerHTML = '<div class="col-span-4 text-center py-12 font-bold text-slate-400">Loading 23 Gamified Java Quest Levels...</div>';
+
             try {
                 const res = await axios.get(`${API}/questions/java-quest/topics/`, getHeaders());
                 const data = res.data;
@@ -199,8 +231,12 @@
                     badgesBox.innerHTML += `<span class="bg-purple-950/80 border border-purple-500/40 text-purple-200 text-xs font-bold px-3 py-1 rounded-full">${b}</span>`;
                 });
 
-                const grid = document.getElementById('levels-grid');
                 grid.innerHTML = '';
+
+                if (!data.topics || data.topics.length === 0) {
+                    grid.innerHTML = '<div class="col-span-4 text-center py-12 text-slate-400 font-bold">No Java Quest topics found.</div>';
+                    return;
+                }
 
                 data.topics.forEach(t => {
                     let nodeClass = 'level-node-locked';
