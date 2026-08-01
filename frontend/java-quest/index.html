@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Java Quest - Placement Arena</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-purple { background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef); }
+        .gradient-gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .level-node-locked { background: #1e293b; border: 2px solid #334155; color: #64748b; }
+        .level-node-unlocked { background: linear-gradient(135deg, #4f46e5, #7c3aed); border: 2px solid #a78bfa; color: #ffffff; box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
+        .level-node-completed { background: #10b981; border: 2px solid #34d399; color: #ffffff; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .code-font { font-family: 'Fira Code', 'Courier New', monospace; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 pb-16">
+
+    <!-- Navbar -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-3">
+            <div class="flex items-center gap-3">
+                <a href="/dashboard/index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 gradient-purple text-white rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg">
+                        ⚡
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold text-white tracking-tight">Placement Arena</h1>
+                        <p class="text-xs text-purple-400 font-bold">Gamified Java Quest</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Gamification Profile Bar -->
+            <div class="flex items-center gap-5">
+                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 text-base">⚡</span>
+                    <span class="text-xs font-bold text-slate-300">XP: <strong id="user-xp" class="text-white">0</strong></span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-700">
+                    <span class="text-indigo-400 text-base">🛡️</span>
+                    <span class="text-xs font-bold text-slate-300">Level: <strong id="user-level" class="text-white">1</strong></span>
+                </div>
+                <a href="/dashboard/index.html" class="text-xs font-bold text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 pt-8 space-y-8">
+
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden rounded-3xl p-8 md:p-10 gradient-purple shadow-2xl">
+            <div class="max-w-3xl relative z-10 space-y-3">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
+                    <span>👑 Syntax &amp; Concept Perfection</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Java Mastery RPG Quest</h1>
+                <p class="text-purple-100 text-sm leading-relaxed">
+                    Master Java syntax, Stack vs Heap memory management, compiler traps, and core concepts across all 23 levels in order!
+                </p>
+                <div class="flex items-center gap-2 pt-2" id="badges-container">
+                    <!-- Badges rendered via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Quest Map View -->
+        <div id="quest-map-view" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-extrabold text-white tracking-tight">23-Level Quest Map</h2>
+                <span class="text-xs font-semibold text-purple-300 bg-purple-900/40 px-3 py-1 rounded-full border border-purple-700/50">Sequential Unlock Mode</span>
+            </div>
+
+            <!-- 23 Level Nodes Grid -->
+            <div id="levels-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <!-- Level cards rendered via JS -->
+            </div>
+        </div>
+
+        <!-- Topic Detail & Lesson Reader View (Hidden by default) -->
+        <div id="topic-reader-view" class="hidden space-y-8">
+            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-md">
+                <button onclick="backToMap()" class="text-sm font-bold text-slate-300 hover:text-white flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition">
+                    ← Back to Quest Map
+                </button>
+                <h3 class="text-lg font-extrabold text-white" id="reader-topic-title">1. Variables &amp; Data Types</h3>
+                <span class="text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-700/50 px-3 py-1.5 rounded-xl" id="reader-xp-tag">+100 XP</span>
+            </div>
+
+            <!-- Concept Summary -->
+            <div class="glass-card rounded-3xl p-8 space-y-4">
+                <h4 class="text-base font-extrabold text-purple-400 flex items-center gap-2 uppercase tracking-wider text-xs">
+                    <span>📖 Concept Overview</span>
+                </h4>
+                <p class="text-slate-300 text-sm leading-relaxed" id="reader-concept"></p>
+            </div>
+
+            <!-- Syntax Rules Checklist & Compiler Traps -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Rules -->
+                <div class="glass-card rounded-3xl p-7 space-y-4 border-l-4 border-l-indigo-500">
+                    <h4 class="text-sm font-extrabold text-indigo-300 uppercase tracking-wider flex items-center gap-2">
+                        <span>⚡ Syntax &amp; Rules Checklist</span>
+                    </h4>
+                    <ul class="space-y-2.5 text-xs text-slate-300" id="reader-rules">
+                        <!-- Rules list -->
+                    </ul>
+                </div>
+
+                <!-- Common Compiler Errors -->
+                <div class="glass-card rounded-3xl p-7 space-y-4 border-l-4 border-l-rose-500">
+                    <h4 class="text-sm font-extrabold text-rose-400 uppercase tracking-wider flex items-center gap-2">
+                        <span>⚠️ Common Compiler Traps &amp; Errors</span>
+                    </h4>
+                    <ul class="space-y-2.5 text-xs text-rose-200 code-font" id="reader-errors">
+                        <!-- Errors list -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Visual Memory Diagram (Stack vs Heap) -->
+            <div class="glass-card rounded-3xl p-8 space-y-4 border-l-4 border-l-emerald-500">
+                <h4 class="text-sm font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                    <span>🧠 Visual Memory Allocation (Stack vs Heap)</span>
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-indigo-400 uppercase">Stack Memory (Frames &amp; Local Vars)</span>
+                        <ul class="text-xs text-slate-300 space-y-1.5 code-font" id="memory-stack"></ul>
+                    </div>
+                    <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-purple-400 uppercase">Heap Memory (Objects &amp; Pool)</span>
+                        <ul class="text-xs text-slate-300 space-y-1.5 code-font" id="memory-heap"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Sandbox -->
+            <div class="glass-card rounded-3xl p-8 space-y-4">
+                <h4 class="text-sm font-extrabold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                    <span>💻 Runnable Code Example</span>
+                </h4>
+                <pre class="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-xs text-emerald-400 code-font overflow-x-auto leading-relaxed" id="reader-code"></pre>
+            </div>
+
+            <!-- Challenge Quiz & Level Complete Button -->
+            <div class="glass-card rounded-3xl p-8 space-y-6 border border-purple-500/30">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <h4 class="text-base font-extrabold text-white flex items-center gap-2">
+                        <span>⚔️ Level Mastery Challenge</span>
+                    </h4>
+                    <span class="text-xs text-purple-300 font-semibold">Answer correctly to complete level!</span>
+                </div>
+
+                <div id="quiz-container" class="space-y-4">
+                    <p class="text-sm font-semibold text-slate-200" id="quiz-question"></p>
+                    <div class="space-y-2.5" id="quiz-options"></div>
+                </div>
+
+                <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+                    <div id="quiz-result" class="text-xs font-bold"></div>
+                    <button id="complete-btn" onclick="completeTopic()" class="gradient-purple text-white font-bold px-8 py-3.5 rounded-2xl text-sm shadow-xl hover:opacity-95 transition">
+                        Complete Level &amp; Unlock Next 🚀
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        const API = (window.location.protocol === 'file:' || window.location.port === '5500' || window.location.port === '3000') ? 'http://127.0.0.1:8000/api' : window.location.origin + '/api';
+
+        function getToken() { return localStorage.getItem('access_token'); }
+        function getHeaders() { return { headers: { Authorization: `Bearer ${getToken()}` } }; }
+
+        let currentTopicSlug = null;
+        let currentQuizAnswer = null;
+        let selectedQuizOption = null;
+
+        async function loadTopics() {
+            try {
+                const res = await axios.get(`${API}/questions/java-quest/topics/`, getHeaders());
+                const data = res.data;
+
+                document.getElementById('user-xp').innerText = data.gamification.total_xp;
+                document.getElementById('user-level').innerText = data.gamification.current_level;
+
+                const badgesBox = document.getElementById('badges-container');
+                badgesBox.innerHTML = '';
+                (data.gamification.badges || []).forEach(b => {
+                    badgesBox.innerHTML += `<span class="bg-purple-950/80 border border-purple-500/40 text-purple-200 text-xs font-bold px-3 py-1 rounded-full">${b}</span>`;
+                });
+
+                const grid = document.getElementById('levels-grid');
+                grid.innerHTML = '';
+
+                data.topics.forEach(t => {
+                    let nodeClass = 'level-node-locked';
+                    let statusText = '🔒 Locked';
+                    let clickAttr = '';
+
+                    if (t.is_completed) {
+                        nodeClass = 'level-node-completed';
+                        statusText = '✅ Completed';
+                        clickAttr = `onclick="openTopic('${t.slug}')"`;
+                    } else if (t.is_unlocked) {
+                        nodeClass = 'level-node-unlocked';
+                        statusText = '⚔️ Ready to Play';
+                        clickAttr = `onclick="openTopic('${t.slug}')"`;
+                    }
+
+                    grid.innerHTML += `
+                        <div ${clickAttr} class="${nodeClass} rounded-3xl p-6 flex flex-col justify-between cursor-pointer hover:scale-105 transition-all duration-200 relative group">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-black uppercase tracking-wider opacity-80">Level ${t.order}</span>
+                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-black/20">${statusText}</span>
+                                </div>
+                                <h3 class="text-base font-extrabold text-white leading-snug">${t.title}</h3>
+                            </div>
+                            <div class="pt-4 flex items-center justify-between text-xs font-bold opacity-90 border-t border-white/10 mt-4">
+                                <span>+${t.xp_reward} XP</span>
+                                <span>Play →</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Error loading Java quest topics:", err);
+            }
+        }
+
+        async function openTopic(slug) {
+            try {
+                const res = await axios.get(`${API}/questions/java-quest/topics/${slug}/`, getHeaders());
+                const t = res.data;
+                currentTopicSlug = slug;
+
+                document.getElementById('quest-map-view').classList.add('hidden');
+                document.getElementById('topic-reader-view').classList.remove('hidden');
+
+                document.getElementById('reader-topic-title').innerText = `${t.order}. ${t.title}`;
+                document.getElementById('reader-xp-tag').innerText = `+${t.xp_reward} XP`;
+                document.getElementById('reader-concept').innerText = t.concept_summary;
+
+                // Render Rules
+                const rulesList = document.getElementById('reader-rules');
+                rulesList.innerHTML = '';
+                (t.syntax_rules || []).forEach(r => {
+                    rulesList.innerHTML += `<li class="flex items-start gap-2"><span>•</span><span>${r}</span></li>`;
+                });
+
+                // Render Errors
+                const errorsList = document.getElementById('reader-errors');
+                errorsList.innerHTML = '';
+                (t.common_errors || []).forEach(e => {
+                    errorsList.innerHTML += `<li>⚠️ ${e}</li>`;
+                });
+
+                // Render Memory Stack vs Heap
+                const stackList = document.getElementById('memory-stack');
+                stackList.innerHTML = '';
+                (t.memory_diagram_json.stack || []).forEach(s => {
+                    stackList.innerHTML += `<li>→ ${s}</li>`;
+                });
+
+                const heapList = document.getElementById('memory-heap');
+                heapList.innerHTML = '';
+                (t.memory_diagram_json.heap || []).forEach(h => {
+                    heapList.innerHTML += `<li>📦 ${h}</li>`;
+                });
+
+                // Render Code Example
+                document.getElementById('reader-code').innerText = t.code_example;
+
+                // Render Quiz
+                if (t.quiz_json && t.quiz_json.length > 0) {
+                    const q = t.quiz_json[0];
+                    currentQuizAnswer = q.ans;
+                    selectedQuizOption = null;
+
+                    document.getElementById('quiz-question').innerText = q.q;
+                    const optsBox = document.getElementById('quiz-options');
+                    optsBox.innerHTML = '';
+
+                    q.opts.forEach((optText, idx) => {
+                        optsBox.innerHTML += `
+                            <button onclick="selectQuizOpt(${idx})" id="quiz-opt-${idx}" class="w-full text-left p-3.5 rounded-xl border border-slate-800 hover:border-purple-500 bg-slate-900 text-xs font-medium text-slate-200 transition">
+                                ${optText}
+                            </button>
+                        `;
+                    });
+                }
+
+                document.getElementById('quiz-result').innerText = '';
+            } catch (err) {
+                alert("Failed to load topic details.");
+            }
+        }
+
+        function selectQuizOpt(idx) {
+            selectedQuizOption = idx;
+            [0,1,2,3].forEach(i => {
+                const btn = document.getElementById(`quiz-opt-${i}`);
+                if (btn) {
+                    if (i === idx) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-purple-500 bg-purple-950/60 text-xs font-bold text-purple-200 shadow-md";
+                    } else {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900 text-xs font-medium text-slate-200";
+                    }
+                }
+            });
+        }
+
+        async function completeTopic() {
+            if (currentQuizAnswer !== null && selectedQuizOption !== currentQuizAnswer) {
+                document.getElementById('quiz-result').innerHTML = `<span class="text-rose-400">❌ Incorrect quiz answer. Try selecting the correct option!</span>`;
+                return;
+            }
+
+            try {
+                const res = await axios.post(`${API}/questions/java-quest/topics/${currentTopicSlug}/complete/`, {}, getHeaders());
+                alert(`🎉 ${res.data.message} You earned +${res.data.new_xp} XP!`);
+                backToMap();
+            } catch (err) {
+                alert("Error marking level complete.");
+            }
+        }
+
+        function backToMap() {
+            document.getElementById('topic-reader-view').classList.add('hidden');
+            document.getElementById('quest-map-view').classList.remove('hidden');
+            loadTopics();
+        }
+
+        loadTopics();
+    </script>
+</body>
+</html>
