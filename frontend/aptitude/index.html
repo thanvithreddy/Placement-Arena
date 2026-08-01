@@ -8,6 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- KaTeX CSS & JS for ultra-fast TeX math typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- MathJax 3 as rendering engine -->
+    <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
     <script src="./data.js"></script>
     <style>
         body {
@@ -65,6 +87,20 @@
             padding: 0.15rem 0.4rem;
             border-radius: 0.25rem;
             font-weight: 600;
+        }
+        .prose-custom table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .prose-custom th, .prose-custom td {
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+        }
+        .prose-custom th {
+            background-color: #f1f5f9;
+            font-weight: 700;
         }
         .option-btn {
             transition: all 0.2s ease;
@@ -126,11 +162,11 @@
         <div class="relative overflow-hidden rounded-3xl p-8 gradient-banner text-white shadow-lg">
             <div class="max-w-3xl space-y-3 relative z-10">
                 <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    <span>✨ Interactive &amp; Free Access</span>
+                    <span>✨ Formatted Mathematical TeX Display</span>
                 </div>
                 <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Gamified Aptitude Quest</h1>
                 <p class="text-indigo-100 text-sm leading-relaxed">
-                    Master formulas, shortcut tricks, and interactive practice problems across all 17 topics. All topics are fully unlocked—study in any order you choose!
+                    Master formulas, shortcut tricks, and interactive practice problems across all 17 topics. Beautifully typeset mathematical notation and zero locks!
                 </p>
                 <div class="flex items-center gap-3 pt-2" id="badges-container">
                     <!-- Badges rendered via JS -->
@@ -270,6 +306,26 @@
         let quizAnswers = [];
         let score = 0;
 
+        // Auto Math Rendering Engine (KaTeX + MathJax Dual Renderer)
+        function renderMathInUI() {
+            setTimeout(() => {
+                if (window.renderMathInElement) {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false},
+                            {left: '\\(', right: '\\)', display: false},
+                            {left: '\\[', right: '\\]', display: true}
+                        ],
+                        throwOnError: false
+                    });
+                }
+                if (window.MathJax && MathJax.typesetPromise) {
+                    MathJax.typesetPromise().catch(err => console.log('MathJax typeset notice:', err));
+                }
+            }, 50);
+        }
+
         // User Stats LocalStorage
         function getUserStats() {
             return {
@@ -366,6 +422,9 @@
             const markedHtml = marked.parse(currentTopic.formula_sheet || "### Cheat Sheet Coming Soon!");
             document.getElementById('formula-content').innerHTML = markedHtml;
 
+            // Typeset TeX math
+            renderMathInUI();
+
             // Prepare Quiz
             currentQuizIndex = 0;
             score = 0;
@@ -395,6 +454,7 @@
                 btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2";
                 viewCheat.classList.remove('hidden');
                 viewQuiz.classList.add('hidden');
+                renderMathInUI();
             } else {
                 btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2";
                 btnCheat.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2";
@@ -432,6 +492,8 @@
                     <span class="pt-0.5">${opt}</span>
                 </button>
             `).join('');
+
+            renderMathInUI();
         }
 
         function selectOption(selectedIndex) {
@@ -463,6 +525,7 @@
             }
 
             document.getElementById('next-btn').disabled = false;
+            renderMathInUI();
         }
 
         function nextQuestion() {
