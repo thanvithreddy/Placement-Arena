@@ -304,295 +304,93 @@ const aptitudeTopics = [
     {
         "id": 5,
         "slug": "averages",
-        "name": "Averages (PDF Placeholder)",
-        "description": "Learn shortcut methods for calculating averages, weighted averages, and replacement problems.",
+        "name": "Averages (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 11 Handwritten PDF pages: Assumption Concept, Class Join/Leave Tricks, Manager Salary Addition, Cricket Innings Highest/Lowest, Replacement Equality Rules, Mistaken Value Corrections, Missing & Middle Number Deviations, Weighted Average Ratios, and Consecutive Number Tricks.",
         "icon": "\u2696\ufe0f",
-        "xp_reward": 100,
-        "formula_sheet": "### \u2696\ufe0f Master Cheat Sheet: Averages\n\n#### 1. Core Definition\n$$\\text{Average} = \\frac{\\text{Sum of All Observations}}{\\text{Total Number of Observations}} = \\frac{\\sum X}{N}$$\n\n$$\\text{Sum of Observations} = \\text{Average} \\times \\text{Total Number of Observations}$$\n\n#### 2. Shortcut Rules for Consecutive Numbers\n- **Average of first $n$ natural numbers**: $\\frac{n + 1}{2}$\n- **Average of first $n$ even numbers**: $n + 1$\n- **Average of first $n$ odd numbers**: $n$\n- **Average of consecutive numbers in AP**: $\\frac{\\text{First Term} + \\text{Last Term}}{2}$\n\n#### 3. Weighted Average\n$$\\text{Weighted Average} = \\frac{n_1 A_1 + n_2 A_2 + \\dots + n_k A_k}{n_1 + n_2 + \\dots + n_k}$$\n\n#### 4. Replacement & Inclusion/Exclusion Tricks\n- **When a new person replaces an old person**:\n  $$\\text{Weight of New Person} = \\text{Weight of Removed Person} + (N \\times \\text{Change in Average})$$\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "There are 28 students in a class. Their Avg. wt is 33 Kg. If one new student joins the class, the avg. wt increases by 2Kg. Find the wt. of new student.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Original sum: 28 * 33 = 924 Kg. New sum: 29 * 35 = 1015 Kg. New student wt = 1015 - 924 = 91 Kg. Alternative shortcut: Take 35 & make 35 -> 35 + 56 = 91 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "There are 25 students in a class. Their Average wt is 75 Kg. If 2 new students join the class, the avg wt increased by 1Kg. Find the total wt. of new students.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Old average 75. New average 76. Sum for 2 students = 76 + 76 + 25 = 177 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average salary of 35 workers is Rs. 1800. When the salary of the manager is also included, the avg. will be increased by Rs. 125, what is the salary of the manager?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average 1925. Manager's salary = 1925 + 35 * 125 = 1925 + 4375 = 6300."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The batting average for 40 innings of a cricketer is 50 Runs. His highest score exceeds the lowest score by 172 runs. If these two innings are excluded, the avg of remaining innings is 48 Runs. Find the highest score & lowest score.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum of 40 innings = 40 * 50 = 2000. Sum of 38 innings = 38 * 48 = 1824. H + L = 2000 - 1824 = 176. Given H - L = 172. H = (176+172)/2 = 174, L = 176 - 174 = 2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A batsman in his 17th innings makes a score of 85 and thereby increases his average by 3 Runs. What is his average after 17th innings? Before 17th innings?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Before 17th Innings -> 85 - (3 * 17) = 85 - 51 = 34. After 17th Innings -> 34 + 3 = 37. (Using equation: 16x + 85 = 17(x+3) => 16x + 85 = 17x + 51 => x = 34)"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average weight of 15 men has increased by 1Kg when one of them whose wt is 60Kg is replaced by a new man. What is the weight of the new man?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The new man's weight will be obviously greater than 60. He should distribute the extra 1Kg to all the 15 members. So, 60 + (1 * 15) = 75 Kg."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Average height of 15 students is 159cm. Later on, it was found that while calculating the avg, the reading of 147cm was wrongly read as 177cm. Find the correct average.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Correct value = 147cm. Mistaken value = 177cm. Difference = 177 - 147 = 30. This difference of 30 was distributed to 15 students. Correct average = 159 - (30/15) = 159 - 2 = 157 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In a set of 4 Numbers, Average of 1st 3 numbers = 48, Average of last 3 numbers = 52. If Last No. is 58, find first number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total of first 3 = 48 * 3 = 144. Total of last 3 = 52 * 3 = 156. Last - First = 156 - 144 = 12. 58 - A = 12 => A = 46."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Average weight of A, B, C is 80Kg. If fourth man D joins them, the average weight for four becomes 82Kg. If E whose weight is 4 Kg less than D replaces A, then the average weight of B, C, D and E becomes 84Kg. What is the weight of A?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum ABC = 3 * 80 = 240. Sum ABCD = 4 * 82 = 328. D = 328 - 240 = 88Kg. E = 88 - 4 = 84Kg. Avg B,C,D,E = 84. Diff between ABCD (82) and BCDE (84). E is 8 more than A => A is 8 less than E. A = 84 - 8 = 76 Kg."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 7 numbers is 53. Average of 1st 3 numbers is 47. Average of last 3 numbers is 55. Find the missing middle number?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum of 7 = 7 * 53 = 371. Sum of 1st 3 = 3 * 47 = 141. Sum of last 3 = 3 * 55 = 165. Missing number = 371 - (141 + 165) = 371 - 306 = 65."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Average of 9 numbers is 48. Average of 1st 5 numbers 45, Average of last 5 numbers 52. Find the middle number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "5 * 45 = 225. 5 * 52 = 260. Sum of 10 numbers = 485. Sum of 9 = 9 * 48 = 432. Middle = 485 - 432 = 53. Shortcut: 9-48, 5-45(-15), 5-52(+20), Middle No = 48 - 15 + 20 = 53."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Virat Kohli scored at an Average of 30 Runs in his first 25 matches. He scored at an average of 70 Runs in his next 75 matches. Find his overall Average?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Weighted Average: Ratio of matches is 25:75 = 1:3. Avg = (30*1 + 70*3) / (1+3) = (30 + 210) / 4 = 240 / 4 = 60 Runs."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of Prime Number between 23 and 53.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Between 23 and 53 excludes boundaries. Primes: 29, 31, 37, 41, 43, 47. Avg = (29+31+37+41+43+47) / 6 = 228 / 6 = 38."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of Prime Number from 23 to 53.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From 23 to 53 includes boundaries. Primes: 23, 29, 31, 37, 41, 43, 47, 53. Avg = (23+29+31+37+41+43+47+53) / 8 = 38."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 7 consecutive natural numbers is 43. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Average is the middle value. The 4th value out of 7 is 43. The 1st value is 43 - 3 = 40."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 8 consecutive natural numbers is 84.5. Find the largest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Values are 81, 82, 83, 84, (84.5), 85, 86, 87, 88. Largest number is 88."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 5 consecutive Even numbers is 48. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The 5 numbers are 44, 46, 48, 50, 52. The smallest number is 44."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Average of 6 consecutive odd numbers is 98. Find the largest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "The 6 numbers are 93, 95, 97, 99, 101, 103 (with 98 in middle of 97 and 99). The largest number is 103."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sum of 5 consecutive natural numbers is 145. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Avg = 145 / 5 = 29. The numbers are 27, 28, 29, 30, 31. Smallest is 27."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sum of 7 consecutive Even numbers is 224. Find the smallest number.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Avg = 224 / 7 = 32. The numbers are 26, 28, 30, 32, 34, 36, 38. Smallest is 26."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The average of 28 numbers is 25. If each number is multiplied by 3, then the new average is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average = 25 * 3 = 75."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If each number is increased by 6 (for the set where avg is 25), the new average is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "New average = 25 + 6 = 31."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Averages (11 Pages Transcribed)\n\n#### Page 1: General Definition & Assumption Concept\n- **General Formulas**:\n  - $\\text{Average} = \\frac{\\text{Sum of obs.}}{\\text{No. of obs.}}$\n  - $\\text{No. of obs.} = \\frac{\\text{Sum of obs.}}{\\text{Average}}$\n  - $\\text{Sum of obs.} = \\text{No. of obs.} \\times \\text{Average}$\n- **Core Concept**:\n  - If every value is equal $\\implies \\text{Each Value} = \\text{Average}$.\n  - Value A = 200, Value B = 120 $\\implies$ Equal at 160 ($-40, +40$). Average $= 160$.\n  - **Key Insight**: Average is a concept of **Assumption, not reality**!\n- **Class Joining Worked Example**: 28 students with Avg wt 33 kg. 1 new student joins, avg increases by 2 kg. Find new student's weight ($91\\text{ kg}$).\n  - Routine: $\\text{Old Sum} = 28 \\times 33 = 924$, $\\text{New Sum} = 29 \\times 35 = 1015 \\implies \\text{New Student} = 1015 - 924 = \\mathbf{91\\text{ kg}}$.\n  - Shortcut (Take 35 & make 35): $35 + (28 \\times 2) = 35 + 56 = \\mathbf{91\\text{ kg}}$!\n\n#### Page 2 & 3: Multiple Joiners, Manager Salary, Cricket Innings & Replacement\n- **2 New Joiners**: 25 students (Avg 75 kg). 2 new students join, avg increases by 1 kg ($27 \\to 76$).\n  - Total wt of $A + B = 76 + 76 + 25 = \\mathbf{177\\text{ kg}}$.\n- **Manager Salary Inclusion**: 35 workers (Avg Rs. 1800). Manager included $\\implies 36 \\to \\text{Avg } 1925 (+125)$.\n  - Manager Salary $= 1925 + (125 \\times 35) = 1925 + 4375 = \\mathbf{\\text{Rs. } 6300}$.\n- **Cricket Innings Highest & Lowest**: 40 innings (Avg 50 runs). Highest exceeds Lowest by 172 runs. Excluded 2 innings $\\implies 38$ innings (Avg 48 runs).\n  - $H + L = 50 + 50 + (2 \\times 38) = 176$.\n  - $H - L = 172$.\n  - Highest Score $(H) = \\frac{176 + 172}{2} = \\mathbf{174}$.\n  - Lowest Score $(L) = \\frac{176 - 172}{2} = \\mathbf{2}$.\n- **Batsman 17th Innings**: Batsman scores 85 in $17^{\\text{th}}$ innings, increasing avg by 3 runs.\n  - Avg Before $17^{\\text{th}}$ innings (After $16^{\\text{th}}$) $= 85 - (3 \\times 17) = \\mathbf{34}$.\n  - Avg After $17^{\\text{th}}$ innings $= 34 + 3 = \\mathbf{37}$.\n- **Replacement Equality Concept**: Replacing one element causes average differences. Averages is all about **maintaining and distributing equality**!\n  - 15 men weight increases by 1 kg when 60 kg man is replaced by a new man.\n  - Extra 1 kg distributed to all 15 members $\\implies 60 + (1 \\times 15) = \\mathbf{75\\text{ kg}}$.\n\n#### Page 4 & 5: Mistaken Value Corrections & Set Difference Tricks\n- **Mistaken Reading Correction**: Avg height of 15 students is 159 cm. Reading 147 cm was wrongly read as 177 cm.\n  - Diff $= 177 - 147 = 30$. Distribute 30 equally to 15 students $\\implies \\frac{30}{15} = 2$.\n  - Correct Avg $= 159 - 2 = \\mathbf{157\\text{ cm}}$.\n  - General Formula: $\\text{Correct Avg} = 159 - \\left(\\frac{177 - 147}{15}\\right) = \\mathbf{157}$.\n- **Set Difference Problem**: 4 numbers. Avg of 1st 3 is 48. Avg of last 3 is 52. If Last No. is 58, find 1st No.\n  - Total 1st $3 = 144$, Total last $3 = 156 \\implies D - A = 156 - 144 = 12$.\n  - $58 - A = 12 \\implies \\mathbf{A = 46}$.\n- **A, B, C, D, E Weight Swap**: Avg wt of A, B, C is 80 kg. D joins $\\implies 4$ avg is 82 kg ($D = 88$). E (4 kg less than D $\\implies E = 84$) replaces A $\\implies$ B, C, D, E avg is 84 kg. Find A.\n  - Diff $B,C,D,E - A,B,C,D = 84 - 82 = 2 \\times 4 = 8 \\implies E$ is 8 more than $A \\implies A = 84 - 8 = \\mathbf{76\\text{ kg}}$.\n\n#### Page 6 & 7: Missing Numbers & Weighted Average Ratios\n- **Missing / Middle Number Deviation**:\n  - Avg of 7 numbers is 53. Avg of 1st 3 is 47 ($-6 \\times 3 = -18$). Avg of last 3 is 55 ($+2 \\times 3 = +6$). Net diff $= -12$.\n  - Missing Middle Number $= 53 - (-12) = \\mathbf{65}$.\n- **Overlapping Middle Number**: Avg of 9 numbers is 48. 1st 5 avg 45 ($-15$). Last 5 avg 52 ($+20$). Net $= +5$.\n  - Middle Number $= 48 + 5 = \\mathbf{53}$.\n- **Weighted Average Ratio Method**: Convert number of entities to simple ratios ($N_i = R_i$).\n  - Formula: $\\text{Weighted Avg} = \\frac{A_1 R_1 + A_2 R_2 + A_3 R_3}{R_1 + R_2 + R_3}$.\n  - Scenario: A (Avg 60, No 32), B (Avg 75, No 48), C (Avg 80, No 80).\n  - Ratio $32 : 48 : 80 = 2 : 3 : 5$.\n  - Weighted Avg $= \\frac{(60 \\times 2) + (75 \\times 3) + (80 \\times 5)}{2 + 3 + 5} = \\frac{120 + 225 + 400}{10} = \\mathbf{74.5}$.\n  - Virat Kohli Runs: Avg 30 in 25 matches, Avg 70 in next 75 matches. Ratio $25 : 75 = 1 : 3$.\n  - Overall Avg $= \\frac{(30 \\times 1) + (70 \\times 3)}{1 + 3} = \\frac{240}{4} = \\mathbf{60\\text{ Runs}}$.\n\n#### Page 8, 9, 10 & 11: Consecutive Numbers, Primes & Operation Persistence\n- **Consecutive Numbers & Common Difference Shortcuts**:\n  - $\\text{Average} = \\frac{\\text{First Obs} + \\text{Last Obs}}{2} = \\text{Exactly the Middle Number}$.\n  - Average of first $n$ **even** numbers $= \\mathbf{n + 1}$.\n  - Average of first $n$ **odd** numbers $= \\mathbf{n}$.\n- **Prime Numbers Rules**:\n  - Average of Prime Numbers between 23 and 53 (exclude boundaries 29, 31, 37, 41, 43, 47) $= \\mathbf{38}$.\n  - Average of Prime Numbers from 23 to 53 (include boundaries 23, 29, 31, 37, 41, 43, 47, 53) $= \\mathbf{38}$.\n- **Consecutive Number Examples from Notes**:\n  1. 7 consecutive natural numbers avg 43 $\\implies$ 43 is $4^{\\text{th}}$ value $\\implies$ Smallest $= 43 - 3 = \\mathbf{40}$.\n  2. 8 consecutive natural numbers avg 84.5 $\\implies$ Middle is 84.5 $\\implies$ Largest $= \\mathbf{88}$.\n  3. 5 consecutive EVEN numbers avg 48 $\\implies$ Smallest $= \\mathbf{44}$.\n  4. 6 consecutive ODD numbers avg 98 $\\implies$ Middle 98 $\\implies$ Largest $= \\mathbf{103}$.\n  5. Sum of 5 consecutive natural numbers is 145 $\\implies \\text{Avg} = 145/5 = 29 \\implies$ Smallest $= \\mathbf{27}$.\n  6. Sum of 7 consecutive EVEN numbers is 224 $\\implies \\text{Avg} = 224/7 = 32 \\implies$ Smallest $= \\mathbf{26}$.\n- **Mathematical Operation Persistence**:\n  - If every element in the observation is operated equally ($+,-,\\times,\\div$), the SAME operation applies directly to the Average!\n  - Example: Avg of 28 numbers is 25.\n    - If each number is multiplied by 3 $\\implies$ New Avg $= 25 \\times 3 = \\mathbf{75}$.\n    - If each number is increased by 6 $\\implies$ New Avg $= 25 + 6 = \\mathbf{31}$.\n",
         "flashcards": [
             {
-                "title": "1. Average Base Formula",
-                "front": "How do you find Average and Total Sum?",
-                "back": "$\\text{Average} = \\frac{\\sum X}{N} \\implies \\text{Sum} = \\text{Average} \\times N$",
-                "badge": "\u2696\ufe0f Base Formula"
+                "title": "Page 1: Assumption Concept",
+                "front": "What is the primary philosophical insight about Average in handwritten page 1?",
+                "back": "Average is a concept of **ASSUMPTION, NOT REALITY**!\nIt represents distributing equality across all elements so every value equals the average.",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "2. Consecutive Numbers Average Shortcuts",
-                "front": "What are the shortcuts for Average of first $n$ natural, even, and odd numbers?",
-                "back": "\u2022 First $n$ Natural: $\\frac{n+1}{2}$\n\u2022 First $n$ Even: $n+1$\n\u2022 First $n$ Odd: $n$\n\u2022 Any AP Series: $\\frac{\\text{First Term} + \\text{Last Term}}{2}$",
-                "badge": "\u26a1 AP Shortcuts"
+                "title": "Page 2: Cricket Innings H & L",
+                "front": "40 innings batting avg is 50. Highest exceeds lowest by 172. Excluded 2 innings avg becomes 48. What are Highest & Lowest?",
+                "back": "\u2022 $H + L = 50 + 50 + (2 \\times 38) = 176$\n\u2022 $H - L = 172$\n\u2022 Highest $(H) = \\frac{176 + 172}{2} = \\mathbf{174}$\n\u2022 Lowest $(L) = \\frac{176 - 172}{2} = \\mathbf{2}$",
+                "badge": "\ud83d\udcc4 Page 2"
             },
             {
-                "title": "3. Replacement Formula",
-                "front": "When a new person replaces an old person in a group, what is the new weight?",
-                "back": "$\\text{Weight}_{\\text{New}} = \\text{Weight}_{\\text{Old}} + (N \\times \\Delta \\text{Average})$",
-                "badge": "\ud83d\udd04 Replacement"
+                "title": "Page 4: Mistaken Value Formula",
+                "front": "15 students avg height is 159cm. 147cm was wrongly read as 177cm. What is the correct average?",
+                "back": "$\\text{Correct Avg} = 159 - \\left(\\frac{177 - 147}{15}\\right) = 159 - 2 = \\mathbf{157\\text{ cm}}$!",
+                "badge": "\ud83d\udcc4 Page 4"
+            },
+            {
+                "title": "Page 7: Weighted Average Ratio Trick",
+                "front": "How does converting entity counts into simple ratios speed up Weighted Average calculations?",
+                "back": "Instead of raw counts, simplify to ratio $N_i \\to R_i$.\nExample: Matches $25 : 75 \\to 1 : 3 \\implies \\text{Weighted Avg} = \\frac{(30 \\times 1) + (70 \\times 3)}{1 + 3} = \\mathbf{60\\text{ Runs}}$!",
+                "badge": "\ud83d\udcc4 Page 7"
+            },
+            {
+                "title": "Page 9: Even & Odd Consecutive Averages",
+                "front": "What are the instant formulas for Average of first $n$ even numbers vs first $n$ odd numbers?",
+                "back": "\u2022 Average of first $n$ **EVEN** numbers $= \\mathbf{n + 1}$\n\u2022 Average of first $n$ **ODD** numbers $= \\mathbf{n}$",
+                "badge": "\ud83d\udcc4 Page 9"
+            },
+            {
+                "title": "Page 11: Operation Persistence Rule",
+                "front": "If every element in an observation is multiplied by 3, what happens to the Average?",
+                "back": "The Average is ALSO multiplied by 3 directly!\nExample: Avg of 28 numbers is $25 \\implies$ New Avg $= 25 \\times 3 = \\mathbf{75}$!",
+                "badge": "\ud83d\udcc4 Page 11"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 2 Notes: Cricket 40 innings avg is 50. Highest exceeds lowest by 172. Excluding 2 innings avg is 48. What is the Highest score?",
+                "options": [
+                    "170",
+                    "172",
+                    "174",
+                    "176"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 2 Solution: H + L = 176, H - L = 172 => H = (176 + 172) / 2 = 174!"
+            },
+            {
+                "text": "From Page 4 Notes: Avg height of 15 students is 159 cm. Reading of 147 cm was wrongly read as 177 cm. What is the correct average?",
+                "options": [
+                    "155 cm",
+                    "157 cm",
+                    "159 cm",
+                    "161 cm"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 4 Solution: Difference = 177 - 147 = 30. Diff per student = 30 / 15 = 2 => Correct Avg = 159 - 2 = 157 cm!"
+            },
+            {
+                "text": "From Page 9 Notes: What is the average of first 'n' even numbers?",
+                "options": [
+                    "n",
+                    "n + 1",
+                    "n - 1",
+                    "2n"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 9 Formula: Average of first n even numbers is always n + 1!"
+            },
+            {
+                "text": "From Page 11 Notes: The average of 28 numbers is 25. If each number is multiplied by 3, what is the new average?",
+                "options": [
+                    "25",
+                    "50",
+                    "75",
+                    "100"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 11 Rule: Any operation on every element applies directly to the average => 25 * 3 = 75!"
             }
         ]
     },
