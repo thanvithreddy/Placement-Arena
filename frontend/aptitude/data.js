@@ -1128,219 +1128,72 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 11,
+        "id": 12,
         "slug": "speed-distance-time",
-        "name": "Speed, Distance, Time (PDF)",
-        "description": "Master relative speed, average speed, and basic kinematic equations.",
-        "icon": "\ud83c\udfc3",
-        "xp_reward": 120,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Speed, Distance, Time (PDF)\n\n# Time, Distance and Speed\n\n## Basic Relationships\n- **Time**: Time taken to cover a distance.\n- **Distance**: Travelled in a certain time with a speed.\n- **Speed**: Travelling speed of the moving body.\n- `Time \u221d Distance`\n- `Speed \u221d Distance`\n- `Speed \u221d 1/Time`\n- **Formula**: `Speed = Distance / Time`\n  - Speed tells how much distance is covered in a unit time.\n\n## Unit Conversion\n- **km/hr to m/s**: Multiply by `5/18`\n- **m/s to km/hr**: Multiply by `18/5`\n\n## Cases of Trains Crossing\n1. **Train crossing a man standing / Electric Pole**\n   - Here the man/electric pole doesn't have any length (their distance to be placed on ground is zero).\n   - `Distance = Length of the train` (to be covered crossing the man/pole).\n   - `Speed = Speed of the train`\n2. **Train crossing a Platform**\n   - Here, the Platform will have a specific length.\n   - `Distance = Train length + Platform length` (to be covered crossing the platform).\n3. **Train crossing a Person Running**\n   - *In Same Direction*: If a train and a person running in the same direction, we subtract the person's speed from the train's speed.\n     - `Relative speed = Train speed - Person speed`\n   - *In Opposite Direction*: If a train and a person running in the opposite direction, we add them up.\n     - `Relative speed = sum of speeds`\n4. **Train crossing another Train**\n   - Lengths are always same irrespective of direction (summed), because however trains should be crossed each other by covering both their lengths.\n   - *Opposite Direction*: `Time taken = (L1 + L2) / (S1 + S2)`\n   - *Same Direction*: `Time taken = (L1 + L2) / |S1 - S2|`\n   - Note: Denominator is similar to the case of a Person Running. A slow train will never overtake the faster train.\n\n## Core Logic for Distant Places\n- If two vehicles start from respective places towards each other, we sum up their speeds to get Relative Speed.\n- If they travel in the same direction, we get their relative speed by subtracting one from another.\n\n## Average Speed\n- `Average Speed = Total Distance / Total Time`\n- When the total distance travelled is equal for two speeds (x and y): `Average speed = 2xy / (x + y)`\n- Another method: By the LCM of the speeds as the distance covered, we can get the time, and then apply `Total distance / Total time`.\n\n## Special Formulas\n- **Stoppages**: `Time of stoppage per hour (min) = (Diff of speeds / Speed excluding stoppages) * 60`\n- **Late/Early to School**: `Distance = (Product of speeds / Difference of speeds) * (Time difference in mins / 60)`\n- **Trains starting simultaneously and reaching destinations after meeting**: `S1 / S2 = \u221a(T2 / T1)`\n",
+        "name": "Speed, Distance and Time (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 18 Handwritten PDF pages: DST Triangle, km/h to m/s 5/18 conversion, Train Crossing 4 Cases, Relative Speeds, Train Overtaking Platform Lengths, Opposite/Same Direction Meeting Times, Overtaking Pursuit Overtake Times, Stoppage Time Formula, Walking vs Riding Logics, Speed Fraction Late Rules, Late/Early Distance Formulas, Square Root Destination Meeting Formula, Circular Track Crossings, and Hourly Speed Arithmetic Series.",
+        "icon": "\ud83c\udfce\ufe0f",
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Speed, Distance and Time (18 Pages Transcribed)\n\n#### Page 1: Definitions & Unit Conversions\n- **Basic Formula**: $\\text{Speed} = \\frac{\\text{Distance}}{\\text{Time}}$ (DST Triangle).\n- **Units Conversion Rules**:\n  - $\\text{km/h} \\to \\text{m/s}$: Multiply by $\\mathbf{\\frac{5}{18}}$.\n  - $\\text{m/s} \\to \\text{km/h}$: Multiply by $\\mathbf{\\frac{18}{5}}$.\n\n#### Page 2, 3 & 4: Train Crossing 4 Cases & Platform Lengths\n- **Case 1 (Standing Man/Pole)**: $\\text{Distance} = \\text{Length of Train}$, $\\text{Speed} = \\text{Train Speed}$.\n- **Case 2 (Platform/Bridge)**: $\\text{Distance} = \\text{Train Length} + \\text{Platform Length}$.\n- **Case 3 (Running Person)**:\n  - Same Direction: $\\text{Relative Speed} = \\text{Train Speed} - \\text{Person Speed}$.\n  - Opposite Direction: $\\text{Relative Speed} = \\text{Train Speed} + \\text{Person Speed}$.\n- **Case 4 (Two Trains)**: Distance is **ALWAYS SUMMED UP ($L_1 + L_2$)**!\n  - Opposite Direction: $\\text{Time} = \\frac{L_1 + L_2}{S_1 + S_2}$.\n  - Same Direction: $\\text{Time} = \\frac{L_1 + L_2}{|S_1 - S_2|}$.\n- **Two Platform Example**: Crosses $96\\text{m}$ platform in $12\\text{s}$ and $141\\text{m}$ platform in $15\\text{s}$.\n  - In $3\\text{s}$, covers $45\\text{m} \\implies \\text{Speed} = 15\\text{ m/s}$. Train Length $= (15 \\times 12) - 96 = \\mathbf{84\\text{ meters}}$.\n\n#### Page 5, 6, 7 & 8: Meeting Places & Different Start Times\n- **Hyd to Blr Meeting**: $560\\text{ km}$ apart, start at 6 AM ($80\\text{ kmph}$ & $60\\text{ kmph}$).\n  - Relative Speed $= 140\\text{ kmph} \\implies \\text{Time} = \\frac{560}{140} = \\mathbf{4\\text{ hours}}$ (10 AM).\n- **Different Start Times**: A and B $440\\text{ km}$ apart. P at 4 AM ($30\\text{ kmph}$), Q at 7 AM ($40\\text{ kmph}$).\n  - P covers $30 \\times 3 = 90\\text{ km}$ by 7 AM. Remaining $= 350\\text{ km}$.\n  - Relative Speed $= 70\\text{ kmph} \\implies \\text{Time} = \\frac{350}{70} = 5\\text{ hrs} \\implies$ Meet at **12:00 PM** ($240\\text{km}$ from A, $200\\text{km}$ from B).\n\n#### Page 9 & 10: Overtaking Pursuit & Average Speed LCM\n- **Same Direction Pursuit**: Rajdhani 14:30 ($60\\text{ kmph}$), Duronto 16:30 ($80\\text{ kmph}$).\n  - Lead $= 120\\text{ km}$. Relative $= 20\\text{ kmph} \\implies \\text{Overtake} = \\frac{120}{20} = 6\\text{ hrs} \\implies \\mathbf{480\\text{ km from Delhi}}$.\n- **Average Speed Formulas**:\n  - Equal Distances: $\\text{Average Speed} = \\mathbf{\\frac{2xy}{x + y}}$.\n  - General: $\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}}$.\n\n#### Page 11 & 12: Stoppage Time Formula & Walking vs Riding\n- **Train Stoppage Formula**: Excluding $= 40\\text{ kmph}$, Including $= 25\\text{ kmph}$.\n  $$\\text{Stoppage Time (min/hr)} = \\frac{\\text{Excluding} - \\text{Including}}{\\text{Excluding}} \\times 60 = \\frac{40 - 25}{40} \\times 60 = \\mathbf{22.5\\text{ minutes/hour}}$$\n- **Walking vs Riding Logic**: Walking + Riding $= 5\\text{h } 45\\text{m}$. Riding both ways saves 2 hrs.\n  - Walking both ways loses 2 hrs $\\implies 5\\text{h } 45\\text{m} + 2\\text{h} = \\mathbf{7\\text{ hours } 45\\text{ minutes}}$!\n\n#### Page 13, 14 & 15: Speed Inversion, Late/Early Distance & Destination Square Root\n- **Speed Ratio Inversion**: Walking at $\\frac{5}{6}$th usual speed, 10 mins late.\n  - Speed $5:6 \\implies$ Time $6:5 \\implies$ Diff $1 \\to 10\\text{m} \\implies$ Usual time $= 5 \\times 10 = \\mathbf{50\\text{ minutes}}$.\n- **Late & Early Distance Formula**: $30\\text{ kmph}$ (10m late) vs $40\\text{ kmph}$ (5m early).\n  $$\\text{Distance} = \\frac{S_1 \\times S_2}{|S_1 - S_2|} \\times \\frac{\\text{Time Diff (mins)}}{60} = \\frac{30 \\times 40}{10} \\times \\frac{15}{60} = \\mathbf{30\\text{ km}}$$\n- **Destination Square Root Formula**: Two trains meet, then reach destinations in $T_1 = 9\\text{h}, T_2 = 16\\text{h}$. $S_1 = 80\\text{ kmph}$.\n  $$\\frac{S_1}{S_2} = \\sqrt{\\frac{T_2}{T_1}} \\implies \\frac{80}{S_2} = \\sqrt{\\frac{16}{9}} = \\frac{4}{3} \\implies S_2 = \\mathbf{60\\text{ kmph}}$$\n\n#### Page 16, 17 & 18: Circular Track Crossings & Hourly Speed Increment\n- **Circular Track Crossing**: A (1 round/hr), B (6 rounds/hr) from 7:30 AM.\n  - Relative $= 5\\text{ RPH} \\implies \\text{Time} = \\frac{1}{5}\\text{ hr} = 12\\text{ mins} \\implies$ Cross at **7:42 AM**.\n- **Hourly Speed Arithmetic Series**: Starts $35\\text{ kmph}$, $+2\\text{ kmph}$ every hour for 12 hrs.\n  - $\\text{Total Distance} = (35 \\times 12) + (12 \\times 11) = 420 + 132 = \\mathbf{552\\text{ km}}$.\n",
+        "flashcards": [
+            {
+                "title": "Page 1: Unit Conversion Multipliers",
+                "front": "What are the exact multipliers to convert km/h to m/s vs m/s to km/h?",
+                "back": "\u2022 $\\text{km/h} \\to \\text{m/s}$: Multiply by $\\mathbf{\\frac{5}{18}}$\n\u2022 $\\text{m/s} \\to \\text{km/h}$: Multiply by $\\mathbf{\\frac{18}{5}}$",
+                "badge": "\ud83d\udcc4 Page 1"
+            },
+            {
+                "title": "Page 11: Train Stoppage Time Formula",
+                "front": "What is the formula for train stoppage time in minutes per hour?",
+                "back": "$$\\text{Stoppage Time (min/hr)} = \\frac{\\text{Excluding} - \\text{Including}}{\\text{Excluding}} \\times 60$$",
+                "badge": "\ud83d\udcc4 Page 11"
+            },
+            {
+                "title": "Page 14: Late & Early Distance Formula",
+                "front": "What is the formula for distance when given 2 speeds with late and early arrival minutes?",
+                "back": "$$\\text{Distance} = \\frac{S_1 \\times S_2}{|S_1 - S_2|} \\times \\frac{\\text{Time Diff (mins)}}{60}$$",
+                "badge": "\ud83d\udcc4 Page 14"
+            },
+            {
+                "title": "Page 15: Destination Square Root Formula",
+                "front": "What is the formula comparing speeds of 2 trains after meeting until reaching destinations in $T_1$ and $T_2$?",
+                "back": "$$\\frac{S_1}{S_2} = \\sqrt{\\frac{T_2}{T_1}}$$",
+                "badge": "\ud83d\udcc4 Page 15"
+            }
+        ],
         "questions": [
             {
-                "difficulty": "intermediate",
-                "text": "A train travelling at constant speed crosses a 96m long platform in 12 sec and another 141m long platform in 15 secs. Find the length of the train.",
+                "text": "From Page 11 Notes: Train excluding stoppages speed is 40 kmph, including stoppages is 25 kmph. How many minutes per hour does it stop?",
                 "options": [
-                    "72 m",
-                    "84 m",
-                    "96 m",
-                    "100 m"
-                ],
-                "correct_option_index": 1,
-                "explanation": "First, we will find out the speed. In 3 seconds it covers 45m (141m - 96m in 15s - 12s). Then speed = 15 m/s. Train length = (Speed * Time) - Platform length = (15 * 12) - 96 = 180 - 96 = 84m."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The distance between A and B is 440km. P starts from A at a speed of 30 kmph at 4 AM towards B. Q starts from B at a speed of 40 kmph at 7 AM towards A. Find at what time they meet, distance from A they meet, and distance from B they meet.",
-                "options": [
-                    "12:00 PM, 240km, 200km",
-                    "1:00 PM, 270km, 170km",
-                    "11:00 AM, 210km, 230km",
-                    "12:30 PM, 250km, 190km"
-                ],
-                "correct_option_index": 0,
-                "explanation": "P travels for 3 hrs before Q starts. Distance covered by P = 30 * 3 = 90 km. Remaining distance at 7 AM = 440 - 90 = 350 km. Relative speed = 30 + 40 = 70 kmph. Time to meet after 7 AM = 350 / 70 = 5 hrs. Thus, they meet at 7 AM + 5 hrs = 12:00 PM. Distance from A = 30 kmph * (3 + 5) hrs = 240 km. Distance from B = 40 kmph * 5 hrs = 200 km."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rajdhani Express started from Delhi to Mumbai at 14:30 travelling at a speed of 60 kmph. Duronto Express started from Delhi to Mumbai at 16:30, travelling at a speed of 80 kmph. How far away from Delhi do they meet?",
-                "options": [
-                    "360 kms",
-                    "400 kms",
-                    "480 kms",
-                    "540 kms"
+                    "15 min/hr",
+                    "20 min/hr",
+                    "22.5 min/hr",
+                    "25 min/hr"
                 ],
                 "correct_option_index": 2,
-                "explanation": "By the time of 16:30, the two trains are at a distance of 120 km (Rajdhani travelled for 2 hrs at 60 kmph). Relative speed = 80 - 60 = 20 kmph. It takes 120 / 20 = 6 hours to meet from 16:30. So they will meet at 480 kms from Delhi (80 kmph * 6 hrs)."
+                "explanation": "Page 11 Formula: ((40 - 25) / 40) * 60 = (15 / 40) * 60 = 22.5 min/hr!"
             },
             {
-                "difficulty": "intermediate",
-                "text": "I have to cover a distance of 240km of which 1/4th of the distance at 30 kmph, 1/3rd of the distance at 40 kmph and the remaining at a speed of 50 kmph. What is my average speed?",
+                "text": "From Page 14 Notes: A boy at 30 kmph is 10 mins late. At 40 kmph he is 5 mins early. What is the distance to school?",
                 "options": [
-                    "35 kmph",
-                    "38 kmph",
-                    "40 kmph",
-                    "42 kmph"
+                    "20 km",
+                    "25 km",
+                    "30 km",
+                    "35 km"
                 ],
                 "correct_option_index": 2,
-                "explanation": "1/4th of 240 = 60 km @ 30 kmph => 2 hrs. 1/3rd of 240 = 80 km @ 40 kmph => 2 hrs. Remaining distance = 240 - 60 - 80 = 100 km @ 50 kmph => 2 hrs. Total time = 2 + 2 + 2 = 6 hrs. Average speed = Total Distance / Total Time = 240 / 6 = 40 kmph."
+                "explanation": "Page 14 Formula: (30 * 40 / 10) * (15 / 60) = 120 * (1/4) = 30 km!"
             },
             {
-                "difficulty": "intermediate",
-                "text": "The average speed of a train including stoppages is 25 kmph. Excluding stoppages, it is 40 kmph. How many minutes per hour did the train stop?",
-                "options": [
-                    "15 min",
-                    "20 min",
-                    "22.5 min",
-                    "25 min"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Time of stoppage per hour = (Diff in speeds / Speed excluding stoppages) * 60 = ((40 - 25) / 40) * 60 = (15 / 40) * 60 = 22.5 minutes."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man takes 5h 45m in walking to a certain place and riding back. He would have gained 2hrs by riding both the ways. The time he would have taken walking both the ways?",
-                "options": [
-                    "7h 45m",
-                    "8h 15m",
-                    "6h 45m",
-                    "9h 30m"
-                ],
-                "correct_option_index": 0,
-                "explanation": "2 hrs saved by riding, 2 hrs lost by walking. Total time taken if he walks = 5h 45m + 2 hrs = 7h 45m. Logic: Total time for both ways riding = 3 hr 45 min. One side ride = 1 hr 52.5 min. One side walk = 5 hr 45 min - 1 hr 52.5 min = 3 hr 52.5 min. Both ways walk = 3 hr 52.5 min * 2 = 7 hr 45 min."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Walking at 5/6th of his usual speed, a man is 10 mins late. The usual time taken by him to cover the distance is?",
-                "options": [
-                    "40 min",
-                    "50 min",
-                    "60 min",
-                    "70 min"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Speed ratio = 5/6 (Present -> Usual). Time ratio = 6/5 (Present -> Usual). Difference in time = 1 unit = 10 mins. Usual time = 5 units = 50 mins."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A boy goes to school from his village at a speed of 3 kmph. He returns to his village from school at a speed of 2 kmph. If he spends 5 hrs in the journey, find the distance between his school and village?",
-                "options": [
-                    "4 kms",
-                    "5 kms",
-                    "6 kms",
-                    "12 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Average speed = 2xy / (x+y) = 2*3*2 / (3+2) = 12/5 kmph. Total distance covered (both ways) = Avg speed * Total time = (12/5) * 5 = 12 kms. Therefore, the distance between school and house (one way) is 6 kms."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A boy goes to school from his village at a speed of 30 kmph and he is late to his school by 10 mins. Next day, he travelled at a speed of 40 kmph and reached his school 5 min early. What is the distance between his school and village?",
-                "options": [
-                    "20 kms",
-                    "25 kms",
-                    "30 kms",
-                    "40 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Distance = (Product of speeds / Difference in speeds) * (Time difference in mins / 60). Time difference = 15 mins (10 mins late vs 5 mins early). Distance = ((30 * 40) / 10) * (15 / 60) = 1200/10 * 1/4 = 120 * 1/4 = 30 kms."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two trains, one from Hyderabad to Chennai and another from Chennai to Hyderabad start simultaneously. After they meet, the trains reach their destinations in 9 hours and 16 hours respectively. If the speed of the first train is 80 kmph, find the speed of the second train.",
+                "text": "From Page 15 Notes: Two trains meet and reach destinations in 9 hrs and 16 hrs. If 1st train speed is 80 kmph, what is 2nd train speed?",
                 "options": [
                     "50 kmph",
                     "60 kmph",
                     "70 kmph",
-                    "90 kmph"
+                    "75 kmph"
                 ],
                 "correct_option_index": 1,
-                "explanation": "S1 / S2 = \u221a(T2 / T1). So, 80 / S2 = \u221a(16 / 9) = 4 / 3. S2 = 80 * 3 / 4 = 60 kmph."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two persons A and B walk from P to Q, which are at a distance of 21km, at 3kmph and 4kmph respectively. B reaches Q and returns immediately and meets A at R. Find the distance from P to R.",
-                "options": [
-                    "15 km",
-                    "16 km",
-                    "18 km",
-                    "20 km"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Overall, both of them together finish twice of the PQ's distance i.e. 42km. Relative speed (since they are moving towards each other eventually) = 3 + 4 = 7 kmph. Time taken for them to cover 42 km = 42 / 7 = 6 hours. Distance covered by A in 6 hours = 3 kmph * 6 hrs = 18 kms from P i.e. Point R."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Sound travels 330 mts per second. If the sound of a thunder cloud follows the flash after 10 seconds, the thunder cloud is at a distance of how many kms?",
-                "options": [
-                    "3.3 kms",
-                    "33 kms",
-                    "330 kms",
-                    "3300 kms"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Distance = Speed * Time = 330 m/s * 10 sec = 3300 m = 3.3 kms."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A walks around a circular field at a rate of 1 round per hour, while B runs around it at a rate of 6 rounds per hour. They start in the same direction from the same point at 7:30 AM. They shall first cross each other at?",
-                "options": [
-                    "7:40 AM",
-                    "7:42 AM",
-                    "7:45 AM",
-                    "7:50 AM"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Relative speed = 6 - 1 = 5 Rounds Per Hour. Thus, they complete 1 relative round in 1/5 of an hour = 12 minutes. So they shall first cross each other at 7:30 AM + 12 mins = 7:42 AM."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The speed of the car increases by 2 km after every one hour. If the distance travelled in first hour is 35 km, what was the total distance covered in 12 hrs.",
-                "options": [
-                    "530 kms",
-                    "540 kms",
-                    "552 kms",
-                    "564 kms"
-                ],
-                "correct_option_index": 2,
-                "explanation": "This forms an Arithmetic Progression where a = 35, d = 2, n = 12. Using sum formula: S = n/2 [2a + (n-1)d] = 12/2 [2(35) + 11(2)] = 6 * [70 + 22] = 6 * 92 = 552 kms. Also written as (35*12) + (12*11) = 420 + 132 = 552."
-            }
-        ],
-        "flashcards": [
-            {
-                "title": "Rule 1: Time: Time taken to cover a distanc",
-                "front": "What is the rule or formula for: Time: Time taken to cover a distance.?",
-                "back": "Handwritten PDF Rule:\nTime: Time taken to cover a distance.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
-            },
-            {
-                "title": "Rule 2: Distance: Travelled in a certain ti",
-                "front": "What is the rule or formula for: Distance: Travelled in a certain time with a speed.?",
-                "back": "Handwritten PDF Rule:\nDistance: Travelled in a certain time with a speed.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
-            },
-            {
-                "title": "Rule 3: Speed: Travelling speed of the movi",
-                "front": "What is the rule or formula for: Speed: Travelling speed of the moving body.?",
-                "back": "Handwritten PDF Rule:\nSpeed: Travelling speed of the moving body.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
-            },
-            {
-                "title": "Rule 4: `Time \u221d Distance`",
-                "front": "What is the rule or formula for: `Time \u221d Distance`?",
-                "back": "Handwritten PDF Rule:\n`Time \u221d Distance`\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
-            },
-            {
-                "title": "Rule 5: `Speed \u221d Distance`",
-                "front": "What is the rule or formula for: `Speed \u221d Distance`?",
-                "back": "Handwritten PDF Rule:\n`Speed \u221d Distance`\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
-            },
-            {
-                "title": "Rule 6: `Speed \u221d 1/Time`",
-                "front": "What is the rule or formula for: `Speed \u221d 1/Time`?",
-                "back": "Handwritten PDF Rule:\n`Speed \u221d 1/Time`\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "explanation": "Page 15 Formula: S1 / S2 = sqrt(T2 / T1) => 80 / S2 = sqrt(16 / 9) = 4/3 => S2 = 60 kmph!"
             }
         ]
     },
@@ -1376,75 +1229,49 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 13,
+        "id": 10,
         "slug": "boats-streams",
-        "name": "Boats & Streams (PDF)",
-        "description": "Master upstream and downstream calculations.",
-        "icon": "\u26f5",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Boats & Streams (PDF)\n\n# Boats and Streams\n\nWhen a boat moves in water:\n- Water flow affects speed\n\n1. **Downstream speed** = Boat speed + stream speed\n2. **Upstream speed** = Boat speed - stream speed\n\nIf downstream and upstream are given:\n- Let downstream speed be $D$\n- Let upstream speed be $U$\n- Then, **Boat speed** = $\\frac{D + U}{2}$\n- **Stream speed** = $\\frac{D - U}{2}$\n\nWhen 2 speeds are given and total time is given:\n- **Distance** = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "A person can row at a speed of 8 Kmph in still water. He takes 8 hours to row from A to B and return. What is the distance between A and B if speed of the stream is 2 Kmph?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "We have to find upstream and downstream speeds.\nDownstream speed = 8 + 2 = 10 Kmph\nUpstream speed = 8 - 2 = 6 Kmph\nUsing the formula for distance when total time is given:\nDistance = (Product of speeds / Sum of speeds) * time\nDistance between A and B = ((10 * 6) / (10 + 6)) * 8 = (60 / 16) * 8 = 30 Km"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A man can row 40 Km upstream and 55 Km downstream in 13 hours. Also, he can row 30 Km upstream and 44 Km downstream in 10 hours. Find speed of the man in still water and speed of the current?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let upstream speed be (x-y) and downstream speed be (x+y).\nEq 1: 40 Km upstream + 55 Km downstream = 13 hrs\nEq 2: 30 Km upstream + 44 Km downstream = 10 hrs\n\nTaking difference and manipulating:\nWe get a difference of 10 Km upstream + 11 Km downstream = 3 hrs.\nEquate this with any of the above equations (e.g., multiply by 3):\n30 Km upstream + 33 Km downstream = 9 hrs.\n\nSubtract this from Eq 2:\n(44 - 33) Km downstream = (10 - 9) hrs\n11 Km downstream = 1 hr\nDownstream speed (x+y) = 11 Kmph.\n\nSubstitute downstream time in Eq 2:\n30 Km upstream + 44 Km / 11 Kmph = 10 hrs\n30 Km upstream + 4 hrs = 10 hrs\n30 Km upstream = 6 hrs\nUpstream speed (x-y) = 30 / 6 = 5 Kmph.\n\nx + y = 11 Kmph\nx - y = 5 Kmph\nSpeed of man (x) = (11 + 5) / 2 = 8 Kmph\nSpeed of current (y) = (11 - 5) / 2 = 3 Kmph"
-            }
-        ],
+        "name": "Boats and Streams (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 3 Handwritten PDF pages: Downstream & Upstream Definitions, Boat & Stream Speed Averages, Round-Trip Distance Formula, and Simultaneous Equation Factor Substitutions.",
+        "icon": "\ud83d\udea4",
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Boats and Streams (3 Pages Transcribed)\n\n#### Page 1: Core Definitions & Speed Formulas\n- **Water Flow Effect**: Water flow affects rowing speed.\n  - **Downstream Speed ($D$)**: $\\text{Boat Speed} + \\text{Stream Speed} = x + y$.\n  - **Upstream Speed ($U$)**: $\\text{Boat Speed} - \\text{Stream Speed} = x - y$.\n- **Speed Formulas when $D$ and $U$ are given**:\n  $$\\text{Boat Speed in Still Water } (x) = \\frac{D + U}{2}$$\n  $$\\text{Stream / Current Speed } (y) = \\frac{D - U}{2}$$\n- **Worked Example 1**: Person rows at $8\\text{ kmph}$ in still water, takes 8 hours round trip. Stream speed $= 2\\text{ kmph}$. Find distance between A and B.\n  - Upstream $= 8 - 2 = 6\\text{ kmph}$, Downstream $= 8 + 2 = 10\\text{ kmph}$.\n\n#### Page 2 & 3: Round-Trip Distance Formula & Factor Substitution\n- **Round-Trip Distance Formula**:\n  $$\\text{Distance} = \\frac{\\text{Product of Speeds}}{\\text{Sum of Speeds}} \\times \\text{Total Time} = \\frac{6 \\times 10}{6 + 10} \\times 8 = \\mathbf{30\\text{ km}}$$\n- **Factor Substitution Method**: 40km U + 55km D in 13h; 30km U + 44km D in 10h.\n  - Factor trial: $D = 11\\text{ kmph} \\implies \\frac{55}{11} = 5\\text{h} \\implies U = \\frac{40}{13 - 5} = 5\\text{ kmph}$.\n  - Verify Eq 2: $\\frac{30}{5} + \\frac{44}{11} = 6 + 4 = 10\\text{h}$ (Verified!).\n  - Boat Speed $(x) = \\frac{11 + 5}{2} = \\mathbf{8\\text{ kmph}}$.\n  - Stream Speed $(y) = \\frac{11 - 5}{2} = \\mathbf{3\\text{ kmph}}$.\n",
         "flashcards": [
             {
-                "title": "Rule 1: Water flow affects speed",
-                "front": "What is the rule or formula for: Water flow affects speed?",
-                "back": "Handwritten PDF Rule:\nWater flow affects speed\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Boat & Stream Speed Formulas",
+                "front": "What are the formulas for Boat Speed in Still Water ($x$) and Stream Speed ($y$) when $D$ and $U$ are given?",
+                "back": "\u2022 Boat Speed $(x) = \\frac{D + U}{2}$\n\u2022 Stream Speed $(y) = \\frac{D - U}{2}$",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: Let downstream speed be $D$",
-                "front": "What is the rule or formula for: Let downstream speed be $D$?",
-                "back": "Handwritten PDF Rule:\nLet downstream speed be $D$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 2: Round-Trip Distance Formula",
+                "front": "What is the formula for distance when upstream and downstream speeds are given along with total round-trip time?",
+                "back": "$$\\text{Distance} = \\frac{\\text{Product of Speeds}}{\\text{Sum of Speeds}} \\times \\text{Total Time}$$",
+                "badge": "\ud83d\udcc4 Page 2"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 1 Notes: A boat travels at 8 kmph in still water and stream speed is 2 kmph. What are downstream and upstream speeds?",
+                "options": [
+                    "10 kmph & 6 kmph",
+                    "12 kmph & 4 kmph",
+                    "8 kmph & 2 kmph",
+                    "16 kmph & 4 kmph"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Page 1 Formulas: Downstream = 8 + 2 = 10 kmph, Upstream = 8 - 2 = 6 kmph!"
             },
             {
-                "title": "Rule 3: Let upstream speed be $U$",
-                "front": "What is the rule or formula for: Let upstream speed be $U$?",
-                "back": "Handwritten PDF Rule:\nLet upstream speed be $U$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
-            },
-            {
-                "title": "Rule 4: Then, Boat speed = $\\frac{D + U}{2}",
-                "front": "What is the rule or formula for: Then, Boat speed = $\\frac{D + U}{2}$?",
-                "back": "Handwritten PDF Rule:\nThen, Boat speed = $\\frac{D + U}{2}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
-            },
-            {
-                "title": "Rule 5: Stream speed = $\\frac{D  U}{2}$",
-                "front": "What is the rule or formula for: Stream speed = $\\frac{D  U}{2}$?",
-                "back": "Handwritten PDF Rule:\nStream speed = $\\frac{D  U}{2}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
-            },
-            {
-                "title": "Rule 6: Distance = $\\frac{\\text{Product of ",
-                "front": "What is the rule or formula for: Distance = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$?",
-                "back": "Handwritten PDF Rule:\nDistance = $\\frac{\\text{Product of speeds}}{\\text{Sum of speeds}} \\times \\text{total time}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "text": "From Page 2 Notes: If upstream speed is 6 kmph, downstream is 10 kmph, and total round-trip time is 8 hours, what is the distance?",
+                "options": [
+                    "24 km",
+                    "30 km",
+                    "36 km",
+                    "40 km"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 2 Distance Formula: (6 * 10 / 16) * 8 = 30 km!"
             }
         ]
     },
