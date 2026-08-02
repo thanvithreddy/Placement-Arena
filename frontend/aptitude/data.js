@@ -1371,207 +1371,95 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 10,
+        "id": 9,
         "slug": "time-work",
-        "name": "Time & Work (PDF Placeholder)",
-        "description": "Master LCM method and efficiency concepts for time & work problems.",
-        "icon": "\u2699\ufe0f",
-        "xp_reward": 120,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Time & Work (PDF Placeholder)\n\n# Time and Work\n\n## Core Concepts\n* **Time and work** are directly proportional to each other. ($Time \\propto work$)\n* **Men and work** are directly proportional to each other. ($Men \\propto work$)\n* **Time and men** are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)\n\n## The Universal MDH Formula\n$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$\nWhere:\n* **M** = Person who does the work\n* **D** = Days of work\n* **H** = Hours of work in the day\n* **W** = Work Done\n* M, D, H are inversely proportional to each other.\n* W is directly proportional to them.\n\n## Efficiency\n* If a person can finish a piece of work in $n$ days, then their work done in 1 day is $\\frac{1}{n}$.\n* $Efficiency = \\frac{Total\\ work}{Time\\ taken}$\n* $Time \\propto \\frac{1}{Efficiency}$\n* $Work = Time \\times Efficiency$\n\n## Group Work & Leaving/Joining (Middle of Work)\n* We add the \"before\" and \"after\" situations.\n* **Concept:** Equate the equations and find the updated result.\n* **Alternative:** Only calculate the days for the updated men in work. Total Days of work = Remaining work days + Previous work days.\n\n## Combining Different Entities (AND/OR Type)\n* Generally, if \"men and women\" or \"men or women\" is given, deduce the equations accordingly and form the equation in one of the quantities (either men or women).\n* Then apply the standard formula/rules.\n\n## LCM Method for Individual Work\n* **Concept:** If A can finish the work in $x$ time, and B can finish the work in $y$ time.\n* Then together they can finish in $\\frac{xy}{x+y}$ time.\n* If together they can finish in $x$ time, and one can finish in $y$ time, then the other can finish in $\\frac{xy}{y-x}$ time.\n* **Logic behind this:** Take the LCM of $x$ and $y$ to get the total number of work units. Divide total work by individual days to get their per-day efficiency (work parts per day). Add their efficiencies to get the combined work done in a day, which gives the total time taken.\n\n## Alternate Days Concept\n* The concept is based on \"who started the work\". The final answer depends on who started.\n* Consider the work done by them for 1 cycle (e.g., 2 days for 2 people).\n* Take the value nearer to the total work units.\n* The leftover work will be done by the one who started the cycle.\n\n## Leftover Work at the End Concept\n* When a group starts together, but at the end, some leave and the remaining finish the work.\n* Calculate the leftover days' work done by a certain person and then together work done. Follow the routine process.\n\n## Work and Wages\n* When the total wages paid for a work are given, the wages will divide in their work unit per day's ratio (efficiency ratio).",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "If 24 men can do a piece of work in 36 days. In how many days can 54 men do it?",
-                "options": [
-                    "16 Days",
-                    "18 Days",
-                    "20 Days",
-                    "24 Days"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$24 \\times 36 = M_2 \\times D_2$\n$\\Rightarrow D_2 = \\frac{24 \\times 36}{54}$\n$D_2 = 16\\ Days$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 18 binders can bind 900 books in 10 days. How many binders will be required to bind 660 books in 12 days?",
-                "options": [
-                    "10 binders",
-                    "11 binders",
-                    "12 binders",
-                    "14 binders"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Using $\\frac{M_1 D_1}{W_1} = \\frac{M_2 D_2}{W_2}$\n$\\Rightarrow \\frac{18 \\times 10}{900} = \\frac{M_2 \\times 12}{660}$\n$M_2 = 11\\ men$\n$\\therefore 11$ Binders are required to bind 660 books in 12 days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A fodder stock lasts for 36 Days for 20 cows. How long will it last for 15 cows?",
-                "options": [
-                    "40 Days",
-                    "45 Days",
-                    "48 Days",
-                    "50 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Let $M_1 D_1 = M_2 D_2$\n$20 \\times 36 = 15 \\times D_2$\n$D_2 = 48\\ Days$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 6 men working 8 hours a day earn Rs. 840 per week, then 9 men working 6 hours a day will earn how much per week?",
-                "options": [
-                    "Rs. 900",
-                    "Rs. 945",
-                    "Rs. 1000",
-                    "Rs. 1050"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Using $\\frac{M_1 H_1}{W_1} = \\frac{M_2 H_2}{W_2}$\n$\\frac{6 \\times 8}{840} = \\frac{9 \\times 6}{W_2}$\n$W_2 = 9 \\times 105$\n$W_2 = Rs.\\ 945$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "16 men can do a job in 30 Days. After 10 Days, 6 men left. In how many Days, the remaining work will be finished?",
-                "options": [
-                    "28 Days",
-                    "30 Days",
-                    "32 Days",
-                    "35 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Using $M_1 D_1 = M_2 D_2$\nAfter 10 Days, 6 men left.\n$\\Rightarrow 16 \\times 30 = (16 \\times 10) + (10 \\times D_2)$\n$480 = 160 + 10 D_2$\n$\\Rightarrow 10 D_2 = 480 - 160 = 320$\n$\\Rightarrow D_2 = 32$\nRemaining work will be completed in 32 Days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "12 men can complete the work in 8 days. 3 days after they started the work, 3 more men joined them. In how many days, remaining work will be completed.",
-                "options": [
-                    "3 Days",
-                    "4 Days",
-                    "5 Days",
-                    "6 Days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 12 \\times 8 = (12 \\times 3) + (15 \\times D_2)$\n$\\Rightarrow 96 = 36 + (15 \\times D_2)$\n$\\Rightarrow 15 \\times D_2 = 60$\n$D_2 = 4\\ days$\nRemaining work will be done in 4 Days."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A certain work can be done in a certain time by 36 men. But had there been 9 men more, it could have been done in 5 days less. In how many Days, 20 men can do the same work?",
-                "options": [
-                    "35 Days",
-                    "40 Days",
-                    "45 Days",
-                    "50 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "$M_1 D_1 = M_2 D_2$\n$36 \\times D_1 = (36+9) \\times (D_1-5)$\n$36 D_1 = 45(D_1-5)$\n$36 D_1 = 45 D_1 - 225$\n$\\Rightarrow 45 D_1 - 36 D_1 = 225$\n$\\Rightarrow 9 D_1 = 225$\n$D_1 = 25\\ Days$\nNow, $M_1 D_1 = M_2 D_2$\n$36 \\times 25 = 20 \\times D_2$\n$D_2 = 45\\ Days$\n20 men will complete in 45 Days."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 10 men or 12 women can do a work in 16 days. In how many days can 15 men and 6 women together do it?",
-                "options": [
-                    "6 days",
-                    "8 days",
-                    "10 days",
-                    "12 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "10 men OR 12 women $\\rightarrow$ 16 days.\ni.e. 10 men = 12 women, which means 5 men = 6 women.\nFind for 15 men + 6 women:\n15 men + 5 men = 20 men.\nSince 10 men = 16 days,\n$M_1 D_1 = M_2 D_2$\n$10 \\times 16 = 20 \\times D_2$\n$\\Rightarrow D_2 = 8\\ days$.\nIn 8 days, 15 men and 6 women can do it together."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If 2 men and 3 women can do a work in 8 days. 3 men and 2 women can do the same work in 7 days. How many days will 5 men and 4 women take to do it?",
-                "options": [
-                    "3 days",
-                    "4 days",
-                    "5 days",
-                    "6 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Consider the whole work as:\n$(2m + 3w)8 = (3m + 2w)7$\n$16m + 24w = 21m + 14w$\n$24w - 14w = 21m - 16m$\n$10w = 5m \\Rightarrow 2w = 1m$\nSubstitute in the given: $4w + 3w \\rightarrow 8\\ days$ ($7\\ women \\rightarrow 8\\ days$)\nAsked: $5m + 4w = 10w + 4w = 14\\ women$.\n$14\\ women = \\frac{7 \\times 8}{14} = 4\\ days$.\n$\\therefore D_2 = 4\\ days$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A can complete 3/7th of work in 24 days. In how many days, he can complete the remaining work?",
-                "options": [
-                    "24 days",
-                    "28 days",
-                    "32 days",
-                    "56 days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "$3 \\rightarrow 24\\ days$\n$7 \\rightarrow 56\\ days$\nTotal work can be done in 56 days.\nRemaining work = $56 - 24 = 32\\ days$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A can complete the work in 60 days. If B is 50% more efficient than A, then B can complete the work in how many Days?",
-                "options": [
-                    "30 days",
-                    "40 days",
-                    "45 days",
-                    "50 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$M_1 D_1 = M_2 \\times D_2$\n$100 \\times 60 = 150 \\times D_2$\n$\\therefore D_2 = 40\\ days$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A can complete the work in 188 days. B is 20% more efficient than A. C is 30% more efficient than B. find A,B,C together can complete the work in how many Days?",
-                "options": [
-                    "40 Days",
-                    "45 Days",
-                    "50 Days",
-                    "60 Days"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Let's consider A $\\rightarrow$ 100%\nB $\\rightarrow$ 120% (20% of 100)\nC $\\rightarrow$ 156% (30% of 120 = 36, 120+36 = 156)\nTogether, A+B+C = 376%.\nSince A (100%) $\\rightarrow$ 188 days.\n$M_1 D_1 = M_2 D_2$\n$\\Rightarrow 100 \\times 188 = 376 \\times D_2$\n$\\Rightarrow D_2 = 50\\ Days$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two workers A and B completed the job in 5 days. If A works twice as efficiently as he actually did and B worked 1/3 as efficiently, the work would have completed in 3 days. A alone could complete the work in",
-                "options": [
-                    "5 days",
-                    "6 1/4 days",
-                    "7 days",
-                    "8 days"
-                ],
-                "correct_option_index": 1,
-                "explanation": "$A+B \\rightarrow 5\\ days$\n$2A + \\frac{1}{3}B \\rightarrow 3\\ days$\n$M_1 D_1 = M_2 D_2$\n$(A+B)5 = (2A + \\frac{1}{3}B)3$\n$5A + 5B = 6A + B$\n$\\Rightarrow A = 4B \\Rightarrow B = \\frac{1}{4}A$\n$(A + \\frac{1}{4}A) \\rightarrow 5\\ days$\n$1.25A \\rightarrow 5\\ days$\n$M_1 D_1 = M_2 D_2$\n$125 \\times 5 = 100 \\times D_2$\n$\\Rightarrow D_2 = \\frac{25}{4} = 6 \\frac{1}{4}\\ days$."
-            }
-        ],
+        "name": "Time and Work (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 20 Handwritten PDF pages: MDH Universal Formula, Efficiency Reciprocal Rule, Middle Joining/Leaving Equations, Men/Women OR & AND Formulas, LCM Work Parts Method, Alternate Days Cycle Rules, Pairwise Double Work Trick, Efficiency Percentage Equations, Leaving at End Work Calculation, and Work & Wages Daily Ratio Rule.",
+        "icon": "\u23f3",
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Time and Work (20 Pages Transcribed)\n\n#### Page 1 & 2: Proportionality Rules & MDH Formula\n- **Proportionality Laws**:\n  - $\\text{Time} \\propto \\text{Work}$ (Directly proportional)\n  - $\\text{Men} \\propto \\text{Work}$ (Directly proportional)\n  - $\\text{Time} \\propto \\frac{1}{\\text{Men}}$ (Inversely proportional)\n- **The Universal MDH Formula**:\n  $$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$$\n  - $M, D, H$ are inversely proportional to each other, $W$ (work/wages) is directly proportional.\n- **One Day Work & Efficiency**:\n  - If a person finishes work in $n$ days, 1 day work is $\\frac{1}{n}$.\n  - $\\text{Efficiency} = \\frac{\\text{Total Work}}{\\text{Time Taken}} \\implies \\text{Time} \\propto \\frac{1}{\\text{Efficiency}}$.\n- **Worked Example**: 24 men finish in 36 days. How many days for 54 men?\n  - $M_1 D_1 = M_2 D_2 \\implies 24 \\times 36 = 54 \\times D_2 \\implies D_2 = \\mathbf{16\\text{ Days}}$.\n\n#### Page 3 & 4: Book Binders, Cow Fodder, Wages & Middle Joining/Leaving\n- **18 Binders Example**: 18 binders bind 900 books in 10 days. How many binders for 660 books in 12 days?\n  - $\\frac{18 \\times 10}{900} = \\frac{M_2 \\times 12}{660} \\implies M_2 = \\mathbf{11\\text{ Binders}}$.\n- **Cow Fodder Stock**: 20 cows stock lasts 36 days. How long for 15 cows?\n  - $20 \\times 36 = 15 \\times D_2 \\implies D_2 = \\mathbf{48\\text{ Days}}$.\n- **Wages Example**: 6 men working 8 hrs/day earn Rs. 840/week. 9 men working 6 hrs/day earn how much?\n  - $\\frac{6 \\times 8}{840} = \\frac{9 \\times 6}{W_2} \\implies W_2 = \\mathbf{\\text{Rs. } 945}$.\n- **Middle Joining & Leaving Rule**: Equate equations by adding \"before\" and \"after\" situations.\n  - 16 men do job in 30 days. After 10 days, 6 men left (10 men remain).\n  - $16 \\times 30 = (16 \\times 10) + (10 \\times D_2) \\implies 480 = 160 + 10 D_2 \\implies D_2 = \\mathbf{32\\text{ Days}}$.\n\n#### Page 5 & 6: Updated Men Days & Men/Women OR/AND Rules\n- **12 Men 3 Days Join Example**: 12 men in 8 days. After 3 days, 3 men join (15 men).\n  - $12 \\times 8 = (12 \\times 3) + (15 \\times D_2) \\implies 96 = 36 + 15 D_2 \\implies D_2 = \\mathbf{4\\text{ Days}}$. Total $= 3 + 4 = \\mathbf{7\\text{ Days}}$.\n- **Men/Women OR & AND Questions**:\n  - 10 men OR 12 women in 16 days. How many days for 15 men AND 6 women together?\n  - $10\\text{M} = 12\\text{W} \\implies 5\\text{M} = 6\\text{W}$.\n  - $15\\text{M} + 6\\text{W} = 15\\text{M} + 5\\text{M} = 20\\text{M}$.\n  - $10 \\times 16 = 20 \\times D_2 \\implies D_2 = \\mathbf{8\\text{ Days}}$.\n- **Shortcut Formula for OR & AND**:\n  $$\\text{Days} = \\frac{\\text{Given Days}}{\\frac{q_m}{I_m} + \\frac{q_w}{I_w}} = \\frac{16}{\\frac{15}{10} + \\frac{6}{12}} = \\mathbf{8\\text{ Days}}!$$\n\n#### Page 7 & 8: Pure AND Equations & Two Workers Product Rule\n- **Pure AND Equations**: 2M + 3W in 8 days; 3M + 2W in 7 days. How long for 5M + 4W?\n  - $(2M + 3W) \\times 8 = (3M + 2W) \\times 7 \\implies 16M + 24W = 21M + 14W \\implies \\mathbf{1M = 2W}$.\n  - $7W \\to 8\\text{ days} \\implies 5M + 4W = 14W \\to \\mathbf{4\\text{ Days}}$.\n- **Two Workers Product/Sum Rule**:\n  - Together time $= \\mathbf{\\frac{xy}{x + y}}$.\n  - One worker remaining time $= \\mathbf{\\frac{xy}{|x - y|}}$.\n\n#### Page 9, 10 & 11: LCM Work Parts Method & Multi-Stage Workers\n- **LCM Method Logic**: LCM of individual days gives Total Work Parts. Efficiency $= \\frac{\\text{Total Parts}}{\\text{Days}}$.\n- **Worked Example**: A (25d), B (30d), C (10d). Total LCM $= 150$ parts. ($A=6, B=5, C=15$).\n  - All start. After 3 days A left ($57$ parts done). After 2 more days C left ($26$ parts done). Remaining $= 67$ parts.\n  - B finishes remaining in $\\frac{67}{3} = \\mathbf{22 \\frac{1}{3}\\text{ Days}}$.\n\n#### Page 12, 13 & 14: Alternate Days Cycle Rules & Assisted Days\n- **Alternate Days Cycle**: Work done in 2 days cycle $= A + B$. Leftover work done by whoever started!\n  - Example: A (36d), B (40d). Total $= 120$ parts ($A=4, B=3$). Cycle 2 days $= 7$ parts.\n  - $17 \\times 7 = 119$ parts in 34 days. Leftover 1 part by A $\\implies \\mathbf{34 \\frac{1}{4}\\text{ Days}}$ (If A starts).\n  - If B starts $\\implies \\mathbf{34 \\frac{1}{3}\\text{ Days}}$.\n- **Assisted Alternate Days**: A (20d), B (30d), C (40d). Total $= 120$ parts ($A=6, B=4, C=3$).\n  - Day 1 (A+B) $= 10$, Day 2 (A+C) $= 9$. 2 days $= 19$ parts.\n  - 6 cycles ($114$ parts) $= 12$ days. Leftover 6 parts by A+B $\\implies \\mathbf{12 \\frac{3}{5}\\text{ Days}}$.\n\n#### Page 15 & 16: Pairwise Together Trick & Efficiency Percentages\n- **Pairwise Together Trick**: A+B (12d), B+C (15d), A+C (20d). Total $= 60$ parts.\n  - $2(A+B+C) = 5+4+3 = 12 \\implies A+B+C = 6$ parts/day.\n  - All together $= \\frac{60}{6} = \\mathbf{10\\text{ Days}}$.\n- **Fraction Work**: $\\frac{3}{7}$th work in 24 days $\\implies$ Total $= 56$ days, Remaining $= \\mathbf{32\\text{ Days}}$.\n- **Efficiency Percentage**: B is $50\\%$ more efficient than A (60d).\n  - $100 \\times 60 = 150 \\times D_2 \\implies D_2 = \\mathbf{40\\text{ Days}}$.\n\n#### Page 17, 18, 19 & 20: Efficiency Change, Leaving at END & Work & Wages\n- **Efficiency Change Problem**: A & B finish in 5 days. If A works $2\\times$ and B works $\\frac{1}{3}\\times$, finished in 3 days.\n  - $(A+B) \\times 5 = (2A + \\frac{1}{3}B) \\times 3 \\implies A = 4B \\implies \\mathbf{A \\text{ alone } = 6 \\frac{1}{4}\\text{ Days}}$.\n- **Leaving BEFORE Completion (at the END)**:\n  - Calculate backwards for persons working alone in last days, subtract from Total Parts, then divide remainder by joint efficiency.\n  - Example: A (20d), B (30d). Total $= 60$ parts. B left 3 days before completion.\n  - A alone last 3 days $= 3 \\times 3 = 9$ parts. Remainder $= 51 / 5 = 10 \\frac{1}{5}$ days. Total $= \\mathbf{13 \\frac{1}{5}\\text{ Days}}$.\n- **Work & Wages Rule**: Total wages are divided in the **Daily Work Unit Ratio**!\n",
         "flashcards": [
             {
-                "title": "Rule 1: Time and work are directly proporti",
-                "front": "What is the rule or formula for: Time and work are directly proportional to each other. ($Time \\propto work$)?",
-                "back": "Handwritten PDF Rule:\nTime and work are directly proportional to each other. ($Time \\propto work$)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Universal MDH Formula",
+                "front": "What is the Universal MDH formula in Time and Work?",
+                "back": "$$\\frac{M_1 \\times D_1 \\times H_1}{W_1} = \\frac{M_2 \\times D_2 \\times H_2}{W_2}$$\n$M, D, H$ are inversely proportional, $W$ is directly proportional!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: Men and work are directly proportio",
-                "front": "What is the rule or formula for: Men and work are directly proportional to each other. ($Men \\propto work$)?",
-                "back": "Handwritten PDF Rule:\nMen and work are directly proportional to each other. ($Men \\propto work$)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 7: OR & AND Days Shortcut",
+                "front": "What is the instant shortcut formula for 10 men OR 12 women in 16 days $\\to$ 15 men AND 6 women?",
+                "back": "$$\\text{Days} = \\frac{\\text{Given Days}}{\\frac{q_m}{I_m} + \\frac{q_w}{I_w}} = \\frac{16}{\\frac{15}{10} + \\frac{6}{12}} = \\mathbf{8\\text{ Days}}!$$",
+                "badge": "\ud83d\udcc4 Page 7"
             },
             {
-                "title": "Rule 3: Time and men are inversely proporti",
-                "front": "What is the rule or formula for: Time and men are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)?",
-                "back": "Handwritten PDF Rule:\nTime and men are inversely proportional to each other. ($Time \\propto \\frac{1}{men}$)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
+                "title": "Page 8: Product/Sum Two Workers Rule",
+                "front": "If A takes $x$ days and B takes $y$ days, what is the formula for working together vs finding one remaining?",
+                "back": "\u2022 Together $= \\mathbf{\\frac{xy}{x + y}}$\n\u2022 One Remaining $= \\mathbf{\\frac{xy}{|x - y|}}$",
+                "badge": "\ud83d\udcc4 Page 8"
             },
             {
-                "title": "Rule 4: M = Person who does the work",
-                "front": "What is the rule or formula for: M = Person who does the work?",
-                "back": "Handwritten PDF Rule:\nM = Person who does the work\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
+                "title": "Page 15: Pairwise Together Shortcut",
+                "front": "If A+B in 12d, B+C in 15d, A+C in 20d, how many days for A+B+C together?",
+                "back": "Total $= 60$ parts. $2(A+B+C) = 5+4+3 = 12 \\implies A+B+C = 6$ parts/day.\nTogether $= \\frac{60}{6} = \\mathbf{10\\text{ Days}}$!",
+                "badge": "\ud83d\udcc4 Page 15"
             },
             {
-                "title": "Rule 5: D = Days of work",
-                "front": "What is the rule or formula for: D = Days of work?",
-                "back": "Handwritten PDF Rule:\nD = Days of work\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
+                "title": "Page 18: Leaving at END Rule",
+                "front": "How do you solve questions where a person leaves a few days BEFORE completion?",
+                "back": "Work BACKWARDS! Calculate the work done alone by remaining persons in the final days, subtract from total work, and divide rest by joint daily efficiency!",
+                "badge": "\ud83d\udcc4 Page 18"
             },
             {
-                "title": "Rule 6: H = Hours of work in the day",
-                "front": "What is the rule or formula for: H = Hours of work in the day?",
-                "back": "Handwritten PDF Rule:\nH = Hours of work in the day\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "title": "Page 20: Work & Wages Division Rule",
+                "front": "How are total wages divided among workers on a job?",
+                "back": "Wages are ALWAYS divided in the ratio of their **DAILY WORK UNITS (Efficiency)**!",
+                "badge": "\ud83d\udcc4 Page 20"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 2 Notes: 24 men can do a piece of work in 36 days. In how many days can 54 men do it?",
+                "options": [
+                    "12 Days",
+                    "16 Days",
+                    "18 Days",
+                    "20 Days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 2 Solution: M1 * D1 = M2 * D2 => 24 * 36 = 54 * D2 => D2 = 16 Days!"
+            },
+            {
+                "text": "From Page 7 Notes: 10 men or 12 women can do work in 16 days. How many days for 15 men and 6 women together?",
+                "options": [
+                    "6 Days",
+                    "8 Days",
+                    "10 Days",
+                    "12 Days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 7 Days Shortcut: 16 / (15/10 + 6/12) = 16 / (1.5 + 0.5) = 16 / 2 = 8 Days!"
+            },
+            {
+                "text": "From Page 15 Notes: A+B can do work in 12 days, B+C in 15 days, A+C in 20 days. How many days for A+B+C together?",
+                "options": [
+                    "8 Days",
+                    "10 Days",
+                    "12 Days",
+                    "15 Days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 15 Solution: 2(A+B+C) daily parts = 5 + 4 + 3 = 12 => A+B+C daily = 6 parts => 60 / 6 = 10 Days!"
+            },
+            {
+                "text": "From Page 16 Notes: B is 50% more efficient than A. If A can complete work in 60 days, in how many days can B complete it?",
+                "options": [
+                    "30 Days",
+                    "40 Days",
+                    "45 Days",
+                    "50 Days"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 16 Solution: M1 * D1 = M2 * D2 => 100 * 60 = 150 * D2 => D2 = 40 Days!"
             }
         ]
     },
