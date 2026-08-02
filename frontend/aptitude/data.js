@@ -1352,315 +1352,72 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 15,
+        "id": 13,
         "slug": "permutations-combinations",
-        "name": "Permutations & Combinations (PDF)",
-        "description": "Learn factorial tricks, arrangement rules, and selection combinations.",
+        "name": "Permutations & Combinations (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 13 Handwritten PDF pages: Arrangements vs Selection, nPr & nCr Identities, Identical Objects Division, Gap Method for Separation, Circular & Necklace Rules, Digit Formation with/without Zero, At Least Committee Rules, Polygon Diagonals n(n-3)/2, Handshakes vs Tickets Distinctions, and Tournament Match Equations.",
         "icon": "\ud83c\udfb2",
-        "xp_reward": 130,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Permutations & Combinations (PDF)\n\n# Permutations and Combinations\n\n*   **Permutations**: Arrangements (Position matters)\n    *   $nP_r$\n*   **Combinations**: Selection (Just selection)\n    *   $nC_r$\n*   Multiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"\n\n### Important Identities\n1.  $nP_n = n!$\n2.  $nP_{n-1} = n!$\n3.  $nP_1 = n$\n4.  $nP_0 = 1$\n5.  $nC_r = nC_{n-r}$\n6.  $nC_n = nC_0 = 1$\n7.  $nC_1 = n$\n8.  $nC_{n-1} = nC_1 = n$\n\n### Key Relations\n*   $nP_r = nC_r \\times r!$\n*   When objects are identical: $\\frac{n!}{p!q!r!}$\n*   **Not together** = Total arrangements - Together arrangements\n\n### GAP METHOD\n*   Used when \"No two elements are together\"\n\n### Circular Permutations\n*   Normal circle: $(n-1)!$\n*   Necklace (clockwise = anticlockwise same): $\\frac{(n-1)!}{2}$\n\n### Miscellaneous\n*   **Atleast** $\\rightarrow \\ge$\n*   **Atmost** $\\rightarrow \\le$\n*   To find the number of diagonals: $\\frac{n(n-3)}{2}$ where $n = $ number of vertices.\n*   Number of Triangles = $nC_3$\n*   Handshakes and matches $\\rightarrow$ Combinations\n*   Gifts and Tickets $\\rightarrow$ Permutations\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways the letters of the word YUVRAJ be arranged.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, Total Letters = 6. From 6 letters we have to arrange with 6 letters. So, $6P_6 = 6! = 720$ ways. If they ask to form 3-letter words, select 3 letters $\\Rightarrow 6P_3 = 6 \\times 5 \\times 4 = 120$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways can the letters of the word BALLOON be arranged?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total letters = 7; L=2, O=2. Then, we can arrange by $\\frac{7!}{2!2!} = 1260$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways 'TENDULKAR' can be arranged such that vowels are always together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total we have 9 letters with No repetition. Consider all the vowels as a single unit. Vowels: EUA. So, we have EUA + other 6 = (6+1) = 7. In $7! \\times 3! = 5040 \\times 6 = 30240$. 3! because of Principle of multiplication, 3 vowels."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Arrange 3 boys and 2 girls such that girls are not together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. Arrange Boys $\\Rightarrow 3! = 6$ ways. Positions: _ B _ B _ B _ $\\Rightarrow 4$ Gaps. 2. Place girls in gaps. choose 2 gaps from 4: $4P_2$. Total $\\Rightarrow 3! \\times 4P_2 = 72$ ways. (Note: Student mistakenly wrote 36 ways)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Arrange the letters of the word in TENDULKAR such that vowels occupy even places.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total 6 consonants. Arrange these in $6!$ ways. In 7 spaces, we arrange 3 vowels in $7P_3$ ways. $\\Rightarrow 6! \\times 7P_3 = 151200$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "6 Girls and 4 Boys joined a Maths Tution. In how many ways, they can sit in a straight line such that all girls are together.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "4 Boys + (1) single unit of 6 Girls $\\Rightarrow 5! \\times 6! = 86400$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many different ways can letters of the word PROBLEM be arranged such that vowels occupy only odd places.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "word = PROBLEM, vowels = O, E (2), consonants = 5. Odd Positions: 1, 3, 5, 7 $\\Rightarrow 4$ places. $\\Rightarrow 5! \\times 4P_2 = 120 \\times 12 = 1440$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} without repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$5P_3 = 60$ (from 5 arrange 3)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3 digit Numbers from digits {0, 1, 2, 3, 4} without repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Note: first digit cannot be 0. Then, first digit choices = {1, 2, 3, 4} $\\rightarrow 4$ options. Remaining 4 digits. Then, Remaining 3 digits. $4 \\times 4 \\times 3 = 48$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {1, 2, 3, 4, 5} with repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$5^3 = 125$"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Form 3-digit numbers from digits {0, 1, 2, 3, 4} with repetition.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "first digit cannot be 0 $\\rightarrow 4$ choices. Remaining digits Repetition allowed $\\rightarrow 5$ choices each. $4 \\times 5 \\times 5 = 100$."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many 4-digit ATM PINS are Possible?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$10^4 = 10000$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Out of 5 men and 4 women, a committee of 6 members has to be formed. Find the number of ways in which this can be done, such that there has to be atleast 2 women.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$4C_2 \\times 5C_4 + 4C_3 \\times 5C_3 + 4C_4 \\times 5C_2 \\Rightarrow 60 + 40 + 5 = 105$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "10 students are Participating in a Race. In how many ways, can the first 3 prizes be won?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$10P_3 = 10 \\times 9 \\times 8 = 720$ ways. Or $10C_3 \\times 3! = \\frac{10 \\times 9 \\times 8}{3!} \\times 3! = 720$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many Triangles can be formed by joining the vertices of octagon.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$8C_3 = 56$ (No Priority for arrangements)."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "How many Diagonals can be formed by joining the vertices of Hexagon?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$\\frac{n(n-3)}{2} \\Rightarrow \\frac{6(6-3)}{2} = 9$ Diagonals."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "In how many ways can one or more of six friends be invited for a dinner?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$2^6 - 1 = 64 - 1 = 63$. Or, Intuition: $6C_1 + 6C_2 + 6C_3 + 6C_4 + 6C_5 + 6C_6 = 6 + 15 + 20 + 15 + 6 + 1 = 63$."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Out of 9 consonants and 4 vowels, how many words of 3 consonants and 2 vowels are formed?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "First we'll select them and then arrange them. $9C_3 \\times 4C_2 \\times 5! = 25200$ ways."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "20 members attended the Party. If each person in the party shakes hand with every other person once, find the total no. of hand shakes?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Order doesn't matter. $20C_2 = \\frac{20 \\times 19}{2 \\times 1} = 190$ ways."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "There are 20 Railway stations between Chennai and Bangalore. How many different Kinds of tickets must be Printed so as to enable a passenger to travel from one place to another?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$22P_2 = 22 \\times 21 = 462$ ways. (Chennai and Bangalore included makes 22 total stations)."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "There are 20 Teams participating in a cricket tournament. They are divided into two groups of 10 Teams each. If each team plays one match with every other team within the group before qualifying for quarter finals, find the total no. of matches played in the tournament including quarters, semis and finals?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Group A: $10C_2$, Group B: $10C_2$. Quarters (4), Semis (2), Final (1). Total: $45 + 45 + 4 + 2 + 1 = 97$ matches."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "After each Participant Played one game against every other Participant in a chess tournament. The total count of games was 325. Find the no of Participants.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "$nC_2 = 325 \\Rightarrow \\frac{n(n-1)}{2} = 325 \\Rightarrow n(n-1) = 650 \\Rightarrow 26 \\times 25$. Total 26 Participants."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Permutations & Combinations (13 Pages Transcribed)\n\n#### Page 1 & 2: Arrangements vs Selection & Key Identities\n- **Core Distinction**:\n  - **Permutation ($n P_r$)**: Arrangements (Position matters!). Multiply $r$ numbers from $n$ downwards.\n  - **Combination ($n C_r$)**: Selection (Just choosing!). Multiply $r$ numbers from $n$ downwards and divide by $r!$.\n- **Key Relation**:\n  $$n P_r = n C_r \\times r!$$\n- **Important Identities**:\n  - $n P_n = n!$, $n P_{n-1} = n!$, $n P_1 = n$, $n P_0 = 1$.\n  - $n C_r = n C_{n-r}$, $n C_n = n C_0 = 1$, $n C_1 = n$, $n C_{n-1} = n$.\n- **Identical Objects Rule**:\n  - Words with repeated letters (e.g. `BALLOON`: 7 letters, 2 Ls, 2 Os) $\\implies \\frac{7!}{2! 2!} = \\mathbf{1260}$.\n\n#### Page 3, 4 & 5: Vowels Together, GAP Method & Sitting Line\n- **Vowels Always Together (`TENDULKAR`)**:\n  - 9 letters, 3 vowels (`E, U, A`). Treat vowels as **single unit** $(EUA) \\implies (6 + 1) = 7$ units.\n  - Ways $= 7! \\times 3! = 5040 \\times 6 = \\mathbf{30,240}$.\n- **Vowels Never Together (GAP METHOD)**:\n  - Used when \"No two elements are together\".\n  - $\\text{Not Together} = \\text{Total} - \\text{Together}$.\n  - 3 boys and 2 girls (girls not together): Arrange boys ($3! = 6$), create 4 gaps `_ B _ B _ B _`, place girls ($4 C_2 \\times 2! = 12$).\n  - Total $= 6 \\times 6 = \\mathbf{36\\text{ ways}}$.\n  - `TENDULKAR` vowels never together: 6 consonants ($6! = 720$), 7 gaps for 3 vowels ($7 P_3 = 210$) $\\implies 720 \\times 210 = \\mathbf{151,200}$.\n\n#### Page 6 & 7: Circular Permutations & Number Formation Rules\n- **Circular Permutations**:\n  - Normal Circle $= (n - 1)!$.\n  - Necklace / Chain (clockwise = anticlockwise same) $= \\mathbf{\\frac{(n - 1)!}{2}}$.\n- **Number Formation Rules (3-Digit Numbers)**:\n  - Without Repetition, No Zero $\\{1,2,3,4,5\\} \\implies 5 P_3 = \\mathbf{60}$.\n  - Without Repetition, With Zero $\\{0,1,2,3,4\\} \\implies 1^{\\text{st}}$ digit 4 choices (no 0) $\\implies 4 \\times 4 \\times 3 = \\mathbf{48}$.\n  - With Repetition, No Zero $\\{1,2,3,4,5\\} \\implies 5^3 = \\mathbf{125}$.\n  - With Repetition, With Zero $\\{0,1,2,3,4\\} \\implies 4 \\times 5 \\times 5 = \\mathbf{100}$.\n- **4-Digit ATM PINs**: Total possible $= 10^4 = \\mathbf{10,000}$.\n\n#### Page 8, 9 & 10: Committee Selection & Polygon Diagonals\n- **At Least Committee Problem**: 5 men, 4 women. Committee of 5 members with **at least 2 women**:\n  - $(4 C_2 \\times 5 C_3) + (4 C_3 \\times 5 C_2) + (4 C_4 \\times 5 C_1) = 60 + 40 + 5 = \\mathbf{105\\text{ ways}}$.\n- **Octagon Triangles**: Vertices of Octagon ($n=8$) $\\implies 8 C_3 = \\mathbf{56\\text{ triangles}}$.\n- **Polygon Diagonals Formula**:\n  $$\\text{Number of Diagonals} = \\mathbf{\\frac{n(n - 3)}{2}}$$\n  - Hexagon ($n=6$) $\\implies \\frac{6(3)}{2} = \\mathbf{9\\text{ diagonals}}$.\n- **Inviting Friends**: Invite 1 or more of 6 friends $\\implies 2^n - 1 = 2^6 - 1 = \\mathbf{63\\text{ ways}}$.\n\n#### Page 11, 12 & 13: Handshakes vs Tickets & Tournament Matches\n- **Handshakes vs Tickets Distinction**:\n  - **Handshakes & Matches** (Order doesn't matter) $\\implies n C_2$. (Example: 20 people handshakes $= 20 C_2 = \\mathbf{190}$).\n  - **Gifts & Railway Tickets** (Order matters!) $\\implies n P_2$. (Example: 22 stations tickets $= 22 P_2 = 22 \\times 21 = \\mathbf{462}$).\n- **Cricket Tournament Matches**: 20 teams divided into 2 groups of 10.\n  - Group matches $= 10 C_2 + 10 C_2 = 45 + 45 = 90$.\n  - Knockouts $= 4 \\text{ (Quarters)} + 2 \\text{ (Semis)} + 1 \\text{ (Final)} = 7$. Total $= \\mathbf{97\\text{ matches}}$.\n- **Chess Tournament Participants**: $n C_2 = 325 \\implies \\frac{n(n - 1)}{2} = 325 \\implies n(n - 1) = 650 = 26 \\times 25 \\implies \\mathbf{n = 26\\text{ participants}}$.\n",
         "flashcards": [
             {
-                "title": "Rule 1: Permutations: Arrangements (Positio",
-                "front": "What is the rule or formula for: Permutations: Arrangements (Position matters)?",
-                "back": "Handwritten PDF Rule:\nPermutations: Arrangements (Position matters)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Key nPr & nCr Relation",
+                "front": "What is the key relation connecting Permutation ($n P_r$) and Combination ($n C_r$)?",
+                "back": "$$n P_r = n C_r \\times r!$$\nPermutation includes arranging the selected items in $r!$ order!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: Combinations: Selection (Just selec",
-                "front": "What is the rule or formula for: Combinations: Selection (Just selection)?",
-                "back": "Handwritten PDF Rule:\nCombinations: Selection (Just selection)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 4: GAP Method for Separation",
+                "front": "When do you use the GAP METHOD in Permutations?",
+                "back": "Use when **NO TWO elements are allowed together**!\nArrange unrestricted items first, create gaps `_ B _ B _`, then place restricted items in gaps!",
+                "badge": "\ud83d\udcc4 Page 4"
             },
             {
-                "title": "Rule 3: Multiply \"r\" numbers from \"n\" towar",
-                "front": "What is the rule or formula for: Multiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"?",
-                "back": "Handwritten PDF Rule:\nMultiply \"r\" numbers from \"n\" towards \"1\" and divide that with \"r!\"\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
+                "title": "Page 10: Polygon Diagonals Formula",
+                "front": "What is the formula for the number of diagonals in an $n$-sided polygon?",
+                "back": "$$\\text{Number of Diagonals} = \\mathbf{\\frac{n(n - 3)}{2}}$$\nExample: Hexagon ($n=6$) $\\implies \\frac{6 \\times 3}{2} = \\mathbf{9\\text{ diagonals}}$!",
+                "badge": "\ud83d\udcc4 Page 10"
             },
             {
-                "title": "Rule 4: $nP_r = nC_r \\times r!$",
-                "front": "What is the rule or formula for: $nP_r = nC_r \\times r!$?",
-                "back": "Handwritten PDF Rule:\n$nP_r = nC_r \\times r!$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
+                "title": "Page 12: Handshakes vs Tickets Rule",
+                "front": "Why are Handshakes calculated using $n C_2$ while Railway Tickets use $n P_2$?",
+                "back": "\u2022 Handshakes: Order DOES NOT matter (A shaking B is same as B shaking A) $\\implies n C_2$.\n\u2022 Railway Tickets: Order MATTERS (Ticket A to B is different from B to A) $\\implies n P_2$!",
+                "badge": "\ud83d\udcc4 Page 12"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 10 Notes: How many diagonals can be formed in a Hexagon (6 sides)?",
+                "options": [
+                    "6",
+                    "9",
+                    "12",
+                    "15"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 10 Formula: Diagonals = n(n-3)/2 = 6*(6-3)/2 = 9!"
             },
             {
-                "title": "Rule 5: When objects are identical: $\\frac{",
-                "front": "What is the rule or formula for: When objects are identical: $\\frac{n!}{p!q!r!}$?",
-                "back": "Handwritten PDF Rule:\nWhen objects are identical: $\\frac{n!}{p!q!r!}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
+                "text": "From Page 11 Notes: 20 members attend a party. If everyone shakes hands with every other person once, how many handshakes occur?",
+                "options": [
+                    "180",
+                    "190",
+                    "380",
+                    "400"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 11 Formula: nC2 = 20C2 = (20 * 19) / 2 = 190 handshakes!"
             },
             {
-                "title": "Rule 6: Not together = Total arrangements  ",
-                "front": "What is the rule or formula for: Not together = Total arrangements  Together arrangements?",
-                "back": "Handwritten PDF Rule:\nNot together = Total arrangements  Together arrangements\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "text": "From Page 13 Notes: In a chess tournament, every player plays 1 match with every other. Total matches played = 325. How many participants?",
+                "options": [
+                    "24",
+                    "25",
+                    "26",
+                    "30"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 13 Solution: nC2 = 325 => n(n-1) = 650 = 26 * 25 => n = 26 participants!"
             }
         ]
     },
