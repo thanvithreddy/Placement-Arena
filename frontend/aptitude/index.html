@@ -545,23 +545,27 @@
             }
         }
 
-        function renderVisualizer() {
+                        function renderVisualizer() {
             const container = document.getElementById('visualizer-content');
             const slug = currentTopic.slug;
 
             if (slug === 'percentages') {
                 container.innerHTML = `
                     <div class="space-y-4">
-                        <p class="text-xs text-slate-600">Drag sliders to see how the formula evolved into the <strong>Symmetry Rule</strong>: $a\\% \\text{ of } b = b\\% \\text{ of } a$ live!</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                            <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Percentages Concept Playground</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">Symmetry &amp; Decimal Shift</span>
+                        </div>
+                        <p class="text-xs text-slate-600">Drag sliders to test the <strong>Symmetry Rule</strong> ($a\% \text{ of } b = b\% \text{ of } a$) and $10\% / 1\%$ decimal shift!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-2">
                                 <label class="text-xs font-bold text-slate-700 flex justify-between">
-                                    <span>Percentage ($a\\%$)</span>
+                                    <span>Percentage ($a\%$)</span>
                                     <span class="text-indigo-600 font-extrabold" id="pct-val-a">20%</span>
                                 </label>
                                 <input type="range" min="1" max="100" value="20" id="pct-slider-a" oninput="calcPct()" class="w-full accent-indigo-600">
                             </div>
-                            <div class="space-y-3">
+                            <div class="space-y-2">
                                 <label class="text-xs font-bold text-slate-700 flex justify-between">
                                     <span>Base Number ($b$)</span>
                                     <span class="text-indigo-600 font-extrabold" id="pct-val-b">500</span>
@@ -570,18 +574,480 @@
                             </div>
                         </div>
 
-                        <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-2xl space-y-2 text-center">
-                            <h5 class="text-xs font-extrabold text-indigo-900 uppercase">Formula Evolution Live Result</h5>
-                            <p class="text-xl font-extrabold text-indigo-700" id="pct-result-text">20% of 500 = 100</p>
-                            <p class="text-xs text-slate-500 font-medium" id="pct-symmetry-text">Symmetry Check: 500% of 20 = 100 ✓</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-center">
+                                <h6 class="text-[10px] font-extrabold text-indigo-900 uppercase">Symmetry Rule</h6>
+                                <p class="text-base font-extrabold text-indigo-700 mt-1" id="pct-result-text">20% of 500 = 100</p>
+                                <p class="text-[11px] text-slate-500 font-medium mt-0.5" id="pct-symmetry-text">500% of 20 = 100 ✓</p>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center">
+                                <h6 class="text-[10px] font-extrabold text-amber-900 uppercase">Decimal Shift (Page 1)</h6>
+                                <p class="text-xs font-bold text-amber-800 mt-1" id="pct-shift-10">10% of 500 = 50.0</p>
+                                <p class="text-xs font-bold text-amber-800" id="pct-shift-1">1% of 500 = 5.00</p>
+                            </div>
                         </div>
                     </div>
                 `;
                 calcPct();
+            } else if (slug === 'profit-loss') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Profit &amp; Loss Concept Playground</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">Dishonest Dealer &amp; Equal SP</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. Dishonest Dealer Profit %</h6>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">True Weight (g)</label>
+                                    <input type="number" id="pl-true-w" value="1500" oninput="calcPL()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">False Weight Used (g)</label>
+                                    <input type="number" id="pl-false-w" value="1100" oninput="calcPL()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-center">
+                                    <span class="text-[10px] font-bold text-emerald-600">Cheating Profit %</span>
+                                    <p class="text-base font-extrabold text-emerald-700" id="pl-out-cheating">36.36%</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Equal SP Loss Calculator</h6>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Equal % Profit &amp; Loss ($x\%$)</label>
+                                    <input type="number" id="pl-equal-x" value="30" oninput="calcPL()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-center mt-9">
+                                    <span class="text-[10px] font-bold text-rose-600">Overall Square Loss</span>
+                                    <p class="text-base font-extrabold text-rose-700" id="pl-out-square">9% Loss</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcPL();
+            } else if (slug === 'si-ci') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">SI &amp; CI Growth Curve Simulator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">Interest Evolution</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Principal ($P$)</label>
+                                <input type="number" id="sici-p" value="10000" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Rate ($R\%$)</label>
+                                <input type="number" id="sici-r" value="10" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">Years ($T$)</label>
+                                <input type="number" id="sici-t" value="2" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
+                                <span class="text-[10px] uppercase font-bold text-emerald-600">Simple Interest (SI)</span>
+                                <p class="text-lg font-extrabold text-emerald-700" id="sici-out-si">Rs. 2,000</p>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-center">
+                                <span class="text-[10px] uppercase font-bold text-indigo-600">Compound Interest (CI)</span>
+                                <p class="text-lg font-extrabold text-indigo-700" id="sici-out-ci">Rs. 2,100</p>
+                            </div>
+                            <div class="bg-purple-50 border border-purple-200 p-4 rounded-2xl text-center">
+                                <span class="text-[10px] uppercase font-bold text-purple-600">Difference (CI - SI)</span>
+                                <p class="text-lg font-extrabold text-purple-700" id="sici-out-diff">Rs. 100</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcSICI();
+            } else if (slug === 'averages') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Averages Concept Playground</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700">Mistaken Value Correction</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <p class="text-xs text-slate-600">Simulate Page 4 <strong>Mistaken Reading Correction</strong> ($	ext{Correct Avg} = 	ext{Old Avg} - rac{	ext{Mistaken} - 	ext{Correct}}{N}$)!</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Students ($N$)</label>
+                                    <input type="number" id="avg-n" value="15" oninput="calcAvg()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Old Avg</label>
+                                    <input type="number" id="avg-old" value="159" oninput="calcAvg()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Correct Value</label>
+                                    <input type="number" id="avg-correct" value="147" oninput="calcAvg()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Mistaken Value</label>
+                                    <input type="number" id="avg-mistaken" value="177" oninput="calcAvg()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-center">
+                                <span class="text-[10px] font-extrabold text-amber-900 uppercase">Corrected Average Result</span>
+                                <p class="text-lg font-extrabold text-amber-700" id="avg-out-res">157.0 cm</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcAvg();
+            } else if (slug === 'alligations-mixtures') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Alligations Cross Rule Simulator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700">Cross Diagram</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Cheaper Price ($C_1$)</label>
+                                    <input type="number" id="all-c1" value="25" oninput="calcAlligation()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Dearer Price ($C_2$)</label>
+                                    <input type="number" id="all-c2" value="30" oninput="calcAlligation()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Mean Price ($C_m$)</label>
+                                    <input type="number" id="all-cm" value="27" oninput="calcAlligation()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                            </div>
+                            <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-xl text-center">
+                                <span class="text-[10px] font-extrabold text-cyan-900 uppercase">Mixing Ratio Result ($R_1 : R_2$)</span>
+                                <p class="text-lg font-extrabold text-cyan-700" id="all-out-ratio">3 : 2</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcAlligation();
+            } else if (slug === 'ages') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Ages Time Machine Simulator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700">Ratio Shift</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Present Ratio $A:B$</label>
+                                    <input type="text" id="age-r1" value="4:5" oninput="calcAge()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Years Later ($N$)</label>
+                                    <input type="number" id="age-n" value="5" oninput="calcAge()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Future Ratio $C:D$</label>
+                                    <input type="text" id="age-r2" value="5:6" oninput="calcAge()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                            </div>
+                            <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl text-center">
+                                <span class="text-[10px] font-extrabold text-rose-900 uppercase">Current Calculated Ages</span>
+                                <p class="text-base font-extrabold text-rose-700" id="age-out-res">A = 20 Years, B = 25 Years</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcAge();
+            } else if (slug === 'ratios-proportions') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Ratios &amp; Proportions Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">4th &amp; Mean Proportion</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">4th Proportion ($A:B :: C:D$)</h6>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <input type="number" id="rp-a" value="20" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A">
+                                    <input type="number" id="rp-b" value="21" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B">
+                                    <input type="number" id="rp-c" value="40" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="C">
+                                </div>
+                                <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200 text-center">
+                                    <span class="text-[10px] font-bold text-indigo-600">4th Proportion ($D = \frac{BC}{A}$)</span>
+                                    <p class="text-base font-extrabold text-indigo-700" id="rp-out-4th">D = 42</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">Mean Proportion ($\sqrt{AC}$)</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="rp-m1" value="8" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A">
+                                    <input type="number" id="rp-m2" value="18" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B">
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-center">
+                                    <span class="text-[10px] font-bold text-emerald-600">Mean Proportion ($B = \sqrt{AB}$)</span>
+                                    <p class="text-base font-extrabold text-emerald-700" id="rp-out-mean">B = 12</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcRP();
+            } else if (slug === 'partnerships') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Partnership PSR Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-teal-50 text-teal-700">Profit Sharing Ratio</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">A Inv (Rs)</label>
+                                    <input type="number" id="part-inv-a" value="12000" oninput="calcPartner()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">A Months</label>
+                                    <input type="number" id="part-time-a" value="12" oninput="calcPartner()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">B Inv (Rs)</label>
+                                    <input type="number" id="part-inv-b" value="18000" oninput="calcPartner()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">B Months</label>
+                                    <input type="number" id="part-time-b" value="6" oninput="calcPartner()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                            </div>
+                            <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl text-center">
+                                <span class="text-[10px] font-extrabold text-teal-900 uppercase">Profit Sharing Ratio (PSR)</span>
+                                <p class="text-lg font-extrabold text-teal-700" id="part-out-psr">A : B = 4 : 3</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcPartner();
+            } else if (slug === 'time-work') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Time &amp; Work Universal Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">MDH Formula</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. $M_1 D_1 = M_2 D_2$ Solver</h6>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <input type="number" id="tw-m1" value="24" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="M1">
+                                    <input type="number" id="tw-d1" value="36" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="D1">
+                                    <input type="number" id="tw-m2" value="54" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="M2">
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-xl border border-blue-200 text-center">
+                                    <span class="text-[10px] font-bold text-blue-600">Days Required ($D_2$)</span>
+                                    <p class="text-base font-extrabold text-blue-700" id="tw-out-d2">16 Days</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Two Workers Together ($rac{xy}{x+y}$)</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="tw-x" value="20" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A (days)">
+                                    <input type="number" id="tw-y" value="30" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B (days)">
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-center">
+                                    <span class="text-[10px] font-bold text-emerald-600">Together Time</span>
+                                    <p class="text-base font-extrabold text-emerald-700" id="tw-out-together">12 Days</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcTW();
+            } else if (slug === 'speed-distance-time') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Speed &amp; Distance Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-violet-50 text-violet-700">Train &amp; Late/Early Rules</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. Stoppage Time Formula</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="sdt-excl" value="40" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Excl (km/h)">
+                                    <input type="number" id="sdt-incl" value="25" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Incl (km/h)">
+                                </div>
+                                <div class="bg-violet-50 p-3 rounded-xl border border-violet-200 text-center">
+                                    <span class="text-[10px] font-bold text-violet-600">Stoppage Min/Hr</span>
+                                    <p class="text-base font-extrabold text-violet-700" id="sdt-out-stop">22.5 min/hr</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Late &amp; Early Distance</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="sdt-s1" value="30" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="S1 (km/h)">
+                                    <input type="number" id="sdt-s2" value="40" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="S2 (km/h)">
+                                </div>
+                                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-center">
+                                    <span class="text-[10px] font-bold text-amber-600">Calculated Distance</span>
+                                    <p class="text-base font-extrabold text-amber-700" id="sdt-out-dist">30 km</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcSDT();
+            } else if (slug === 'pipes-cisterns') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Pipes &amp; Cisterns Flow Simulator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700">Filling &amp; Emptying</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Pipe A (Fill Mins)</label>
+                                    <input type="number" id="pc-a" value="20" oninput="calcPC()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Pipe B (Empty Mins)</label>
+                                    <input type="number" id="pc-b" value="30" oninput="calcPC()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div class="col-span-2 md:col-span-1">
+                                    <label class="text-[10px] font-bold text-slate-500">Formula Used</label>
+                                    <div class="p-2 border rounded-lg text-xs font-bold bg-white text-slate-600">$\frac{xy}{|x-y|}$</div>
+                                </div>
+                            </div>
+                            <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-xl text-center">
+                                <span class="text-[10px] font-extrabold text-cyan-900 uppercase">Net Tank Filling Time</span>
+                                <p class="text-lg font-extrabold text-cyan-700" id="pc-out-time">60 Minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcPC();
+            } else if (slug === 'boats-streams') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Boats &amp; Streams Speed Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">Downstream &amp; Upstream</span>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Downstream Speed ($D$)</label>
+                                    <input type="number" id="bs-d" value="10" oninput="calcBS()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Upstream Speed ($U$)</label>
+                                    <input type="number" id="bs-u" value="6" oninput="calcBS()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
+                                    <span class="text-[10px] font-bold text-blue-600">Boat Speed ($x = \frac{D+U}{2}$)</span>
+                                    <p class="text-base font-extrabold text-blue-700" id="bs-out-boat">8 km/h</p>
+                                </div>
+                                <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl">
+                                    <span class="text-[10px] font-bold text-indigo-600">Stream Speed ($y = \frac{D-U}{2}$)</span>
+                                    <p class="text-base font-extrabold text-indigo-700" id="bs-out-stream">2 km/h</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcBS();
+            } else if (slug === 'permutations-combinations') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">P &amp; C &amp; Diagonals Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-pink-50 text-pink-700">Arrangements &amp; Selections</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. $n P_r$ vs $n C_r$ Solver</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="pnc-n" value="5" oninput="calcPnC()" class="p-2 border rounded-lg text-xs font-bold" placeholder="n">
+                                    <input type="number" id="pnc-r" value="2" oninput="calcPnC()" class="p-2 border rounded-lg text-xs font-bold" placeholder="r">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-center">
+                                    <div class="bg-pink-50 p-2.5 rounded-xl border border-pink-200">
+                                        <span class="text-[9px] font-bold text-pink-600">$n P_r$ (Permutation)</span>
+                                        <p class="text-sm font-extrabold text-pink-700" id="pnc-out-p">20</p>
+                                    </div>
+                                    <div class="bg-purple-50 p-2.5 rounded-xl border border-purple-200">
+                                        <span class="text-[9px] font-bold text-purple-600">$n C_r$ (Combination)</span>
+                                        <p class="text-sm font-extrabold text-purple-700" id="pnc-out-c">10</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Polygon Diagonals Formula</h6>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-500">Number of sides ($n$)</label>
+                                    <input type="number" id="pnc-sides" value="6" oninput="calcPnC()" class="w-full p-2 border rounded-lg text-xs font-bold">
+                                </div>
+                                <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200 text-center">
+                                    <span class="text-[10px] font-bold text-indigo-600">Diagonals ($\frac{n(n-3)}{2}$)</span>
+                                    <p class="text-base font-extrabold text-indigo-700" id="pnc-out-diag">9 Diagonals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcPnC();
+            } else if (slug === 'probability') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Probability Concept Playground</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700">Coin Toss &amp; Contradiction</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. $n$ Coins Exactly $r$ Heads</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="prob-coins" value="5" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="n coins">
+                                    <input type="number" id="prob-heads" value="3" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="r heads">
+                                </div>
+                                <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-center">
+                                    <span class="text-[10px] font-bold text-rose-600">Probability ($\frac{n C_r}{2^n}$)</span>
+                                    <p class="text-base font-extrabold text-rose-700" id="prob-out-coin">5 / 16 (31.25%)</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Contradiction % Formula</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="prob-ta" value="60" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A Truth %">
+                                    <input type="number" id="prob-tb" value="45" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B Truth %">
+                                </div>
+                                <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 text-center">
+                                    <span class="text-[10px] font-bold text-purple-600">Contradiction %</span>
+                                    <p class="text-base font-extrabold text-purple-700" id="prob-out-contra">51%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                calcProb();
             } else if (slug === 'mensuration') {
                 container.innerHTML = `
                     <div class="space-y-4">
-                        <p class="text-xs text-slate-600">Test the <strong>Ratio Side $\\rightarrow$ Area $\\rightarrow$ Volume Evolution Rule</strong> live!</p>
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Mensuration Ratio Evolution Visualizer</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">Side ➔ Area ➔ Volume</span>
+                        </div>
+                        <p class="text-xs text-slate-600">Test the <strong>Ratio Side $\rightarrow$ Area $\rightarrow$ Volume Evolution Rule</strong> live!</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div>
                                 <label class="text-[10px] font-bold text-slate-500">Side A Ratio</label>
@@ -612,6 +1078,10 @@
             } else if (slug === 'speed-math') {
                 container.innerHTML = `
                     <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Speed Math Root Visualizer</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">Square &amp; Cube Roots</span>
+                        </div>
                         <p class="text-xs text-slate-600">Enter any number to see the <strong>Square &amp; Cube Root Evolution</strong> step-by-step!</p>
                         <div class="flex items-center gap-3">
                             <input type="number" id="sm-input" value="97336" placeholder="Enter number..." class="p-3 rounded-xl border border-slate-200 text-sm font-bold w-full max-w-xs focus:ring-2 focus:ring-indigo-500">
@@ -623,43 +1093,46 @@
                     </div>
                 `;
                 calcSpeedMath();
-            } else if (slug === 'si-ci') {
+            } else if (slug === 'clocks-calendars') {
                 container.innerHTML = `
                     <div class="space-y-4">
-                        <p class="text-xs text-slate-600">Compare <strong>Simple Interest ($SI$) vs Compound Interest ($CI$)</strong> evolution over time!</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500">Principal ($P$)</label>
-                                <input type="number" id="sici-p" value="10000" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500">Rate ($R\\%$)</label>
-                                <input type="number" id="sici-r" value="10" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500">Years ($T$)</label>
-                                <input type="number" id="sici-t" value="2" oninput="calcSICI()" class="w-full p-2 border rounded-lg text-xs font-bold">
-                            </div>
+                        <div class="flex items-center justify-between border-b pb-3">
+                            <h5 class="text-sm font-extrabold text-slate-900">Clocks &amp; Calendars Calculator</h5>
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700">Hands Angle &amp; Odd Days</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
-                                <span class="text-[10px] uppercase font-bold text-emerald-600">Simple Interest (SI)</span>
-                                <p class="text-lg font-extrabold text-emerald-700" id="sici-out-si">Rs. 2,000</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">1. Clock Angle ($	heta = |30H - 5.5M|$)</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="clock-h" value="4" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Hour (H)">
+                                    <input type="number" id="clock-m" value="20" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Minute (M)">
+                                </div>
+                                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-center">
+                                    <span class="text-[10px] font-bold text-amber-600">Angle Between Hands</span>
+                                    <p class="text-base font-extrabold text-amber-700" id="clock-out-angle">10°</p>
+                                </div>
                             </div>
-                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-center">
-                                <span class="text-[10px] uppercase font-bold text-indigo-600">Compound Interest (CI)</span>
-                                <p class="text-lg font-extrabold text-indigo-700" id="sici-out-ci">Rs. 2,100</p>
+
+                            <div class="space-y-3">
+                                <h6 class="text-xs font-extrabold text-slate-800">2. Leap Year Odd Days Rule</h6>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="cal-years" value="100" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Years">
+                                </div>
+                                <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200 text-center">
+                                    <span class="text-[10px] font-bold text-indigo-600">Odd Days in 100 Years</span>
+                                    <p class="text-base font-extrabold text-indigo-700" id="cal-out-odd">5 Odd Days</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
-                calcSICI();
+                calcClock();
             } else {
                 container.innerHTML = `
                     <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center space-y-3">
                         <div class="text-3xl">${currentTopic.icon || '💡'}</div>
                         <h5 class="text-sm font-extrabold text-slate-900">${currentTopic.name} Concept Playground</h5>
-                        <p class="text-xs text-slate-500">Flip through the 3D Play Cards above or test your skills in the Practice Quiz below!</p>
+                        <p class="text-xs text-slate-500">Master every single formula with 3D Play Cards &amp; Quiz practice!</p>
                     </div>
                 `;
             }
@@ -667,7 +1140,229 @@
             renderMathInUI();
         }
 
-        function calcPct() {
+        // Helper calculations for Concept Playgrounds
+        function calcClock() {
+            const h = parseFloat(document.getElementById('clock-h')?.value) || 0;
+            const m = parseFloat(document.getElementById('clock-m')?.value) || 0;
+
+            const angle = Math.abs((30 * h) - (5.5 * m));
+            const minAngle = Math.min(angle, 360 - angle);
+
+            if (document.getElementById('clock-out-angle')) {
+                document.getElementById('clock-out-angle').textContent = `${minAngle}°`;
+            }
+
+            const yrs = parseInt(document.getElementById('cal-years')?.value) || 100;
+            const leap = Math.floor(yrs / 4);
+            const ord = yrs - leap;
+            const odd = ((leap * 2) + ord) % 7;
+
+            if (document.getElementById('cal-out-odd')) {
+                document.getElementById('cal-out-odd').textContent = `${odd} Odd Days`;
+            }
+        }
+
+function calcPL() {
+            const trueW = parseFloat(document.getElementById('pl-true-w')?.value) || 1500;
+            const falseW = parseFloat(document.getElementById('pl-false-w')?.value) || 1100;
+            const cheatingPct = ((trueW - falseW) / falseW) * 100;
+            if (document.getElementById('pl-out-cheating')) {
+                document.getElementById('pl-out-cheating').textContent = `${cheatingPct.toFixed(2)}%`;
+            }
+
+            const x = parseFloat(document.getElementById('pl-equal-x')?.value) || 30;
+            const sqLoss = (x / 10) * (x / 10);
+            if (document.getElementById('pl-out-square')) {
+                document.getElementById('pl-out-square').textContent = `${sqLoss.toFixed(2)}% Loss`;
+            }
+        }
+
+        function calcAvg() {
+            const n = parseFloat(document.getElementById('avg-n')?.value) || 15;
+            const oldAvg = parseFloat(document.getElementById('avg-old')?.value) || 159;
+            const cVal = parseFloat(document.getElementById('avg-correct')?.value) || 147;
+            const mVal = parseFloat(document.getElementById('avg-mistaken')?.value) || 177;
+
+            const diff = mVal - cVal;
+            const corrAvg = oldAvg - (diff / n);
+            if (document.getElementById('avg-out-res')) {
+                document.getElementById('avg-out-res').textContent = `${corrAvg.toFixed(2)} cm`;
+            }
+        }
+
+        function calcAlligation() {
+            const c1 = parseFloat(document.getElementById('all-c1')?.value) || 25;
+            const c2 = parseFloat(document.getElementById('all-c2')?.value) || 30;
+            const cm = parseFloat(document.getElementById('all-cm')?.value) || 27;
+
+            const r1 = Math.abs(c2 - cm);
+            const r2 = Math.abs(cm - c1);
+            if (document.getElementById('all-out-ratio')) {
+                document.getElementById('all-out-ratio').textContent = `${r1} : ${r2}`;
+            }
+        }
+
+        function calcAge() {
+            const r1Str = document.getElementById('age-r1')?.value || "4:5";
+            const nYears = parseFloat(document.getElementById('age-n')?.value) || 5;
+            const r2Str = document.getElementById('age-r2')?.value || "5:6";
+
+            const [a1, b1] = r1Str.split(':').map(Number);
+            const [a2, b2] = r2Str.split(':').map(Number);
+
+            if (a1 && b1 && a2 && b2) {
+                // (a1*x + n) / (b1*x + n) = a2 / b2
+                const num = nYears * (b2 - a2);
+                const den = (a1 * b2) - (b1 * a2);
+                const x = Math.abs(num / (den || 1));
+                const ageA = Math.round(a1 * x);
+                const ageB = Math.round(b1 * x);
+
+                if (document.getElementById('age-out-res')) {
+                    document.getElementById('age-out-res').textContent = `A = ${ageA} Years, B = ${ageB} Years`;
+                }
+            }
+        }
+
+        function calcRP() {
+            const a = parseFloat(document.getElementById('rp-a')?.value) || 20;
+            const b = parseFloat(document.getElementById('rp-b')?.value) || 21;
+            const c = parseFloat(document.getElementById('rp-c')?.value) || 40;
+
+            const d = (b * c) / a;
+            if (document.getElementById('rp-out-4th')) {
+                document.getElementById('rp-out-4th').textContent = `D = ${d.toFixed(2)}`;
+            }
+
+            const m1 = parseFloat(document.getElementById('rp-m1')?.value) || 8;
+            const m2 = parseFloat(document.getElementById('rp-m2')?.value) || 18;
+            const meanProp = Math.sqrt(m1 * m2);
+            if (document.getElementById('rp-out-mean')) {
+                document.getElementById('rp-out-mean').textContent = `B = ${meanProp.toFixed(2)}`;
+            }
+        }
+
+        function calcPartner() {
+            const invA = parseFloat(document.getElementById('part-inv-a')?.value) || 12000;
+            const timeA = parseFloat(document.getElementById('part-time-a')?.value) || 12;
+            const invB = parseFloat(document.getElementById('part-inv-b')?.value) || 18000;
+            const timeB = parseFloat(document.getElementById('part-time-b')?.value) || 6;
+
+            const psrA = invA * timeA;
+            const psrB = invB * timeB;
+            const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+            const g = gcd(psrA, psrB);
+
+            if (document.getElementById('part-out-psr')) {
+                document.getElementById('part-out-psr').textContent = `A : B = ${psrA / g} : ${psrB / g}`;
+            }
+        }
+
+        function calcTW() {
+            const m1 = parseFloat(document.getElementById('tw-m1')?.value) || 24;
+            const d1 = parseFloat(document.getElementById('tw-d1')?.value) || 36;
+            const m2 = parseFloat(document.getElementById('tw-m2')?.value) || 54;
+
+            const d2 = (m1 * d1) / m2;
+            if (document.getElementById('tw-out-d2')) {
+                document.getElementById('tw-out-d2').textContent = `${d2.toFixed(1)} Days`;
+            }
+
+            const x = parseFloat(document.getElementById('tw-x')?.value) || 20;
+            const y = parseFloat(document.getElementById('tw-y')?.value) || 30;
+            const together = (x * y) / (x + y);
+            if (document.getElementById('tw-out-together')) {
+                document.getElementById('tw-out-together').textContent = `${together.toFixed(1)} Days`;
+            }
+        }
+
+        function calcSDT() {
+            const excl = parseFloat(document.getElementById('sdt-excl')?.value) || 40;
+            const incl = parseFloat(document.getElementById('sdt-incl')?.value) || 25;
+
+            const stopMin = ((excl - incl) / excl) * 60;
+            if (document.getElementById('sdt-out-stop')) {
+                document.getElementById('sdt-out-stop').textContent = `${stopMin.toFixed(1)} min/hr`;
+            }
+
+            const s1 = parseFloat(document.getElementById('sdt-s1')?.value) || 30;
+            const s2 = parseFloat(document.getElementById('sdt-s2')?.value) || 40;
+            const dist = (s1 * s2 / Math.abs(s1 - s2)) * (15 / 60);
+            if (document.getElementById('sdt-out-dist')) {
+                document.getElementById('sdt-out-dist').textContent = `${dist.toFixed(1)} km`;
+            }
+        }
+
+        function calcPC() {
+            const a = parseFloat(document.getElementById('pc-a')?.value) || 20;
+            const b = parseFloat(document.getElementById('pc-b')?.value) || 30;
+
+            const time = (a * b) / Math.abs(a - b);
+            if (document.getElementById('pc-out-time')) {
+                document.getElementById('pc-out-time').textContent = `${time.toFixed(1)} Minutes`;
+            }
+        }
+
+        function calcBS() {
+            const d = parseFloat(document.getElementById('bs-d')?.value) || 10;
+            const u = parseFloat(document.getElementById('bs-u')?.value) || 6;
+
+            const boat = (d + u) / 2;
+            const stream = (d - u) / 2;
+
+            if (document.getElementById('bs-out-boat')) {
+                document.getElementById('bs-out-boat').textContent = `${boat.toFixed(1)} km/h`;
+            }
+            if (document.getElementById('bs-out-stream')) {
+                document.getElementById('bs-out-stream').textContent = `${stream.toFixed(1)} km/h`;
+            }
+        }
+
+        function calcPnC() {
+            const n = parseInt(document.getElementById('pnc-n')?.value) || 5;
+            const r = parseInt(document.getElementById('pnc-r')?.value) || 2;
+
+            const fact = num => num <= 1 ? 1 : num * fact(num - 1);
+            const nPr = fact(n) / fact(n - r);
+            const nCr = nPr / fact(r);
+
+            if (document.getElementById('pnc-out-p')) {
+                document.getElementById('pnc-out-p').textContent = nPr;
+            }
+            if (document.getElementById('pnc-out-c')) {
+                document.getElementById('pnc-out-c').textContent = nCr;
+            }
+
+            const sides = parseInt(document.getElementById('pnc-sides')?.value) || 6;
+            const diags = (sides * (sides - 3)) / 2;
+            if (document.getElementById('pnc-out-diag')) {
+                document.getElementById('pnc-out-diag').textContent = `${diags} Diagonals`;
+            }
+        }
+
+        function calcProb() {
+            const n = parseInt(document.getElementById('prob-coins')?.value) || 5;
+            const r = parseInt(document.getElementById('prob-heads')?.value) || 3;
+
+            const fact = num => num <= 1 ? 1 : num * fact(num - 1);
+            const nCr = fact(n) / (fact(r) * fact(n - r));
+            const totalOutcomes = Math.pow(2, n);
+            const probPct = (nCr / totalOutcomes) * 100;
+
+            if (document.getElementById('prob-out-coin')) {
+                document.getElementById('prob-out-coin').textContent = `${nCr} / ${totalOutcomes} (${probPct.toFixed(2)}%)`;
+            }
+
+            const ta = (parseFloat(document.getElementById('prob-ta')?.value) || 60) / 100;
+            const tb = (parseFloat(document.getElementById('prob-tb')?.value) || 45) / 100;
+            const contra = (ta * (1 - tb)) + ((1 - ta) * tb);
+
+            if (document.getElementById('prob-out-contra')) {
+                document.getElementById('prob-out-contra').textContent = `${Math.round(contra * 100)}%`;
+            }
+        }
+
+function calcPct() {
             const a = parseFloat(document.getElementById('pct-slider-a').value) || 0;
             const b = parseFloat(document.getElementById('pct-slider-b').value) || 0;
             document.getElementById('pct-val-a').textContent = `${a}%`;
