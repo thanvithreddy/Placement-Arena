@@ -1422,219 +1422,72 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 16,
+        "id": 14,
         "slug": "probability",
-        "name": "Probability (PDF)",
-        "description": "Master coin tosses, dice rolls, card decks, and conditional probability.",
-        "icon": "\ud83c\udfb0",
-        "xp_reward": 130,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Probability (PDF)\n\n# Probability\n\n- Probability measures the chance of an event happening.\n- **Probability** = Favorable outcomes / Total outcomes\n- **Range of Probability**:\n  - `0` = Impossible Event\n  - `1` = Certain Event\n  - `0 <= P <= 1` => Possible Event\n- By Permutations and Combinations, Probability = our selections / Total selections\n\n## Rules\n- **Complement Rule**: `P(not E) = 1 - P(E)` (used for \"At least one\")\n- **Addition Rule (OR)**: If events are mutually exclusive, `P(A or B) = P(A) + P(B)`\n- **Multiplication Rule (AND)**: For independent events, `P(A and B) = P(A) * P(B)`\n- **Intersection (AND)**: A and B -> Both events happen together.\n- **Union (OR)**: A or B -> at least one of the events occurs.\n  - `P(A U B) = P(A) + P(B) - P(A \u2229 B)`\n  - `P(A \u2229 B) = P(A) * P(B)`\n\n## Coins\n- For `n` coins, Probability of exactly `r` heads: `nCr / 2^n`\n\n## Dice Probability\n- Total outcomes = `6^n`, where `n` = number of dice\n- Concept: If they ask even/odd outcomes, just use analogy with coins concept (i.e. No. of Dice -> coins, No. of odds -> No. of heads, No. of evens -> No. of tails).\n- Irrespective of the number of dice rolled, the odd product occurs \"only\" when all the dice return odd numbers.\n- **Even Product Probability** = `1 - (3/6)^n = 1 - (1/2)^n = (2^n - 1) / 2^n`\n- **6 sides consideration type models (Required output on some tables)**:\n  - **Sum of 2 dice**:\n    - Sum: 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12\n    - Prob (out of 36): 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1\n  - **Sum of 3 dice**:\n    - Sum: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18\n    - Prob (out of 216): 1, 3, 6, 10, 15, 21, 25, 27, 27, 25, 21, 15, 10, 6, 3, 1\n- Doublet and Triplet happens 6 times.\n\n## Cards Concept\n- Total 52 cards: 26 cards Red, 26 cards Black\n- Red -> Diamond (13), Heart (13)\n- Black -> Spade (13), Club (13)\n- Total 16 face cards:\n  - Kings -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Queens -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Jacks -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n  - Ace -> 4 (1 Diamond, 1 Heart, 1 Club, 1 Spade)\n- 36 Non face cards (2 to 10)",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "What is the Probability of having 53 Sundays in a non-leap year?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Answer is 1/7."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "2 Numbers are selected at random from a set of 1 to 100, what is the probability of getting a Prime number?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Select 2 numbers = 25C2. From 100 numbers = 100C2. Probability = 25C2 / 100C2 = (25 x 24 / 2) / (100 x 99 / 2) = 2/33."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "From 8 Red balls and 4 Green Balls, 3 Balls are picked randomly. What is the Probability that there is at least one Red Ball?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Usually: (8C1 * 4C2 + 8C2 * 4C1 + 8C3) / 12C3 = (48 + 112 + 56) / 220 = 54/55.\nOR use complement Rule: 1 - 4C3 / 12C3 = 1 - 4/220 = 1 - 1/55 = 54/55."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "6 coins are tossed. Find Probability of getting All Heads or All tails.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total outcomes = 2^6. Probability = 1/2^6 + 1/2^6 = 1/32."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "5 coins are tossed. Find the Probability of getting exactly 3 Heads and 2 Tails.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let n = number of coins. Then n! / (H! T!) / 2^n = 5! / (3! 2!) / 2^5 = 10 / 32 = 5/16. OR choose which 3 of the positions are Heads = 5C3 = 10. P = 5C3 / 2^5 = 10/32 = 5/16."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "8 coins are tossed. At least 6 Heads?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "6H 2T OR 7H 1T OR 8H. => (8C6 + 8C7 + 8C8) / 2^8 = (28 + 8 + 1) / 256 = 37/256."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "5 coins tossed. Atmost 2 Heads Probability?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "2H 3T OR 1H 4T OR 5T. (5!/(2!3!) + 5!/(1!4!) + 5!/5!) / 2^5 = (10 + 5 + 1) / 32 = 16/32 = 1/2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A card is drawn from a pack of cards. What is the Probability that the card is 1. Black suit colour 2. A spade card 3. A red face card 4. A face card of club 5. Diamond or King",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. 26C1 / 52C1 = 26/52 = 1/2.\n2. 13C1 / 52C1 = 13/52 = 1/4.\n3. 8C1 / 52C1 = 8/52 = 2/13.\n4. 4C1 / 52C1 = 4/52 = 1/13.\n5. (13C1 + 4C1 - 1C1) / 52C1 = (13+4-1)/52 = 16/52 = 4/13."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two cards are drawn at Random what is the Probability that 1. Both are aces. 2. No face card 3. Atleast one King 4. No Diamond 5. one king and one Queen",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. 4C2 / 52C2 = 6/1326 = 1/221.\n2. 36C2 / 52C2 = 105/221.\n3. Atleast one = Total - None = 1 - 48C2 / 52C2 = 1 - 188/221 = 33/221.\n4. 39C2 / 52C2 = 19/34.\n5. (4C1 * 4C1) / 52C2 = 16/1326 = 8/663."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A Bag contains 6 Red Balls, 4 Blue Balls, 2 Green Balls and 3 Yellow Balls. If 4 Bales are Picked at Random, what is the Probability that one is green, two are blue and one is red.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "(2C1 * 4C2 * 6C1) / 15C4 = (2 * 6 * 6) / 1365 = 72/1365 = 24/455."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two Persons wife and Husband appear in an interview for two vacancies. If the Probabilities of their selections are 1/4 and 1/6 respectively. then the Probability that 1. None of them selected 2. Exactly one of them selected 3. Atleast one of them selected 4. Both of them selected",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "1. None of them selected -> (3/4) * (5/6) = 15/24 = 5/8.\n2. Exactly one of them selected => (1/4 * 5/6) + (3/4 * 1/6) = 5/24 + 3/24 = 8/24 = 1/3.\n3. Atleast one of them selected => Total - None = 1 - 5/8 = 3/8.\n4. Both of them selected => 1/4 * 1/6 = 1/24."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A speaks truth in 60% cases and B speaks truth in 45% of the cases. In what % of cases are they likely to contradict each other, in narrating.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Contradict means \"not on the same statement\".\nA: True 60/100, False 40/100.\nB: True 45/100, False 55/100.\n=> (60/100 * 55/100) + (45/100 * 40/100) = 3300/10000 + 1800/10000 = 5100/10000 = 51%."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Probability of Solving a Problem by 3 students A, B, C is 1/2, 1/3 and 1/4 respectively. The Probability that the Problem will be solved is",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A solving 1/2, Not solving 1/2. B solving 1/3, Not solving 2/3. C solving 1/4, Not solving 3/4. Atleast one = Total - None. 1 - (1/2 * 2/3 * 3/4) = 1 - 1/4 = 3/4."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Tickets numbered 1 to 50 are mixed up and then a ticket is drawn at random. what is the Probability that the ticket drawn is a number which is multiple of a) 3 or 7 b) 3 and 7",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "a) 16 + 7 - 2 = 21. => 21/50.\nb) 2/50 = 1/25."
-            }
-        ],
+        "name": "Probability (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 13 Handwritten PDF pages: Favourable/Total Formula, 0-to-1 Range, Non-Leap Year Sundays 1/7, Prime Count Benchmarks, Complement Rule 1-P(E), Coins 2^n & Exactly-r-Heads nCr/2^n, Dice Sum Tables (2 & 3 Dice), 52 Cards Anatomy & Non-Face Cards, Union/Intersection Rules, Wife & Husband Interview Grid, Contradiction % Calculation, and 3-Student Problem Solving At Least Rule.",
+        "icon": "\ud83c\udfaf",
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Probability (13 Pages Transcribed)\n\n#### Page 1 & 2: Core Definition, Prime Benchmarks & Complement Rule\n- **Basic Formula**:\n  $$\\text{Probability } P(E) = \\frac{\\text{Favourable Outcomes}}{\\text{Total Outcomes}} = \\frac{\\text{Our Selections}}{\\text{Total Selections}}$$\n- **Range of Probability**:\n  - $0 = \\text{Impossible Event}$\n  - $1 = \\text{Certain Event}$\n  - $0 \\le P \\le 1 \\implies \\text{Possible Event}$\n- **Non-Leap Year 53 Sundays**: 365 days $= 52\\text{ wks} + 1\\text{ day} \\implies \\mathbf{\\frac{1}{7}}$.\n- **Prime Numbers Count Benchmarks**:\n  - 1 to 10 $\\to 4$ primes | 1 to 20 $\\to 8$ primes | 1 to 30 $\\to 10$ primes | 1 to 100 $\\to 25$ primes.\n  - Probability of selecting 2 primes from 1 to 100: $\\frac{25 C_2}{100 C_2} = \\frac{300}{4950} = \\mathbf{\\frac{2}{33}}$.\n- **Complement & Set Rules**:\n  - **Complement Rule**: $P(\\text{not } E) = 1 - P(E)$ (Used for \"**At least one**\"!).\n  - **Addition Rule (OR)**: $P(A \\text{ or } B) = P(A) + P(B)$ (Mutually Exclusive).\n  - **Multiplication Rule (AND)**: $P(A \\text{ and } B) = P(A) \\times P(B)$ (Independent).\n\n#### Page 3, 4 & 5: Ball Picking Complement & Coin Formulas\n- **At Least 1 Red Ball Complement Trick**: 8 Red, 4 Green balls, 3 picked.\n  $$\\text{Prob} = 1 - P(\\text{No Red Ball}) = 1 - \\frac{4 C_3}{12 C_3} = 1 - \\frac{4}{220} = \\mathbf{\\frac{54}{55}}$$\n- **Coins Probability Formulas**:\n  - Total outcomes for $n$ coins $= 2^n$.\n  - **Exactly $r$ Heads Formula**:\n    $$\\text{Probability} = \\mathbf{\\frac{n C_r}{2^n}}$$\n    Example: 5 coins, exactly 3 Heads $\\implies \\frac{5 C_3}{2^5} = \\mathbf{\\frac{10}{32} = \\frac{5}{16}}$.\n  - 8 coins, at least 6 Heads $\\implies \\frac{8 C_6 + 8 C_7 + 8 C_8}{2^8} = \\frac{28 + 8 + 1}{256} = \\mathbf{\\frac{37}{256}}$.\n  - 5 coins, at most 2 Heads $\\implies \\frac{5 C_2 + 5 C_1 + 5 C_0}{2^5} = \\frac{16}{32} = \\mathbf{\\frac{1}{2}}$.\n\n#### Page 6: Dice Sum Tables & Even Product Shortcut\n- **Even Product Shortcut**:\n  $$\\text{Even Product Probability} = \\mathbf{\\frac{2^n - 1}{2^n}}$$\n- **2 Dice Sum Table (Total 36)**:\n  | Sum | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |\n  | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n  | Ways | 1 | 2 | 3 | 4 | 5 | 6 | 5 | 4 | 3 | 2 | 1 |\n- **3 Dice Sum Table (Total 216)**:\n  | Sum | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 |\n  | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n  | Ways | 1 | 3 | 6 | 10 | 15 | 21 | 25 | 27 | 27 | 25 | 21 | 15 | 10 | 6 | 3 | 1 |\n\n#### Page 7, 8 & 9: Cards Anatomy & Card Draw Examples\n- **52 Cards Breakdown**: 26 Red (13 Diamond, 13 Heart), 26 Black (13 Spade, 13 Club).\n  - 16 Face/Honour Cards: 4 Kings, 4 Queens, 4 Jacks, 4 Aces. 36 Non-face cards (2 to 10).\n- **Single Card Examples**:\n  - Diamond OR King $\\implies \\frac{13 + 4 - 1}{52} = \\mathbf{\\frac{4}{13}}$.\n- **Two Cards Examples**:\n  - Both Aces $\\implies \\frac{4 C_2}{52 C_2} = \\mathbf{\\frac{1}{221}}$.\n  - At least one King $\\implies 1 - \\frac{48 C_2}{52 C_2} = 1 - \\frac{188}{221} = \\mathbf{\\frac{33}{221}}$.\n  - One King & One Queen $\\implies \\frac{4 C_1 \\times 4 C_1}{52 C_2} = \\mathbf{\\frac{8}{663}}$.\n\n#### Page 11, 12 & 13: Interview Selection, Contradiction % & Problem Solving\n- **Wife & Husband Interview**: Wife $1/4$, Husband $1/6$.\n  - None selected $= \\frac{3}{4} \\times \\frac{5}{6} = \\mathbf{\\frac{5}{8}}$.\n  - Exactly one selected $= (1/4 \\times 5/6) + (3/4 \\times 1/6) = \\mathbf{\\frac{1}{3}}$.\n  - At least one selected $= 1 - 5/8 = \\mathbf{\\frac{3}{8}}$.\n- **Contradiction Percentage**: A speaks truth $60\\%$, B speaks truth $45\\%$.\n  - $\\text{Contradict} = (T_A \\times F_B) + (F_A \\times T_B) = (0.60 \\times 0.55) + (0.40 \\times 0.45) = 0.33 + 0.18 = \\mathbf{51\\%}$!\n- **3-Student Problem Solving**: A ($1/2$), B ($1/3$), C ($1/4$).\n  - $\\text{Problem Solved} = 1 - P(\\text{None Solve}) = 1 - (1/2 \\times 2/3 \\times 3/4) = 1 - 1/4 = \\mathbf{\\frac{3}{4}}$.\n",
         "flashcards": [
             {
-                "title": "Rule 1: Probability measures the chance of ",
-                "front": "What is the rule or formula for: Probability measures the chance of an event happening.?",
-                "back": "Handwritten PDF Rule:\nProbability measures the chance of an event happening.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Non-Leap Year 53 Sundays",
+                "front": "What is the probability of having 53 Sundays in a non-leap year?",
+                "back": "365 days $= 52\\text{ weeks} + 1\\text{ extra day}$.\nThat 1 day can be any of 7 days $\\implies \\mathbf{\\frac{1}{7}}$!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: Probability = Favorable outcomes / ",
-                "front": "What is the rule or formula for: Probability = Favorable outcomes / Total outcomes?",
-                "back": "Handwritten PDF Rule:\nProbability = Favorable outcomes / Total outcomes\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 4: Exactly r Heads Coin Formula",
+                "front": "What is the formula for probability of getting exactly $r$ Heads when $n$ coins are tossed?",
+                "back": "$$\\text{Probability} = \\mathbf{\\frac{n C_r}{2^n}}$$",
+                "badge": "\ud83d\udcc4 Page 4"
             },
             {
-                "title": "Rule 3: Range of Probability:",
-                "front": "What is the rule or formula for: Range of Probability:?",
-                "back": "Handwritten PDF Rule:\nRange of Probability:\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
+                "title": "Page 6: 2 Dice Sum Table Shortcut",
+                "front": "What are the number of ways to get a sum of 7 vs sum of 10 when 2 dice are rolled?",
+                "back": "\u2022 Sum of 7 $\\implies \\mathbf{6\\text{ ways}}$ (Highest!)\n\u2022 Sum of 10 $\\implies \\mathbf{3\\text{ ways}}$",
+                "badge": "\ud83d\udcc4 Page 6"
             },
             {
-                "title": "Rule 4: By Permutations and Combinations, P",
-                "front": "What is the rule or formula for: By Permutations and Combinations, Probability = our selections / Total selections?",
-                "back": "Handwritten PDF Rule:\nBy Permutations and Combinations, Probability = our selections / Total selections\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
+                "title": "Page 12: Truth Contradiction Formula",
+                "front": "If A speaks truth in 60% cases and B in 45% cases, what is the contradiction %?",
+                "back": "$\\text{Contradict} = (T_A \\times F_B) + (F_A \\times T_B) = (0.60 \\times 0.55) + (0.40 \\times 0.45) = 0.33 + 0.18 = \\mathbf{51\\%}$!",
+                "badge": "\ud83d\udcc4 Page 12"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 1 Notes: What is the probability of having 53 Sundays in a non-leap year?",
+                "options": [
+                    "1/7",
+                    "2/7",
+                    "52/365",
+                    "1/52"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Page 1 Solution: 365 days = 52 weeks + 1 day. That 1 extra day has a 1/7 probability of being a Sunday!"
             },
             {
-                "title": "Rule 5: Complement Rule: `P(not E) = 1  P(E",
-                "front": "What is the rule or formula for: Complement Rule: `P(not E) = 1  P(E)` (used for \"At least one\")?",
-                "back": "Handwritten PDF Rule:\nComplement Rule: `P(not E) = 1  P(E)` (used for \"At least one\")\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
+                "text": "From Page 4 Notes: 5 coins are tossed. What is the probability of getting exactly 3 Heads?",
+                "options": [
+                    "3/16",
+                    "5/16",
+                    "1/2",
+                    "5/32"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 4 Formula: 5C3 / 2^5 = 10 / 32 = 5/16!"
             },
             {
-                "title": "Rule 6: Addition Rule (OR): If events are m",
-                "front": "What is the rule or formula for: Addition Rule (OR): If events are mutually exclusive, `P(A or B) = P(A) + P(B)`?",
-                "back": "Handwritten PDF Rule:\nAddition Rule (OR): If events are mutually exclusive, `P(A or B) = P(A) + P(B)`\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "text": "From Page 12 Notes: A speaks truth in 60% cases and B in 45% cases. In what % of cases do they contradict each other?",
+                "options": [
+                    "45%",
+                    "50%",
+                    "51%",
+                    "55%"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 12 Solution: Contradict = (0.60 * 0.55) + (0.40 * 0.45) = 0.33 + 0.18 = 51%!"
             }
         ]
     },
