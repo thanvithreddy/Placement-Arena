@@ -1785,87 +1785,78 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 14,
+        "id": 11,
         "slug": "pipes-cisterns",
-        "name": "Pipes & Cisterns (PDF Placeholder)",
-        "description": "Learn LCM method applied to inlets (positive) and outlets (negative).",
+        "name": "Pipes and Cisterns (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 5 Handwritten PDF pages: Extension of Time & Work, Filling (+ve) vs Emptying (-ve) Units, Closing Filling Pipes Rules, Highest Work Unit Buffer Rule in Alternate Minutes, and Target Closure Timing Calculations.",
         "icon": "\ud83d\udeb0",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Pipes & Cisterns (PDF Placeholder)\n\n# Pipes and Cisterns\n\nPipes and cisterns are an example of an extension of Time and Work.\nBut here, there is an element of destroying the work, i.e., sometimes pipes will be filling and emptying simultaneously.\nThe procedure here is similar to what we have done in Time and Work.\n\n## Concepts and Formulas\n\n### i) When A, B are filling\n- A fills in $x$ time\n- B fills in $y$ time\n- Then total time taken to fill when $A+B = \\frac{xy}{x+y}$\n\n### ii) When A, B - one is filling and one is emptying\n- Then total time taken to fill when $A+B = \\frac{xy}{x-y}$\n\n### iii) When more pipes are involved and some are filling and some are emptying\n- Then entities which are responsible for emptying are taken in negative.\n- Rest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.\n\n**Note:** If all the filling pipes are closed before, then the tank will be never get filled. Then, there is a chance of knowing time taken to empty the tank. And it is calculated and considered only by the work units filled upto then. And also if the emptying pipes are bigger, then also the tank will be never filled.\n\n### Concept: Alternate days concept in Time and Work\nHere also, the pipes (both emptying and filling) will be closed and opened in an order.\n**Note:** Unlike in time and work, here we take the multiple that makes the difference nearer to the total work units by maintaining minimum difference of the highest work unit in all the existing pipes.",
-        "questions": [
-            {
-                "difficulty": "advanced",
-                "text": "For instance,\nA -> 25 mins (fill)\nB -> 30 mins (fill)\nC -> 50 mins (empty)\n-> All pipes are opened simultaneously when the tank is empty\n-> After 7 mins, pipe 'A' closed\n-> After 4 more mins, pipe 'C' closed.\n-> B can fill remaining in how many minutes?",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "As similar to previous,\nA -> 6 units\nB -> 5 units\nC -> (-3) units\nTotal 150 units.\nTherefore Remaining time to fill by B = 17 1/5 mins."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Example scenario:\nA -> 20 mins (fill)\nB -> 30 mins (fill)\nC -> 40 mins (empty)\nThese pipes are opened in a cycle of ABC. Then, total time to fill the tank is:",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total = 120 parts.\ni.e. per 3 minutes -> 7 parts will be filled.\n7 parts -> 3 minutes\nx 16       x 16\n112 -> 48 mins\n+6 -> 1 min (A opened)\n+2 (out of 4) -> 1 min (B opened).\nTherefore Total time = 49 1/2 mins."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "miscelleanous:\nTwo pipes A and B can fill the tank in 24 mins and 32 mins respectively. If both pipes are opened simultaneously, after how much time, B should be closed so that the tank is full in 18 mins.",
-                "options": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, it is clear that A will work completely 18 mins. Let's find out that.\nA will do 4 units/min out of 96 total units.\nRest of the units will be completely by B based on its capacity.\nWork units by A -> 72\nRemaining 24. per Perminty by B = 24/3 = 8 mins.\nTherefore After 8 mins, we should close pipe B."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Pipes and Cisterns (5 Pages Transcribed)\n\n#### Page 1: Time & Work Extension & Core Formulas\n- **Core Principle**: Pipes and Cisterns are an extension of Time and Work.\n  - BUT here, there is an element of **DESTROYING THE WORK** (i.e. sometimes pipes will be filling and simultaneously emptying!).\n- **Core Formulas**:\n  - (i) When both A and B are **Filling**:\n    $$\\text{Total Time} = \\mathbf{\\frac{xy}{x + y}}$$\n  - (ii) When one is **Filling** ($x$) and one is **Emptying** ($y$):\n    $$\\text{Total Time} = \\mathbf{\\frac{xy}{|x - y|}}$$\n\n#### Page 2 & 3: Negative Emptying Units & Pipe Closing Rules\n- **Negative Units Principle**: Entities responsible for **emptying are taken as NEGATIVE (-ve)**!\n  - Process uses LCM partitioning into total work units.\n- **Multi-Pipe Worked Example**: Pipe A (25m fill $+6$), Pipe B (30m fill $+5$), Pipe C (50m empty $-3$). Total $= 150$ units.\n  - All opened simultaneously. After 7 mins, A closed ($8 \\times 7 = 56$ units done).\n  - After 4 more mins, C closed ($(5 - 3) \\times 4 = 8$ units done).\n  - Total filled $= 64$ units. Remaining $= 86$ units.\n  - B fills remaining in $\\frac{86}{5} = \\mathbf{17 \\frac{1}{5}\\text{ mins}}$!\n- **Tank Never Filled Rules**:\n  - If all filling pipes are closed BEFORE the tank gets filled, the tank will **NEVER get filled**!\n  - In such cases, time taken to **EMPTY** the tank is calculated ONLY from the units filled up to that point.\n  - If emptying rate is greater than filling rate, the tank will also **NEVER get filled**!\n\n#### Page 4 & 5: Alternate Minutes Highest-Unit Buffer & Target Closure Time\n- **Alternate Minutes Cycle & Buffer Rule**:\n  - A (20m fill $+6$), B (30m fill $+4$), C (40m empty $-3$). Total $= 120$ units.\n  - Cycle $A \\to B \\to C$: 3 minutes $= 6 + 4 - 3 = 7$ units.\n  - **CRITICAL HANDWRITTEN RULE**: Unlike Time & Work, HERE we stop nearest to total capacity by maintaining a **minimum difference equal to the HIGHEST filling unit** (+6) to prevent overflow before emptying!\n  - 16 cycles ($7 \\times 16 = 112$ units) $= 48$ minutes.\n  - Next 1 min (A opened, $+6$) $= 118$ units in 49 mins.\n  - Next B opened (needs 2 out of 4) $= \\frac{2}{4} = \\frac{1}{2}$ min.\n  - Total time to fill $= \\mathbf{49 \\frac{1}{2}\\text{ minutes}}$!\n- **Target Closure Time Problem**: Pipe A (24m fill), Pipe B (32m fill). Tank must fill in 18 mins. When to close B?\n  - Total $= 96$ units. $A = 4$ units/min, $B = 3$ units/min.\n  - A works all 18 mins $\\implies 4 \\times 18 = 72$ units.\n  - Remaining for B $= 96 - 72 = 24$ units.\n  - Time for B $= \\frac{24}{3} = \\mathbf{8\\text{ minutes}}$. Close B after 8 minutes!\n",
         "flashcards": [
             {
-                "title": "Rule 1: A fills in $x$ time",
-                "front": "What is the rule or formula for: A fills in $x$ time?",
-                "back": "Handwritten PDF Rule:\nA fills in $x$ time\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Destruction of Work Element",
+                "front": "What is the key difference between Time & Work and Pipes & Cisterns?",
+                "back": "Pipes & Cisterns introduces the element of **DESTROYING THE WORK** (Emptying pipes)!\nEmptying pipes are assigned **negative (-ve)** work units!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: B fills in $y$ time",
-                "front": "What is the rule or formula for: B fills in $y$ time?",
-                "back": "Handwritten PDF Rule:\nB fills in $y$ time\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 1: One Fill & One Empty Formula",
+                "front": "What is the formula for total time when Pipe A fills in $x$ mins and Pipe B empties in $y$ mins?",
+                "back": "$$\\text{Total Time} = \\mathbf{\\frac{xy}{|x - y|}}$$",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 3: Then total time taken to fill when ",
-                "front": "What is the rule or formula for: Then total time taken to fill when $A+B = \\frac{xy}{x+y}$?",
-                "back": "Handwritten PDF Rule:\nThen total time taken to fill when $A+B = \\frac{xy}{x+y}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
+                "title": "Page 3: Tank Never Filled Rule",
+                "front": "What happens if all filling pipes are closed before the tank is completely full?",
+                "back": "The tank will **NEVER GET FILLED**!\nThe time taken to EMPTY the tank is calculated ONLY from the work units filled up to that point!",
+                "badge": "\ud83d\udcc4 Page 3"
             },
             {
-                "title": "Rule 4: Then total time taken to fill when ",
-                "front": "What is the rule or formula for: Then total time taken to fill when $A+B = \\frac{xy}{xy}$?",
-                "back": "Handwritten PDF Rule:\nThen total time taken to fill when $A+B = \\frac{xy}{xy}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
+                "title": "Page 4: Alternate Minutes Buffer Rule",
+                "front": "Why do we maintain a buffer equal to the highest filling unit in alternate minute cycles?",
+                "back": "To prevent calculating cycles past 100% capacity! The tank fills on a positive inlet minute BEFORE the negative outlet pipe turns on!",
+                "badge": "\ud83d\udcc4 Page 4"
             },
             {
-                "title": "Rule 5: Then entities which are responsible",
-                "front": "What is the rule or formula for: Then entities which are responsible for emptying are taken in negative.?",
-                "back": "Handwritten PDF Rule:\nThen entities which are responsible for emptying are taken in negative.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
+                "title": "Page 5: Target Tank Fill Timing",
+                "front": "Pipes A (24m) and B (32m) open. Tank must fill in 18 mins. When should B be closed?",
+                "back": "A works all 18 mins $\\to 4 \\times 18 = 72$ units. Remaining $96 - 72 = 24$ units.\nTime for B $= \\frac{24}{3} = \\mathbf{8\\text{ minutes}}$!",
+                "badge": "\ud83d\udcc4 Page 5"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 1 Notes: Pipe A fills a tank in 20 mins and Pipe B empties it in 30 mins. How long to fill the tank together?",
+                "options": [
+                    "50 mins",
+                    "60 mins",
+                    "12 mins",
+                    "40 mins"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 1 Formula: Total Time = (x * y) / |x - y| = (20 * 30) / (30 - 20) = 600 / 10 = 60 mins!"
             },
             {
-                "title": "Rule 6: Rest of the process is similar to T",
-                "front": "What is the rule or formula for: Rest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.?",
-                "back": "Handwritten PDF Rule:\nRest of the process is similar to Time and Work, i.e., taking the time units as total units and partitioning them into units through LCMs.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "text": "From Page 5 Notes: Pipe A fills in 24 mins and B in 32 mins. If tank fills in 18 mins, after how many minutes should B be closed?",
+                "options": [
+                    "6 mins",
+                    "8 mins",
+                    "10 mins",
+                    "12 mins"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 5 Solution: A works 18 mins = 72 units out of 96. B does 24 units = 24 / 3 = 8 mins!"
+            },
+            {
+                "text": "From Page 4 Notes: In alternate minute cycle A (+6), B (+4), C (-3), 7 units fill in 3 mins. For 120 units, why do we stop near 112 units?",
+                "options": [
+                    "To save time",
+                    "Because C is closed",
+                    "To maintain highest unit (+6) buffer before full tank",
+                    "Due to leak"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 4 Rule: We maintain a buffer equal to the highest filling unit (+6) so positive inlet fills tank without overshooting into emptying cycles!"
             }
         ]
     },
