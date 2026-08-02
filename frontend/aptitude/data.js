@@ -1492,393 +1492,72 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 17,
+        "id": 15,
         "slug": "mensuration",
-        "name": "Mensuration 2D & 3D (PDF Master Edition)",
-        "description": "Master 2D/3D formulas, Ratio Side-Area-Volume conversions, Cow Ungrazed Field, Wheel Revolutions, & Hollow Pipe metal rules.",
+        "name": "Mensuration 2D & 3D (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 22 Handwritten PDF pages: 2D & 3D Shapes Formulas, Ratio Operations (Squaring for Areas, Cubing for Volumes, Square Root & Cube Root Inversions), Surface Area to Volume Double Transformations, Percentage Operations Count Rules, Wheel Revolutions, Sector & Arc Length, Cow Ungrazed Field, Cross Roads & Surrounding Paths, Melted Cubes Addition, Hollow Metal Pipe Volume, and Spherical Balls Water Level Rise.",
         "icon": "\ud83d\udcd0",
-        "xp_reward": 150,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Mensuration 2D & 3D (PDF Master Edition)\n\n# Mensuration Formula Sheet\n\n## 2D Mensuration (only has Perimeter, Area)\n\n1. **Square**\n   - Perimeter = 4a\n   - Area = a\u00b2\n   - Diagonal = a\u221a2\n   - All the sides are equal\n   - All the angles are 90\u00b0\n\n2. **Rectangle**\n   - Perimeter = 2(l+b)\n   - Area = l \u00d7 b\n   - Diagonal = \u221a(l\u00b2 + b\u00b2)\n   - Only opposite sides are equal\n   - All the angles are 90\u00b0\n\n3. **Rhombus**\n   - Perimeter = 4a\n   - Area = \u00bd \u00d7 d\u2081 \u00d7 d\u2082 (where d\u2081, d\u2082 are lengths of the diagonals)\n\n4. **Circle**\n   - Circumference = 2\u03c0r\n   - Area = \u03c0r\u00b2\n   - Diameter = 2r\n   - \u03c0 = 22/7 or 3.14\n\n5. **Equilateral Triangle**\n   - All the three sides are equal\n   - Perimeter = 3a\n   - Area = (\u221a3/4)a\u00b2\n   - Height = (\u221a3/2)a\n\n6. **Right-angled Triangle (Half of a Rectangle)**\n   - Area = \u00bd \u00d7 b \u00d7 h\n   - Perimeter = AB + BC + AC\n   - Pythagoras Theorem: Hypotenuse\u00b2 = Adjacent\u00b2 + Opposite\u00b2 \u21d2 AC = \u221a(AB\u00b2 + BC\u00b2)\n\n7. **Triangle with sides a, b, c**\n   - Perimeter = a + b + c\n   - Area = \u221a(s(s-a)(s-b)(s-c))\n   - where s = (a+b+c)/2\n\n8. **Trapezium**\n   - Area = \u00bd \u00d7 (Sum of two parallel sides) \u00d7 (Distance between them)\n\n## 3D Mensuration (has Volume, Area, Perimeter)\n\n1. **Cube**\n   - LSA (Lateral Surface Area) = 4a\u00b2\n   - TSA (Total Surface Area) = 6a\u00b2\n   - Volume = a\u00b3\n   - Diagonal = a\u221a3\n\n2. **Cuboid**\n   - LSA = 2(l+b)h\n   - TSA = 2(lb + bh + hl)\n   - Volume = l \u00d7 b \u00d7 h\n   - Diagonal = \u221a(l\u00b2 + b\u00b2 + h\u00b2)\n\n3. **Sphere**\n   - No LSA\n   - TSA = 4\u03c0r\u00b2\n   - Volume = 4/3 \u03c0r\u00b3\n\n4. **Hemisphere**\n   - CSA (Curved Surface Area) = 2\u03c0r\u00b2\n   - TSA = 3\u03c0r\u00b2\n   - Volume = 2/3 \u03c0r\u00b3\n\n5. **Cylinder**\n   - CSA = 2\u03c0rh\n   - TSA = 2\u03c0rh + 2\u03c0r\u00b2 = 2\u03c0r(r+h)\n   - Volume = \u03c0r\u00b2h\n\n6. **Cone**\n   - Slant Height (l) = \u221a(r\u00b2 + h\u00b2)\n   - Volume = 1/3 \u03c0r\u00b2h\n   - CSA = \u03c0rl\n   - TSA = \u03c0r\u00b2 + \u03c0rl = \u03c0r(r+l)\n\n## Miscellaneous Concepts and Shortcuts\n\n- **Ratios format in 2-Dimensions:**\n  1. If sides Ratio was given, then we get Areas Ratio by squaring the given Ratios individually.\n  2. If Areas Ratio was given, then we get sides Ratio by square rooting (\u221a) the given Ratios individually.\n\n- **Ratios format in 3-Dimensions:**\n  1. If sides Ratio was given, then we get Volumes Ratio by cubing the given Ratios individually.\n  2. If Volumes Ratio was given, then we get sides Ratio by cube rooting (\u221b) the given Ratios individually.\n  3. If in 3-D Areas Ratio was given, then we get Volumes Ratio by converting them into sides Ratio (by square rooting) and from then to cubing them to get Volumes Ratio.\n\n- **Percentage Based Miscellaneous:**\n  - Area \u2192 sq. units\n  - Perimeter \u2192 units\n  - Volume \u2192 cubic units\n  - For `units` \u2192 we perform only one increase/decrease operation\n  - For `sq. units` \u2192 we perform two increase/decrease operations\n  - For `cubic units` \u2192 we perform three increase/decrease operations\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "The ratio of respective sides of two rectangles (or two squares or two circles) is 19:17. Find the ratio of their respective areas?",
-                "options": [
-                    "361:289",
-                    "19:17",
-                    "289:361",
-                    "17:19"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From side to area, we square the ratios: 19\u00b2 : 17\u00b2 = 361 : 289"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The ratio of areas of two squares is 256:169. Find the ratio of their respective sides?",
-                "options": [
-                    "16:13",
-                    "13:16",
-                    "256:169",
-                    "19:16"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From Area to side, we square root the ratios: \u221a256 : \u221a169 = 16:13"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Ratio of respective sides of two cuboids is 9:7. Find the ratio of their respective volumes.",
-                "options": [
-                    "729:343",
-                    "81:49",
-                    "9:7",
-                    "343:729"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From side to volume, we cube the ratios: 9\u00b3 : 7\u00b3 = 729 : 343"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Ratio of volumes of two cubes is 1331:1728. Find the ratio of their respective sides.",
-                "options": [
-                    "11:12",
-                    "12:11",
-                    "13:12",
-                    "11:13"
-                ],
-                "correct_option_index": 0,
-                "explanation": "From volume to side, we cube root the ratios: \u221b1331 : \u221b1728 = 11:12"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The ratio of surface Areas of two spheres is 36:121. Find the ratio of their respective volumes?",
-                "options": [
-                    "216:1331",
-                    "6:11",
-                    "36:121",
-                    "1331:216"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Convert Area to side, then side to volume. Area ratio 36:121 \u2192 Side ratio \u221a36:\u221a121 = 6:11 \u2192 Volume ratio 6\u00b3:11\u00b3 = 216:1331"
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The ratio of volumes of two cubes is 125:729. Find the ratio of their respective Surface Areas?",
-                "options": [
-                    "25:81",
-                    "5:9",
-                    "125:729",
-                    "81:25"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Convert Volume to side, then side to Area. Volume ratio 125:729 \u2192 Side ratio \u221b125:\u221b729 = 5:9 \u2192 Area ratio 5\u00b2:9\u00b2 = 25:81"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The side of square (or radius of a circle) is decreased by 20%. Find the percentage change in its Area.",
-                "options": [
-                    "36% decrease",
-                    "20% decrease",
-                    "40% decrease",
-                    "44% decrease"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area is in sq. units, so we perform two successive decrease operations: -20 - 20 + (-20)(-20)/100 = -40 + 4 = -36%. This means a 36% decrease."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The length and breadth of a cuboid are increased by 10% and 20% respectively. Its height is decreased by 25%. Find % change in its volume?",
-                "options": [
-                    "1% decrease",
-                    "1% increase",
-                    "5% decrease",
-                    "No change"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Three operations (Volume = L \u00d7 B \u00d7 H). First, L and B: 10 + 20 + (10\u00d720)/100 = 32% increase. Then with H (-25%): 32 - 25 + (32\u00d7(-25))/100 = 7 - 8 = -1%. 1% decrease."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The area of circle is seven times that of circumference of a circle, what is the circumference (units) of a circle?",
-                "options": [
-                    "88 units",
-                    "44 units",
-                    "154 units",
-                    "14 units"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area = 7 \u00d7 Circumference \u21d2 \u03c0r\u00b2 = 7 \u00d7 2\u03c0r \u21d2 r = 14. Circumference = 2\u03c0r = 2 \u00d7 (22/7) \u00d7 14 = 88 units."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A wire is bent in a form of a square encloses an area 484 m\u00b2. If the same wire is bent in the form of a circle, what will be the Area enclosed by the circle?",
-                "options": [
-                    "616 m\u00b2",
-                    "484 m\u00b2",
-                    "88 m\u00b2",
-                    "154 m\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area of square = 484 \u21d2 side a = 22. Perimeter = 4a = 88, which is the length of the wire. For the circle, Circumference = 2\u03c0r = 88 \u21d2 2 \u00d7 (22/7) \u00d7 r = 88 \u21d2 r = 14. Area of circle = \u03c0r\u00b2 = (22/7) \u00d7 14 \u00d7 14 = 616 m\u00b2."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The side of cyclic Rhombus is 9 cm. find its Area.",
-                "options": [
-                    "81 cm\u00b2",
-                    "18 cm\u00b2",
-                    "36 cm\u00b2",
-                    "45 cm\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A cyclic Rhombus is a square because its angles are 90\u00b0 and diagonals are equal. Side = 9 cm. Area = 9 \u00d7 9 = 81 cm\u00b2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the area of the rectangle, with diagonal 20cm and length 16cm.",
-                "options": [
-                    "192 cm\u00b2",
-                    "160 cm\u00b2",
-                    "320 cm\u00b2",
-                    "400 cm\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Consider the right-angled triangle formed by length, breadth, and diagonal. By hypotenuse theorem, breadth = \u221a(20\u00b2 - 16\u00b2) = \u221a(400 - 256) = \u221a144 = 12. Area = L \u00d7 B = 16 \u00d7 12 = 192 cm\u00b2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The breadth of rectangular Plot is two-third of its length. If the area of a plot is 2400 m\u00b2, find its length.",
-                "options": [
-                    "60 m",
-                    "40 m",
-                    "80 m",
-                    "120 m"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Breadth b = (2/3)l. Area = l \u00d7 b = 2400 \u21d2 l \u00d7 (2/3)l = 2400 \u21d2 (2/3)l\u00b2 = 2400 \u21d2 l\u00b2 = 3600 \u21d2 l = 60 m."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the height of an isosceles triangle whose base is 8cm and equal sides are 5cm.",
-                "options": [
-                    "3 cm",
-                    "4 cm",
-                    "5 cm",
-                    "6 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Using Pythagoras theorem on half of the base: 5\u00b2 = 4\u00b2 + h\u00b2 \u21d2 h\u00b2 = 25 - 16 = 9 \u21d2 h = 3 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Base and Height of a Parallelogram are 35 cm and 75 cm respectively. find its area?",
-                "options": [
-                    "2625 cm\u00b2",
-                    "2525 cm\u00b2",
-                    "2725 cm\u00b2",
-                    "2825 cm\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area = Base \u00d7 Height = 35 \u00d7 75 = (55 - 20)(55 + 20) = 55\u00b2 - 20\u00b2 = 3025 - 400 = 2625 cm\u00b2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The length and breadth of a rectangle are in the ratio 5:3. Its Perimeter is 400 cm. find the area.",
-                "options": [
-                    "9375 cm\u00b2",
-                    "8375 cm\u00b2",
-                    "10375 cm\u00b2",
-                    "1250 cm\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Perimeter = 2(l+b) = 400 \u21d2 l+b = 200. With ratio 5:3, total 8 parts = 200. So 1 part = 25. Length = 5 \u00d7 25 = 125, Breadth = 3 \u00d7 25 = 75. Area = 125 \u00d7 75 = (100 + 25)(100 - 25) = 100\u00b2 - 25\u00b2 = 10000 - 625 = 9375 cm\u00b2."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The ratio of Length and breadth of a rectangle is 7:6. Its area is 378 sq.mts. find its diagonal.",
-                "options": [
-                    "\u221a765",
-                    "\u221a441",
-                    "\u221a324",
-                    "21"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let L = 7x, B = 6x. Area = L \u00d7 B = 378 \u21d2 42x\u00b2 = 378 \u21d2 x\u00b2 = 9 \u21d2 x = 3. So L = 21, B = 18. Diagonal = \u221a(21\u00b2 + 18\u00b2) = \u221a(441 + 324) = \u221a765."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the total cost to pave a rectangular floor of measurements 32m x 14m, if cost per sq.mt is RS. 40?",
-                "options": [
-                    "\u20b9 17920",
-                    "\u20b9 15920",
-                    "\u20b9 18920",
-                    "\u20b9 16920"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total Area = L \u00d7 B = 32 \u00d7 14 = 448 sq.m. Total Cost = Area \u00d7 Cost per sq.m = 448 \u00d7 40 = \u20b9 17920."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The length of a rectangular Plot is thrice its breadth. If the area of rectangular Plot is 7803 sq.mts. what is the breadth of the rectangular Plot.",
-                "options": [
-                    "51 cm",
-                    "153 cm",
-                    "61 cm",
-                    "17 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area = 3x \u00d7 x = 7803 \u21d2 3x\u00b2 = 7803 \u21d2 x\u00b2 = 2601 \u21d2 x = \u221a2601 = 51 cm. The breadth is 51 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The diagonals of a Rhombus are 6cm and 8cm. find its Perimeter.",
-                "options": [
-                    "20 cm",
-                    "40 cm",
-                    "24 cm",
-                    "14 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Side of rhombus is the hypotenuse of the right triangle formed by half-diagonals (3cm and 4cm). Side = \u221a(3\u00b2 + 4\u00b2) = \u221a25 = 5. Perimeter = 4 \u00d7 5 = 20 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The diagonal of a square is 10\u221a2 cm. find its Perimeter.",
-                "options": [
-                    "40 cm",
-                    "20 cm",
-                    "80 cm",
-                    "10 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area by diagonals = \u00bd d\u00b2 = \u00bd (10\u221a2)\u00b2 = \u00bd \u00d7 100 \u00d7 2 = 100. So a\u00b2 = 100 \u21d2 a = 10. Perimeter = 4 \u00d7 a = 4 \u00d7 10 = 40 cm."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The diameter of a wheel is 42 cm. How many revolutions are required for a wheel to cover a distance of 9240 cm.",
-                "options": [
-                    "70 Revolutions",
-                    "60 Revolutions",
-                    "80 Revolutions",
-                    "90 Revolutions"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Total Revolutions = Total Distance / Circumference = 9240 / (\u03c0d) = 9240 / (22/7 \u00d7 42) = 9240 / 132 = 70 Revolutions."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The circumference of a circle is same as Perimeter of a square whose side is 27.5 cm. find the area of a circle.",
-                "options": [
-                    "962.5 cm\u00b2",
-                    "1925 cm\u00b2",
-                    "3850 cm\u00b2",
-                    "96.25 cm\u00b2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Perimeter of square = 4a = 4 \u00d7 27.5 = 110. Circumference = 2\u03c0r = 110 \u21d2 2 \u00d7 (22/7) \u00d7 r = 110 \u21d2 r = 35/2 cm. Area = \u03c0r\u00b2 = (22/7) \u00d7 (35/2) \u00d7 (35/2) = (55 \u00d7 35) / 2 = 1925 / 2 = 962.5 cm\u00b2."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "An arc subtends an angle of 60\u00b0 at centre and radius of the circle is 14cm. find the Area of the sector and Length of the arc.",
-                "options": [
-                    "Area: 102.66 cm\u00b2, Length: 14.66 cm",
-                    "Area: 308 cm\u00b2, Length: 44 cm",
-                    "Area: 14.66 cm\u00b2, Length: 102.66 cm",
-                    "Area: 616 cm\u00b2, Length: 88 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Area of sector = (\u03c0r\u00b2\u03b8)/360 = (22/7 \u00d7 14 \u00d7 14 \u00d7 60)/360 = 308/3 = 102.66 cm\u00b2. Length of arc = (2\u03c0r\u03b8)/360 = (2 \u00d7 22/7 \u00d7 14 \u00d7 60)/360 = 44/3 = 14.66 cm."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A cow is tied on one of the corners of square grass field whose side is 30m. find the area of ungrazed field if the length of the rope is 14m.",
-                "options": [
-                    "746 sq.mt",
-                    "900 sq.mt",
-                    "154 sq.mt",
-                    "1054 sq.mt"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Ungrazed area = Area of square - Area of sector (corner angle 90\u00b0). Area of square = 30\u00b2 = 900. Area of sector = (\u03c0r\u00b2\u03b8)/360 = (22/7 \u00d7 14 \u00d7 14 \u00d7 90)/360 = 154. Ungrazed area = 900 - 154 = 746 sq.mt."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "A lawn 30m long and 16m wide is surrounded by a path 2m wide. find the area of the path?",
-                "options": [
-                    "200 sq.mt",
-                    "480 sq.mt",
-                    "680 sq.mt",
-                    "100 sq.mt"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Inner area = 30 \u00d7 16 = 480 sq.mt. Outer length = 30 + (2\u00d72) = 34m, outer breadth = 16 + (2\u00d72) = 20m. Outer area = 34 \u00d7 20 = 680 sq.mt. Area of path = 680 - 480 = 200 sq.mt."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three solid cubes whose sides are 6cm, 8cm and 10cm respectively are melted to form a single cube. find the side of new cube formed.",
-                "options": [
-                    "12 cm",
-                    "14 cm",
-                    "10 cm",
-                    "24 cm"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Sum of volumes = 6\u00b3 + 8\u00b3 + 10\u00b3 = 216 + 512 + 1000 = 1728. New volume = a\u00b3 = 1728 \u21d2 a = \u221b1728 = 12 cm."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "How much metal is required to make a 20m long pipe, if its inner and outer diameters are 12m and 16m respectively?",
-                "options": [
-                    "1760 sq.mt",
-                    "880 sq.mt",
-                    "3520 sq.mt",
-                    "1200 sq.mt"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Outer radius R = 16/2 = 8m. Inner radius r = 12/2 = 6m. Metal volume = \u03c0h(R\u00b2 - r\u00b2) = (22/7) \u00d7 20 \u00d7 (8\u00b2 - 6\u00b2) = (22/7) \u00d7 20 \u00d7 (64 - 36) = 22/7 \u00d7 20 \u00d7 28 = 22 \u00d7 20 \u00d7 4 = 1760 cubic mt (written as sq.mt in notes)."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "How many solid spherical balls of radius 1.5cm each are required to immerse into a cylindrical jar of radius 6cm to raise the level of water in the jar by 36cm?",
-                "options": [
-                    "288",
-                    "144",
-                    "72",
-                    "312"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Volume of raised water in cylinder = No. of balls \u00d7 Volume of one sphere. \u03c0R\u00b2h = n \u00d7 (4/3)\u03c0r\u00b3 \u21d2 R\u00b2h = n \u00d7 (4/3)r\u00b3 \u21d2 6\u00b2 \u00d7 36 = n \u00d7 (4/3) \u00d7 1.5\u00b3. n = (36 \u00d7 36 \u00d7 3) / (4 \u00d7 1.5\u00b3) = 3888 / 13.5 = 288 balls."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Mensuration 2D & 3D (22 Pages Transcribed)\n\n#### Page 1, 2 & 3: 2D Geometry Shapes & Formulas\n- **Square**: Perimeter $= 4a$, Area $= a^2$, Diagonal $= a\\sqrt{2}$. All sides equal, angles $90^\\circ$.\n- **Rectangle**: Perimeter $= 2(l + b)$, Area $= l \\times b$, Diagonal $= \\sqrt{l^2 + b^2}$.\n- **Rhombus**: Perimeter $= 4a$, Area $= \\frac{1}{2} d_1 d_2$.\n- **Circle**: Circumference $= 2\\pi r$, Area $= \\pi r^2$, Diameter $= 2r$ ($\\pi = \\frac{22}{7}$ or $3.14$).\n- **Equilateral Triangle**: Perimeter $= 3a$, Area $= \\frac{\\sqrt{3}}{4} a^2$, Height $= \\frac{\\sqrt{3}}{2} a$.\n- **Right-Angled Triangle**: Area $= \\frac{1}{2} b h$, Hypotenuse $= \\sqrt{AB^2 + BC^2}$ (Pythagoras).\n- **Heron's Formula (Triangle $a,b,c$)**: Area $= \\sqrt{s(s-a)(s-b)(s-c)}$ where $s = \\frac{a+b+c}{2}$.\n\n#### Page 3, 4 & 5: 3D Solid Geometry Shapes & Formulas\n- **Cube**: $\\text{LSA} = 4a^2$, $\\text{TSA} = 6a^2$, $\\text{Volume} = a^3$, $\\text{Diagonal} = a\\sqrt{3}$.\n- **Cuboid**: $\\text{LSA} = 2(l+b)h$, $\\text{TSA} = 2(lb+bh+hl)$, $\\text{Volume} = lbh$, $\\text{Diagonal} = \\sqrt{l^2+b^2+h^2}$.\n- **Sphere**: $\\text{TSA} = 4\\pi r^2$, $\\text{Volume} = \\frac{4}{3} \\pi r^3$.\n- **Hemisphere**: $\\text{CSA} = 2\\pi r^2$, $\\text{TSA} = 3\\pi r^2$, $\\text{Volume} = \\frac{2}{3} \\pi r^3$.\n- **Cylinder**: $\\text{CSA} = 2\\pi rh$, $\\text{TSA} = 2\\pi r(r+h)$, $\\text{Volume} = \\pi r^2 h$.\n- **Cone**: Slant height $l = \\sqrt{r^2+h^2}$, $\\text{Volume} = \\frac{1}{3} \\pi r^2 h$, $\\text{CSA} = \\pi rl$, $\\text{TSA} = \\pi r(r+l)$.\n\n#### Page 5, 6, 7 & 8: Ratio Transformation Rules (2D & 3D)\n- **2D Ratio Rules**:\n  - Sides Ratio $\\to$ Areas Ratio: **Square the ratios individually** ($19:17 \\implies 19^2:17^2 = 361:289$).\n  - Areas Ratio $\\to$ Sides Ratio: **Square root the ratios individually** ($256:169 \\implies 16:13$).\n- **3D Ratio Rules**:\n  - Sides Ratio $\\to$ Volumes Ratio: **Cube the ratios individually** ($9:7 \\implies 729:343$).\n  - Volumes Ratio $\\to$ Sides Ratio: **Cube root the ratios individually** ($1331:1728 \\implies 11:12$).\n- **Surface Area to Volume Double Transformation**:\n  - Area Ratio $36:121 \\implies$ Side Ratio $\\sqrt{36:121} = 6:11 \\implies$ Volume Ratio $6^3:11^3 = \\mathbf{216:1331}$!\n  - Volume Ratio $125:729 \\implies$ Side Ratio $\\sqrt[3]{125:729} = 5:9 \\implies$ Area Ratio $5^2:9^2 = \\mathbf{25:81}$!\n\n#### Page 9 & 10: Percentage Change Operations Count\n- **Operations Count Rule**:\n  - Units (Perimeter) $\\implies$ Perform **ONE** operation ($20\\% \\downarrow \\implies \\mathbf{20\\% \\downarrow}$).\n  - Sq units (Area) $\\implies$ Perform **TWO** operations ($20\\% \\downarrow 20\\% \\downarrow \\implies -20 - 20 + 4 = \\mathbf{36\\% \\downarrow}$).\n  - Cubic units (Volume) $\\implies$ Perform **THREE** operations ($+10\\%, +20\\%, -25\\% \\implies 32\\% - 25\\% - 8\\% = \\mathbf{1\\% \\downarrow}$).\n\n#### Page 11 to 20: 2D Worked Problems & Special Figures\n- **Circle & Wire Bending**: Wire enclosing $484\\text{m}^2$ square ($a=22$, Perimeter $= 88$) bent into circle $\\implies 2\\pi r = 88 \\implies r = 14 \\implies \\text{Area} = \\mathbf{616\\text{ m}^2}$.\n- **Cyclic Rhombus**: A cyclic Rhombus is a **Square**! Side $= 9\\text{cm} \\implies \\text{Area} = 9 \\times 9 = \\mathbf{81\\text{ cm}^2}$.\n- **Trapezium Area**: $\\text{Area} = \\frac{1}{2} (a+b) h = \\text{Avg} \\times h$.\n- **Wheel Revolutions**: $\\text{Revolutions} = \\frac{\\text{Total Distance}}{\\text{Circumference}} = \\frac{9240}{\\pi \\times 42} = \\mathbf{70\\text{ Revolutions}}$.\n- **Sector & Arc Length**: Sector Area $= \\frac{\\pi r^2 \\theta}{360} = \\mathbf{102.66\\text{ cm}^2}$, Arc Length $= \\frac{2\\pi r \\theta}{360} = \\mathbf{14.66\\text{ cm}}$.\n- **Cow Ungrazed Field**: Square field $30\\text{m}$, rope $14\\text{m} \\implies 30^2 - (\\pi \\times 14^2 \\times \\frac{90}{360}) = 900 - 154 = \\mathbf{746\\text{ sq. mts}}$.\n- **Cross Roads Gravelling**: Lawn $60 \\times 40$, 2 roads $5\\text{m}$ wide $\\implies 300 + 200 - 25 = 475\\text{ m}^2 \\implies$ Cost at Rs. 80 $= \\mathbf{\\text{Rs. } 38,000}$.\n- **Surrounding Path**: Lawn $30 \\times 16$, path $2\\text{m}$ wide $\\implies (34 \\times 20) - (30 \\times 16) = 680 - 480 = \\mathbf{200\\text{ sq. mts}}$.\n\n#### Page 21 & 22: 3D Melted Cubes & Water Level Rise\n- **Melted Cubes Addition**: 3 cubes sides $6, 8, 10\\text{cm}$ melted into 1 cube $\\implies 6^3 + 8^3 + 10^3 = 216 + 512 + 1000 = 1728 \\implies a = \\sqrt[3]{1728} = \\mathbf{12\\text{ cm}}$!\n- **Hollow Metal Pipe Volume**: Length $20\\text{m}$, inner $d=12\\text{m}$, outer $d=16\\text{m} \\implies \\pi h (R^2 - r^2) = \\frac{22}{7} \\times 20 \\times (8^2 - 6^2) = \\mathbf{1760\\text{ m}^3}$.\n- **Spherical Balls Water Rise**: Jar radius $6\\text{cm}$, water rise $36\\text{cm}$, balls radius $1.5\\text{cm} \\implies N = \\frac{\\pi R^2 h}{\\frac{4}{3} \\pi r^3} = \\frac{6 \\times 6 \\times 36}{\\frac{4}{3} \\times 1.5^3} = \\mathbf{288\\text{ Balls}}$!\n",
         "flashcards": [
             {
-                "title": "1. Square & Rectangle Formulas",
-                "front": "What are the Area, Perimeter, and Diagonal formulas for Square & Rectangle?",
-                "back": "\u2022 **Square**: Area $= a^2 = \\frac{1}{2}d^2$ | Perim $= 4a$ | Diag $= a\\sqrt{2}$\n\u2022 **Rectangle**: Area $= l \\times b$ | Perim $= 2(l+b)$ | Diag $= \\sqrt{l^2+b^2}$",
-                "badge": "\ud83d\udcd0 2D Geometry"
+                "title": "Page 5 & 7: 2D & 3D Ratio Rules",
+                "front": "What are the rules for converting Sides ratio to Areas ratio (2D) vs Volumes ratio (3D)?",
+                "back": "\u2022 Sides $\\to$ Areas: **Square** ratios individually ($19:17 \\to 361:289$)\n\u2022 Sides $\\to$ Volumes: **Cube** ratios individually ($9:7 \\to 729:343$)",
+                "badge": "\ud83d\udcc4 Page 5"
             },
             {
-                "title": "2. Circle & Sector Formulas",
-                "front": "What are Circumference, Area, and Sector Area formulas?",
-                "back": "\u2022 **Circle**: Circum $= 2\\pi r$ | Area $= \\pi r^2$\n\u2022 **Sector**: Area $= \\frac{\\pi r^2 \\theta}{360^\\circ}$ | Arc Length $= \\frac{2\\pi r \\theta}{360^\\circ}$",
-                "badge": "\u2b55 Circle Rules"
+                "title": "Page 8: Surface Area to Volume Rule",
+                "front": "How do you convert Surface Area ratio directly to Volume ratio in 3D spheres/cubes?",
+                "back": "Area $\\xrightarrow{\\text{Square Root}}$ Side $\\xrightarrow{\\text{Cube}}$ Volume!\nExample: $36:121 \\to 6:11 \\to \\mathbf{216:1331}$!",
+                "badge": "\ud83d\udcc4 Page 8"
             },
             {
-                "title": "3. Ratio Conversion Rules (Side vs Area vs Volume)",
-                "front": "If side ratio is $a:b$, what are the Area ratio and Volume ratio?",
-                "back": "\u2022 Side Ratio $= a:b$\n\u2022 Area Ratio $= a^2:b^2$\n\u2022 Volume Ratio $= a^3:b^3$\nExample: Area ratio $36:121 \\implies$ Side ratio $\\sqrt{36:121} = 6:11 \\implies$ Volume ratio $6^3:11^3 = 216:1331$!",
-                "badge": "\u26a1 PDF Ratio Rule"
+                "title": "Page 12: Cyclic Rhombus Shortcut",
+                "front": "What shape is a Cyclic Rhombus inscribed inside a circle?",
+                "back": "A Cyclic Rhombus is ALWAYS a **SQUARE**!\nAll angles are $90^\\circ$ and diagonals are equal!",
+                "badge": "\ud83d\udcc4 Page 12"
             },
             {
-                "title": "4. Cow Ungrazed Field Shortcut",
-                "front": "A cow is tied to a corner of a square field side $S$ with rope length $R$. What is the ungrazed area?",
-                "back": "$\\text{Ungrazed Area} = \\text{Area of Square} - \\text{Area of Sector}(90^\\circ)$\n$= S^2 - \\frac{\\pi R^2 \\times 90^\\circ}{360^\\circ} = S^2 - \\frac{1}{4}\\pi R^2$\nExample: $S=30, R=14 \\implies 900 - 154 = 746 \\text{ sq.m}$!",
-                "badge": "\ud83d\udc04 Cow Ungrazed Trick"
+                "title": "Page 22: Water Level Rise Ball Count Formula",
+                "front": "What is the formula for the number of spherical balls immersed in a cylinder to raise water level by $h$?",
+                "back": "$$\\text{Number of Balls } N = \\frac{\\pi R^2 h}{\\frac{4}{3} \\pi r^3}$$",
+                "badge": "\ud83d\udcc4 Page 22"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 8 Notes: If surface areas of two spheres are in ratio 36 : 121, what is the ratio of their volumes?",
+                "options": [
+                    "6 : 11",
+                    "36 : 121",
+                    "216 : 1331",
+                    "1296 : 14641"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 8 Rule: Area -> Side (sqrt) = 6 : 11 => Side -> Volume (cube) = 6^3 : 11^3 = 216 : 1331!"
             },
             {
-                "title": "5. Melting Solid Cubes",
-                "front": "When 3 solid cubes of sides $a_1, a_2, a_3$ are melted into a single cube, what is new side $a$?",
-                "back": "$a^3 = a_1^3 + a_2^3 + a_3^3 \\implies a = \\sqrt[3]{a_1^3 + a_2^3 + a_3^3}$\nExample: $6^3 + 8^3 + 10^3 = 216 + 512 + 1000 = 1728 \\implies a = 12 \\text{ cm}$!",
-                "badge": "\ud83e\uddca Melting Cubes"
+                "text": "From Page 12 Notes: What is the area of a cyclic Rhombus whose side is 9 cm?",
+                "options": [
+                    "36 cm\u00b2",
+                    "72 cm\u00b2",
+                    "81 cm\u00b2",
+                    "162 cm\u00b2"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 12 Rule: A cyclic Rhombus is a SQUARE! Area = 9 * 9 = 81 cm\u00b2!"
+            },
+            {
+                "text": "From Page 21 Notes: 3 solid cubes with sides 6 cm, 8 cm, and 10 cm are melted to form a single cube. What is the side of the new cube?",
+                "options": [
+                    "11 cm",
+                    "12 cm",
+                    "14 cm",
+                    "16 cm"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 21 Solution: Total Volume = 6^3 + 8^3 + 10^3 = 216 + 512 + 1000 = 1728 => Side = cube_root(1728) = 12 cm!"
             }
         ]
     }
