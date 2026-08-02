@@ -889,41 +889,48 @@ const aptitudeTopics = [
         ]
     },
     {
-        "id": 8,
+        "id": 7,
         "slug": "ratios-proportions",
-        "name": "Ratios & Proportions (PDF Placeholder)",
-        "description": "Master ratio combining, direct/inverse proportionality, and distribution problems.",
-        "icon": "\u2797",
-        "xp_reward": 100,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Ratios & Proportions (PDF Placeholder)\n\n# Ratios and Proportions\n\nA ratio is a part of dividing the quantities in a proportion.\nIf $a:b :: c:d$, it states that two fractions are equal: $\\frac{a}{b} = \\frac{c}{d}$.\n\n* **Product of Extremes = Product of Means**: If $a:b = c:d$, then $a \\times d = b \\times c$\n* **Mean Proportional**: $\\sqrt{ab}$\n* **Third Proportional**: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$\n* **Compounded Ratio**: $ac:bd$\n\n## Types of Questionings:\n1. **Duplicate Ratio** $\\rightarrow$ find the square of the numbers\n2. **Sub-Duplicate Ratio** $\\rightarrow$ find the square root of the numbers\n3. **Triplicate Ratio** $\\rightarrow$ finds the cube of the numbers\n4. **Sub-Triplicate Ratio** $\\rightarrow$ finds the cube root of the numbers\n\n## Compound Ratio\nArrange all the ratios in $\\frac{P}{Q}$ form and multiply. The resultant $\\frac{P}{Q}$ form is the ratio.\n\n## Inverse Ratios\n* If $a:b$, then Inverse Ratio $\\Rightarrow b:a$\n* If $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$\n\n## Proportions Standard Formula\n* $D = \\frac{B \\times C}{A}$ (for 4th Proportion)\n* $C = \\frac{B^2}{A}$ (for 3rd Proportion)\n* $B = \\sqrt{AC}$ (for Mean Proportion)\n\n## Equation Oriented\n* If an equation is given $xA : yB : zC$, then $A:B:C = xy:yz:xz$.\n* If $\\frac{1}{x}A : \\frac{1}{y}B : \\frac{1}{z}C$, then $A:B:C = x:y:z$.\n\n## Mixture Type Questions\nEquate the ratios (if quantities/conditions are equal). And procedure will be sum up by the according ratios.",
+        "name": "Ratios and Proportions (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 12 Handwritten PDF pages: Extremes & Means Product, Duplicate/Triplicate Types, Compound & Inverse Ratios, 4th/3rd/Mean Proportion Formulas, Equal Difference Subtraction Equating, Mixture Milk/Water Addition, Chain Rule Tables/Desks, Equation Inversion $xA=yB=zC$, Wages Ratio Multiplication, Coin Bag Values, and Percentage Modification Ratios.",
+        "icon": "\u2696\ufe0f",
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Ratios and Proportions (12 Pages Transcribed)\n\n#### Page 1 & 2: Core Definitions & Ratio Types\n- **Proportion Core Rule**:\n  - $a : b :: c : d \\implies \\frac{a}{b} = \\frac{c}{d}$.\n  - **Product of Extremes = Product of Means**: $a \\times d = b \\times c$.\n- **4 Types of Questionings**:\n  1. **Duplicate Ratio**: Square the numbers ($a^2 : b^2$).\n  2. **Sub-Duplicate Ratio**: Square root of numbers ($\\sqrt{a} : \\sqrt{b}$).\n  3. **Triplicate Ratio**: Cube the numbers ($a^3 : b^3$).\n  4. **Sub-Triplicate Ratio**: Cube root of numbers ($\\sqrt[3]{a} : \\sqrt[3]{b}$).\n- **Compounded Ratio**: Multiply fractional forms: $\\frac{a}{b} \\times \\frac{c}{d} = \\frac{ac}{bd}$.\n  - Example: Compound ratio of $2:5, 10:7, 14:9 = \\frac{2}{5} \\times \\frac{10}{7} \\times \\frac{14}{9} = \\frac{8}{9} = \\mathbf{8 : 9}$.\n- **Inverse Ratios**:\n  - $a : b \\implies b : a$.\n  - $a : b : c \\implies bc : ac : ab$ or $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$.\n\n#### Page 3 & 4: Proportion Formulas & Income/Difference Problems\n- **Standard Proportion Formulas**:\n  - $4^{\\text{th}}$ Proportion: $D = \\mathbf{\\frac{BC}{A}}$. (Example: $20, 21, 40, ? \\implies D = \\frac{21 \\times 40}{20} = \\mathbf{42}$).\n  - $3^{\\text{rd}}$ Proportion: $C = \\mathbf{\\frac{B^2}{A}}$.\n  - Mean Proportion: $B = \\mathbf{\\sqrt{AC}}$. (Example: 8 and 18 $\\implies B = \\sqrt{8 \\times 18} = \\mathbf{12}$).\n- **Mobile & Tablet Example**: Mobile : Tablet CP $= 4 : 7$. Tablet is Rs. 15,000 more $\\implies 3 \\to 15000$. Mobile CP $= 7 \\to \\mathbf{\\text{Rs. } 35,000}$.\n- **Riya Income Example**: Sita : Riya : Kunal $= 84 : 76 : 89$. Riya Annual $= 4,56,000 (\\times 6000)$.\n  - Sita + Kunal $= 173 \\to 173 \\times 6000 = \\mathbf{\\text{Rs. } 10,38,000}$.\n\n#### Page 5 & 6: Equal Difference Subtraction & Income/Expense Equating\n- **Equal Subtraction Equating Rule**:\n  - Two numbers ratio $7 : 12$. 15 subtracted from both $\\implies 16 : 31$. Find largest number.\n  - Diff Before $= 5$, Diff After $= 15$. Multiply Before by $3 \\implies 21 : 36$.\n  - Diff in parts $= 21 - 16 = 5 \\to 15 (\\times 3)$. Largest number $= 36 \\times 3 = \\mathbf{108}$!\n- **Income & Expense Equating**: Incomes $4:5$, Expenses $5:7$, each saves Rs. 1500.\n  - Income $\\times 2 = 8 : 10$, Expenses $= 5 : 7 \\implies$ Savings $= 3 : 3 \\to 1500 (\\times 500)$.\n  - B's Income $= 10 \\times 500 = \\mathbf{\\text{Rs. } 5000}$.\n\n#### Page 7 & 8: Mixture Addition, Vessel Mixing & Ratio Combination\n- **Milk & Water Mixture**: 60L mixture $3:2$ (36L milk, 24L water). Make ratio $2:3$.\n  - Milk 36L $= 2$ parts $\\implies 1$ part $= 18\\text{L} \\implies$ Water needed $= 3 \\times 18 = 54\\text{L}$.\n  - Water to add $= 54 - 24 = \\mathbf{30\\text{ Litres}}$!\n- **3 Vessel Liquor/Water Mixing**: Equal capacity vessels $1:2, 2:1, 3:1$. Equalize to LCM 12:\n  - $(4:8) + (8:4) + (9:3) = 21 : 15 = \\mathbf{7 : 5}$.\n- **Combining Ratios**:\n  - $A:B = 2:3, B:C = 4:3 \\implies A:B:C = (2\\times 4) : (3\\times 4) : (3\\times 3) = \\mathbf{8 : 12 : 9}$.\n  - $A:B = 3:4, B:C = 8:10, C:D = 15:17 \\implies A:D = \\frac{3}{4} \\times \\frac{8}{10} \\times \\frac{15}{17} = \\mathbf{9 : 17}$.\n\n#### Page 9, 10, 11 & 12: Chain Rule, Equation Inversion, Coin Bags & Percentage Shifts\n- **Chain Rule Tables Cost**: $10\\text{T} = 27\\text{S}, 9\\text{S} = 15\\text{C}, 9\\text{C} = 3\\text{B}, 7\\text{B} = 14\\text{D}$. Desk $= \\text{Rs. } 500$.\n  - Back-substitute: $14\\text{D} = 7000 \\to 7\\text{B} = 7000 \\to 3\\text{B} = 3000 \\to 9\\text{C} = 3000 \\to 15\\text{C} = 5000 \\to 9\\text{S} = 5000 \\to 27\\text{S} = 15000 \\to 10\\text{T} = 15000 \\implies 1\\text{T} = \\mathbf{\\text{Rs. } 1500}$.\n- **Equation Inversion Rule**:\n  - If $xA = yB = zC \\implies A : B : C = yz : xz : xy$.\n  - Example: $3A = 4B = 5C \\implies A : B : C = 20 : 15 : 12$.\n  - If $\\frac{1}{2}A = \\frac{1}{3}B = \\frac{1}{6}C \\implies A : B : C = 2 : 3 : 6$. Total Rs. 1870 $\\implies 3^{\\text{rd}} \\text{ part} = 6 \\times 170 = \\mathbf{\\text{Rs. } 1020}$.\n- **Wages Multiplication**: Rs. 425 divided among 4 men, 5 women, 6 boys. Individual wages $9:8:4$.\n  - Group wages $= (4\\times 9) : (5\\times 8) : (6\\times 4) = 36 : 40 : 24 = 9 : 10 : 6$ (Total 25 parts).\n  - $25 \\to 425 (\\times 17) \\implies 5$ women $= 170 \\implies 1\\text{ woman wage} = \\frac{170}{5} = \\mathbf{\\text{Rs. } 34}$.\n- **Coin Bag Problem**: Rs. 1, 50p, 25p coins in ratio $5 : 6 : 7$. Total sum $=$ Rs. 78.\n  - Value ratio $= (5\\times 1) : (6\\times 0.5) : (7\\times 0.25) = 5 : 3 : 1.75 = 20 : 12 : 7$ (Total 39 parts).\n  - $39 \\to 78 (\\times 2) \\implies 50p$ value $= 24 \\implies$ Coins $= 24 \\times 2 = \\mathbf{48\\text{ coins}}$.\n- **Percentage Shift Ratio Modification**: Ratio $5 : 9$. 1st $-19\\%$, 2nd $+10\\%$.\n  - Value $100 : 180 \\implies -19 : +18 = 81 : 198 = \\mathbf{9 : 22}$.\n",
+        "flashcards": [
+            {
+                "title": "Page 1: Product of Extremes = Means",
+                "front": "What is the primary equality rule for proportions $a:b :: c:d$?",
+                "back": "$$\\text{Product of Extremes} = \\text{Product of Means} \\implies a \\times d = b \\times c$$",
+                "badge": "\ud83d\udcc4 Page 1"
+            },
+            {
+                "title": "Page 3: Mean & 4th Proportion Formulas",
+                "front": "What are the formulas for 4th Proportion $D$ and Mean Proportion $B$?",
+                "back": "\u2022 $4^{\\text{th}}$ Proportion: $D = \\mathbf{\\frac{BC}{A}}$\n\u2022 Mean Proportion: $B = \\mathbf{\\sqrt{AC}}$",
+                "badge": "\ud83d\udcc4 Page 3"
+            },
+            {
+                "title": "Page 5: Equal Subtraction Equating Trick",
+                "front": "How do you solve ratio problems where the same quantity is subtracted from both numbers?",
+                "back": "EQUATE THE DIFFERENCES! Multiply the before ratio by the after difference so the subtraction step in parts becomes equal!",
+                "badge": "\ud83d\udcc4 Page 5"
+            },
+            {
+                "title": "Page 9: Equation Inversion Rule",
+                "front": "If $3A = 4B = 5C$, what is the ratio $A : B : C$?",
+                "back": "$A : B : C = (4\\times 5) : (3\\times 5) : (3\\times 4) = \\mathbf{20 : 15 : 12}$!",
+                "badge": "\ud83d\udcc4 Page 9"
+            },
+            {
+                "title": "Page 11: Coin Bag Value Conversion Rule",
+                "front": "How do you find the number of coins when given coin count ratios and total sum in Rupees?",
+                "back": "Multiply coin count ratio by individual coin Rupee values ($1, 0.5, 0.25$) to get VALUE RATIO, then equate value parts to total sum!",
+                "badge": "\ud83d\udcc4 Page 11"
+            }
+        ],
         "questions": [
             {
-                "difficulty": "intermediate",
-                "text": "Find the compound Ratio of 2:5, 10:7, 14:9",
-                "options": [
-                    "8:9",
-                    "9:8",
-                    "4:5",
-                    "5:4"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let's form in P/q form and multiply:\n2/5 * 10/7 * 14/9 = 8/9 => 8:9\nCompound Ratio = 8:9"
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the 4th proportion of 20, 21, 40?",
-                "options": [
-                    "40",
-                    "41",
-                    "42",
-                    "44"
-                ],
-                "correct_option_index": 2,
-                "explanation": "A:B = C:D => 20:21 = 40:D\n20 * D = 21 * 40\nD = (21 * 40) / 20 = 42."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Find the mean proportional of 8 and 18?",
+                "text": "From Page 3 Notes: What is the Mean Proportion of 8 and 18?",
                 "options": [
                     "10",
                     "12",
@@ -931,442 +938,99 @@ const aptitudeTopics = [
                     "16"
                 ],
                 "correct_option_index": 1,
-                "explanation": "Mean Proportional B = sqrt(AC)\nB = sqrt(8 * 18)\nB = sqrt(144) = 12"
+                "explanation": "Page 3 Formula: Mean Proportion B = sqrt(8 * 18) = sqrt(144) = 12!"
             },
             {
-                "difficulty": "intermediate",
-                "text": "The c.p of mobile and tablet are in the ratio 4:7. If the tablet c.p is Rs. 15000 more than the mobile c.p, then what is the c.p of the tablet?",
+                "text": "From Page 9 Notes: If 3A = 4B = 5C, what is the ratio A : B : C?",
                 "options": [
-                    "Rs. 20000",
-                    "Rs. 25000",
-                    "Rs. 30000",
-                    "Rs. 35000"
+                    "3 : 4 : 5",
+                    "5 : 4 : 3",
+                    "20 : 15 : 12",
+                    "12 : 15 : 20"
                 ],
-                "correct_option_index": 3,
-                "explanation": "Difference in ratio = 7 - 4 = 3.\n3 parts -> 15000 (more)\nThen 7 parts -> 35000.\nc.p of tablet = Rs. 35000."
+                "correct_option_index": 2,
+                "explanation": "Page 9 Inversion Rule: A : B : C = (4*5) : (3*5) : (3*4) = 20 : 15 : 12!"
             },
             {
-                "difficulty": "intermediate",
-                "text": "Abhi's monthly income is two-seventh of Ram's monthly income. Ram's Annual income is 4.2 lakh. What is Abhi's Annual Income?",
+                "text": "From Page 11 Notes: Bag has Rs. 1, 50p, 25p coins in ratio 5:6:7. Total sum is Rs. 78. How many 50p coins are in the bag?",
                 "options": [
-                    "1.2 Lakh",
-                    "1.4 Lakh",
-                    "2.1 Lakh",
-                    "2.4 Lakh"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Abhi = 2/7 Ram => Abhi : Ram = 2 : 7.\nAlso having same ratio for annual income.\n7 parts (Ram's) -> 4.2 Lakh\n2 parts (Abhi's) -> 1.2 Lakh\nAnnual Income of Abhi = 1.2 Lakh."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The Ratio of Sita's, Riya's and Kunal's monthly income is 84:76:89. If Riya's Annual income is Rs. 4,56,000, what is the sum of Sita's and Kunal's Annual income?",
-                "options": [
-                    "Rs. 9,00,000",
-                    "Rs. 10,38,000",
-                    "Rs. 12,00,000",
-                    "Rs. 15,00,000"
+                    "36 coins",
+                    "48 coins",
+                    "60 coins",
+                    "72 coins"
                 ],
                 "correct_option_index": 1,
-                "explanation": "Sita : Riya : Kunal = 84 : 76 : 89.\n76 parts -> 4,56,000 (x6000)\nSum of Sita's and Kunal's parts = 84 + 89 = 173.\n173 parts -> 173 x 6000 = 10,38,000.\nSum of Sita's and Kunal's Annual income = Rs. 10,38,000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two numbers are in the ratio 7:12. If 15 is subtracted from both the numbers, then the ratio becomes 16:31. Find the largest number.",
-                "options": [
-                    "36",
-                    "72",
-                    "108",
-                    "144"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Before (-15): 7:12 (Difference = 12-7 = 5)\nAfter (-15): 16:31 (Difference = 31-16 = 15)\nIf same quantity is removed/added, we need to equate the ratios according to the differences before and after in them.\nMultiply before ratio by 3: (7:12) x 3 => 21:36 (Difference is 15).\n21 - 16 = 5 parts = 15 => 1 part = 3.\nNow, Largest Number = 36 x 3 = 108."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The incomes of A and B are in the ratio 4:5 and their expenses are in the ratio 5:7. If each of them saves Rs. 1500, then what is the income of B?",
-                "options": [
-                    "Rs. 4000",
-                    "Rs. 4500",
-                    "Rs. 5000",
-                    "Rs. 6000"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Income - Expenditure = Savings.\nIncome => 4:5\nExpenditure => 5:7\nEquate difference: (4:5) x 2 => 8:10\nExp => 5:7\nSavings = 8-5 : 10-7 = 3:3.\n3 parts -> Rs. 1500 => 1 part -> 500.\nB's Income = 10 parts -> Rs. 5000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "The Ratio of milk and water in a vessel containing 60 litres of mixture is 3:2. Find the quantity of water to be added to make the ratio 2:3.",
-                "options": [
-                    "20 Litres",
-                    "24 Litres",
-                    "30 Litres",
-                    "36 Litres"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Total mixture = 60 Litres. Milk : Water = 3 : 2.\nMilk = (3/5) * 60 = 36 lit. Water = (2/5) * 60 = 24 lit.\nNeed to make the ratio 2:3.\nThen, 2 parts -> 36 lit (Milk remains same).\nThen, 3 parts -> 54 Litres.\nAlready 24 lit of water exists. So, we need to add (54 - 24) = 30 litres of water to make it 2:3."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Three equal capacity vessels contain liquor and water in the ratio 1:2, 2:1, 3:1 respectively. If all are mixed into a big vessel, find the ratio of liquor and water in the big vessel.",
-                "options": [
-                    "5:7",
-                    "7:5",
-                    "3:4",
-                    "4:3"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Liquor : Water\nVessel 1: 1:2 (Total 3) -> multiply by 4 => 4:8\nVessel 2: 2:1 (Total 3) -> multiply by 4 => 8:4\nVessel 3: 3:1 (Total 4) -> multiply by 3 => 9:3\nTotal = (4+8+9) : (8+4+3) = 21 : 15 => 7:5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If A:B is 2:3, B:C is 4:3, then find A:B:C?",
-                "options": [
-                    "8:12:9",
-                    "6:12:9",
-                    "8:10:9",
-                    "4:6:3"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A:B = 2:3\nB:C = 4:3\nMultiply A:B by 4 and B:C by 3 to make B equal (12).\nA:B:C = 8:12:9."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If A:B = 2:3, B:C = 4:3, C:D = 2:3, then find A:B:C:D.",
-                "options": [
-                    "16:24:18:27",
-                    "8:12:9:27",
-                    "16:24:18:9",
-                    "8:24:18:27"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A:B = 2:3, B:C = 4:3, C:D = 2:3.\nA:B:C = 8:12:9\nC:D = 2:3\nMultiply A:B:C by 2 and C:D by 9 to make C equal (18).\nA:B:C:D = 16:24:18:27."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "If A:B = 3:4, B:C = 8:10, C:D = 15:17, then find A:D.",
-                "options": [
-                    "7:17",
-                    "9:17",
-                    "15:17",
-                    "3:17"
-                ],
-                "correct_option_index": 1,
-                "explanation": "A/D = A/B * B/C * C/D = (3/4) * (8/10) * (15/17) = 360 / 680 = 9:17."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "10 tables cost as much as 24 stools, 9 stools cost as much as 15 chairs. 9 chairs cost as much as 3 benches, 7 benches cost as much as 14 Desks, if one desk cost Rs. 500, what is the cost of one Table?",
-                "options": [
-                    "Rs. 1000",
-                    "Rs. 1200",
-                    "Rs. 1500",
-                    "Rs. 2000"
-                ],
-                "correct_option_index": 2,
-                "explanation": "10 tables = 24 stools\n9 stools = 15 chairs\n9 chairs = 3 benches\n7 benches = 14 desks\nCost of one Desk = Rs. 500\n7 benches = 14 * 500 = 7000 => 1 bench = 1000.\n9 chairs = 3 * 1000 = 3000 => 1 chair = 1000/3.\n9 stools = 15 * (1000/3) = 5000 => 1 stool = 5000/9.\n10 tables = 24 * (5000/9) => 1 table = Rs. 1500."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "If 3A = 4B = 5C, then find A:B:C",
-                "options": [
-                    "12:15:20",
-                    "20:15:12",
-                    "15:20:12",
-                    "12:20:15"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Let 3A = 4B = 5C = k. A = k/3, B = k/4, C = k/5.\nA:B:C = 1/3 : 1/4 : 1/5. LCM of 3,4,5 is 60.\nA:B:C = 20 : 15 : 12."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rs. 1870 is divided into three parts such that half of first part, one third of second part and one sixth of third part are equal. Find third part.",
-                "options": [
-                    "Rs. 340",
-                    "Rs. 510",
-                    "Rs. 680",
-                    "Rs. 1020"
-                ],
-                "correct_option_index": 3,
-                "explanation": "1/2 A = 1/3 B = 1/6 C\nThen A:B:C = 2:3:6\nTotal parts = 11.\nThird part = (6/11) * 1870 = 6 * 170 = 1020."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Rs. 3900 is divided among A, B and C such that 2 times of A's amount, three times of B's Amount and four times of C's amount are equal, what is A's Amount?",
-                "options": [
-                    "Rs. 900",
-                    "Rs. 1200",
-                    "Rs. 1500",
-                    "Rs. 1800"
-                ],
-                "correct_option_index": 3,
-                "explanation": "2A = 3B = 4C\nA:B:C = 1/2 : 1/3 : 1/4 = 12:8:6 = 6:4:3\nTotal parts = 13 -> 3900 => 1 part = 300.\nA's Amount = 6 parts = 6 * 300 = 1800."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Rs. 425 is divided among 4 men, 5 women and 6 Boys such that the wages 1 man, 1 women and 1 Boy are in the ratio 9:8:4. what are the wages of one women?",
-                "options": [
-                    "Rs. 34",
-                    "Rs. 40",
-                    "Rs. 45",
-                    "Rs. 50"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Multiply 9:8:4 with 4,5,6 respectively gives the ratio of total wages for each group.\n36 : 40 : 24 => 9 : 10 : 6.\nTotal parts = 9 + 10 + 6 = 25.\n25 parts -> 425 => 1 part = 17.\nTotal wages of 5 women = 10 parts = 10 * 17 = 170.\nWage of 1 woman = 170 / 5 = Rs. 34."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "In a bag, 1 Rupee, 50 Paise, 25 Paise coins are in the Ratio 5:6:7. If the total sum in the bag is Rs. 78. then find the no of 50 Paise coins in the bag?",
-                "options": [
-                    "24",
-                    "36",
-                    "48",
-                    "60"
-                ],
-                "correct_option_index": 2,
-                "explanation": "Rs 1 : 50P : 25P\nNumber Ratio: 5 : 6 : 7\nValue Ratio (in Rs): 5(1) : 6(0.5) : 7(0.25) = 5 : 3 : 1.75\nMultiply by 100: 500 : 300 : 175 = 20 : 12 : 7.\nTotal parts = 39 -> Rs. 78 => 1 part = 2.\nValue of 50 Paise coins = 12 parts = Rs. 24.\nNumber of 50 Paise coins = 24 / 0.5 = 48."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Two numbers are in the ratio 5:9. The first number is decreased by 19% and the second number is increased by 10%. find the ratio of resultant values.",
-                "options": [
-                    "9:22",
-                    "9:20",
-                    "8:21",
-                    "10:23"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Let numbers be 500 and 900.\nFirst number decreased by 19%: 500 - (19% of 500) = 500 - 95 = 405.\nSecond number increased by 10%: 900 + (10% of 900) = 900 + 90 = 990.\nRatio = 405 : 990 = 81 : 198 = 9 : 22."
-            }
-        ],
-        "flashcards": [
-            {
-                "title": "Rule 1: Product of Extremes = Product of Me",
-                "front": "What is the rule or formula for: Product of Extremes = Product of Means: If $a:b = c:d$, then $a \\times d = b \\times c$?",
-                "back": "Handwritten PDF Rule:\nProduct of Extremes = Product of Means: If $a:b = c:d$, then $a \\times d = b \\times c$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
-            },
-            {
-                "title": "Rule 2: Mean Proportional: $\\sqrt{ab}$",
-                "front": "What is the rule or formula for: Mean Proportional: $\\sqrt{ab}$?",
-                "back": "Handwritten PDF Rule:\nMean Proportional: $\\sqrt{ab}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
-            },
-            {
-                "title": "Rule 3: Third Proportional: If $a:b :: b:c$",
-                "front": "What is the rule or formula for: Third Proportional: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$?",
-                "back": "Handwritten PDF Rule:\nThird Proportional: If $a:b :: b:c$, then $c$ is $\\frac{b^2}{a}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
-            },
-            {
-                "title": "Rule 4: Compounded Ratio: $ac:bd$",
-                "front": "What is the rule or formula for: Compounded Ratio: $ac:bd$?",
-                "back": "Handwritten PDF Rule:\nCompounded Ratio: $ac:bd$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
-            },
-            {
-                "title": "Rule 5: If $a:b$, then Inverse Ratio $\\Righ",
-                "front": "What is the rule or formula for: If $a:b$, then Inverse Ratio $\\Rightarrow b:a$?",
-                "back": "Handwritten PDF Rule:\nIf $a:b$, then Inverse Ratio $\\Rightarrow b:a$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
-            },
-            {
-                "title": "Rule 6: If $a:b:c$, then Inverse Ratio $\\Ri",
-                "front": "What is the rule or formula for: If $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$?",
-                "back": "Handwritten PDF Rule:\nIf $a:b:c$, then Inverse Ratio $\\Rightarrow bc:ac:ab$ (or) $\\frac{1}{a} : \\frac{1}{b} : \\frac{1}{c}$\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "explanation": "Page 11 Solution: Value ratio = 5 : 3 : 1.75 = 20 : 12 : 7 (39 parts -> 78). 50p value = 24 => 24 * 2 = 48 coins!"
             }
         ]
     },
     {
-        "id": 9,
+        "id": 8,
         "slug": "partnerships",
-        "name": "Partnerships (PDF Placeholder)",
-        "description": "Learn investment x time = profit ratio calculations.",
+        "name": "Partnerships (Master Handwritten PDF Edition)",
+        "description": "100% Faithful Transcription of 8 Handwritten PDF pages: Profit Sharing Ratio Formula, Equal Time/Investment Rules, Time & Capital Ratios, Sleeping vs Working Partner Extra Fee, Capital Withdrawal Addition Rules, Charity Deduction Connected Problems, and Joining Month Back-Calculations.",
         "icon": "\ud83e\udd1d",
-        "xp_reward": 90,
-        "formula_sheet": "### \ud83d\udcc4 Master Cheat Sheet: Partnerships (PDF Placeholder)\n\n# Partnerships\n\n## Profit Sharing Ratio\n- **Profit sharing Ratio = Investment $\\times$ Time (months/years)**\n- It will be calculated for each investment individually.\n- Profit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.\n- Then, **Investment Ratio = Profits / Time**\n- **Time Ratio = Profits / Investment**\n\n## Sleeping Partner and Working Partner\n- One partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.\n\n## Withdrawing Investments\n- In case, if either of the partner withdraw some amount after some time. Then we will add the withdrawn amount and withdrawn time with existing left.\n",
-        "questions": [
-            {
-                "difficulty": "intermediate",
-                "text": "A and B invested Rs. 12000 and Rs. 18000 respectively. A invested for 12 months and B invested for 6 months. If the total profit earned is Rs. 21,00,000, find A's and B's shares.",
-                "options": [
-                    "A: 12,00,000, B: 9,00,000",
-                    "A: 10,00,000, B: 11,00,000",
-                    "A: 9,00,000, B: 12,00,000",
-                    "A: 15,00,000, B: 6,00,000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment ratio: 12000 : 18000. Time ratio: 12 : 6. Profit sharing ratio = (12000 * 12) : (18000 * 6) = 144000 : 108000 = 4 : 3. Total profit = 21,00,000. A's share = (4/7) * 2100000 = 12,00,000. B's share = (3/7) * 2100000 = 9,00,000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Ajay, Vijay and Jai invested Rs. 8000, Rs. 4000 and Rs. 8000 respectively in a business. Ajay left after 6 months. At the end of 8 months, if there is a gain of Rs. 4005, find the share of Vijay?",
-                "options": [
-                    "Rs. 890",
-                    "Rs. 1000",
-                    "Rs. 790",
-                    "Rs. 950"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment: Ajay=8000, Vijay=4000, Jai=8000. Time: Ajay=6, Vijay=8, Jai=8. Profit ratio = (8000*6) : (4000*8) : (8000*8) = 48 : 32 : 64 = 3 : 2 : 4. Total ratio = 3+2+4 = 9. Total gain = 4005. 9 units = 4005 -> 1 unit = 445. Vijay's share (2 units) = 2 * 445 = Rs. 890."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Purna started a business with Rs. 98000. After 4 months, Vishal joined the business with a capital of Rs. 63000. Find the total profit, if Profit shared by Vishal at the end of the year was Rs. 15000?",
-                "options": [
-                    "Rs. 45000",
-                    "Rs. 50000",
-                    "Rs. 60000",
-                    "Rs. 55000"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Investment: Purna=98000, Vishal=63000. Time: Purna=12, Vishal=8 (joined after 4 months). Profit sharing ratio (PSR) = (98000*12) : (63000*8) = 7 : 3. Vishal's share (3 units) = 15000. Total profit (10 units) = (15000/3) * 10 = 50000. So, total profit = Rs. 50000."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners start a business with Rs. 60000, Rs. 40000, and Rs. 100000 respectively. Find the ratio of their profits at the end of the business.",
-                "options": [
-                    "3:2:5",
-                    "6:4:1",
-                    "1:2:3",
-                    "5:2:3"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, the investment time of all partners are equal. So, their shares also same as investment Ratio. Inv: 60000 : 40000 : 100000. Time: 1 : 1 : 1. Profit sharing Ratio = 6:4:10 = 3:2:5."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners A, B, and C put equal investments into a business for 1 year, 10 months and 6 months respectively. Find the profit sharing Ratio at the end of a year.",
-                "options": [
-                    "6:5:3",
-                    "12:10:6",
-                    "3:2:1",
-                    "1:1:1"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Here, the investments are equal but time is different. So, the share also same different as Time Ratio. Inv: 1 : 1 : 1. Time: 12 : 10 : 6. Profit Ratio = 12 : 10 : 6 = 6 : 5 : 3."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "The capitals of 3 partners are in the ratio 5:2:3 and their profits sharing Ratio is 10:8:9. Find the ratio of terms of their investment.",
-                "options": [
-                    "2:4:3",
-                    "4:2:3",
-                    "1:2:3",
-                    "3:4:2"
-                ],
-                "correct_option_index": 0,
-                "explanation": "We have, PSR = Inv * Time. Time Ratio = Profit share Ratio / Investment. PSR = 10 : 8 : 9. Inv = 5 : 2 : 3. Time Ratio = 10/5 : 8/2 : 9/3 = 2 : 4 : 3."
-            },
-            {
-                "difficulty": "intermediate",
-                "text": "Three partners invest their capitals for time periods which are in the ratio 2:3:4 and they have shared the total Profit in the ratio 5:4:3. Find the ratio of their respective investments.",
-                "options": [
-                    "30:16:9",
-                    "15:8:9",
-                    "30:9:16",
-                    "9:16:30"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Inv = PSR / Time. PSR = 5 : 4 : 3. Time = 2 : 3 : 4. Inv Ratio = 5/2 : 4/3 : 3/4. Multiply by 12 (LCM of 2,3,4): 30 : 16 : 9. Investment Ratio = 30 : 16 : 9."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A and B, being working and sleeping partners, start a business with Rs. 5000 and Rs. 8000 respectively. It is agreed to give 22% of total Profit to A for managing the business and the remaining is shared in the ratio of their capitals. Find the total Profit if A's share is Rs. 2028/-.",
-                "options": [
-                    "Rs. 3900/-",
-                    "Rs. 4000/-",
-                    "Rs. 3500/-",
-                    "Rs. 4500/-"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A will get his share + 22% of overall 100%. A = 22% + his actual share. 78% -> Total share. A's Inv = 5000, B's Inv = 8000. A's share from remaining = (5/13) * 78% = 30%. B's share = (8/13) * 78% = 48%. A's total share = 30% + 22% = 52%. 52% of Total Profit = 2028. Total Profit = (2028 * 100) / 52 = Rs. 3900/-."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Two partners P and Q start a business with 1.50 Lakhs and 1.20 Lakhs respectively. But, after 8 months, Q has withdrawn Rs. 30,000 from the business. Find the total Profit at the end of 1 year, if Q's share is Rs. 44000.",
-                "options": [
-                    "Rs. 104000",
-                    "Rs. 95000",
-                    "Rs. 110000",
-                    "Rs. 100000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Inv: P = 1,50,000, Q = 1,20,000 (for 8 months) and 90,000 (for 4 months). Time: P = 12 months. P's share = 150000 * 12 = 1800000. Q's share = (120000 * 8) + (90000 * 4) = 960000 + 360000 = 1320000. Ratio = 1800000 : 1320000 = 180 : 132 = 45 : 33 = 15 : 11. Profit sharing Ratio = 15:11. Q's Profit -> 11 units = 44000 (x4000). Total Profit = 26 units * 4000 = Rs. 104000."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "Fully connected Problem: Two partners Surya and Chandu started a business with Rs. 85000 and Rs. 90000 respectively. But after 4 months, Chandu invests Rs. 56250 more into the business. Find, by much does Chandu get more profit than Surya out of total Profit of Rs. 98000 out of which 20% is given to charity and the remaining is shared in their profit sharing Ratio at the end of one year.",
-                "options": [
-                    "Rs. 15680",
-                    "Rs. 16580",
-                    "Rs. 14500",
-                    "Rs. 18000"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Surya Inv: 85000 * 12 = 1020000. Chandu Inv: (90000 * 4) + ((90000+56250) * 8) = 360000 + (146250 * 8) = 360000 + 1170000 = 1530000. PSR = 1020000 : 1530000 = 102 : 153 = 2 : 3. Total profit = 98000. After 20% charity (19600), remaining = 78400 is total profit shared. Total 2+3=5 units = 78400. 1 unit = 15680. Difference = Chandu (3) - Surya (2) = 1 unit = Rs. 15680."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A started a business with Rs. 70000. After some months, B joined the business with Rs. 60000. If they shared the total Profit at the end of one year in the ratio 2:1, find after how many months B joined the business.",
-                "options": [
-                    "5 months",
-                    "7 months",
-                    "6 months",
-                    "4 months"
-                ],
-                "correct_option_index": 0,
-                "explanation": "Investment: A=70000, B=60000. Time: A=12, B=? Ratio of Profit share = 2 : 1. A's profit share part = 7 * 12 = 84. Since Ratio is 2:1, 84 is 2 parts. 1 part = 42. So B's profit share part = 42. B's Investment is 6 (60000), so Time = 42 / 6 = 7 months. This means B invested for 7 months. Therefore, B joined after (12 - 7) = 5 months."
-            },
-            {
-                "difficulty": "advanced",
-                "text": "A put 2/3 of capital and gets 3/4 of total Profit at the end of one year. If A invests for one year, find how long does B put his capital?",
-                "options": [
-                    "8 months",
-                    "6 months",
-                    "4 months",
-                    "10 months"
-                ],
-                "correct_option_index": 0,
-                "explanation": "A's capital = 2/3, so B's capital = 1/3. A's profit = 3/4, so B's profit = 1/4. Inv ratio A:B = 2/3 : 1/3 = 2:1. Profit ratio A:B = 3/4 : 1/4 = 3:1. Time ratio A:B = (3/2) : (1/1) = 3:2. A invests for 12 months (3 parts = 12 -> 1 part = 4). B's time = 2 parts = 2 * 4 = 8. So B puts for 8 months."
-            }
-        ],
+        "xp_reward": 500,
+        "formula_sheet": "### \ud83d\udcc4 Master Handwritten Notes: Partnerships (8 Pages Transcribed)\n\n#### Page 1: Core Formula & Profit Sharing Ratio\n- **Core Formula**:\n  $$\\text{Profit Sharing Ratio (PSR)} = \\text{Investment} \\times \\text{Time (months/years)}$$\n  - Calculated for **each investment individually**.\n  - PSR decides how profits are shared based on money invested and time duration.\n- **Derived Ratios**:\n  - $\\text{Investment Ratio} = \\frac{\\text{Profit Share Ratio}}{\\text{Time Ratio}}$\n  - $\\text{Time Ratio} = \\frac{\\text{Profit Share Ratio}}{\\text{Investment Ratio}}$\n- **Worked Example**: Investor A ($12000 \\times 12 = 144000$), Investor B ($18000 \\times 6 = 108000$).\n  - PSR $= 144 : 108 = 4 : 3$. Total profit $= 2,100,000$.\n  - A's Share $= \\frac{4}{7} \\times 21000000 = \\mathbf{12,000,000}$, B's Share $= \\mathbf{9,000,000}$.\n\n#### Page 2: Multiple Partners & Joining Time\n- **Ajay, Vijay & Jai Example**: Investments $8000, 4000, 8000$. Ajay left after 6m, Vijay & Jai stay 8m. Total profit $= 4005$.\n  - Investment ratio $= 2 : 1 : 2$. Time ratio $= 6 : 8 : 8 = 3 : 4 : 4$.\n  - PSR $= (2 \\times 3) : (1 \\times 4) : (2 \\times 4) = 6 : 4 : 8 = 3 : 2 : 4$ (Total 9 parts).\n  - Vijay's Share $(2) = \\frac{2}{9} \\times 4005 = \\mathbf{\\text{Rs. } 890}$.\n- **Purna & Vishal Example**: Purna ($98000 \\times 12$), Vishal ($63000 \\times 8$). Vishal share $= \\text{Rs. } 15000$.\n  - PSR $= (98 \\times 12) : (63 \\times 8) = 1176 : 504 = 7 : 3$.\n  - Vishal $(3) \\to 15000 \\implies$ Total Profit $(10) = \\mathbf{\\text{Rs. } 50,000}$.\n\n#### Page 3 & 4: In-Depth Equal Rules & Time/Investment Ratio Calculations\n- **Equal Time Rule**: If investment time of all partners is EQUAL $\\implies$ PSR is SAME as Investment Ratio!\n  - Example: Investments $60000 : 40000 : 100000 \\implies \\text{PSR} = \\mathbf{3 : 2 : 5}$.\n- **Equal Capital Rule**: If investments are EQUAL $\\implies$ PSR is SAME as Time Ratio!\n  - Example: Time $12 : 10 : 6 \\implies \\text{PSR} = \\mathbf{6 : 5 : 3}$.\n- **Time Ratio Calculation**: Capitals $5:2:3$, PSR $10:8:9 \\implies \\text{Time Ratio} = \\frac{10}{5} : \\frac{8}{2} : \\frac{9}{3} = \\mathbf{2 : 4 : 3}$.\n- **Investment Ratio Calculation**: Time $2:3:4$, PSR $5:4:3 \\implies \\text{Investment Ratio} = \\frac{5}{2} : \\frac{4}{3} : \\frac{3}{4} = \\mathbf{30 : 16 : 9}$.\n\n#### Page 5 & 6: Working Partner Extra Fee & Capital Withdrawal\n- **Working Partner Extra Fee**: Working partner gets extra returns for managing business before sharing remainder.\n  - Example: A ($5000$) and B ($8000$). A gets $22\\%$ total profit for managing. Rest shared in capital ratio ($5:8$). A's total share $= \\text{Rs. } 2028$.\n  - Capital ratio $A:B = 5:8$ (Total 13 parts). A gets $22\\% + \\frac{5}{13}(78\\%) = 22\\% + 30\\% = 52\\%$.\n  - $52\\% \\to 2028 \\implies \\text{Total Profit } 100\\% = \\mathbf{\\text{Rs. } 3900}$.\n- **Capital Withdrawal Rule**: Add the withdrawn amount and time with existing left over!\n  - Example: P ($1.5\\text{L} \\times 12 = 18\\text{L}$), Q ($1.2\\text{L} \\times 8 + 0.9\\text{L} \\times 4 = 13.2\\text{L}$). Q share $= 44000$.\n  - PSR $= 18 : 13.2 = 15 : 11$. Q $(11) \\to 44000 \\implies$ Total Profit $(26) = \\mathbf{\\text{Rs. } 1,04,000}$.\n\n#### Page 7 & 8: Charity Connected Problem & Joining Month Back-Calculation\n- **Charity Connected Problem**: Surya ($85000 \\times 12 = 10.2\\text{L}$), Chandu ($90000 \\times 4 + 146250 \\times 8 = 15.3\\text{L}$). PSR $= 2 : 3$.\n  - Total profit $= 98000$. Charity $= 20\\% (19600) \\implies$ Shared $= 78400$.\n  - Difference (Chandu - Surya $= 1 \\text{ part}) = \\frac{78400}{5} = \\mathbf{\\text{Rs. } 15,680}$.\n- **Joining Month Back-Calculation**: A ($70000 \\times 12$), B ($60000 \\times t$). PSR $= 2 : 1$.\n  - $\\frac{84}{6t} = \\frac{2}{1} \\implies 12t = 84 \\implies t = 7\\text{ months invested}$. B joined after $12 - 7 = \\mathbf{5\\text{ months}}$!\n",
         "flashcards": [
             {
-                "title": "Rule 1: Profit sharing Ratio = Investment $",
-                "front": "What is the rule or formula for: Profit sharing Ratio = Investment $\\times$ Time (months/years)?",
-                "back": "Handwritten PDF Rule:\nProfit sharing Ratio = Investment $\\times$ Time (months/years)\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 1"
+                "title": "Page 1: Profit Sharing Ratio Formula",
+                "front": "What is the core formula for Profit Sharing Ratio in Partnerships?",
+                "back": "$$\\text{PSR} = \\text{Investment} \\times \\text{Time (months/years)}$$\nCalculated for EACH investment individually!",
+                "badge": "\ud83d\udcc4 Page 1"
             },
             {
-                "title": "Rule 2: It will be calculated for each inve",
-                "front": "What is the rule or formula for: It will be calculated for each investment individually.?",
-                "back": "Handwritten PDF Rule:\nIt will be calculated for each investment individually.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 2"
+                "title": "Page 3: Equal Time / Equal Capital Rules",
+                "front": "What happens to PSR when (1) Time is equal vs (2) Capital is equal?",
+                "back": "\u2022 Equal Time $\\implies$ PSR is SAME as Investment Ratio!\n\u2022 Equal Capital $\\implies$ PSR is SAME as Time Ratio!",
+                "badge": "\ud83d\udcc4 Page 3"
             },
             {
-                "title": "Rule 3: Profit sharing Ratio is the ratio t",
-                "front": "What is the rule or formula for: Profit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.?",
-                "back": "Handwritten PDF Rule:\nProfit sharing Ratio is the ratio that decides how the Profits would be shared among the investors based on the money they invested and time.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 3"
+                "title": "Page 5: Working Partner Fee Rule",
+                "front": "How do you calculate total profit when a working partner gets a management fee percentage first?",
+                "back": "Calculate working partner's total share $= \\text{Management \\%} + \\text{Capital Share of (100 - Management \\%)}$. Then equate to given share!",
+                "badge": "\ud83d\udcc4 Page 5"
             },
             {
-                "title": "Rule 4: Then, Investment Ratio = Profits / ",
-                "front": "What is the rule or formula for: Then, Investment Ratio = Profits / Time?",
-                "back": "Handwritten PDF Rule:\nThen, Investment Ratio = Profits / Time\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 4"
+                "title": "Page 8: Joining Month Back-Calculation",
+                "front": "If B invested for $t=7$ months in a 12-month year, after how many months did B join?",
+                "back": "B joined after $12 - 7 = \\mathbf{5\\text{ months}}$!\nAlways subtract invested months from total year duration!",
+                "badge": "\ud83d\udcc4 Page 8"
+            }
+        ],
+        "questions": [
+            {
+                "text": "From Page 2 Notes: Ajay (8000, 6m), Vijay (4000, 8m), Jai (8000, 8m). Total gain is Rs. 4005. What is Vijay's share?",
+                "options": [
+                    "Rs. 890",
+                    "Rs. 1335",
+                    "Rs. 1780",
+                    "Rs. 2000"
+                ],
+                "correct_option_index": 0,
+                "explanation": "Page 2 Solution: PSR = 6 : 4 : 8 = 3 : 2 : 4 (Total 9 parts). Vijay share = (2/9) * 4005 = Rs. 890!"
             },
             {
-                "title": "Rule 5: Time Ratio = Profits / Investment",
-                "front": "What is the rule or formula for: Time Ratio = Profits / Investment?",
-                "back": "Handwritten PDF Rule:\nTime Ratio = Profits / Investment\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 5"
+                "text": "From Page 5 Notes: A & B invest 5000 & 8000. A gets 22% total profit for managing. Rest shared in capital ratio. A total share is Rs. 2028. Total profit?",
+                "options": [
+                    "Rs. 3000",
+                    "Rs. 3500",
+                    "Rs. 3900",
+                    "Rs. 4200"
+                ],
+                "correct_option_index": 2,
+                "explanation": "Page 5 Solution: A share = 22% + (5/13)*78% = 52% -> 2028. Total Profit (100%) = Rs. 3900!"
             },
             {
-                "title": "Rule 6: One partner just invests the money ",
-                "front": "What is the rule or formula for: One partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.?",
-                "back": "Handwritten PDF Rule:\nOne partner just invests the money and another partner invests the money and also works, so he will get extra returns for being worked.\nMaster this concept for high-speed placement problem solving!",
-                "badge": "\ud83d\udca1 Concept 6"
+                "text": "From Page 8 Notes: A starts with Rs. 70,000. B joins with Rs. 60,000. Total 1-year profit ratio is 2:1. After how many months did B join?",
+                "options": [
+                    "4 months",
+                    "5 months",
+                    "6 months",
+                    "7 months"
+                ],
+                "correct_option_index": 1,
+                "explanation": "Page 8 Solution: (70000*12) / (60000*t) = 2/1 => t = 7 months invested. B joined after 12 - 7 = 5 months!"
             }
         ]
     },
