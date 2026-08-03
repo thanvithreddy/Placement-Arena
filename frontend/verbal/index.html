@@ -1351,5 +1351,191 @@
             renderMap();
         });
     </script>
+
+    <!-- Floating ChatGPT-style AI Tutor Button -->
+    <button onclick="toggleAITutorChat()" id="ai-tutor-fab" class="fixed bottom-6 right-6 z-50 gradient-btn text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition">
+        <i class="fa-solid fa-robot"></i>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+    </button>
+
+    <!-- Floating ChatGPT AI Tutor Drawer Window -->
+    <div id="ai-tutor-drawer" class="hidden fixed bottom-24 right-6 z-50 w-[92vw] max-w-[420px] h-[580px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden font-sans">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-700 to-purple-800 p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lg">
+                    🤖
+                </div>
+                <div>
+                    <h3 class="text-sm font-extrabold leading-none">NeuroTutor AI Assistant</h3>
+                    <p class="text-[10px] text-indigo-200 mt-1 font-semibold">Document RAG &amp; Socratic Learning</p>
+                </div>
+            </div>
+            <button onclick="toggleAITutorChat()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Document Upload Bar -->
+        <div class="bg-indigo-50/70 border-b border-indigo-100 p-2.5 flex items-center justify-between px-3">
+            <div class="flex items-center gap-2 overflow-hidden">
+                <i class="fa-solid fa-file-arrow-up text-indigo-600 text-xs"></i>
+                <span class="text-[11px] font-bold text-slate-700 truncate" id="chat-doc-status">Upload PDF/Textbook notes to chat</span>
+            </div>
+            <label class="cursor-pointer bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] px-2.5 py-1 rounded-lg transition shrink-0 flex items-center gap-1">
+                <i class="fa-solid fa-paperclip"></i> Upload
+                <input type="file" id="chat-file-input" onchange="uploadDocumentToChat(this)" accept=".pdf,.txt,.md" class="hidden">
+            </label>
+        </div>
+
+        <!-- Chat Messages Container -->
+        <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50/50 text-xs" id="chat-messages-box">
+            <!-- Initial AI Welcome Message -->
+            <div class="flex gap-2.5 max-w-[88%]">
+                <div class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                    🤖
+                </div>
+                <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs">
+                    <p class="font-bold">Hello! I am your AI Socratic Tutor. 👋</p>
+                    <p class="text-[11px] text-slate-600">Ask me anything about your English rules or upload your PDF textbook notes using the paperclip above to learn dynamically!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 bg-white border-t border-slate-200 space-y-2">
+            <div class="flex items-center gap-2">
+                <input type="text" id="chat-user-input" onkeypress="handleChatKeyPress(event)" placeholder="Ask your AI Tutor a question..." 
+                       class="flex-1 px-3.5 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button onclick="sendChatMessage()" class="gradient-btn text-white w-9 h-9 rounded-xl flex items-center justify-center text-sm shadow-md">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 font-bold px-1">
+                <span>⚡ RAG Vector Search Active</span>
+                <span>NeuroTutor 2.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Script Engine -->
+    <script>
+        let chatMessagesHistory = [];
+
+        function toggleAITutorChat() {
+            const drawer = document.getElementById('ai-tutor-drawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                document.getElementById('chat-user-input').focus();
+            }
+        }
+
+        function handleChatKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function uploadDocumentToChat(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const statusEl = document.getElementById('chat-doc-status');
+            statusEl.textContent = `Uploading ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('subject', 'verbal');
+            formData.append('topic_slug', currentTopic ? currentTopic.slug : 'custom');
+
+            const API = window.location.origin + '/api';
+
+            try {
+                const res = await axios.post(`${API}/textbook/upload-pdf/`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                statusEl.textContent = `✓ Indexed ${file.name}`;
+                statusEl.className = "text-[11px] font-extrabold text-emerald-600 truncate";
+
+                appendChatMessage('ai', `📄 **Document Indexed**: I have ingested *${file.name}* into my RAG vector database (${res.data.chunk_count} chunks). Ask me questions about it!`);
+            } catch(e) {
+                console.error(e);
+                statusEl.textContent = `❌ Upload failed.`;
+                statusEl.className = "text-[11px] font-extrabold text-rose-600 truncate";
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendChatMessage('user', text);
+
+            const msgBox = document.getElementById('chat-messages-box');
+            const loadingId = 'ai-loading-' + Date.now();
+            
+            // Add typing indicator
+            msgBox.innerHTML += `
+                <div id="${loadingId}" class="flex gap-2.5 max-w-[88%]">
+                    <div class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🤖</div>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 font-bold text-xs animate-pulse">
+                        NeuroTutor is thinking &amp; scanning textbook RAG vector DB...
+                    </div>
+                </div>
+            `;
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            const state = typeof Telemetry !== 'undefined' ? Telemetry.getCognitiveState() : 'OPTIMAL_FLOW';
+            const API = window.location.origin + '/api';
+
+            try {
+                const res = await axios.post(`${API}/textbook/chat/`, {
+                    query: text,
+                    messages: chatMessagesHistory,
+                    subject: 'verbal',
+                    topic_slug: currentTopic ? currentTopic.slug : 'general',
+                    cognitive_state: state
+                });
+
+                document.getElementById(loadingId)?.remove();
+
+                const data = res.data;
+                appendChatMessage('ai', data.response);
+
+            } catch(e) {
+                document.getElementById(loadingId)?.remove();
+                appendChatMessage('ai', '⚠️ Sorry, I could not reach the backend AI engine. Make sure Django API is running!');
+            }
+        }
+
+        function appendChatMessage(sender, text) {
+            const msgBox = document.getElementById('chat-messages-box');
+            chatMessagesHistory.push({ role: sender, content: text });
+
+            if (sender === 'user') {
+                msgBox.innerHTML += `
+                    <div class="flex justify-end">
+                        <div class="bg-indigo-600 text-white p-3 rounded-2xl max-w-[85%] font-medium leading-relaxed shadow-xs">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            } else {
+                msgBox.innerHTML += `
+                    <div class="flex gap-2.5 max-w-[88%]">
+                        <div class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🤖</div>
+                        <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs leading-relaxed">
+                            ${marked.parse(text)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
+    </script>
+
 </body>
 </html>

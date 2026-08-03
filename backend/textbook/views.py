@@ -112,3 +112,90 @@ class RecordTelemetryView(APIView):
             'cognitive_state': cognitive_state,
             'mastery_probability': round(mastery, 3)
         })
+
+
+class PDFDocumentUploadView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        uploaded_file = request.FILES.get('file')
+        subject = request.data.get('subject', 'general')
+        topic_slug = request.data.get('topic_slug', 'custom-document')
+
+        if not uploaded_file:
+            return Response({'error': 'No file uploaded'}, status=400)
+
+        filename = uploaded_file.name
+        file_text = ""
+
+        # Extract text from PDF / TXT file
+        if filename.endswith('.pdf'):
+            try:
+                import pypdf
+                reader = pypdf.PdfReader(uploaded_file)
+                for page in reader.pages:
+                    text = page.extract_text()
+                    if text:
+                        file_text += text + "\n"
+            except Exception as e:
+                # Basic text extraction fallback
+                file_text = uploaded_file.read().decode('utf-8', errors='ignore')
+        else:
+            file_text = uploaded_file.read().decode('utf-8', errors='ignore')
+
+        if not file_text.strip():
+            return Response({'error': 'Could not extract text from document.'}, status=400)
+
+        # Ingest document text into vector chunks
+        chunk_size = 400
+        overlap = 50
+        chunks_created = []
+        start = 0
+        idx = 0
+
+        while start < len(file_text):
+            end = min(start + chunk_size, len(file_text))
+            chunk_str = file_text[start:end]
+            vec = get_text_embedding(chunk_str)
+
+            c_obj = TextbookChunk.objects.create(
+                subject=subject,
+                topic_slug=topic_slug,
+                chapter_title=filename,
+                chunk_index=idx,
+                content=chunk_str,
+                vector_json=vec
+            )
+            chunks_created.append(c_obj)
+            idx += 1
+            start += (chunk_size - overlap)
+
+        return Response({
+            'message': f'Successfully indexed "{filename}" into {len(chunks_created)} vector concept chunks!',
+            'filename': filename,
+            'chunk_count': len(chunks_created)
+        })
+
+class AITutorChatView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        messages = request.data.get('messages', [])
+        user_query = request.data.get('query', '')
+        subject = request.data.get('subject', 'general')
+        topic_slug = request.data.get('topic_slug', '')
+        cognitive_state = request.data.get('cognitive_state', 'OPTIMAL_FLOW')
+
+        if not user_query and messages:
+            user_query = messages[-1].get('content', '')
+
+        if not user_query:
+            return Response({'error': 'Query or chat message required'}, status=400)
+
+        ai_response, retrieved_chunks = generate_socratic_guidance(user_query, subject, topic_slug, cognitive_state)
+
+        return Response({
+            'response': ai_response,
+            'retrieved_chunks': retrieved_chunks,
+            'cognitive_state': cognitive_state
+        })
