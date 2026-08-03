@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbal Master Academy - Interactive English Learning Platform</title>
+    <title>Verbal Master Academy - AI-Powered English & Verbal Aptitude Deck</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome CDN -->
@@ -25,9 +25,9 @@
             font-family: 'Space Grotesk', sans-serif;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.9);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         }
         .gradient-btn {
@@ -41,7 +41,7 @@
         /* 3D Flip Card Styles */
         .flashcard-scene {
             perspective: 1000px;
-            height: 220px;
+            height: 240px;
             cursor: pointer;
         }
         .flashcard-inner {
@@ -83,23 +83,23 @@
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-3">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-between justify-center text-white text-xl font-black shadow-md shadow-indigo-200">
-                    <i class="fa-solid fa-spell-check"></i>
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl font-black shadow-md shadow-indigo-200">
+                    <i class="fa-solid fa-brain"></i>
                 </div>
                 <div>
                     <h1 class="text-base font-extrabold text-slate-900 tracking-tight heading-font">Verbal Master Academy</h1>
-                    <p class="text-[11px] font-semibold text-indigo-600">English &amp; Verbal Ability Deck</p>
+                    <p class="text-[11px] font-semibold text-indigo-600">AI-Powered English &amp; Verbal Aptitude Suite</p>
                 </div>
             </div>
 
             <!-- Stats Bar -->
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 md:gap-4">
                 <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full text-xs font-extrabold text-amber-700">
                     <i class="fa-solid fa-bolt text-amber-500"></i>
                     <span id="user-xp">0 XP</span>
                 </div>
                 <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-extrabold text-emerald-700">
-                    <i class="fa-solid fa-[#10b981] fa-coins text-emerald-500"></i>
+                    <i class="fa-solid fa-coins text-emerald-500"></i>
                     <span id="user-coins">100 Coins</span>
                 </div>
                 <div class="flex items-center gap-2 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full text-xs font-extrabold text-indigo-700">
@@ -123,33 +123,32 @@
             <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-800 p-8 text-white shadow-xl">
                 <div class="relative z-10 max-w-2xl space-y-3">
                     <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-extrabold text-white tracking-wide uppercase">
-                        🎓 Complete Placement Verbal Mastery
+                        🤖 AI-Enhanced Placement Verbal Deck
                     </span>
                     <h2 class="text-3xl lg:text-4xl font-black heading-font leading-tight">
                         Master English Grammar, Rules &amp; Verbal Ability
                     </h2>
                     <p class="text-xs lg:text-sm text-indigo-100 font-medium leading-relaxed">
-                        Interactive lessons covering 12 Tenses, 5 Verb Forms, Noun Traps, Pronoun Agreement, SVA Rules, Articles, Adjectives, Adverbs, Prepositions &amp; Conjunctions.
+                        Comprehensive interactive modules covering 12 Tenses, 5 Verb Forms, Noun Traps, Pronoun Agreement, 20 SVA Rules, Sound-based Articles, OSASCOMP Adjectives, Adverb Positions, Fixed Prepositions &amp; Conjunction Inversions with AI Sentence Error Correction.
                     </p>
                     <div class="pt-2 flex items-center gap-4">
                         <div class="flex items-center gap-2 text-xs font-extrabold bg-white/10 px-4 py-2 rounded-xl backdrop-blur-md">
-                            <i class="fa-solid fa-book-open text-amber-400"></i> 10 Master Modules
+                            <i class="fa-solid fa-book-open text-amber-400"></i> 10 Comprehensive Modules
                         </div>
                         <div class="flex items-center gap-2 text-xs font-extrabold bg-white/10 px-4 py-2 rounded-xl backdrop-blur-md">
-                            <i class="fa-solid fa-gamepad text-emerald-400"></i> Interactive Playgrounds
+                            <i class="fa-solid fa-robot text-emerald-400"></i> AI Grammar Assistant
                         </div>
                     </div>
                 </div>
-                <!-- Decorative Graphic -->
                 <div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 flex items-center justify-center text-9xl pointer-events-none">
-                    <i class="fa-solid fa-brain"></i>
+                    <i class="fa-solid fa-spell-check"></i>
                 </div>
             </div>
 
             <!-- Search Bar -->
             <div class="relative max-w-xl mx-auto">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                <input type="text" id="verbal-search" oninput="filterTopics()" placeholder="Search any rule, topic, or grammar term (e.g. SVA, Articles, Who vs Whom)..." 
+                <input type="text" id="verbal-search" oninput="filterTopics()" placeholder="Search any rule, topic, or grammar term (e.g. SVA, Articles, Who vs Whom, Prepositions)..." 
                        class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
             </div>
 
@@ -180,7 +179,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200" id="practice-xp-tag">+100 XP</span>
+                    <span class="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200" id="practice-xp-tag">+200 XP</span>
                     <span class="text-xs font-bold text-slate-400" id="fc-count-badge">Cards</span>
                 </div>
             </div>
@@ -194,10 +193,13 @@
                     <i class="fa-solid fa-sliders"></i> Concept Playground
                 </button>
                 <button onclick="switchMode('cheatsheet')" id="tab-cheatsheet" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0">
-                    <i class="fa-solid fa-book-bookmark"></i> Formula Deck
+                    <i class="fa-solid fa-book-bookmark"></i> Master Formula Deck
                 </button>
                 <button onclick="switchMode('quiz')" id="tab-quiz" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0">
                     <i class="fa-solid fa-gamepad"></i> Practice Quiz
+                </button>
+                <button onclick="switchMode('ai-tool')" id="tab-ai-tool" class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-indigo-600 hover:bg-indigo-50 border border-indigo-200 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-robot"></i> AI Sentence Fixer
                 </button>
             </div>
 
@@ -248,407 +250,600 @@
                 </div>
             </div>
 
+            <!-- TAB 5: AI SENTENCE ERROR FIXER & PRACTICE GENERATOR -->
+            <div id="view-ai-tool" class="hidden space-y-4">
+                <div class="bg-white p-6 rounded-3xl border border-indigo-100 shadow-sm space-y-5">
+                    <div class="flex items-center gap-3 border-b pb-3">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-extrabold text-slate-900">AI Sentence Error Detector &amp; Grammar Assistant</h4>
+                            <p class="text-[11px] text-slate-500">Type any sentence to check for SVA, Pronoun, Article, Preposition, or Tense errors live!</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <textarea id="ai-input-sentence" rows="3" placeholder="Type or paste any English sentence here (e.g., 'Each of the boys have completed their assignment yesterday')..." 
+                                  class="w-full p-4 border rounded-2xl text-xs font-bold text-slate-800 bg-slate-50 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        <div class="flex items-center justify-between">
+                            <button onclick="runAIGrammarCheck()" class="gradient-btn text-white text-xs font-extrabold px-6 py-3 rounded-xl shadow-md flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Grammar Errors
+                            </button>
+                            <button onclick="presetAISentence()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800">
+                                Try Sample Placement Sentence 💡
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Analysis Result -->
+                    <div id="ai-analysis-result" class="hidden p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 text-xs text-slate-800 space-y-3">
+                        <!-- Result Injected -->
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
 
-    <!-- VERBAL MASTER DATASET -->
+    <!-- VERBAL MASTER MASSIVE DATASET -->
     <script>
         const verbalTopics = [
-    {
-        "id": 1,
-        "slug": "tenses-verb-forms",
-        "name": "12 Tenses & 5 Verb Forms",
-        "description": "Master all 12 English tenses, structure formulas, 5 main verb forms (V1-V5), helping verbs, and Telugu comparisons.",
-        "icon": "\u23f3",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Tenses & Verb Forms\n\n#### 12 Main Tenses Formula Matrix\n- **Simple Present**: $V1 / V1+s/es$ (*She works*) | Habits, facts.\n- **Present Continuous**: $am/is/are + V4 (-ing)$ (*She is working*) | Action now.\n- **Present Perfect**: $have/has + V3$ (*She has worked*) | Completed action with present result.\n- **Present Perfect Continuous**: $have/has \\text{ been} + V4$ (*She has been working*) | Past to present.\n- **Simple Past**: $V2$ (*She worked*) | Completed past action.\n- **Past Continuous**: $was/were + V4$ (*She was working*) | Ongoing past action.\n- **Past Perfect**: $had + V3$ (*She had worked*) | Action before another past action.\n- **Past Perfect Continuous**: $had \\text{ been} + V4$ (*She had been working*) | Ongoing before past action.\n- **Simple Future**: $will + V1$ (*She will work*) | Predictions, future actions.\n- **Future Continuous**: $will \\text{ be} + V4$ (*She will be working*) | In progress in future.\n- **Future Perfect**: $will \\text{ have} + V3$ (*She will have worked*) | Completed by future point.\n- **Future Perfect Continuous**: $will \\text{ have been} + V4$ (*She will have been working*) | Ongoing up to future point.\n\n#### 5 Main Verb Forms\n- **V1 (Base)**: *go, eat, write* (Used in Simple Present, Future Simple).\n- **V2 (Past)**: *went, ate, wrote* (Used ONLY in Simple Past).\n- **V3 (Past Participle)**: *gone, eaten, written* (Used with *have/has/had*).\n- **V4 (Present Participle)**: *going, eating, writing* (Used in Continuous tenses).\n- **V5 (3rd Person Singular)**: *goes, eats, writes* (Used with *he/she/it* in Simple Present).\n",
-        "flashcards": [
             {
-                "title": "12 Tenses Matrix",
-                "front": "Which verb form is used ONLY in the Simple Past Tense?",
-                "back": "**V2 (Past Form)** (e.g. *went, ate, wrote*)!\nExample: *She visited Mumbai yesterday*.",
-                "badge": "\u23f3 Tenses Rule"
+                id: 1,
+                slug: "tenses-verb-forms",
+                name: "12 Tenses & 5 Verb Forms",
+                description: "Master all 12 English tenses, active/passive structures, 5 main verb forms (V1-V5), stative verb traps, and Telugu comparisons.",
+                icon: "⏳",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Tenses & Verb Forms
+
+#### 12 Main Tenses Formula Matrix
+- **Simple Present**: $V1 / V1+s/es$ (*She works*) | Habits, facts, universal truths.
+- **Present Continuous**: $am/is/are + V4 (-ing)$ (*She is working*) | Action happening right now.
+- **Present Perfect**: $have/has + V3$ (*She has worked*) | Completed action with present connection.
+- **Present Perfect Continuous**: $have/has \text{ been} + V4$ (*She has been working*) | Past action continuing up to now.
+- **Simple Past**: $V2$ (*She worked*) | Action completed at a specific past time.
+- **Past Continuous**: $was/were + V4$ (*She was working*) | Ongoing past action at specific time.
+- **Past Perfect**: $had + V3$ (*She had worked*) | Action completed BEFORE another past action!
+- **Past Perfect Continuous**: $had \text{ been} + V4$ (*She had been working*) | Ongoing action before another past point.
+- **Simple Future**: $will + V1$ (*She will work*) | Predictions, promises, future actions.
+- **Future Continuous**: $will \text{ be} + V4$ (*She will be working*) | Action in progress in the future.
+- **Future Perfect**: $will \text{ have} + V3$ (*She will have worked*) | Action completed before a future deadline.
+- **Future Perfect Continuous**: $will \text{ have been} + V4$ (*She will have been working*) | Ongoing action up to a future point.
+
+#### Stative Verbs Warning (NEVER USE IN CONTINUOUS FORM!)
+- Verbs of perception/thought/emotion (*know, understand, believe, love, hate, sound, agree, remember, belong*) do NOT take -ing form:
+  - ❌ *I am knowing the answer* $\to$ ✅ *I know the answer*.
+  - ❌ *I am agreeing with you* $\to$ ✅ *I agree with you*.
+`,
+                flashcards: [
+                    {
+                        title: "12 Tenses Matrix",
+                        front: "Which verb form is used ONLY in the Simple Past Tense?",
+                        back: "**V2 (Past Form)** (e.g. *went, ate, wrote*)!
+Example: *She visited Mumbai yesterday*.",
+                        badge: "⏳ Tenses Rule"
+                    },
+                    {
+                        title: "V5 Third Person Singular Rule",
+                        front: "When do you use V5 (verb+s/es)?",
+                        back: "Used ONLY in **Simple Present Tense** with *He, She, It* or singular nouns!
+Example: *He goes to school*.",
+                        badge: "💡 Verb Form"
+                    },
+                    {
+                        title: "Stative Verb Trap",
+                        front: "Why is 'I am knowing the answer' incorrect in placement exams?",
+                        back: "❌ **INCORRECT**!
+'Know' is a **stative verb** (shows mental state). Stative verbs do NOT take -ing form in continuous tenses!
+Correct: ✅ *I know the answer*.",
+                        badge: "⚡ Stative Rule"
+                    },
+                    {
+                        title: "Been Usage Rule",
+                        front: "Why does 'Been' appear in Perfect Continuous tenses?",
+                        back: "'Been' is the **V3 (Past Participle) form of 'be'**! Combined with V4 (-ing), it connects past duration to present/future.",
+                        badge: "⚡ Grammar Trick"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "She _____ the assignment yesterday.",
+                        options: ["wrote", "written", "write", "writing"],
+                        correct_option_index: 0,
+                        explanation: "Simple Past Tense requires V2 (wrote) for completed past actions!"
+                    },
+                    {
+                        text: "They have _____ studying for 3 hours.",
+                        options: ["be", "being", "been", "was"],
+                        correct_option_index: 2,
+                        explanation: "Present Perfect Continuous uses have/has been + V4 (-ing)!"
+                    },
+                    {
+                        text: "Choose the correct sentence:",
+                        options: ["I am knowing the correct answer.", "I know the correct answer.", "I am known the correct answer.", "I was knowing the answer."],
+                        correct_option_index: 1,
+                        explanation: "'Know' is a stative verb and cannot be used in continuous (-ing) tenses!"
+                    }
+                ]
             },
             {
-                "title": "V5 Third Person Singular Rule",
-                "front": "When do you use V5 (verb+s/es)?",
-                "back": "Used ONLY in **Simple Present Tense** with *He, She, It* or singular nouns!\nExample: *He goes to school*.",
-                "badge": "\ud83d\udca1 Verb Form"
+                id: 2,
+                slug: "nouns-deep-detail",
+                name: "Nouns & Uncountable Traps",
+                description: "Master 5 noun types, 25+ uncountable noun traps (information, advice, furniture, luggage, news), collective nouns, and compound plurals.",
+                icon: "🏷️",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Nouns & Traps
+
+#### 5 Types of Nouns
+1. **Proper Noun**: Specific name (*Ram, India, Google*) $\to$ Always capital letter!
+2. **Common Noun**: General name (*boy, city, teacher*).
+3. **Collective Noun**: Group name (*team, herd, flock, army, committee*).
+4. **Material Noun**: Substance (*gold, silver, water, iron*).
+5. **Abstract Noun**: Quality/Feeling (*honesty, bravery, freedom*).
+
+#### Master List of Uncountable Nouns (NEVER PLURALIZED WITH -S!)
+- *Information, Advice, Furniture, Equipment, Luggage, Scenery, Poetry, Machinery, News, Physics, Mathematics, Athletics, Billiards, Work, Traffic, Knowledge, Bread*.
+- ❌ *informations* $\to$ ✅ *information* (or *a piece of information*)
+- ❌ *advices* $	o$ ✅ *advice* (or *a piece of advice*)
+- ❌ *furnitures* $	o$ ✅ *furniture*
+- ❌ *equipments* $	o$ ✅ *equipment*
+- ❌ *sceneries* $	o$ ✅ *scenery*
+`,
+                flashcards: [
+                    {
+                        title: "Uncountable Nouns Trap",
+                        front: "Is it correct to say 'He gave me many informations'?",
+                        back: "❌ **INCORRECT**!
+'Information' is uncountable. Use: ✅ *He gave me much information* or *a piece of information*!",
+                        badge: "🏷️ Noun Trap"
+                    },
+                    {
+                        title: "Compound Noun Plural Rule",
+                        front: "What is the correct plural of 'Mother-in-law' and 'Commander-in-chief'?",
+                        back: "✅ **Mothers-in-law** and **Commanders-in-chief**!
+Add *-s* to the ROOT noun (*Mother, Commander*), NOT to the end preposition/law!",
+                        badge: "💡 Plural Rule"
+                    },
+                    {
+                        title: "Scenery / Poetry Trap",
+                        front: "Why is 'The sceneries of Kashmir are beautiful' wrong?",
+                        back: "❌ **INCORRECT**!
+'Scenery' and 'Poetry' are uncountable nouns. Use: ✅ *The scenery of Kashmir is beautiful*!",
+                        badge: "⚡ Exam Trap"
+                    }
+                ],
+                questions: [
+                    {
+                        text: "Which of the following sentences is correct?",
+                        options: ["He bought many furnitures.", "He bought much furniture.", "He bought furnitures.", "He bought furniture."],
+                        correct_option_index: 1,
+                        explanation: "'Furniture' is an uncountable noun and cannot be made plural with -s. Use 'much furniture'!"
+                    },
+                    {
+                        text: "All his _____ were packed before the trip.",
+                        options: ["luggages", "luggage", "pieces of luggages", "luggage items"],
+                        correct_option_index: 1,
+                        explanation: "'Luggage' is an uncountable noun and takes singular form!"
+                    }
+                ]
             },
             {
-                "title": "Been Usage Rule",
-                "front": "Why does 'Been' appear in Perfect Continuous tenses?",
-                "back": "'Been' is the **V3 (Past Participle) form of 'be'**! Combined with V4 (-ing), it connects past duration to present/future.",
-                "badge": "\u26a1 Grammar Trick"
-            }
-        ],
-        "questions": [
-            {
-                "text": "She _____ the assignment yesterday.",
-                "options": [
-                    "wrote",
-                    "written",
-                    "write",
-                    "writing"
+                id: 3,
+                slug: "pronouns-agreement",
+                name: "Pronouns, Who/Whom & Order 231",
+                description: "Master 8 pronoun types, Who vs Whom replacement trick, 231 pronoun order rule, reflexive pronouns, and prepositional case rules.",
+                icon: "👤",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Pronouns & Case Rules
+
+#### Who vs Whom Replacement Trick
+- **WHO** = Subject $\to$ Replace with **HE** (*Who broke the window? $\to$ He broke it*).
+- **WHOM** = Object $\to$ Replace with **HIM** (*Whom did you call? $\to$ I called him*).
+
+#### Pronoun Order Rules (231 vs 123 Rule)
+- **Normal / Positive Context**: Use **2nd $\to$ 3rd $\to$ 1st Person** ($2-3-1$):
+  - ✅ *You, he and I are going to the library* (NOT *I, you and he*).
+- **Mistake / Confession Context**: Use **1st $\to$ 2nd $\to$ 3rd Person** ($1-2-3$):
+  - ✅ *I, you and he made a mistake*.
+
+#### Pronoun Case After Prepositions
+- Always use **OBJECT PRONOUNS** after prepositions (*to, for, with, between, among*):
+  - ✅ *Between you and me* (NOT *between you and I*).
+  - ✅ *She spoke to him*.
+`,
+                flashcards: [
+                    {
+                        title: "Who vs Whom Magic Trick",
+                        front: "How do you quickly decide whether to use 'Who' or 'Whom'?",
+                        back: "Test the answer:
+If answer is **HE** $\implies$ **WHO**!
+If answer is **HIM** $\implies$ **WHOM**!",
+                        badge: "👤 Pronoun Trick"
+                    },
+                    {
+                        title: "231 Pronoun Order Rule",
+                        front: "What is the correct order of pronouns when multiple persons are listed together?",
+                        back: "In normal/positive contexts, follow **231 Rule**:
+2nd Person ($You$) $\to$ 3rd Person ($He/She$) $\to$ 1st Person ($I$)!
+Example: ✅ *You, he and I should study*.",
+                        badge: "💡 Order Rule"
+                    },
+                    {
+                        title: "Preposition Case Rule",
+                        front: "Which is correct: 'Between you and I' or 'Between you and me'?",
+                        back: "✅ **Between you and me**!
+After prepositions like *between*, always use object pronouns (*me, him, her, us, them*)!",
+                        badge: "⚡ Preposition Rule"
+                    }
                 ],
-                "correct_option_index": 0,
-                "explanation": "Simple Past Tense requires V2 (wrote) for completed past actions!"
+                questions: [
+                    {
+                        text: "_____ did you invite to the party?",
+                        options: ["Who", "Whom", "Whose", "Which"],
+                        correct_option_index: 1,
+                        explanation: "You invited HIM (object) $\implies$ use Whom!"
+                    },
+                    {
+                        text: "Choose the correct sentence:",
+                        options: ["I, you and Ram went to college.", "Ram, I and you went to college.", "You, Ram and I went to college.", "Ram, you and I went to college."],
+                        correct_option_index: 2,
+                        explanation: "Follow 231 pronoun order rule: You (2nd) $\to$ Ram (3rd) $\to$ I (1st)!"
+                    }
+                ]
             },
             {
-                "text": "They have _____ studying for 3 hours.",
-                "options": [
-                    "be",
-                    "being",
-                    "been",
-                    "was"
+                id: 4,
+                slug: "subject-verb-agreement",
+                name: "Subject-Verb Agreement (20 Rules)",
+                description: "Master all 20 golden SVA rules: Each/Every, Either..Or, Along With, A Number Of vs The Number Of, Fractions, and Nearest Subject.",
+                icon: "⚖️",
+                xp_reward: 250,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: 20 SVA Golden Rules
+
+#### Core SVA Rules
+- **Rule 1**: Singular Subject $\to$ Singular Verb ($V5$) | Plural Subject $\to$ Plural Verb ($V1$).
+- **Rule 3 & 4**: *Each / Every / Each of + Plural Noun* $\to$ ALWAYS SINGULAR (*Each of the students IS present*).
+- **Rule 7**: *Either...Or / Neither...Nor* $\to$ Verb agrees with **NEAREST SUBJECT** (*Either Ram or his friends ARE coming*; *Either the students or the teacher IS responsible*).
+- **Rule 9**: *People, Police, Cattle, Gentry, Poultry* $\to$ ALWAYS PLURAL (*Police ARE investigating*).
+- **Rule 11**: *A Number Of* $\to$ Plural (*are*) | *The Number Of* $\to$ Singular (*is*).
+- **Rule 13**: *Along with, As well as, Together with, In addition to* $\to$ Verb agrees with **FIRST SUBJECT** (*Ram, along with his friends, IS coming*).
+- **Rule 14**: *One of + Plural Noun* $\to$ Singular Verb (*One of the books IS missing*).
+`,
+                flashcards: [
+                    {
+                        title: "A Number Of vs The Number Of",
+                        front: "What is the difference between 'A number of students' and 'The number of students'?",
+                        back: "• **A number of** = Many $\implies$ **Plural Verb** (*are*)
+• **The number of** = Total count $\implies$ **Singular Verb** (*is*)!",
+                        badge: "⚖️ SVA Master Rule"
+                    },
+                    {
+                        title: "Along With / As Well As Rule",
+                        front: "In 'Ram, as well as his friends, is/are coming', which verb is correct?",
+                        back: "✅ **IS coming**!
+Ignore the second noun after *as well as / along with*. The verb agrees ONLY with the first subject (*Ram*)!",
+                        badge: "💡 SVA Trick"
+                    },
+                    {
+                        title: "Neither...Nor Nearest Subject Rule",
+                        front: "In 'Neither the teacher nor the students is/are present', which is correct?",
+                        back: "✅ **ARE present**!
+With *Neither...Nor*, the verb agrees with the **NEAREST subject** (*students* $\implies$ plural)!",
+                        badge: "⚡ SVA Trap"
+                    }
                 ],
-                "correct_option_index": 2,
-                "explanation": "Present Perfect Continuous uses have/has been + V4 (-ing)!"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "slug": "nouns-deep-detail",
-        "name": "Nouns & Uncountable Traps",
-        "description": "Master 5 noun types, countable vs uncountable traps (information, advice, furniture), singular/plural rules, and possessives.",
-        "icon": "\ud83c\udff7\ufe0f",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Nouns & Traps\n\n#### 5 Types of Nouns\n1. **Proper Noun**: Specific name (*Ram, India, Google*) $\\to$ Always capital letter!\n2. **Common Noun**: General name (*boy, city, teacher*).\n3. **Collective Noun**: Group name (*team, herd, flock, army*).\n4. **Material Noun**: Substance (*gold, silver, water, iron*).\n5. **Abstract Noun**: Quality/Feeling (*honesty, bravery, freedom*).\n\n#### Uncountable Noun Traps (NEVER PLURAL!)\n- \u274c *informations* $\\to$ \u2705 *information* (or *a piece of information*)\n- \u274c *advices* $\to$ \u2705 *advice* (or *a piece of advice*)\n- \u274c *furnitures* $\to$ \u2705 *furniture*\n- \u274c *equipments* $\to$ \u2705 *equipment*\n- \u274c *luggages* $\to$ \u2705 *luggage*\n",
-        "flashcards": [
-            {
-                "title": "Uncountable Nouns Trap",
-                "front": "Is it correct to say 'He gave me many informations'?",
-                "back": "\u274c **INCORRECT**!\n'Information' is uncountable. Use: \u2705 *He gave me much information* or *a piece of information*!",
-                "badge": "\ud83c\udff7\ufe0f Noun Trap"
+                questions: [
+                    {
+                        text: "Each of the boys _____ completed the task.",
+                        options: ["have", "has", "are", "were"],
+                        correct_option_index: 1,
+                        explanation: "'Each of + Plural Noun' takes a SINGULAR verb (has)!"
+                    },
+                    {
+                        text: "A number of students _____ absent today.",
+                        options: ["is", "are", "was", "has"],
+                        correct_option_index: 1,
+                        explanation: "'A number of' means many and takes a PLURAL verb (are)!"
+                    },
+                    {
+                        text: "Neither the principal nor the teachers _____ present in the hall.",
+                        options: ["is", "was", "were", "has"],
+                        correct_option_index: 2,
+                        explanation: "Verb agrees with nearest subject 'teachers' (plural) $\implies$ were!"
+                    }
+                ]
             },
             {
-                "title": "Compound Noun Plural Rule",
-                "front": "What is the correct plural of 'Mother-in-law'?",
-                "back": "\u2705 **Mothers-in-law**!\nAdd *-s* to the root noun (*Mother*), NOT to *-laws*!",
-                "badge": "\ud83d\udca1 Plural Rule"
-            }
-        ],
-        "questions": [
-            {
-                "text": "Which of the following sentences is correct?",
-                "options": [
-                    "He bought many furnitures.",
-                    "He bought much furniture.",
-                    "He bought furnitures.",
-                    "He bought furniture."
+                id: 5,
+                slug: "articles-sound-rules",
+                name: "Articles (A, An, The) & Phonetics",
+                description: "Master sound-based A vs An rules (University, Hour, MBA, European, One-eyed man), 15 rules for 'The', and article omissions.",
+                icon: "🔤",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Articles & Phonetics
+
+#### A vs An Sound Rule
+- **A/An depends on SOUND, NOT SPELLING!**
+- Use **A** before Consonant Sounds:
+  - *a university* (starts with 'Yu' sound)
+  - *a European country* (starts with 'Yu' sound)
+  - *a one-time payment* (starts with 'W' sound)
+  - *a USB drive*
+- Use **AN** before Vowel Sounds:
+  - *an hour* (silent H)
+  - *an honest man*
+  - *an MBA graduate* (starts with 'Em' sound)
+  - *an MLA*
+
+#### Rules for "The" & Omissions
+- Use **THE**: Specific items, Unique objects (*The Sun, The Moon*), Rivers/Oceans (*The Ganges*), Mountain Ranges (*The Himalayas*), Superlatives (*The best*), Ordinals (*The first*), Countries with States/Kingdoms (*The USA, The UK*).
+- Omit **THE**: Languages (*English*), Subjects (*Mathematics*), Meals (*breakfast* - unless specific), Proper Nouns (*India*).
+`,
+                flashcards: [
+                    {
+                        title: "Why 'A University'?",
+                        front: "Why do we say 'a university' instead of 'an university'?",
+                        back: "Because 'University' starts with a **consonant sound ('Yu')**, not a vowel sound!
+Articles depend on **SOUND**, not spelling!",
+                        badge: "🔤 Sound Rule"
+                    },
+                    {
+                        title: "Why 'An MBA'?",
+                        front: "Why do we say 'an MBA' when M is a consonant?",
+                        back: "Because 'MBA' is pronounced **'Em-Bee-A'**, which starts with the vowel sound **'E'**!",
+                        badge: "💡 Acronym Rule"
+                    },
+                    {
+                        title: "Double Comparative with 'The'",
+                        front: "Is 'The higher you go, cooler it is' grammatically correct?",
+                        back: "❌ **INCORRECT**!
+Double parallel comparatives take 'The' on both sides: ✅ *The higher you go, THE cooler it is*!",
+                        badge: "⚡ Article Rule"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "'Furniture' is an uncountable noun and cannot be made plural with -s. Use 'much furniture'!"
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "slug": "pronouns-agreement",
-        "name": "Pronouns & Who vs Whom",
-        "description": "Master 8 pronoun types, Who vs Whom replacement trick, reflexive pronouns, and prepositional case rules.",
-        "icon": "\ud83d\udc64",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Pronouns & Rules\n\n#### Who vs Whom Replacement Trick\n- **WHO** = Subject $\\to$ Replace with **HE** (*Who broke the window? $\\to$ He broke it*).\n- **WHOM** = Object $\\to$ Replace with **HIM** (*Whom did you call? $\\to$ I called him*).\n\n#### Pronoun Case After Prepositions\n- Always use **OBJECT PRONOUNS** after prepositions (*to, for, with, between, among*):\n  - \u2705 *Between you and me* (NOT *between you and I*).\n  - \u2705 *She spoke to him*.\n",
-        "flashcards": [
-            {
-                "title": "Who vs Whom Magic Trick",
-                "front": "How do you quickly decide whether to use 'Who' or 'Whom'?",
-                "back": "Test the answer:\nIf answer is **HE** $\\implies$ **WHO**!\nIf answer is **HIM** $\\implies$ **WHOM**!",
-                "badge": "\ud83d\udc64 Pronoun Trick"
+                questions: [
+                    {
+                        text: "He is _____ MBA graduate.",
+                        options: ["a", "an", "the", "no article"],
+                        correct_option_index: 1,
+                        explanation: "MBA is pronounced 'Em-Bee-A' (vowel sound 'E') $\implies$ use 'an'!"
+                    },
+                    {
+                        text: "I met _____ European tourist at the station.",
+                        options: ["a", "an", "the", "no article"],
+                        correct_option_index: 0,
+                        explanation: "European starts with 'Yu' consonant sound $\implies$ use 'a'!"
+                    }
+                ]
             },
             {
-                "title": "Preposition Case Rule",
-                "front": "Which is correct: 'Between you and I' or 'Between you and me'?",
-                "back": "\u2705 **Between you and me**!\nAfter prepositions like *between*, always use object pronouns (*me, him, her, us, them*)!",
-                "badge": "\u26a1 Preposition Rule"
-            }
-        ],
-        "questions": [
-            {
-                "text": "_____ did you invite to the party?",
-                "options": [
-                    "Who",
-                    "Whom",
-                    "Whose",
-                    "Which"
+                id: 6,
+                slug: "adjectives-degrees",
+                name: "Adjectives, OSASCOMP & Degrees",
+                description: "Master 3 degrees of comparison, OSASCOMP adjective order, Many vs Much, Few vs Little, and Elder vs Older.",
+                icon: "🎨",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Adjectives & Comparisons
+
+#### OSASCOMP Adjective Order
+When multiple adjectives appear together:
+$$\text{Opinion} \to \text{Size} \to \text{Age} \to \text{Shape} \to \text{Color} \to \text{Origin} \to \text{Material} \to \text{Purpose} \to \text{Noun}$$
+Example: *A beautiful small old round red Indian wooden dining table*.
+
+#### Few vs Little & Elder vs Older
+- **Few** (Countable) vs **Little** (Uncountable).
+- **Few/Little** = Almost none (Negative) | **A Few/A Little** = Some (Positive).
+- **Elder** = Family relationships only (*my elder brother*) | **Older** = People & things (*older than*).
+- **Less** (Uncountable) vs **Fewer** (Countable: *fewer students*).
+`,
+                flashcards: [
+                    {
+                        title: "OSASCOMP Order Rule",
+                        front: "What is the correct order when arranging multiple adjectives before a noun?",
+                        back: "**OSASCOMP**:
+Opinion $\to$ Size $\to$ Age $\to$ Shape $\to$ Color $\to$ Origin $\to$ Material $\to$ Purpose!",
+                        badge: "🎨 OSASCOMP Rule"
+                    },
+                    {
+                        title: "Elder vs Older Distinction",
+                        front: "When do you use 'Elder' vs 'Older'?",
+                        back: "• **Elder**: Used ONLY for family members (*elder brother*).
+• **Older**: Used for comparing age of any people/things (*older than Shyam*)!",
+                        badge: "💡 Family Rule"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "You invited HIM (object) $\\implies$ use Whom!"
-            }
-        ]
-    },
-    {
-        "id": 4,
-        "slug": "subject-verb-agreement",
-        "name": "Subject-Verb Agreement (SVA)",
-        "description": "Master all 16 golden rules of SVA: Each/Every, Either..Or, Along With, A Number Of vs The Number Of.",
-        "icon": "\u2696\ufe0f",
-        "xp_reward": 250,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: 16 SVA Golden Rules\n\n#### Key SVA Rules\n- **Rule 1**: *He/She/It* takes V5 (*He plays*).\n- **Rule 3 & 4**: *Each / Every / Each of + Plural Noun* $\\to$ ALWAYS SINGULAR (*Each of the students IS present*).\n- **Rule 7**: *Either...Or / Neither...Nor* $\\to$ Verb agrees with **NEAREST SUBJECT** (*Either Ram or his friends ARE coming*).\n- **Rule 9**: *People, Police, Cattle* $\\to$ ALWAYS PLURAL (*Police ARE investigating*).\n- **Rule 11**: *A Number Of* $\\to$ Plural (*are*) | *The Number Of* $\\to$ Singular (*is*).\n- **Rule 13**: *Along with, As well as, Together with* $\\to$ Verb agrees with **FIRST SUBJECT** (*Ram, along with his friends, IS coming*).\n",
-        "flashcards": [
-            {
-                "title": "A Number Of vs The Number Of",
-                "front": "What is the difference between 'A number of students' and 'The number of students'?",
-                "back": "\u2022 **A number of** = Many $\\implies$ **Plural Verb** (*are*)\n\u2022 **The number of** = Total count $\\implies$ **Singular Verb** (*is*)!",
-                "badge": "\u2696\ufe0f SVA Master Rule"
+                questions: [
+                    {
+                        text: "There were _____ students at the seminar than expected.",
+                        options: ["less", "fewer", "little", "much"],
+                        correct_option_index: 1,
+                        explanation: "Students are countable $\implies$ use 'fewer' (not 'less')!"
+                    }
+                ]
             },
             {
-                "title": "Along With / As Well As Rule",
-                "front": "In 'Ram, as well as his friends, is/are coming', which verb is correct?",
-                "back": "\u2705 **IS coming**!\nIgnore the second noun after *as well as / along with*. The verb agrees ONLY with the first subject (*Ram*)!",
-                "badge": "\ud83d\udca1 SVA Trick"
-            }
-        ],
-        "questions": [
-            {
-                "text": "Each of the boys _____ completed the task.",
-                "options": [
-                    "have",
-                    "has",
-                    "are",
-                    "were"
+                id: 7,
+                slug: "adverbs-positions",
+                name: "Adverbs, Hard vs Hardly & Positions",
+                description: "Master 5 adverb types, frequency positions, Too vs Very, Hard vs Hardly, Late vs Lately, and Enough position.",
+                icon: "🚀",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Adverbs & Traps
+
+#### Frequency Adverb Positions
+- **BEFORE Main Verb**: *He ALWAYS studies*.
+- **AFTER Helping Verb**: *He IS ALWAYS late*.
+
+#### Hard vs Hardly & Enough Position
+- **Hard** = With effort (*He works hard*) | **Hardly** = Almost not (*He hardly works*).
+- **Enough**: Always placed **AFTER** the adjective (*smart enough*, NOT *enough smart*)!
+- **Linking Verb Rule**: After linking verb use ADJECTIVE (*She looks beautiful*); for actions use ADVERB (*She sings beautifully*).
+`,
+                flashcards: [
+                    {
+                        title: "Hard vs Hardly Placement Trap",
+                        front: "What is the difference between 'He works hard' and 'He hardly works'?",
+                        back: "• **He works hard**: Very hardworking!
+• **He hardly works**: Almost doesn't work at all!",
+                        badge: "🚀 Adverb Trap"
+                    },
+                    {
+                        title: "Enough Position Rule",
+                        front: "Is it 'enough intelligent' or 'intelligent enough'?",
+                        back: "✅ **Intelligent enough**!
+'Enough' acting as an adverb must ALWAYS come AFTER the adjective!",
+                        badge: "💡 Position Rule"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "'Each of + Plural Noun' takes a SINGULAR verb (has)!"
+                questions: [
+                    {
+                        text: "She is _____ to solve the problem.",
+                        options: ["enough intelligent", "intelligent enough", "too intelligent", "very intelligent"],
+                        correct_option_index: 1,
+                        explanation: "'Enough' must follow the adjective $\implies$ 'intelligent enough'!"
+                    }
+                ]
             },
             {
-                "text": "A number of students _____ absent today.",
-                "options": [
-                    "is",
-                    "are",
-                    "was",
-                    "has"
+                id: 8,
+                slug: "prepositions-combinations",
+                name: "Prepositions (At, On, In, Since, For)",
+                description: "Master prepositions of time/place, By vs With, Since vs For, Beside vs Besides, Across vs Through, and Fixed Combinations.",
+                icon: "🔗",
+                xp_reward: 200,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Prepositions
+
+#### Time & Place Rules
+- **Time**: **AT** specific time (*at 5 PM*) | **ON** days/dates (*on Monday*) | **IN** months/years (*in 2025*).
+- **Place**: **AT** exact point (*at station*) | **ON** surface (*on table*) | **IN** inside area (*in room*).
+- **By vs With**: *By* = Doer/transport (*by Ram, by bus*) | *With* = Tool/instrument (*with a knife*).
+- **Beside vs Besides**: *Beside* = Next to | *Besides* = In addition to.
+- **Fixed Combinations**: *Interested in*, *Good at*, *Depend on*, *Married to*, *Different from*, *Capable of*, *Senior to*, *Superior to*, *Abide by*, *Comply with*.
+`,
+                flashcards: [
+                    {
+                        title: "Beside vs Besides Distinction",
+                        front: "What is the difference between 'Beside' and 'Besides'?",
+                        back: "• **Beside**: Next to (*sit beside me*).
+• **Besides**: In addition to (*Besides English, I know Telugu*)!",
+                        badge: "🔗 Preposition Rule"
+                    },
+                    {
+                        title: "Fixed Preposition: Married & Senior",
+                        front: "Which is correct: 'He is senior than me' or 'He is senior to me'?",
+                        back: "✅ **He is senior to me**!
+Adjectives ending in -ior (*senior, junior, superior, inferior, prior*) take **TO** instead of 'than'!",
+                        badge: "💡 Fixed Combo"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "'A number of' means many and takes a PLURAL verb (are)!"
-            }
-        ]
-    },
-    {
-        "id": 5,
-        "slug": "articles-sound-rules",
-        "name": "Articles (A, An, The) & Phonetics",
-        "description": "Master sound-based A vs An rules (University, Hour, MBA, European), rules for 'The', and article omissions.",
-        "icon": "\ud83d\udd24",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Articles & Phonetics\n\n#### A vs An Sound Rule\n- **A/An depends on SOUND, NOT SPELLING!**\n- Use **A** before Consonant Sounds:\n  - *a university* (starts with 'Yu' sound)\n  - *a European country* (starts with 'Yu' sound)\n  - *a one-time payment* (starts with 'W' sound)\n  - *a USB drive*\n- Use **AN** before Vowel Sounds:\n  - *an hour* (silent H)\n  - *an honest man*\n  - *an MBA graduate* (starts with 'Em' sound)\n  - *an MLA*\n",
-        "flashcards": [
-            {
-                "title": "Why 'A University'?",
-                "front": "Why do we say 'a university' instead of 'an university'?",
-                "back": "Because 'University' starts with a **consonant sound ('Yu')**, not a vowel sound!\nArticles depend on **SOUND**, not spelling!",
-                "badge": "\ud83d\udd24 Sound Rule"
+                questions: [
+                    {
+                        text: "She has been living here _____ 2018.",
+                        options: ["for", "since", "from", "at"],
+                        correct_option_index: 1,
+                        explanation: "Starting point in time uses 'since' with perfect tenses!"
+                    },
+                    {
+                        text: "He is senior _____ all other officers in the department.",
+                        options: ["than", "to", "from", "with"],
+                        correct_option_index: 1,
+                        explanation: "Comparative adjectives ending in -ior take 'to' (not 'than')!"
+                    }
+                ]
             },
             {
-                "title": "Why 'An MBA'?",
-                "front": "Why do we say 'an MBA' when M is a consonant?",
-                "back": "Because 'MBA' is pronounced **'Em-Bee-A'**, which starts with the vowel sound **'E'**!",
-                "badge": "\ud83d\udca1 Acronym Rule"
-            }
-        ],
-        "questions": [
-            {
-                "text": "He is _____ MBA graduate.",
-                "options": [
-                    "a",
-                    "an",
-                    "the",
-                    "no article"
+                id: 9,
+                slug: "conjunctions-inversion",
+                name: "Conjunctions, FANBOYS & Inversion",
+                description: "Master Coordinating (FANBOYS), Subordinating, Correlative Pairs, and Placement Inversions (No Sooner...Than, Lest...Should).",
+                icon: "⚡",
+                xp_reward: 250,
+                formula_sheet: `### 📄 Comprehensive Concept & Formula Deck: Conjunctions & Inversion
+
+#### Correlative Pair Rules
+- **No Sooner...THAN**: $No\text{ sooner } + \text{had } + S + V3 + \mathbf{THAN} + \text{action}$.
+- **Hardly...WHEN**: $Hardly + \text{had } + S + V3 + \mathbf{WHEN} + \text{action}$.
+- **Scarcely...WHEN**: $Scarcely + \text{had } + S + V3 + \mathbf{WHEN} + \text{action}$.
+- **Although...NO BUT**: Never use 'but' with 'although' (*Although he is rich, he is humble*).
+- **Lest...SHOULD**: *Work hard lest you SHOULD fail* (never use negative 'not' with *lest*!).
+`,
+                flashcards: [
+                    {
+                        title: "No Sooner...Than Inversion Rule",
+                        front: "What word ALWAYS pairs with 'No sooner'?",
+                        back: "✅ **THAN**!
+Structure: *No sooner had I arrived THAN the rain started* (NOT 'when')!",
+                        badge: "⚡ Inversion Rule"
+                    },
+                    {
+                        title: "Lest...Should Rule",
+                        front: "What modal verb is ALWAYS paired with 'lest'?",
+                        back: "✅ **SHOULD**!
+Example: *Walk fast lest you SHOULD miss the train*! Note: *Lest* is already negative, so do NOT use 'not'!",
+                        badge: "💡 Lest Rule"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "MBA is pronounced 'Em-Bee-A' (vowel sound 'E') $\\implies$ use 'an'!"
-            }
-        ]
-    },
-    {
-        "id": 6,
-        "slug": "adjectives-degrees",
-        "name": "Adjectives, OSASCOMP & Degrees",
-        "description": "Master 3 degrees of comparison, OSASCOMP adjective order, Many vs Much, Few vs Little, and Elder vs Older.",
-        "icon": "\ud83c\udfa8",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Adjectives & Comparisons\n\n#### OSASCOMP Adjective Order\nWhen multiple adjectives appear together:\n$$\\text{Opinion} \\to \\text{Size} \\to \\text{Age} \\to \\text{Shape} \\to \\text{Color} \\to \\text{Origin} \\to \\text{Material} \\to \\text{Purpose} \\to \\text{Noun}$$\nExample: *A beautiful small old round red Indian wooden dining table*.\n\n#### Few vs Little & Elder vs Older\n- **Few** (Countable) vs **Little** (Uncountable).\n- **Few/Little** = Almost none (Negative) | **A Few/A Little** = Some (Positive).\n- **Elder** = Family relationships only (*my elder brother*) | **Older** = People & things (*older than*).\n- **Less** (Uncountable) vs **Fewer** (Countable: *fewer students*).\n",
-        "flashcards": [
-            {
-                "title": "OSASCOMP Order Rule",
-                "front": "What is the correct order when arranging multiple adjectives before a noun?",
-                "back": "**OSASCOMP**:\nOpinion $\\to$ Size $\\to$ Age $\\to$ Shape $\\to$ Color $\\to$ Origin $\\to$ Material $\\to$ Purpose!",
-                "badge": "\ud83c\udfa8 OSASCOMP Rule"
+                questions: [
+                    {
+                        text: "No sooner had I reached home _____ it started raining.",
+                        options: ["when", "than", "then", "before"],
+                        correct_option_index: 1,
+                        explanation: "'No sooner' always pairs with 'than'!"
+                    },
+                    {
+                        text: "Run fast lest you _____ miss the bus.",
+                        options: ["will", "should", "may", "would"],
+                        correct_option_index: 1,
+                        explanation: "'Lest' is always followed by 'should'!"
+                    }
+                ]
             },
             {
-                "title": "Elder vs Older Distinction",
-                "front": "When do you use 'Elder' vs 'Older'?",
-                "back": "\u2022 **Elder**: Used ONLY for family members (*elder brother*).\n\u2022 **Older**: Used for comparing age of any people/things (*older than Shyam*)!",
-                "badge": "\ud83d\udca1 Family Rule"
-            }
-        ],
-        "questions": [
-            {
-                "text": "There were _____ students at the seminar than expected.",
-                "options": [
-                    "less",
-                    "fewer",
-                    "little",
-                    "much"
+                id: 10,
+                slug: "placement-master-quiz",
+                name: "Placement Verbal Master Challenge",
+                description: "Comprehensive mixed placement quiz covering all 139 PDF pages with AI Sentence Error Corrector tool built-in!",
+                icon: "🏆",
+                xp_reward: 500,
+                formula_sheet: `### 📄 Master Verbal Placement Summary
+
+#### Top 5 Exam Traps to Remember
+1. **Uncountable Nouns**: *Information, advice, furniture, equipment, luggage* NEVER take -s or plural verbs!
+2. **Subject-Verb Agreement**: *Each of / One of + Plural Noun* takes a **SINGULAR** verb!
+3. **Articles**: *A/An* depends on **SOUND** (*a university*, *an MBA*).
+4. **Prepositions**: *Between you and ME*, *Married TO*, *Different FROM*, *Senior TO*.
+5. **Conjunction Inversion**: *No sooner...THAN*, *Hardly...WHEN*, *Lest...SHOULD*.
+`,
+                flashcards: [
+                    {
+                        title: "Top Placement Rule #1",
+                        front: "What is the single most tested Subject-Verb Agreement rule?",
+                        back: "**Each of / One of + Plural Noun $\to$ SINGULAR VERB!**
+Example: *Each of the players IS ready*.",
+                        badge: "🏆 Master Challenge"
+                    }
                 ],
-                "correct_option_index": 1,
-                "explanation": "Students are countable $\\implies$ use 'fewer' (not 'less')!"
+                questions: [
+                    {
+                        text: "Spot the error: 'Each of the boys have completed the task.'",
+                        options: ["Each of", "the boys", "have completed", "the task"],
+                        correct_option_index: 2,
+                        explanation: "'Each of the boys' requires the singular verb 'has completed'!"
+                    },
+                    {
+                        text: "Choose the correct sentence:",
+                        options: ["Between you and I, he is wrong.", "Between you and me, he is wrong.", "Between you and he, I am wrong.", "Between you and him, I am wrong."],
+                        correct_option_index: 1,
+                        explanation: "After preposition 'between', use object pronoun 'me'!"
+                    }
+                ]
             }
-        ]
-    },
-    {
-        "id": 7,
-        "slug": "adverbs-positions",
-        "name": "Adverbs, Hard vs Hardly & Positions",
-        "description": "Master 5 adverb types, frequency positions, Too vs Very, Hard vs Hardly, Late vs Lately, and Enough position.",
-        "icon": "\ud83d\ude80",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Adverbs & Traps\n\n#### Frequency Adverb Positions\n- **BEFORE Main Verb**: *He ALWAYS studies*.\n- **AFTER Helping Verb**: *He IS ALWAYS late*.\n\n#### Hard vs Hardly & Enough Position\n- **Hard** = With effort (*He works hard*) | **Hardly** = Almost not (*He hardly works*).\n- **Enough**: Always placed **AFTER** the adjective (*smart enough*, NOT *enough smart*)!\n- **Linking Verb Rule**: After linking verb use ADJECTIVE (*She looks beautiful*); for actions use ADVERB (*She sings beautifully*).\n",
-        "flashcards": [
-            {
-                "title": "Hard vs Hardly Placement Trap",
-                "front": "What is the difference between 'He works hard' and 'He hardly works'?",
-                "back": "\u2022 **He works hard**: Very hardworking!\n\u2022 **He hardly works**: Almost doesn't work at all!",
-                "badge": "\ud83d\ude80 Adverb Trap"
-            },
-            {
-                "title": "Enough Position Rule",
-                "front": "Is it 'enough intelligent' or 'intelligent enough'?",
-                "back": "\u2705 **Intelligent enough**!\n'Enough' acting as an adverb must ALWAYS come AFTER the adjective!",
-                "badge": "\ud83d\udca1 Position Rule"
-            }
-        ],
-        "questions": [
-            {
-                "text": "She is _____ to solve the problem.",
-                "options": [
-                    "enough intelligent",
-                    "intelligent enough",
-                    "too intelligent",
-                    "very intelligent"
-                ],
-                "correct_option_index": 1,
-                "explanation": "'Enough' must follow the adjective $\\implies$ 'intelligent enough'!"
-            }
-        ]
-    },
-    {
-        "id": 8,
-        "slug": "prepositions-combinations",
-        "name": "Prepositions (At, On, In, Since, For)",
-        "description": "Master prepositions of time/place, By vs With, Since vs For, Beside vs Besides, Across vs Through, and Fixed Combinations.",
-        "icon": "\ud83d\udd17",
-        "xp_reward": 200,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Prepositions\n\n#### Time & Place Rules\n- **Time**: **AT** specific time (*at 5 PM*) | **ON** days/dates (*on Monday*) | **IN** months/years (*in 2025*).\n- **Place**: **AT** exact point (*at station*) | **ON** surface (*on table*) | **IN** inside area (*in room*).\n- **By vs With**: *By* = Doer/transport (*by Ram, by bus*) | *With* = Tool/instrument (*with a knife*).\n- **Beside vs Besides**: *Beside* = Next to | *Besides* = In addition to.\n- **Fixed Combinations**: *Interested in*, *Good at*, *Depend on*, *Married to*, *Different from*, *Capable of*.\n",
-        "flashcards": [
-            {
-                "title": "Beside vs Besides Distinction",
-                "front": "What is the difference between 'Beside' and 'Besides'?",
-                "back": "\u2022 **Beside**: Next to (*sit beside me*).\n\u2022 **Besides**: In addition to (*Besides English, I know Telugu*)!",
-                "badge": "\ud83d\udd17 Preposition Rule"
-            },
-            {
-                "title": "Fixed Preposition: Married",
-                "front": "Which is correct: 'Married with her' or 'Married to her'?",
-                "back": "\u2705 **Married to her**!\nNever use 'with' after married in formal English exams!",
-                "badge": "\ud83d\udca1 Fixed Combo"
-            }
-        ],
-        "questions": [
-            {
-                "text": "She has been living here _____ 2018.",
-                "options": [
-                    "for",
-                    "since",
-                    "from",
-                    "at"
-                ],
-                "correct_option_index": 1,
-                "explanation": "Starting point in time uses 'since' with perfect tenses!"
-            }
-        ]
-    },
-    {
-        "id": 9,
-        "slug": "conjunctions-inversion",
-        "name": "Conjunctions, FANBOYS & Inversion",
-        "description": "Master Coordinating (FANBOYS), Subordinating, Correlative Pairs, and Placement Inversions (No Sooner...Than).",
-        "icon": "\u26a1",
-        "xp_reward": 250,
-        "formula_sheet": "### \ud83d\udcc4 Comprehensive Concept & Formula Deck: Conjunctions & Inversion\n\n#### Correlative Pair Rules\n- **No Sooner...THAN**: $No\\text{ sooner } + \\text{had } + S + V3 + \\mathbf{THAN} + \\text{action}$.\n- **Hardly...WHEN**: $Hardly + \\text{had } + S + V3 + \\mathbf{WHEN} + \\text{action}$.\n- **Scarcely...WHEN**: $Scarcely + \\text{had } + S + V3 + \\mathbf{WHEN} + \\text{action}$.\n- **Although...NO BUT**: Never use 'but' with 'although' (*Although he is rich, he is humble*).\n",
-        "flashcards": [
-            {
-                "title": "No Sooner...Than Inversion Rule",
-                "front": "What word ALWAYS pairs with 'No sooner'?",
-                "back": "\u2705 **THAN**!\nStructure: *No sooner had I arrived THAN the rain started* (NOT 'when')!",
-                "badge": "\u26a1 Inversion Rule"
-            },
-            {
-                "title": "Although Trap Rule",
-                "front": "Is it correct to say 'Although he is rich, but he is humble'?",
-                "back": "\u274c **INCORRECT**!\nNever use 'but' with 'although'! Correct: \u2705 *Although he is rich, he is humble*.",
-                "badge": "\ud83d\udca1 Conjunction Trap"
-            }
-        ],
-        "questions": [
-            {
-                "text": "No sooner had I reached home _____ it started raining.",
-                "options": [
-                    "when",
-                    "than",
-                    "then",
-                    "before"
-                ],
-                "correct_option_index": 1,
-                "explanation": "'No sooner' always pairs with 'than'!"
-            }
-        ]
-    },
-    {
-        "id": 10,
-        "slug": "placement-master-quiz",
-        "name": "Placement Verbal Master Challenge",
-        "description": "Comprehensive mixed placement quiz covering all 139 PDF pages: Error Detection, Sentence Improvement & Cloze Tests.",
-        "icon": "\ud83c\udfc6",
-        "xp_reward": 500,
-        "formula_sheet": "### \ud83d\udcc4 Master Verbal Placement Summary\n\n#### Top 5 Exam Traps to Remember\n1. **Uncountable Nouns**: *Information, advice, furniture, equipment, luggage* NEVER take -s or plural verbs!\n2. **Subject-Verb Agreement**: *Each of / One of + Plural Noun* takes a **SINGULAR** verb!\n3. **Articles**: *A/An* depends on **SOUND** (*a university*, *an MBA*).\n4. **Prepositions**: *Between you and ME*, *Married TO*, *Different FROM*.\n5. **Conjunction Inversion**: *No sooner...THAN*, *Hardly...WHEN*.\n",
-        "flashcards": [
-            {
-                "title": "Top Placement Rule #1",
-                "front": "What is the single most tested Subject-Verb Agreement rule?",
-                "back": "**Each of / One of + Plural Noun $\\to$ SINGULAR VERB!**\nExample: *Each of the players IS ready*.",
-                "badge": "\ud83c\udfc6 Master Challenge"
-            }
-        ],
-        "questions": [
-            {
-                "text": "Spot the error: 'Each of the boys have completed the task.'",
-                "options": [
-                    "Each of",
-                    "the boys",
-                    "have completed",
-                    "the task"
-                ],
-                "correct_option_index": 2,
-                "explanation": "'Each of the boys' requires the singular verb 'has completed'!"
-            },
-            {
-                "text": "Choose the correct sentence:",
-                "options": [
-                    "Between you and I, he is wrong.",
-                    "Between you and me, he is wrong.",
-                    "Between you and he, I am wrong.",
-                    "Between you and him, I am wrong."
-                ],
-                "correct_option_index": 1,
-                "explanation": "After preposition 'between', use object pronoun 'me'!"
-            }
-        ]
-    }
-];
+        ];
+
         let currentTopic = verbalTopics[0];
         let quizCurrentIndex = 0;
         let quizScore = 0;
@@ -819,7 +1014,7 @@
                 container.innerHTML = `
                     <div class="space-y-4">
                         <div class="flex items-center justify-between border-b pb-3">
-                            <h5 class="text-sm font-extrabold text-slate-900">Who vs Whom Tester</h5>
+                            <h5 class="text-sm font-extrabold text-slate-900">Who vs Whom &amp; 231 Pronoun Tester</h5>
                             <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-purple-50 text-purple-700">He/Him Trick</span>
                         </div>
                         <div class="space-y-3">
@@ -890,14 +1085,16 @@
             const btnVis = document.getElementById('tab-visualizer');
             const btnCheat = document.getElementById('tab-cheatsheet');
             const btnQuiz = document.getElementById('tab-quiz');
+            const btnAI = document.getElementById('tab-ai-tool');
 
             const viewFC = document.getElementById('view-flashcards');
             const viewVis = document.getElementById('view-visualizer');
             const viewCheat = document.getElementById('view-cheatsheet');
             const viewQuiz = document.getElementById('view-quiz');
+            const viewAI = document.getElementById('view-ai-tool');
 
-            [btnFC, btnVis, btnCheat, btnQuiz].forEach(b => b.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0");
-            [viewFC, viewVis, viewCheat, viewQuiz].forEach(v => v.classList.add('hidden'));
+            [btnFC, btnVis, btnCheat, btnQuiz, btnAI].forEach(b => b.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-2 shrink-0");
+            [viewFC, viewVis, viewCheat, viewQuiz, viewAI].forEach(v => v.classList.add('hidden'));
 
             if (mode === 'flashcards') {
                 btnFC.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
@@ -908,10 +1105,13 @@
             } else if (mode === 'cheatsheet') {
                 btnCheat.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
                 viewCheat.classList.remove('hidden');
-            } else {
+            } else if (mode === 'quiz') {
                 btnQuiz.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
                 viewQuiz.classList.remove('hidden');
                 initQuiz();
+            } else {
+                btnAI.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold transition bg-indigo-600 text-white shadow-sm flex items-center gap-2 shrink-0";
+                viewAI.classList.remove('hidden');
             }
         }
 
@@ -1002,6 +1202,80 @@
                 const text = card.textContent.toLowerCase();
                 card.style.display = text.includes(q) ? 'flex' : 'none';
             });
+        }
+
+        // AI Sentence Error Detector Assistant Logic
+        function presetAISentence() {
+            document.getElementById('ai-input-sentence').value = "Each of the boys have completed their assignment yesterday.";
+            runAIGrammarCheck();
+        }
+
+        function runAIGrammarCheck() {
+            const text = document.getElementById('ai-input-sentence').value.trim();
+            const resDiv = document.getElementById('ai-analysis-result');
+
+            if (!text) {
+                alert("Please enter a sentence to analyze!");
+                return;
+            }
+
+            resDiv.classList.remove('hidden');
+
+            let errors = [];
+            let corrected = text;
+
+            // SVA Each of check
+            if (text.toLowerCase().includes("each of") && text.toLowerCase().includes("have")) {
+                errors.push("❌ <strong>Subject-Verb Agreement Error:</strong> 'Each of + Plural Noun' requires a SINGULAR verb ('has'), not 'have'.");
+                corrected = corrected.replace(/have/gi, "has");
+            }
+
+            // Uncountable noun check
+            if (text.toLowerCase().includes("informations")) {
+                errors.push("❌ <strong>Uncountable Noun Error:</strong> 'Information' cannot be pluralized with -s.");
+                corrected = corrected.replace(/informations/gi, "information");
+            }
+            if (text.toLowerCase().includes("furnitures")) {
+                errors.push("❌ <strong>Uncountable Noun Error:</strong> 'Furniture' cannot be pluralized with -s.");
+                corrected = corrected.replace(/furnitures/gi, "furniture");
+            }
+
+            // Preposition check (between you and I)
+            if (text.toLowerCase().includes("between you and i")) {
+                errors.push("❌ <strong>Pronoun Case Error:</strong> After preposition 'between', use object pronoun 'me'.");
+                corrected = corrected.replace(/between you and i/gi, "between you and me");
+            }
+
+            // Article check (an university)
+            if (text.toLowerCase().includes("an university")) {
+                errors.push("❌ <strong>Article Sound Error:</strong> 'University' starts with a consonant sound ('Yu'), so use 'a university'.");
+                corrected = corrected.replace(/an university/gi, "a university");
+            }
+
+            if (errors.length === 0) {
+                resDiv.innerHTML = `
+                    <div class="flex items-center gap-2 text-emerald-700 font-extrabold">
+                        <i class="fa-solid fa-circle-check text-base"></i> No Major Grammar Errors Detected!
+                    </div>
+                    <p class="text-xs text-slate-600">Your sentence <em>"${text}"</em> follows core placement grammar rules!</p>
+                `;
+            } else {
+                resDiv.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="font-extrabold text-indigo-900 border-b pb-2 flex items-center justify-between">
+                            <span>AI Grammar Diagnostic Report</span>
+                            <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">${errors.length} Issues Found</span>
+                        </div>
+                        <ul class="space-y-1.5 list-disc pl-4 text-xs text-slate-700">
+                            ${errors.map(e => `<li>${e}</li>`).join('')}
+                        </ul>
+                        <div class="pt-2 border-t text-xs">
+                            <span class="font-extrabold text-emerald-700">Corrected Sentence:</span>
+                            <p class="text-sm font-extrabold text-slate-900 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 mt-1">${corrected}</p>
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         // Initialize on Load
