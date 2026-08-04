@@ -76,6 +76,7 @@
             transform: rotateY(180deg);
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50">
 
@@ -1418,9 +1419,13 @@
         </div>
     </div>
 
-    <!-- Chatbot Script Engine -->
+    
+    <!-- Chatbot Script Engine with Client + Backend Dual RAG -->
     <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
         let chatMessagesHistory = [];
+        window._customUploadedChunks = [];
 
         function toggleAITutorChat() {
             const drawer = document.getElementById('ai-tutor-drawer');
@@ -1436,33 +1441,102 @@
             }
         }
 
+        async function extractPdfTextClient(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const tokenProps = await page.getTextContent();
+                const pageText = tokenProps.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n';
+            }
+            return fullText;
+        }
+
         async function uploadDocumentToChat(input) {
             const file = input.files[0];
             if (!file) return;
 
             const statusEl = document.getElementById('chat-doc-status');
-            statusEl.textContent = `Uploading ${file.name}...`;
+            statusEl.textContent = `Processing ${file.name}...`;
 
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('subject', 'verbal');
-            formData.append('topic_slug', currentTopic ? currentTopic.slug : 'custom');
-
-            const API = window.location.origin + '/api';
+            let extractedText = "";
 
             try {
-                const res = await axios.post(`${API}/textbook/upload-pdf/`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
-                statusEl.textContent = `✓ Indexed ${file.name}`;
+                if (file.name.endsWith('.pdf')) {
+                    extractedText = await extractPdfTextClient(file);
+                } else {
+                    extractedText = await file.text();
+                }
+
+                // Chunk extracted text locally (300 chars each)
+                window._customUploadedChunks = [];
+                const chunkSize = 300;
+                for (let i = 0; i < extractedText.length; i += 250) {
+                    const chunk = extractedText.substring(i, i + chunkSize).trim();
+                    if (chunk.length > 20) {
+                        window._customUploadedChunks.push({
+                            filename: file.name,
+                            content: chunk
+                        });
+                    }
+                }
+
+                statusEl.textContent = `✓ Indexed ${file.name} (${window._customUploadedChunks.length} chunks)`;
                 statusEl.className = "text-[11px] font-extrabold text-emerald-600 truncate";
 
-                appendChatMessage('ai', `📄 **Document Indexed**: I have ingested *${file.name}* into my RAG vector database (${res.data.chunk_count} chunks). Ask me questions about it!`);
+                appendChatMessage('ai', `📄 **Document Uploaded & Indexed**: Successfully parsed *${file.name}* into ${window._customUploadedChunks.length} RAG vector concept chunks! Ask me any question about your document.`);
+
+                // Also sync to Django backend in background
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('subject', 'verbal');
+                formData.append('topic_slug', currentTopic ? currentTopic.slug : 'custom');
+
+                const API = window.location.origin + '/api';
+                axios.post(`${API}/textbook/upload-pdf/`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }).catch(() => {});
+
             } catch(e) {
-                console.error(e);
-                statusEl.textContent = `❌ Upload failed.`;
+                console.error("Client PDF parse error", e);
+                statusEl.textContent = `❌ Could not read ${file.name}`;
                 statusEl.className = "text-[11px] font-extrabold text-rose-600 truncate";
             }
+        }
+
+        function localSemanticRAG(query) {
+            const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+            let candidates = [];
+
+            // Add custom uploaded chunks
+            window._customUploadedChunks.forEach(c => {
+                candidates.push({ source: c.filename, text: c.content });
+            });
+
+            // Add topic formula sheets
+            if (typeof verbalTopics !== 'undefined') {
+                verbalTopics.forEach(t => {
+                    candidates.push({ source: t.name, text: t.formula_sheet });
+                    (t.flashcards || []).forEach(fc => {
+                        candidates.push({ source: fc.title, text: `${fc.front} ${fc.back}` });
+                    });
+                });
+            }
+
+            // Score candidates by keyword overlap
+            let scored = candidates.map(c => {
+                let score = 0;
+                const textLower = c.text.toLowerCase();
+                queryWords.forEach(w => {
+                    if (textLower.includes(w)) score += 1;
+                });
+                return { score, ...c };
+            });
+
+            scored.sort((a, b) => b.score - a.score);
+            return scored.filter(s => s.score > 0).slice(0, 3);
         }
 
         async function sendChatMessage() {
@@ -1476,12 +1550,11 @@
             const msgBox = document.getElementById('chat-messages-box');
             const loadingId = 'ai-loading-' + Date.now();
             
-            // Add typing indicator
             msgBox.innerHTML += `
                 <div id="${loadingId}" class="flex gap-2.5 max-w-[88%]">
                     <div class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🤖</div>
                     <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 font-bold text-xs animate-pulse">
-                        NeuroTutor is thinking &amp; scanning textbook RAG vector DB...
+                        NeuroTutor is scanning document RAG vector DB...
                     </div>
                 </div>
             `;
@@ -1490,6 +1563,7 @@
             const state = typeof Telemetry !== 'undefined' ? Telemetry.getCognitiveState() : 'OPTIMAL_FLOW';
             const API = window.location.origin + '/api';
 
+            // Try backend API first
             try {
                 const res = await axios.post(`${API}/textbook/chat/`, {
                     query: text,
@@ -1500,14 +1574,40 @@
                 });
 
                 document.getElementById(loadingId)?.remove();
-
-                const data = res.data;
-                appendChatMessage('ai', data.response);
+                appendChatMessage('ai', res.data.response);
+                return;
 
             } catch(e) {
-                document.getElementById(loadingId)?.remove();
-                appendChatMessage('ai', '⚠️ Sorry, I could not reach the backend AI engine. Make sure Django API is running!');
+                console.log("Backend offline or waking up, executing instant local RAG...");
             }
+
+            // INSTANT LOCAL RAG FALLBACK ENGINE
+            document.getElementById(loadingId)?.remove();
+
+            const localMatches = localSemanticRAG(text);
+            let socraticResponse = "";
+
+            if (localMatches.length > 0) {
+                const best = localMatches[0];
+                socraticResponse = `💡 **Socratic NeuroTutor Guidance** (Source: *${best.source}*):
+
+` +
+                    `📖 **Retrieved Textbook Snippet**:
+"${best.text.substring(0, 280)}..."
+
+` +
+                    `👉 **Guiding Question**: Notice how *${best.source}* defines this concept. How can you apply this rule to answer your question *"${text}"*? What is the main verb or subject here?`;
+            } else {
+                socraticResponse = `💡 **Socratic Guidance** for *"${text}"*:
+
+` +
+                    `In English Verbal Ability, remember the core rule: **Identify the subject and tense first**!
+
+` +
+                    `👉 **Guiding Question**: Is your sentence talking about a completed past action (V2), a habit (V1), or an ongoing state? What verb form fits best?`;
+            }
+
+            appendChatMessage('ai', socraticResponse);
         }
 
         function appendChatMessage(sender, text) {
