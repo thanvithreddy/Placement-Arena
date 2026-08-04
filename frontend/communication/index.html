@@ -1389,10 +1389,15 @@
                 <i class="fa-solid fa-file-arrow-up text-indigo-600 text-xs"></i>
                 <span class="text-[11px] font-bold text-slate-700 truncate" id="chat-doc-status">Upload PDF/Textbook notes to chat</span>
             </div>
-            <label class="cursor-pointer bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] px-2.5 py-1 rounded-lg transition shrink-0 flex items-center gap-1">
-                <i class="fa-solid fa-paperclip"></i> Upload
-                <input type="file" id="chat-file-input" onchange="uploadDocumentToChat(this)" accept=".pdf,.txt,.md" class="hidden">
-            </label>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="openAdminDocModal()" class="bg-indigo-100 hover:bg-indigo-200 border border-indigo-300 text-indigo-800 font-extrabold text-[10px] px-2 py-1 rounded-lg transition flex items-center gap-1">
+                    <i class="fa-solid fa-gear"></i> Manage Docs
+                </button>
+                <label class="cursor-pointer bg-white hover:bg-indigo-50 border border-indigo-200 text-indigo-700 font-extrabold text-[10px] px-2.5 py-1 rounded-lg transition flex items-center gap-1">
+                    <i class="fa-solid fa-paperclip"></i> Upload
+                    <input type="file" id="chat-file-input" onchange="uploadDocumentToChat(this)" accept=".pdf,.txt,.md" class="hidden">
+                </label>
+            </div>
         </div>
 
         <!-- Chat Messages Container -->
@@ -1711,6 +1716,102 @@
                     ],
                     throwOnError: false
                 });
+            }
+        }
+    </script>
+
+
+    <!-- Regular Admin RAG Document Management Modal -->
+    <div id="admin-doc-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="bg-gradient-to-r from-indigo-800 to-purple-900 p-4 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-folder-tree text-lg"></i>
+                    <div>
+                        <h3 class="text-sm font-extrabold">Admin Document RAG Manager</h3>
+                        <p class="text-[10px] text-indigo-200">Selectively delete custom documents and vector chunks</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminDocModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-4 overflow-y-auto flex-1 space-y-3">
+                <div id="admin-doc-modal-list" class="space-y-2 text-xs">
+                    <div class="text-center py-6 text-slate-400 animate-pulse font-bold">
+                        <i class="fa-solid fa-spinner animate-spin text-lg mb-2 block"></i> Loading RAG documents...
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-400 px-4">
+                <span>Selectively delete any document to purge its RAG vector chunks</span>
+                <button onclick="closeAdminDocModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-bold">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function openAdminDocModal() {
+            document.getElementById('admin-doc-modal').classList.remove('hidden');
+            await loadAdminDocModalList();
+        }
+
+        function closeAdminDocModal() {
+            document.getElementById('admin-doc-modal').classList.add('hidden');
+        }
+
+        async function loadAdminDocModalList() {
+            const listEl = document.getElementById('admin-doc-modal-list');
+            const API = window.location.origin + '/api';
+
+            try {
+                const res = await axios.get(`${API}/textbook/documents/`);
+                const docs = res.data;
+
+                if (docs.length === 0) {
+                    listEl.innerHTML = `<div class="text-center py-6 text-slate-500 font-bold">No custom documents found in RAG store.</div>`;
+                    return;
+                }
+
+                let html = '';
+                docs.forEach(doc => {
+                    html += `
+                        <div class="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60 flex items-center justify-between gap-3">
+                            <div class="overflow-hidden">
+                                <div class="font-bold text-white text-xs truncate">${doc.title}</div>
+                                <div class="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5">
+                                    <span class="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 uppercase font-extrabold">${doc.subject}</span>
+                                    <span>⚡ ${doc.chunk_count} Chunks</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteDocFromModal(${doc.id}, '${doc.title.replace(/'/g, "\'")}')" 
+                                    class="px-2.5 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 rounded-xl text-[11px] font-bold transition shrink-0 flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                });
+
+                listEl.innerHTML = html;
+            } catch(e) {
+                listEl.innerHTML = `<div class="text-center py-6 text-rose-400 font-bold">Failed to load document list from backend API.</div>`;
+            }
+        }
+
+        async function deleteDocFromModal(id, title) {
+            if (!confirm(`Selectively delete "${title}" and all its vector chunks?`)) return;
+
+            const API = window.location.origin + '/api';
+            try {
+                const res = await axios.delete(`${API}/textbook/documents/${id}/`);
+                alert(res.data.message || `Deleted "${title}"!`);
+                await loadAdminDocModalList();
+            } catch(e) {
+                alert("Failed to delete document. Ensure Django API is running!");
             }
         }
     </script>
