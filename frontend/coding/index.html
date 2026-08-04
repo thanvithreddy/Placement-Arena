@@ -328,13 +328,13 @@
                 <div class="space-y-4 text-slate-700 text-sm">
                     <p class="font-normal leading-relaxed text-slate-800">${p.statement || p.description || 'No statement provided.'}</p>
                     
-                    ${p.input_format ? `<div><h4 class="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Input Format</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.input_format}</pre></div>` : ''}
-                    ${p.output_format ? `<div><h4 class="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Output Format</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.output_format}</pre></div>` : ''}
-                    ${p.constraints ? `<div><h4 class="text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Constraints</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.constraints}</pre></div>` : ''}
+                    ${p.input_format ? `<div><h4 class="whitespace-nowrap text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Input Format</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.input_format}</pre></div>` : ''}
+                    ${p.output_format ? `<div><h4 class="whitespace-nowrap text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Output Format</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.output_format}</pre></div>` : ''}
+                    ${p.constraints ? `<div><h4 class="whitespace-nowrap text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1">Constraints</h4><pre class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">${p.constraints}</pre></div>` : ''}
             `;
 
             if (p.sample_cases && p.sample_cases.length > 0) {
-                html += `<h4 class="text-xs font-bold text-indigo-700 uppercase tracking-wider mt-4 mb-2">Sample Test Cases</h4>`;
+                html += `<h4 class="whitespace-nowrap text-xs font-bold text-indigo-700 uppercase tracking-wider mt-4 mb-2">Sample Test Cases</h4>`;
                 p.sample_cases.forEach((sc, i) => {
                     html += `
                         <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-2 mb-3">

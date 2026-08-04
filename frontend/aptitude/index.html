@@ -171,13 +171,13 @@
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl">
                     <span class="text-amber-500 text-base">⚡</span>
-                    <span class="text-xs font-bold text-amber-900"><span id="user-xp">0</span> XP</span>
+                    <span class="whitespace-nowrap text-xs font-bold text-amber-900"><span id="user-xp">0</span> XP</span>
                 </div>
                 <div class="flex items-center gap-2 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl">
                     <span class="text-indigo-600 text-base">🛡️</span>
-                    <span class="text-xs font-bold text-indigo-900">Level <span id="user-level">1</span></span>
+                    <span class="whitespace-nowrap text-xs font-bold text-indigo-900">Level <span id="user-level">1</span></span>
                 </div>
-                <a href="/dashboard/index.html" class="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl transition">
+                <a href="/dashboard/index.html" class="whitespace-nowrap text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl transition">
                     Dashboard
                 </a>
             </div>
@@ -209,7 +209,7 @@
                     <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">17 Interactive Topics</h2>
                     <p class="text-xs text-slate-500 font-medium">Select any topic to flip cards, test visual calculators, or take practice quizzes!</p>
                 </div>
-                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
+                <span class="whitespace-nowrap text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
                     🔓 All 17 Topics Unlocked
                 </span>
             </div>
@@ -224,14 +224,14 @@
         <div id="practice-view" class="hidden space-y-6">
             <!-- Header Bar -->
             <div class="flex items-center justify-between card-white p-4 rounded-2xl">
-                <button onclick="backToMap()" class="text-xs font-bold text-slate-700 hover:text-indigo-600 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 transition">
+                <button onclick="backToMap()" class="whitespace-nowrap text-xs font-bold text-slate-700 hover:text-indigo-600 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-indigo-50 transition">
                     ← Back to Topics Map
                 </button>
                 <div class="text-center">
                     <h3 class="text-lg font-extrabold text-slate-900" id="practice-topic-title">Loading...</h3>
                     <p class="text-xs text-slate-500 font-medium">Formula Play Cards &amp; Concept Evolution</p>
                 </div>
-                <span class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl" id="practice-xp-tag">+100 XP</span>
+                <span class="whitespace-nowrap text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl" id="practice-xp-tag">+100 XP</span>
             </div>
 
             <!-- Mode Selector Tabs -->
@@ -269,7 +269,7 @@
                     <h4 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
                         <span>🧮 Interactive Concept Playground</span>
                     </h4>
-                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full">Live Simulation</span>
+                    <span class="whitespace-nowrap text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full">Live Simulation</span>
                 </div>
                 <div id="visualizer-content" class="space-y-6">
                     <!-- Rendered dynamically by JS depending on topic -->
@@ -564,14 +564,14 @@
                         <p class="text-xs text-slate-600">Drag sliders to test the <strong>Symmetry Rule</strong> ($a\% \text{ of } b = b\% \text{ of } a$) and $10\% / 1\%$ decimal shift!</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-700 flex justify-between">
+                                <label class="whitespace-nowrap text-xs font-bold text-slate-700 flex justify-between">
                                     <span>Percentage ($a\%$)</span>
                                     <span class="text-indigo-600 font-extrabold" id="pct-val-a">20%</span>
                                 </label>
                                 <input type="range" min="1" max="100" value="20" id="pct-slider-a" oninput="calcPct()" class="w-full accent-indigo-600">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-700 flex justify-between">
+                                <label class="whitespace-nowrap text-xs font-bold text-slate-700 flex justify-between">
                                     <span>Base Number ($b$)</span>
                                     <span class="text-indigo-600 font-extrabold" id="pct-val-b">500</span>
                                 </label>
@@ -587,8 +587,8 @@
                             </div>
                             <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center">
                                 <h6 class="text-[10px] font-extrabold text-amber-900 uppercase">Decimal Shift (Page 1)</h6>
-                                <p class="text-xs font-bold text-amber-800 mt-1" id="pct-shift-10">10% of 500 = 50.0</p>
-                                <p class="text-xs font-bold text-amber-800" id="pct-shift-1">1% of 500 = 5.00</p>
+                                <p class="whitespace-nowrap text-xs font-bold text-amber-800 mt-1" id="pct-shift-10">10% of 500 = 50.0</p>
+                                <p class="whitespace-nowrap text-xs font-bold text-amber-800" id="pct-shift-1">1% of 500 = 5.00</p>
                             </div>
                         </div>
                     </div>
@@ -603,7 +603,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. Dishonest Dealer Profit %</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. Dishonest Dealer Profit %</h6>
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-500">True Weight (g)</label>
                                     <input type="number" id="pl-true-w" value="1500" oninput="calcPL()" class="w-full p-2 border rounded-lg text-xs font-bold">
@@ -619,7 +619,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Equal SP Loss Calculator</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Equal SP Loss Calculator</h6>
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-500">Equal % Profit &amp; Loss ($x\%$)</label>
                                     <input type="number" id="pl-equal-x" value="30" oninput="calcPL()" class="w-full p-2 border rounded-lg text-xs font-bold">
@@ -775,7 +775,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">4th Proportion ($A:B :: C:D$)</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">4th Proportion ($A:B :: C:D$)</h6>
                                 <div class="grid grid-cols-3 gap-2">
                                     <input type="number" id="rp-a" value="20" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A">
                                     <input type="number" id="rp-b" value="21" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B">
@@ -788,7 +788,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">Mean Proportion ($\sqrt{AC}$)</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">Mean Proportion ($\sqrt{AC}$)</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="rp-m1" value="8" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A">
                                     <input type="number" id="rp-m2" value="18" oninput="calcRP()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B">
@@ -845,7 +845,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. $M_1 D_1 = M_2 D_2$ Solver</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. $M_1 D_1 = M_2 D_2$ Solver</h6>
                                 <div class="grid grid-cols-3 gap-2">
                                     <input type="number" id="tw-m1" value="24" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="M1">
                                     <input type="number" id="tw-d1" value="36" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="D1">
@@ -858,7 +858,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Two Workers Together ($rac{xy}{x+y}$)</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Two Workers Together ($rac{xy}{x+y}$)</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="tw-x" value="20" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A (days)">
                                     <input type="number" id="tw-y" value="30" oninput="calcTW()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B (days)">
@@ -881,7 +881,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. Stoppage Time Formula</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. Stoppage Time Formula</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="sdt-excl" value="40" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Excl (km/h)">
                                     <input type="number" id="sdt-incl" value="25" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Incl (km/h)">
@@ -893,7 +893,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Late &amp; Early Distance</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Late &amp; Early Distance</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="sdt-s1" value="30" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="S1 (km/h)">
                                     <input type="number" id="sdt-s2" value="40" oninput="calcSDT()" class="p-2 border rounded-lg text-xs font-bold" placeholder="S2 (km/h)">
@@ -978,7 +978,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. $n P_r$ vs $n C_r$ Solver</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. $n P_r$ vs $n C_r$ Solver</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="pnc-n" value="5" oninput="calcPnC()" class="p-2 border rounded-lg text-xs font-bold" placeholder="n">
                                     <input type="number" id="pnc-r" value="2" oninput="calcPnC()" class="p-2 border rounded-lg text-xs font-bold" placeholder="r">
@@ -996,7 +996,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Polygon Diagonals Formula</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Polygon Diagonals Formula</h6>
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-500">Number of sides ($n$)</label>
                                     <input type="number" id="pnc-sides" value="6" oninput="calcPnC()" class="w-full p-2 border rounded-lg text-xs font-bold">
@@ -1019,7 +1019,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. $n$ Coins Exactly $r$ Heads</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. $n$ Coins Exactly $r$ Heads</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="prob-coins" value="5" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="n coins">
                                     <input type="number" id="prob-heads" value="3" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="r heads">
@@ -1031,7 +1031,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Contradiction % Formula</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Contradiction % Formula</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="prob-ta" value="60" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="A Truth %">
                                     <input type="number" id="prob-tb" value="45" oninput="calcProb()" class="p-2 border rounded-lg text-xs font-bold" placeholder="B Truth %">
@@ -1107,7 +1107,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">1. Clock Angle ($	heta = |30H - 5.5M|$)</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">1. Clock Angle ($	heta = |30H - 5.5M|$)</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="clock-h" value="4" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Hour (H)">
                                     <input type="number" id="clock-m" value="20" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Minute (M)">
@@ -1119,7 +1119,7 @@
                             </div>
 
                             <div class="space-y-3">
-                                <h6 class="text-xs font-extrabold text-slate-800">2. Leap Year Odd Days Rule</h6>
+                                <h6 class="whitespace-nowrap text-xs font-extrabold text-slate-800">2. Leap Year Odd Days Rule</h6>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="number" id="cal-years" value="100" oninput="calcClock()" class="p-2 border rounded-lg text-xs font-bold" placeholder="Years">
                                 </div>
