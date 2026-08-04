@@ -1512,32 +1512,40 @@
             }
         }
 
+                const STOP_WORDS = new Set(['what', 'is', 'a', 'an', 'the', 'of', 'and', 'or', 'in', 'to', 'for', 'with', 'on', 'at', 'by', 'from', 'as', 'do', 'does', 'did', 'how', 'why', 'where', 'which', 'who', 'whom']);
+
         function cleanTextForChatSnippet(rawText) {
             if (!rawText) return '';
             let cleaned = rawText
                 .replace(/^#+\s*/gm, '') // Remove Markdown headers (###)
+                .replace(/\\implies/gi, '➜') // Clean \implies
+                .replace(/\\to/gi, '➜') // Clean \to
+                .replace(/\\text\{([^}]+)\}/gi, '$1') // Clean \text{...}
                 .replace(/\$/g, '') // Clean LaTeX dollar signs
-                .replace(/\*\*/g, ' ') // Clean double asterisks for snippet
-                .replace(/\\text\{([^}]+)\}/g, '$1') // Clean \text{...}
-                .replace(/\\to/g, '->') // Clean \to
-                .replace(/\n+/g, ' ') // Collapse multiple newlines
+                .replace(/\*\*/g, ' ') // Clean double asterisks
+                .replace(/\s+/g, ' ') // Collapse multiple spaces
                 .trim();
             return cleaned;
         }
 
         function localSemanticRAG(query) {
-            const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+            const rawTokens = query.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/);
+            const coreKeywords = rawTokens.filter(w => w.length > 1 && !STOP_WORDS.has(w));
+            
+            // If all tokens were stop words, fall back to non-stop tokens
+            const searchTerms = coreKeywords.length > 0 ? coreKeywords : rawTokens.filter(w => w.length > 2);
+
             let candidates = [];
 
             window._customUploadedChunks.forEach(c => {
-                candidates.push({ source: c.filename, text: c.content });
+                candidates.push({ source: c.filename, text: c.content, title: c.filename });
             });
 
             if (typeof verbalTopics !== 'undefined') {
                 verbalTopics.forEach(t => {
-                    candidates.push({ source: t.name, text: t.formula_sheet });
+                    candidates.push({ source: t.name, text: t.description + ' ' + t.formula_sheet, title: t.name });
                     (t.flashcards || []).forEach(fc => {
-                        candidates.push({ source: fc.title, text: `${fc.front} ${fc.back}` });
+                        candidates.push({ source: t.name + ' - ' + fc.title, text: `${fc.front} ${fc.back}`, title: fc.title });
                     });
                 });
             }
@@ -1545,9 +1553,18 @@
             let scored = candidates.map(c => {
                 let score = 0;
                 const textLower = c.text.toLowerCase();
-                queryWords.forEach(w => {
-                    if (textLower.includes(w)) score += 1;
+                const titleLower = (c.title || '').toLowerCase();
+
+                searchTerms.forEach(w => {
+                    // Exact word match bonus
+                    const regex = new RegExp('\\b' + w + '\\b', 'gi');
+                    const matches = textLower.match(regex);
+                    if (matches) score += matches.length * 5;
+
+                    // Title match heavy bonus
+                    if (titleLower.includes(w)) score += 20;
                 });
+
                 return { score, ...c };
             });
 
