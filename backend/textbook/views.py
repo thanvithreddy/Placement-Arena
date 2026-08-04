@@ -167,6 +167,9 @@ class PDFDocumentUploadView(APIView):
             chunk_str = file_text[start:end]
             vec = get_text_embedding(chunk_str)
 
+            # Estimate page number (approx 1500 chars per page)
+            estimated_page = (start // 1500) + 1
+
             c_obj = DocumentChunk.objects.create(
                 document=doc_obj,
                 subject=subject,
@@ -174,7 +177,8 @@ class PDFDocumentUploadView(APIView):
                 chapter_title=filename,
                 chunk_index=idx,
                 content=chunk_str,
-                vector_json=vec
+                vector_json=vec,
+                metadata={'page': estimated_page, 'filename': filename}
             )
             chunks_created.append(c_obj)
             idx += 1
