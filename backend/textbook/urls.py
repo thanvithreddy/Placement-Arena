@@ -9,4 +9,8 @@ urlpatterns = [
     path('upload-pdf/', PDFDocumentUploadView.as_view(), name='textbook-upload-pdf'),
     path('chat/', AITutorChatView.as_view(), name='textbook-chat'),
 
+    path('documents/', DocumentListDeleteView.as_view(), name='textbook-documents-list'),
+    path('documents/<int:pk>/', DocumentListDeleteView.as_view(), name='textbook-documents-delete'),
+
+
 ]

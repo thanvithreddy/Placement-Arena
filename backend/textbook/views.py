@@ -213,3 +213,40 @@ class AITutorChatView(APIView):
             'retrieved_chunks': retrieved_chunks,
             'cognitive_state': cognitive_state
         })
+
+
+class DocumentListDeleteView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        docs = Document.objects.all().order_by('-created_at')
+        result = []
+        for doc in docs:
+            result.append({
+                'id': doc.id,
+                'title': doc.title,
+                'file_name': doc.file_name,
+                'subject': doc.subject,
+                'topic_slug': doc.topic_slug,
+                'chunk_count': doc.chunks.count(),
+                'created_at': doc.created_at
+            })
+        return Response(result)
+
+    def delete(self, request, pk=None):
+        if not pk:
+            doc_id = request.data.get('id')
+        else:
+            doc_id = pk
+
+        try:
+            doc = Document.objects.get(id=doc_id)
+            title = doc.title
+            chunks_deleted = doc.chunks.count()
+            doc.delete()
+            return Response({
+                'message': f'Successfully deleted document "{title}" and all {chunks_deleted} associated RAG chunks!',
+                'id': doc_id
+            })
+        except Document.DoesNotExist:
+            return Response({'error': 'Document not found'}, status=404)
