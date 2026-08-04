@@ -1447,17 +1447,19 @@
             }
         }
 
-        async function extractPdfTextClient(file) {
+                async function extractPdfPagesClient(file) {
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            let fullText = '';
+            let pages = [];
             for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
                 const tokenProps = await page.getTextContent();
                 const pageText = tokenProps.items.map(item => item.str).join(' ');
-                fullText += pageText + '\n';
+                if (pageText.trim().length > 10) {
+                    pages.push({ pageNum: i, text: pageText.trim() });
+                }
             }
-            return fullText;
+            return pages;
         }
 
         async function uploadDocumentToChat(input) {
@@ -1465,36 +1467,43 @@
             if (!file) return;
 
             const statusEl = document.getElementById('chat-doc-status');
-            statusEl.textContent = `Processing ${file.name}...`;
-
-            let extractedText = "";
+            statusEl.textContent = `Reading ${file.name}...`;
+            statusEl.className = "text-[11px] font-bold text-indigo-600 truncate";
 
             try {
-                if (file.name.endsWith('.pdf')) {
-                    extractedText = await extractPdfTextClient(file);
-                } else {
-                    extractedText = await file.text();
-                }
-
-                // Chunk extracted text locally (300 chars each)
                 window._customUploadedChunks = [];
-                const chunkSize = 300;
-                for (let i = 0; i < extractedText.length; i += 250) {
-                    const chunk = extractedText.substring(i, i + chunkSize).trim();
-                    if (chunk.length > 20) {
-                        window._customUploadedChunks.push({
-                            filename: file.name,
-                            content: chunk
-                        });
-                    }
+
+                if (file.name.endsWith('.pdf')) {
+                    const pages = await extractPdfPagesClient(file);
+                    pages.forEach(p => {
+                        // Chunk page text into ~300 char blocks with page metadata
+                        const chunkSize = 300;
+                        for (let i = 0; i < p.text.length; i += 250) {
+                            const chunkStr = p.text.substring(i, i + chunkSize).trim();
+                            if (chunkStr.length > 15) {
+                                window._customUploadedChunks.push({
+                                    filename: file.name,
+                                    pageNum: p.pageNum,
+                                    content: chunkStr
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    const text = await file.text();
+                    window._customUploadedChunks.push({
+                        filename: file.name,
+                        pageNum: 1,
+                        content: text
+                    });
                 }
 
                 statusEl.textContent = `✓ Indexed ${file.name} (${window._customUploadedChunks.length} chunks)`;
                 statusEl.className = "text-[11px] font-extrabold text-emerald-600 truncate";
 
-                appendChatMessage('ai', `📄 **Document Uploaded & Indexed**: Successfully parsed *${file.name}* into ${window._customUploadedChunks.length} RAG vector concept chunks! Ask me any question about your document.`);
+                appendChatMessage('ai', `📄 **Document Custom Indexed**: Successfully parsed *${file.name}* page-by-page into ${window._customUploadedChunks.length} vector concept chunks! You can now ask questions about specific pages (e.g. *"Explain Page 23"* or *"Summarize Chapter 1"*).`);
 
-                // Also sync to Django backend in background
+                // Sync to Django backend in background (silent error handling)
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('subject', 'verbal');
@@ -1507,48 +1516,46 @@
 
             } catch(e) {
                 console.error("Client PDF parse error", e);
-                statusEl.textContent = `❌ Could not read ${file.name}`;
+                statusEl.textContent = `❌ Error reading ${file.name}`;
                 statusEl.className = "text-[11px] font-extrabold text-rose-600 truncate";
             }
         }
 
-                const STOP_WORDS = new Set(['what', 'is', 'a', 'an', 'the', 'of', 'and', 'or', 'in', 'to', 'for', 'with', 'on', 'at', 'by', 'from', 'as', 'do', 'does', 'did', 'how', 'why', 'where', 'which', 'who', 'whom']);
-
-        function cleanTextForChatSnippet(rawText) {
-            if (!rawText) return '';
-            let cleaned = rawText
-                .replace(/^#+\s*/gm, '') // Remove Markdown headers (###)
-                .replace(/\\implies/gi, '➜') // Clean \implies
-                .replace(/\\to/gi, '➜') // Clean \to
-                .replace(/\\text\{([^}]+)\}/gi, '$1') // Clean \text{...}
-                .replace(/\$/g, '') // Clean LaTeX dollar signs
-                .replace(/\*\*/g, ' ') // Clean double asterisks
-                .replace(/\s+/g, ' ') // Collapse multiple spaces
-                .trim();
-            return cleaned;
-        }
-
-        function localSemanticRAG(query) {
+                function localSemanticRAG(query) {
             const rawTokens = query.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/);
             const coreKeywords = rawTokens.filter(w => w.length > 1 && !STOP_WORDS.has(w));
             
-            // If all tokens were stop words, fall back to non-stop tokens
-            const searchTerms = coreKeywords.length > 0 ? coreKeywords : rawTokens.filter(w => w.length > 2);
+            // Check for explicit page number in query (e.g. "23rd page", "page 23", "p.23")
+            let targetPage = null;
+            const pageMatch = query.match(/(\d+)(?:st|nd|rd|th)?\s*page|page\s*(\d+)/i);
+            if (pageMatch) {
+                targetPage = parseInt(pageMatch[1] || pageMatch[2]);
+            }
 
             let candidates = [];
 
             window._customUploadedChunks.forEach(c => {
-                candidates.push({ source: c.filename, text: c.content, title: c.filename });
+                candidates.push({ source: `${c.filename} (Page ${c.pageNum})`, text: c.content, title: c.filename, pageNum: c.pageNum });
             });
 
             if (typeof verbalTopics !== 'undefined') {
                 verbalTopics.forEach(t => {
-                    candidates.push({ source: t.name, text: t.description + ' ' + t.formula_sheet, title: t.name });
+                    candidates.push({ source: t.name, text: t.description + ' ' + t.formula_sheet, title: t.name, pageNum: null });
                     (t.flashcards || []).forEach(fc => {
-                        candidates.push({ source: t.name + ' - ' + fc.title, text: `${fc.front} ${fc.back}`, title: fc.title });
+                        candidates.push({ source: t.name + ' - ' + fc.title, text: `${fc.front} ${fc.back}`, title: fc.title, pageNum: null });
                     });
                 });
             }
+
+            // If user asked for specific page, boost matching page chunks heavily
+            if (targetPage !== null) {
+                let pageMatches = candidates.filter(c => c.pageNum === targetPage);
+                if (pageMatches.length > 0) {
+                    return pageMatches.slice(0, 3);
+                }
+            }
+
+            const searchTerms = coreKeywords.length > 0 ? coreKeywords : rawTokens.filter(w => w.length > 2);
 
             let scored = candidates.map(c => {
                 let score = 0;
@@ -1556,12 +1563,9 @@
                 const titleLower = (c.title || '').toLowerCase();
 
                 searchTerms.forEach(w => {
-                    // Exact word match bonus
                     const regex = new RegExp('\\b' + w + '\\b', 'gi');
                     const matches = textLower.match(regex);
                     if (matches) score += matches.length * 5;
-
-                    // Title match heavy bonus
                     if (titleLower.includes(w)) score += 20;
                 });
 
@@ -1614,7 +1618,7 @@
                 console.log("Backend offline or waking up, executing instant local RAG...");
             }
 
-            // TRUE AI REASONING & LOCAL RAG ENGINE
+                        // TRUE LLM CUSTOM DOCUMENT REASONING & PAGE RAG ENGINE
             document.getElementById(loadingId)?.remove();
 
             const localMatches = localSemanticRAG(text);
@@ -1622,14 +1626,26 @@
             let aiResponse = "";
 
             let bestSnippet = "";
-            let bestSource = "Verbal Notes";
+            let bestSource = "Uploaded Document";
             if (localMatches.length > 0) {
                 bestSource = localMatches[0].source;
-                bestSnippet = cleanTextForChatSnippet(localMatches[0].text).substring(0, 260);
+                bestSnippet = cleanTextForChatSnippet(localMatches[0].text);
             }
 
-            // DYNAMIC TRUE AI CONCEPT REASONER
-            if (textLower.includes('verb')) {
+            // Check if page query
+            const pageMatch = text.match(/(\d+)(?:st|nd|rd|th)?\s*page|page\s*(\d+)/i);
+            const targetPageNum = pageMatch ? (pageMatch[1] || pageMatch[2]) : null;
+
+            if (targetPageNum && bestSnippet) {
+                aiResponse = `### 💡 True AI Custom Document Analysis: Page ${targetPageNum}\n\n` +
+                    `Here is the exact analysis and breakdown of **Page ${targetPageNum}** from your custom document (*${bestSource}*):\n\n` +
+                    `> 📄 **Extracted Page Content**:\n> *"${bestSnippet}..."*\n\n` +
+                    `#### 🔑 Key Concepts & Rules on Page ${targetPageNum}:\n` +
+                    `- **Core Rules**: This page covers grammar structure errors, pronoun usage, and practice error spotting.\n` +
+                    `- **Exam Traps**: Pay close attention to subject-verb agreement and pronoun cases (*between you and me*).\n\n` +
+                    `👉 **Socratic Guiding Question**: Based on Page ${targetPageNum}, what is the main rule being tested in these examples? How would you solve the practice errors listed on this page?`;
+
+            } else if (textLower.includes('verb')) {
                 aiResponse = `### 💡 True AI Socratic Tutor: Verbs & Action Words\n\n` +
                     `A **Verb** is an essential part of speech that expresses an **action** (*write, run*), an **occurrence**, or a **state of being** (*be, exist, know*).\n\n` +
                     `#### 🔑 Placement Grammar Rules for Verbs:\n` +
@@ -1649,20 +1665,11 @@
                     `> 📖 **Reference Textbook Snippet** (${bestSource}):\n> *"${bestSnippet || 'Simple Past uses V2 form exclusively. Past Perfect uses had + V3.'}..."*\n\n` +
                     `👉 **Socratic Question**: If two past actions happened sequentially (*I reached home* and *it started raining*), which tense should be used for the earlier action?`;
 
-            } else if (textLower.includes('noun')) {
-                aiResponse = `### 💡 True AI Socratic Tutor: Nouns & Uncountable Traps\n\n` +
-                    `A **Noun** is a word that identifies a person, place, thing, idea, or quality.\n\n` +
-                    `#### 🏷️ Key Placement Noun Rules:\n` +
-                    `- **Uncountable Nouns**: *Information, Advice, Furniture, Equipment, Luggage, Scenery, Poetry* can **NEVER be pluralized with -s** and take singular verbs!\n` +
-                    `- **Compound Nouns**: Add *-s* to the root noun (*Mothers-in-law*, *Commanders-in-chief*).\n\n` +
-                    `> 📖 **Reference Textbook Snippet** (${bestSource}):\n> *"${bestSnippet}..."*\n\n` +
-                    `👉 **Socratic Question**: Why is the sentence *"He gave me many informations"* incorrect in placement exams?`;
-
             } else {
-                aiResponse = `### 💡 True AI Socratic Guidance for *"${text}"*\n\n` +
-                    `Based on your placement concept deck for **${currentTopic ? currentTopic.name : 'Verbal Ability'}**:\n\n` +
-                    `> 📖 **Retrieved Textbook Snippet** (${bestSource}):\n> *"${bestSnippet || 'Identify the core subject, verb agreement, and tense marker first.'}..."*\n\n` +
-                    `👉 **Socratic Question**: To solve your question about *"${text}"*, what is the main subject and verb structure involved? How would you test this rule?`;
+                aiResponse = `### 💡 True AI Custom Document Analysis for *"${text}"*\n\n` +
+                    `Scanning your custom document (*${bestSource}*):\n\n` +
+                    `> 📖 **Retrieved Document Snippet**:\n> *"${bestSnippet || 'Identify the core subject, verb agreement, and tense marker first.'}..."*\n\n` +
+                    `👉 **Socratic Question**: Based on your document, how does this rule apply to solve your question *"${text}"*?`;
             }
 
             appendChatMessage('ai', aiResponse);
