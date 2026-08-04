@@ -144,6 +144,11 @@
             color: #9f1239 !important;
         }
     </style>
+    
+    <!-- Axios & FontAwesome CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body class="min-h-screen pb-16">
 
@@ -1835,21 +1840,24 @@ function calcPct() {
 
             const API = window.location.origin + '/api';
 
-            try {
-                const res = await axios.post(`${API}/textbook/chat/`, {
-                    query: text,
-                    messages: chatMessagesHistory,
-                    subject: 'aptitude',
-                    topic_slug: 'math-shortcuts',
-                    cognitive_state: 'OPTIMAL_FLOW'
-                });
+            if (typeof axios !== 'undefined') {
+                try {
+                    const res = await axios.post(`${API}/textbook/chat/`, {
+                        query: text,
+                        messages: chatMessagesHistory,
+                        subject: 'aptitude',
+                        topic_slug: 'math-shortcuts',
+                        cognitive_state: 'OPTIMAL_FLOW'
+                    });
 
-                document.getElementById(loadingId)?.remove();
-                appendChatMessage('ai', res.data.response);
-                return;
-
-            } catch(e) {
-                console.log("Backend offline or waking up, executing Aptitude local RAG...");
+                    if (res && res.data && res.data.response) {
+                        document.getElementById(loadingId)?.remove();
+                        appendChatMessage('ai', res.data.response);
+                        return;
+                    }
+                } catch(e) {
+                    console.log("Backend offline or waking up, executing Aptitude local RAG...");
+                }
             }
 
             document.getElementById(loadingId)?.remove();
