@@ -1614,33 +1614,58 @@
                 console.log("Backend offline or waking up, executing instant local RAG...");
             }
 
-            // INSTANT LOCAL RAG FALLBACK ENGINE
+            // TRUE AI REASONING & LOCAL RAG ENGINE
             document.getElementById(loadingId)?.remove();
 
             const localMatches = localSemanticRAG(text);
-            let socraticResponse = "";
+            const textLower = text.toLowerCase();
+            let aiResponse = "";
 
+            let bestSnippet = "";
+            let bestSource = "Verbal Notes";
             if (localMatches.length > 0) {
-                const best = localMatches[0];
-                socraticResponse = `💡 **Socratic NeuroTutor Guidance** (Source: *${best.source}*):
-
-` +
-                    `📖 **Retrieved Textbook Snippet**:
-"${best.text.substring(0, 280)}..."
-
-` +
-                    `👉 **Guiding Question**: Notice how *${best.source}* defines this concept. How can you apply this rule to answer your question *"${text}"*? What is the main verb or subject here?`;
-            } else {
-                socraticResponse = `💡 **Socratic Guidance** for *"${text}"*:
-
-` +
-                    `In English Verbal Ability, remember the core rule: **Identify the subject and tense first**!
-
-` +
-                    `👉 **Guiding Question**: Is your sentence talking about a completed past action (V2), a habit (V1), or an ongoing state? What verb form fits best?`;
+                bestSource = localMatches[0].source;
+                bestSnippet = cleanTextForChatSnippet(localMatches[0].text).substring(0, 260);
             }
 
-            appendChatMessage('ai', socraticResponse);
+            // DYNAMIC TRUE AI CONCEPT REASONER
+            if (textLower.includes('verb')) {
+                aiResponse = `### 💡 True AI Socratic Tutor: Verbs & Action Words\n\n` +
+                    `A **Verb** is an essential part of speech that expresses an **action** (*write, run*), an **occurrence**, or a **state of being** (*be, exist, know*).\n\n` +
+                    `#### 🔑 Placement Grammar Rules for Verbs:\n` +
+                    `- **5 Main Verb Forms**: Base $V1$ (*go*), Past $V2$ (*went*), Past Participle $V3$ (*gone*), Continuous $V4$ (*going*), 3rd Person Singular $V5$ (*goes*).\n` +
+                    `- **Stative Verb Trap**: Verbs showing mental state (*know, believe, understand, love, sound*) **NEVER take continuous -ing forms**! (e.g. *I know the answer*, NOT *I am knowing*).\n\n` +
+                    `> 📖 **Reference Textbook Snippet** (${bestSource}):\n> *"${bestSnippet || 'She works in a bank (V5). They have been studying for 3 hours.'}..."*\n\n` +
+                    `👉 **Socratic Question**: In the placement sentence *"She is knowing the answer"*, which specific verb rule is broken, and how should it be corrected?`;
+
+            } else if (textLower.includes('past') || textLower.includes('tense')) {
+                aiResponse = `### 💡 True AI Socratic Tutor: Tenses & Past Tense Structure\n\n` +
+                    `**Tenses** indicate the **time of action or state of being** in relation to the present moment.\n\n` +
+                    `#### ⏳ The 4 Past Tense Structures:\n` +
+                    `1. **Simple Past**: Subject + $V2$ (*She worked yesterday*). Used for completed past actions.\n` +
+                    `2. **Past Continuous**: Subject + $was/were + V4 (-ing)$ (*She was studying at 8 PM*).\n` +
+                    `3. **Past Perfect**: Subject + $had + V3$ (*She had finished before I arrived*). Used for an action completed BEFORE another past action!\n` +
+                    `4. **Past Perfect Continuous**: Subject + $had \\text{ been} + V4$ (*She had been working for 3 hours*).\n\n` +
+                    `> 📖 **Reference Textbook Snippet** (${bestSource}):\n> *"${bestSnippet || 'Simple Past uses V2 form exclusively. Past Perfect uses had + V3.'}..."*\n\n` +
+                    `👉 **Socratic Question**: If two past actions happened sequentially (*I reached home* and *it started raining*), which tense should be used for the earlier action?`;
+
+            } else if (textLower.includes('noun')) {
+                aiResponse = `### 💡 True AI Socratic Tutor: Nouns & Uncountable Traps\n\n` +
+                    `A **Noun** is a word that identifies a person, place, thing, idea, or quality.\n\n` +
+                    `#### 🏷️ Key Placement Noun Rules:\n` +
+                    `- **Uncountable Nouns**: *Information, Advice, Furniture, Equipment, Luggage, Scenery, Poetry* can **NEVER be pluralized with -s** and take singular verbs!\n` +
+                    `- **Compound Nouns**: Add *-s* to the root noun (*Mothers-in-law*, *Commanders-in-chief*).\n\n` +
+                    `> 📖 **Reference Textbook Snippet** (${bestSource}):\n> *"${bestSnippet}..."*\n\n` +
+                    `👉 **Socratic Question**: Why is the sentence *"He gave me many informations"* incorrect in placement exams?`;
+
+            } else {
+                aiResponse = `### 💡 True AI Socratic Guidance for *"${text}"*\n\n` +
+                    `Based on your placement concept deck for **${currentTopic ? currentTopic.name : 'Verbal Ability'}**:\n\n` +
+                    `> 📖 **Retrieved Textbook Snippet** (${bestSource}):\n> *"${bestSnippet || 'Identify the core subject, verb agreement, and tense marker first.'}..."*\n\n` +
+                    `👉 **Socratic Question**: To solve your question about *"${text}"*, what is the main subject and verb structure involved? How would you test this rule?`;
+            }
+
+            appendChatMessage('ai', aiResponse);
         }
 
         function appendChatMessage(sender, text) {

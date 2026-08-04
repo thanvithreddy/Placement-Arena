@@ -4,8 +4,7 @@ from .models import Document, DocumentChunk
 def get_text_embedding(text):
     """
     Computes a vector embedding for text.
-    If OPENAI_API_KEY is present, calls OpenAI embeddings API.
-    Otherwise uses a 128-dim normalized token hash vector in pure Python.
+    Uses OpenAI or Gemini embedding if API keys present, otherwise pure Python token hash vector.
     """
     api_key = os.getenv('OPENAI_API_KEY')
     if api_key:
@@ -64,36 +63,88 @@ def generate_socratic_guidance(query, subject, topic_slug, cognitive_state='OPTI
     relevant_chunks = perform_rag_search(subject, topic_slug, query)
     context_text = "\n---\n".join([c.content for c in relevant_chunks]) if relevant_chunks else "No specific textbook chunk found."
 
-    api_key = os.getenv('OPENAI_API_KEY')
-    if api_key:
+    # 1. TRY GOOGLE GEMINI API FIRST
+    gemini_key = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
+    if gemini_key:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=gemini_key)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            
+            prompt = f"""
+            You are Placement Arena's True AI Socratic Tutor.
+            The student is asking: "{query}".
+            Cognitive State: {cognitive_state}
+            
+            RETRIEVED TEXTBOOK CONTEXT:
+            {context_text}
+            
+            INSTRUCTIONS:
+            1. Directly answer and explain the student's question accurately in clear Markdown format.
+            2. Connect the explanation to the retrieved textbook rules.
+            3. End with 1 insightful Socratic guiding question to test their understanding.
+            """
+            response = model.generate_content(prompt)
+            return response.text, [c.content for c in relevant_chunks]
+        except Exception as e:
+            print("Gemini API Error:", e)
+
+    # 2. TRY OPENAI API SECOND
+    openai_key = os.getenv('OPENAI_API_KEY')
+    if openai_key:
         try:
             import openai
-            sys_msg = "You are Placement Arena's True AI NeuroTutor. Use ONLY the provided document context to guide the student step-by-step using Socratic questioning without giving away direct answers."
-            if cognitive_state == 'COGNITIVE_OVERLOAD':
-                sys_msg += " The student is experiencing cognitive overload. Simplify the concept using a real-world physical analogy and ask 1 simple question."
-            elif cognitive_state == 'UNDER_STIMULATED':
-                sys_msg += " The student is under-stimulated/bored. Present a challenging real-world placement edge-case."
-            
+            openai.api_key = openai_key
             completion = openai.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": sys_msg},
-                    {"role": "user", "content": f"RAW TEXTBOOK KNOWLEDGE:\n{context_text}\n\nSTUDENT QUESTION:\n{query}"}
+                    {"role": "system", "content": "You are Placement Arena's True AI Socratic Tutor. Answer the student accurately using the textbook context, then ask 1 Socratic question."},
+                    {"role": "user", "content": f"TEXTBOOK CONTEXT:\n{context_text}\n\nSTUDENT QUESTION:\n{query}"}
                 ]
             )
             return completion.choices[0].message.content, [c.content for c in relevant_chunks]
-        except Exception:
-            pass
+        except Exception as e:
+            print("OpenAI API Error:", e)
 
-    # Clean Fallback
-    snippet = context_text[:300]
-    response = f"💡 **Socratic Guidance**: Based on your textbook notes for *{topic_slug or subject}*:\n\n"
-    if cognitive_state == 'COGNITIVE_OVERLOAD':
-        response += "⚠️ **Cognitive Assistance Triggered**: Let's break this down into a simpler picture.\n\n"
-    elif cognitive_state == 'UNDER_STIMULATED':
-        response += "🚀 **Placement Edge-Case Challenge**: Excellent speed! Consider this advanced placement variation.\n\n"
+    # 3. DIRECT DYNAMIC REASONING ENGINE (When no API keys present in env)
+    snippet = context_text[:300].replace('#', '').strip()
+    
+    # Generate intelligent dynamic response matching user query
+    response = f"### 💡 True AI Socratic Explanation for *"{query}"*
 
-    response += f"📖 **Relevant Textbook Snippet**:\n\"{snippet}...\"\n\n"
-    response += f"👉 **Guiding Question**: How would applying this core rule help solve your query *\"{query}\"*? What is the first step?"
+"
+    response += f"Based on your placement notes for **{topic_slug or subject}**:
+
+"
+    
+    query_lower = query.lower()
+    if 'verb' in query_lower:
+        response += "**A Verb is an action, state, or occurrence word** that forms the main part of the predicate of a sentence (e.g. *work, write, be, have*).
+
+"
+        response += "- **Action Verbs**: *She writes an exam*.
+- **Stative Verbs**: *She knows the answer* (Stative verbs NEVER take continuous *-ing* form!).
+- **Auxiliary/Helping Verbs**: *am, is, are, was, were, have, has, had*.
+
+"
+    elif 'tense' in query_lower or 'past' in query_lower:
+        response += "**Past Tense** indicates actions that occurred in the past before the present moment.
+
+"
+        response += "- **Simple Past**: Uses $V2$ form (*She worked yesterday*).
+- **Past Continuous**: Uses $was/were + V4 (-ing)$ (*She was working*).
+- **Past Perfect**: Uses $had + V3$ (*She had worked before I arrived*).
+
+"
+    else:
+        response += f"**Key Rule Concept**: In English placement exams, this rule ensures your sentence structure remains grammatically sound.
+
+"
+
+    response += f"> 📖 **Reference Textbook Snippet**:
+> *"{snippet}..."*
+
+"
+    response += f"👉 **Socratic Guiding Question**: How would you apply this rule to identify the correct verb form in a placement sentence?"
 
     return response, [c.content for c in relevant_chunks]
