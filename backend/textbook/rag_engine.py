@@ -1,5 +1,5 @@
 import math, os
-from .models import TextbookChunk
+from .models import Document, DocumentChunk
 
 def get_text_embedding(text):
     """
@@ -40,12 +40,12 @@ def cosine_similarity(vec1, vec2):
 
 def perform_rag_search(subject, topic_slug, user_query, top_k=3):
     query_vec = get_text_embedding(user_query)
-    chunks = TextbookChunk.objects.filter(subject=subject)
+    chunks = DocumentChunk.objects.filter(subject=subject)
     if topic_slug:
         chunks = chunks.filter(topic_slug=topic_slug)
     
     if not chunks.exists():
-        chunks = TextbookChunk.objects.all()
+        chunks = DocumentChunk.objects.all()
 
     scored_chunks = []
     for chunk in chunks:

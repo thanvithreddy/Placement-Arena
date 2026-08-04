@@ -146,7 +146,16 @@ class PDFDocumentUploadView(APIView):
         if not file_text.strip():
             return Response({'error': 'Could not extract text from document.'}, status=400)
 
-        # Ingest document text into vector chunks
+        # Create parent Document record
+        doc_obj, _ = Document.objects.get_or_create(
+            title=filename,
+            file_name=filename,
+            subject=subject,
+            topic_slug=topic_slug,
+            uploaded_by=request.user if request.user.is_authenticated else None
+        )
+
+        # Chunk document text and create DocumentChunk vectors
         chunk_size = 400
         overlap = 50
         chunks_created = []
@@ -158,7 +167,8 @@ class PDFDocumentUploadView(APIView):
             chunk_str = file_text[start:end]
             vec = get_text_embedding(chunk_str)
 
-            c_obj = TextbookChunk.objects.create(
+            c_obj = DocumentChunk.objects.create(
+                document=doc_obj,
                 subject=subject,
                 topic_slug=topic_slug,
                 chapter_title=filename,
