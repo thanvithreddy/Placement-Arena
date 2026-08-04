@@ -414,7 +414,72 @@
             </div>
         </div>
 
-    </main>
+    
+        <!-- RAG DOCUMENTS MANAGEMENT TAB SECTION -->
+        <div id="tab-rag-documents" class="admin-tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">RAG Textbook &amp; Document Store</h2>
+                    <p class="text-xs text-slate-500 mt-1">Selectively delete custom uploaded PDFs, textbooks, and vector concept chunks.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="fetchAdminRAGDocs()" class="px-3.5 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-rotate"></i> Refresh List
+                    </button>
+                    <button onclick="purgeAllRAGDocs()" class="px-3.5 py-2 bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-600 hover:text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-dumpster"></i> Purge All Documents
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="relative flex-1 sm:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" id="admin-rag-search" oninput="filterAdminRAGDocs()" placeholder="Search document title or filename..." 
+                               class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
+                    </div>
+                    <select id="admin-rag-subject" onchange="filterAdminRAGDocs()" class="bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-semibold px-3 py-2 focus:outline-none">
+                        <option value="ALL">All Subjects</option>
+                        <option value="verbal">Verbal</option>
+                        <option value="aptitude">Aptitude</option>
+                        <option value="java">Java</option>
+                        <option value="reasoning">Reasoning</option>
+                    </select>
+                </div>
+                <div class="text-xs font-extrabold text-slate-600">
+                    <span id="admin-rag-doc-count" class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 font-extrabold">0 Documents</span>
+                </div>
+            </div>
+
+            <!-- Documents Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-700">
+                        <thead class="bg-slate-100 text-slate-600 uppercase text-[10px] font-extrabold border-b border-slate-200">
+                            <tr>
+                                <th class="py-3.5 px-4">Document Title</th>
+                                <th class="py-3.5 px-4">Subject</th>
+                                <th class="py-3.5 px-4">File Name</th>
+                                <th class="py-3.5 px-4">Vector Chunks</th>
+                                <th class="py-3.5 px-4">Uploaded Date</th>
+                                <th class="py-3.5 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-rag-tbody" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-slate-500 font-bold">
+                                    <i class="fa-solid fa-spinner animate-spin text-lg mb-2 block text-indigo-600"></i> Loading documents...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</main>
 
     <!-- MODALS -->
 
