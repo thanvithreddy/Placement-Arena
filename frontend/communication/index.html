@@ -77,6 +77,12 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <!-- KaTeX Math Notation CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50">
 
@@ -1506,16 +1512,27 @@
             }
         }
 
+        function cleanTextForChatSnippet(rawText) {
+            if (!rawText) return '';
+            let cleaned = rawText
+                .replace(/^#+\s*/gm, '') // Remove Markdown headers (###)
+                .replace(/\$/g, '') // Clean LaTeX dollar signs
+                .replace(/\*\*/g, ' ') // Clean double asterisks for snippet
+                .replace(/\\text\{([^}]+)\}/g, '$1') // Clean \text{...}
+                .replace(/\\to/g, '->') // Clean \to
+                .replace(/\n+/g, ' ') // Collapse multiple newlines
+                .trim();
+            return cleaned;
+        }
+
         function localSemanticRAG(query) {
             const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
             let candidates = [];
 
-            // Add custom uploaded chunks
             window._customUploadedChunks.forEach(c => {
                 candidates.push({ source: c.filename, text: c.content });
             });
 
-            // Add topic formula sheets
             if (typeof verbalTopics !== 'undefined') {
                 verbalTopics.forEach(t => {
                     candidates.push({ source: t.name, text: t.formula_sheet });
@@ -1525,7 +1542,6 @@
                 });
             }
 
-            // Score candidates by keyword overlap
             let scored = candidates.map(c => {
                 let score = 0;
                 const textLower = c.text.toLowerCase();
@@ -1614,6 +1630,9 @@
             const msgBox = document.getElementById('chat-messages-box');
             chatMessagesHistory.push({ role: sender, content: text });
 
+            // Clean LaTeX dollar signs if any
+            let parsedText = text.replace(/\$([^$]+)\$/g, '<strong class="text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100">$1</strong>');
+
             if (sender === 'user') {
                 msgBox.innerHTML += `
                     <div class="flex justify-end">
@@ -1626,14 +1645,24 @@
                 msgBox.innerHTML += `
                     <div class="flex gap-2.5 max-w-[88%]">
                         <div class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🤖</div>
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs leading-relaxed">
-                            ${marked.parse(text)}
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs leading-relaxed">
+                            ${marked.parse(parsedText)}
                         </div>
                     </div>
                 `;
             }
 
             msgBox.scrollTop = msgBox.scrollHeight;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(msgBox, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
         }
     </script>
 
