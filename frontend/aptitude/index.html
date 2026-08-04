@@ -1548,5 +1548,455 @@ function calcPct() {
             renderMap();
         });
     </script>
+
+    <!-- Floating ChatGPT-style AI Tutor Button -->
+    <button onclick="toggleAITutorChat()" id="ai-tutor-fab" class="fixed bottom-6 right-6 z-50 gradient-btn text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition">
+        <i class="fa-solid fa-robot"></i>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+    </button>
+
+    <!-- Floating ChatGPT AI Tutor Drawer Window -->
+    <div id="ai-tutor-drawer" class="hidden fixed bottom-24 right-6 z-50 w-[92vw] max-w-[420px] h-[580px] bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden font-sans">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-amber-600 to-indigo-700 p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lg">
+                    🧮
+                </div>
+                <div>
+                    <h3 class="text-sm font-extrabold leading-none">Aptitude NeuroTutor AI</h3>
+                    <p class="text-[10px] text-amber-100 mt-1 font-semibold">Math RAG &amp; Socratic Shortcuts</p>
+                </div>
+            </div>
+            <button onclick="toggleAITutorChat()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Document Upload Bar -->
+        <div class="bg-amber-50/70 border-b border-amber-100 p-2.5 flex items-center justify-between px-3">
+            <div class="flex items-center gap-2 overflow-hidden">
+                <i class="fa-solid fa-file-arrow-up text-amber-600 text-xs"></i>
+                <span class="text-[11px] font-bold text-slate-700 truncate" id="chat-doc-status">Upload PDF/Math notes to chat</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="openAdminDocModal()" class="bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 font-extrabold text-[10px] px-2 py-1 rounded-lg transition flex items-center gap-1">
+                    <i class="fa-solid fa-gear"></i> Manage Docs
+                </button>
+                <label class="cursor-pointer bg-white hover:bg-amber-50 border border-amber-200 text-amber-700 font-extrabold text-[10px] px-2.5 py-1 rounded-lg transition shrink-0 flex items-center gap-1">
+                    <i class="fa-solid fa-paperclip"></i> Upload
+                    <input type="file" id="chat-file-input" onchange="uploadDocumentToChat(this)" accept=".pdf,.txt,.md" class="hidden">
+                </label>
+            </div>
+        </div>
+
+        <!-- Chat Messages Container -->
+        <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50/50 text-xs" id="chat-messages-box">
+            <!-- Initial AI Welcome Message -->
+            <div class="flex gap-2.5 max-w-[88%]">
+                <div class="w-7 h-7 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                    🧮
+                </div>
+                <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs">
+                    <p class="font-bold">Welcome to Aptitude NeuroTutor! 👋</p>
+                    <p class="text-[11px] text-slate-600">Ask me any Quantitative Aptitude shortcut, SI/CI growth formula, or upload your PDF math handbooks!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 bg-white border-t border-slate-200 space-y-2">
+            <div class="flex items-center gap-2">
+                <input type="text" id="chat-user-input" onkeypress="handleChatKeyPress(event)" placeholder="Ask an Aptitude or Math question..." 
+                       class="flex-1 px-3.5 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <button onclick="sendChatMessage()" class="bg-gradient-to-r from-amber-600 to-indigo-600 text-white w-9 h-9 rounded-xl flex items-center justify-center text-sm shadow-md">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-between text-[9px] text-slate-400 font-bold px-1">
+                <span>⚡ Quantitative RAG Active</span>
+                <span>NeuroTutor 2.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regular Admin RAG Document Management Modal -->
+    <div id="admin-doc-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="bg-gradient-to-r from-amber-700 to-indigo-800 p-4 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-folder-tree text-lg"></i>
+                    <div>
+                        <h3 class="text-sm font-extrabold">Admin Document RAG Manager</h3>
+                        <p class="text-[10px] text-amber-200">Selectively delete custom documents and vector chunks</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminDocModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-4 overflow-y-auto flex-1 space-y-3">
+                <div id="admin-doc-modal-list" class="space-y-2 text-xs">
+                    <div class="text-center py-6 text-slate-400 animate-pulse font-bold">
+                        <i class="fa-solid fa-spinner animate-spin text-lg mb-2 block"></i> Loading RAG documents...
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-400 px-4">
+                <span>Selectively delete any document to purge its RAG vector chunks</span>
+                <button onclick="closeAdminDocModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-bold">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aptitude Chatbot Script Engine -->
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let chatMessagesHistory = [];
+        window._customUploadedChunks = [];
+
+        function toggleAITutorChat() {
+            const drawer = document.getElementById('ai-tutor-drawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                document.getElementById('chat-user-input').focus();
+            }
+        }
+
+        function handleChatKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function extractPdfPagesClient(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let pages = [];
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const tokenProps = await page.getTextContent();
+                const pageText = tokenProps.items.map(item => item.str).join(' ');
+                if (pageText.trim().length > 10) {
+                    pages.push({ pageNum: i, text: pageText.trim() });
+                }
+            }
+            return pages;
+        }
+
+        async function uploadDocumentToChat(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const statusEl = document.getElementById('chat-doc-status');
+            statusEl.textContent = `Reading ${file.name}...`;
+            statusEl.className = "text-[11px] font-bold text-amber-600 truncate";
+
+            try {
+                window._customUploadedChunks = [];
+
+                if (file.name.endsWith('.pdf')) {
+                    const pages = await extractPdfPagesClient(file);
+                    pages.forEach(p => {
+                        const chunkSize = 300;
+                        for (let i = 0; i < p.text.length; i += 250) {
+                            const chunkStr = p.text.substring(i, i + chunkSize).trim();
+                            if (chunkStr.length > 15) {
+                                window._customUploadedChunks.push({
+                                    filename: file.name,
+                                    pageNum: p.pageNum,
+                                    content: chunkStr
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    const text = await file.text();
+                    window._customUploadedChunks.push({
+                        filename: file.name,
+                        pageNum: 1,
+                        content: text
+                    });
+                }
+
+                statusEl.textContent = `✓ Indexed ${file.name} (${window._customUploadedChunks.length} chunks)`;
+                statusEl.className = "text-[11px] font-extrabold text-emerald-600 truncate";
+
+                appendChatMessage('ai', `📄 **Document Custom Indexed**: Successfully parsed *${file.name}* page-by-page into ${window._customUploadedChunks.length} vector concept chunks! Ask me any math or aptitude question about your document.`);
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('subject', 'aptitude');
+                formData.append('topic_slug', 'math-shortcuts');
+
+                const API = window.location.origin + '/api';
+                axios.post(`${API}/textbook/upload-pdf/`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }).catch(() => {});
+
+            } catch(e) {
+                console.error("Client PDF parse error", e);
+                statusEl.textContent = `❌ Error reading ${file.name}`;
+                statusEl.className = "text-[11px] font-extrabold text-rose-600 truncate";
+            }
+        }
+
+        const STOP_WORDS = new Set(['what', 'is', 'a', 'an', 'the', 'of', 'and', 'or', 'in', 'to', 'for', 'with', 'on', 'at', 'by', 'from', 'as', 'do', 'does', 'did', 'how', 'why', 'where', 'which', 'who', 'whom']);
+
+        function cleanTextForChatSnippet(rawText) {
+            if (!rawText) return '';
+            return rawText
+                .replace(/^#+\s*/gm, '')
+                .replace(/\\implies/gi, '➜')
+                .replace(/\\to/gi, '➜')
+                .replace(/\\text\{([^}]+)\}/gi, '$1')
+                .replace(/\$/g, '')
+                .replace(/\*\*/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function localSemanticRAG(query) {
+            const rawTokens = query.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/);
+            const coreKeywords = rawTokens.filter(w => w.length > 1 && !STOP_WORDS.has(w));
+            
+            let targetPage = null;
+            const pageMatch = query.match(/(\d+)(?:st|nd|rd|th)?\s*page|page\s*(\d+)/i);
+            if (pageMatch) {
+                targetPage = parseInt(pageMatch[1] || pageMatch[2]);
+            }
+
+            let candidates = [];
+
+            window._customUploadedChunks.forEach(c => {
+                candidates.push({ source: `${c.filename} (Page ${c.pageNum})`, text: c.content, title: c.filename, pageNum: c.pageNum });
+            });
+
+            if (typeof aptitudeData !== 'undefined') {
+                aptitudeData.forEach(t => {
+                    candidates.push({ source: t.title, text: t.formula_sheet || t.description || '', title: t.title, pageNum: null });
+                });
+            }
+
+            if (targetPage !== null) {
+                let pageMatches = candidates.filter(c => c.pageNum === targetPage);
+                if (pageMatches.length > 0) return pageMatches.slice(0, 3);
+            }
+
+            const searchTerms = coreKeywords.length > 0 ? coreKeywords : rawTokens.filter(w => w.length > 2);
+
+            let scored = candidates.map(c => {
+                let score = 0;
+                const textLower = c.text.toLowerCase();
+                const titleLower = (c.title || '').toLowerCase();
+
+                searchTerms.forEach(w => {
+                    const regex = new RegExp('\\b' + w + '\\b', 'gi');
+                    const matches = textLower.match(regex);
+                    if (matches) score += matches.length * 5;
+                    if (titleLower.includes(w)) score += 20;
+                });
+
+                return { score, ...c };
+            });
+
+            scored.sort((a, b) => b.score - a.score);
+            return scored.filter(s => s.score > 0).slice(0, 3);
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            appendChatMessage('user', text);
+
+            const msgBox = document.getElementById('chat-messages-box');
+            const loadingId = 'ai-loading-' + Date.now();
+            
+            msgBox.innerHTML += `
+                <div id="${loadingId}" class="flex gap-2.5 max-w-[88%]">
+                    <div class="w-7 h-7 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🧮</div>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 text-slate-500 font-bold text-xs animate-pulse">
+                        Aptitude NeuroTutor is scanning math formulas &amp; vector DB...
+                    </div>
+                </div>
+            `;
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            const API = window.location.origin + '/api';
+
+            try {
+                const res = await axios.post(`${API}/textbook/chat/`, {
+                    query: text,
+                    messages: chatMessagesHistory,
+                    subject: 'aptitude',
+                    topic_slug: 'math-shortcuts',
+                    cognitive_state: 'OPTIMAL_FLOW'
+                });
+
+                document.getElementById(loadingId)?.remove();
+                appendChatMessage('ai', res.data.response);
+                return;
+
+            } catch(e) {
+                console.log("Backend offline or waking up, executing Aptitude local RAG...");
+            }
+
+            document.getElementById(loadingId)?.remove();
+
+            const localMatches = localSemanticRAG(text);
+            const textLower = text.toLowerCase();
+            let aiResponse = "";
+
+            let bestSnippet = "";
+            let bestSource = "Aptitude Notes";
+            if (localMatches.length > 0) {
+                bestSource = localMatches[0].source;
+                bestSnippet = cleanTextForChatSnippet(localMatches[0].text);
+            }
+
+            const pageMatch = text.match(/(\d+)(?:st|nd|rd|th)?\s*page|page\s*(\d+)/i);
+            const targetPageNum = pageMatch ? (pageMatch[1] || pageMatch[2]) : null;
+
+            if (targetPageNum && bestSnippet) {
+                aiResponse = `### 💡 Aptitude AI Document Analysis: Page ${targetPageNum}\n\n` +
+                    `Breakdown of **Page ${targetPageNum}** from (*${bestSource}*):\n\n` +
+                    `> 📄 **Extracted Math Content**:\n> *"${bestSnippet}..."*\n\n` +
+                    `👉 **Socratic Guiding Question**: What formula or ratio shortcut from Page ${targetPageNum} applies to solve your problem?`;
+
+            } else if (textLower.includes('interest') || textLower.includes('si') || textLower.includes('ci')) {
+                aiResponse = `### 💡 Aptitude AI: Simple vs Compound Interest\n\n` +
+                    `#### 📐 Key Interest Formulas:\n` +
+                    `- **Simple Interest**: $SI = \\frac{P \\times R \\times T}{100}$\n` +
+                    `- **Compound Amount**: $A = P \\left(1 + \\frac{R}{100}\\right)^T$\n` +
+                    `- **2-Year Difference Shortcut**: $\\text{Diff} = P \\left(\\frac{R}{100}\\right)^2$\n\n` +
+                    `> 📖 **Reference Math Snippet** (${bestSource}):\n> *"${bestSnippet || 'SI grows linearly while CI grows exponentially.'}..."*\n\n` +
+                    `👉 **Socratic Question**: If the 2-year CI and SI difference for Rs 10,000 at 10% is asked, what is the instant 2-second shortcut?`;
+
+            } else if (textLower.includes('percentage') || textLower.includes('profit') || textLower.includes('loss')) {
+                aiResponse = `### 💡 Aptitude AI: Percentage & Profit/Loss Shortcuts\n\n` +
+                    `#### 📈 Core Placement Formulas:\n` +
+                    `- **Profit %**: $\\frac{\\text{Profit}}{\\text{CP}} \\times 100$\n` +
+                    `- **Successive Percentage Growth**: $a + b + \\frac{ab}{100}$\n` +
+                    `- **Dishonest Trader Shortcut**: $\\text{Gain \\%} = \\frac{\\text{Error}}{\\text{True Value - Error}} \\times 100$\n\n` +
+                    `> 📖 **Reference Math Snippet** (${bestSource}):\n> *"${bestSnippet || 'Always calculate Profit or Loss % on Cost Price (CP).'}..."*\n\n` +
+                    `👉 **Socratic Question**: If a shopkeeper sells goods at cost price but uses a 900g weight instead of 1kg, what is his exact gain %?`;
+
+            } else {
+                aiResponse = `### 💡 Aptitude AI Socratic Guidance for *"${text}"*\n\n` +
+                    `Scanning Quantitative RAG Vector Database (*${bestSource}*):\n\n` +
+                    `> 📖 **Retrieved Math Snippet**:\n> *"${bestSnippet || 'Identify given variables: Principal, Rate, Time, or Work Ratio.'}..."*\n\n` +
+                    `👉 **Socratic Question**: To solve *"${text}"*, what are the given variables and which ratio/percentage formula fits best?`;
+            }
+
+            appendChatMessage('ai', aiResponse);
+        }
+
+        function appendChatMessage(sender, text) {
+            const msgBox = document.getElementById('chat-messages-box');
+            chatMessagesHistory.push({ role: sender, content: text });
+
+            let parsedText = text.replace(/\$([^$]+)\$/g, '<strong class="text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 font-mono">$1</strong>');
+
+            if (sender === 'user') {
+                msgBox.innerHTML += `
+                    <div class="flex justify-end">
+                        <div class="bg-amber-600 text-white p-3 rounded-2xl max-w-[85%] font-medium leading-relaxed shadow-xs">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            } else {
+                msgBox.innerHTML += `
+                    <div class="flex gap-2.5 max-w-[88%]">
+                        <div class="w-7 h-7 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">🧮</div>
+                        <div class="bg-white p-3.5 rounded-2xl border border-slate-200 text-slate-800 space-y-1 shadow-2xs leading-relaxed">
+                            ${marked.parse(parsedText)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(msgBox, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        async function openAdminDocModal() {
+            document.getElementById('admin-doc-modal').classList.remove('hidden');
+            await loadAdminDocModalList();
+        }
+
+        function closeAdminDocModal() {
+            document.getElementById('admin-doc-modal').classList.add('hidden');
+        }
+
+        async function loadAdminDocModalList() {
+            const listEl = document.getElementById('admin-doc-modal-list');
+            const API = window.location.origin + '/api';
+
+            try {
+                const res = await axios.get(`${API}/textbook/documents/`);
+                const docs = res.data;
+
+                if (docs.length === 0) {
+                    listEl.innerHTML = `<div class="text-center py-6 text-slate-500 font-bold">No custom documents found in RAG store.</div>`;
+                    return;
+                }
+
+                let html = '';
+                docs.forEach(doc => {
+                    html += `
+                        <div class="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60 flex items-center justify-between gap-3">
+                            <div class="overflow-hidden">
+                                <div class="font-bold text-white text-xs truncate">${doc.title}</div>
+                                <div class="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5">
+                                    <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 uppercase font-extrabold">${doc.subject}</span>
+                                    <span>⚡ ${doc.chunk_count} Chunks</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteDocFromModal(${doc.id}, '${doc.title.replace(/'/g, "\'")}')" 
+                                    class="px-2.5 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 rounded-xl text-[11px] font-bold transition shrink-0 flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                });
+
+                listEl.innerHTML = html;
+            } catch(e) {
+                listEl.innerHTML = `<div class="text-center py-6 text-rose-400 font-bold">Failed to load document list from backend API.</div>`;
+            }
+        }
+
+        async function deleteDocFromModal(id, title) {
+            if (!confirm(`Selectively delete "${title}" and all its vector chunks?`)) return;
+
+            const API = window.location.origin + '/api';
+            try {
+                const res = await axios.delete(`${API}/textbook/documents/${id}/`);
+                alert(res.data.message || `Deleted "${title}"!`);
+                await loadAdminDocModalList();
+            } catch(e) {
+                alert("Failed to delete document. Ensure Django API is running!");
+            }
+        }
+    </script>
+
 </body>
 </html>
