@@ -1,27 +1,47 @@
-# Byte-compiled / optimized / DLL files
+# ─── Python ───────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
+*.egg-info/
+dist/
+build/
 
-# Django / Local
+# ─── Django ───────────────────────────────────────────────────────────────
 *.sqlite3
 *.sqlite3-journal
 db.sqlite3
 media/
 staticfiles/
 
-# Environment variables & virtualenvs
+# ─── Environment & Secrets ───────────────────────────────────────────────
 .env
+.env.*
 .venv
 env/
 venv/
 ENV/
 
-# IDE & OS
+# ─── IDE & OS ─────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
+
+# ─── Logs & Temp Files ───────────────────────────────────────────────────
+*.log
+*.bak
+*.tmp
+*.orig
+
+# ─── Node (if npm/yarn is ever used) ─────────────────────────────────────
+node_modules/
+package-lock.json
+
+# ─── Java Build Artifacts ────────────────────────────────────────────────
+target/
+*.class
+*.jar

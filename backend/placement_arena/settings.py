@@ -1,14 +1,30 @@
 import os
+import logging
 from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'placement-arena-secret-key-change-in-production')
-DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+# ── Security ────────────────────────────────────────────────────────────────────
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
 
+# In production (DEBUG=False), SECRET_KEY MUST come from the environment.
+# In development (DEBUG=True), a default is used for convenience.
+_default_key = 'dev-only-placement-arena-insecure-key' if DEBUG else ''
+SECRET_KEY = os.getenv('SECRET_KEY', _default_key)
+if not SECRET_KEY:
+    raise ValueError(
+        "SECRET_KEY environment variable is required in production. "
+        "Set it before starting the server."
+    )
+
+# In production, ALLOWED_HOSTS must be explicitly set (e.g. 'mysite.com,api.mysite.com').
+# In development, allow all hosts for convenience.
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*' if DEBUG else '').split(',')
+ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
+
+# ── Installed Apps ──────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -16,11 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    
+
     'authentication',
     'exams',
     'questions',
@@ -32,6 +48,7 @@ INSTALLED_APPS = [
     'communication',
 ]
 
+# ── Middleware ───────────────────────────────────────────────────────────────────
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -63,8 +80,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'placement_arena.wsgi.application'
+ASGI_APPLICATION = 'placement_arena.asgi.application'
 
-# Database Configuration (PostgreSQL when DATABASE_URL or POSTGRES_DB is set, else SQLite)
+# ── Database (PostgreSQL when DATABASE_URL or POSTGRES_DB is set, else SQLite) ─
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
@@ -95,6 +113,7 @@ else:
             }
         }
 
+# ── Password Validation ────────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -102,30 +121,51 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# ── Internationalization ────────────────────────────────────────────────────────
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
+# ── Static & Media Files ───────────────────────────────────────────────────────
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# Django 5.x STORAGES config (replaces deprecated STATICFILES_STORAGE)
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
+    },
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# ── Auth ────────────────────────────────────────────────────────────────────────
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authentication.User'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# ── CORS ────────────────────────────────────────────────────────────────────────
+# In development, allow all origins for convenience.
+# In production, set CORS_ALLOWED_ORIGINS env var (comma-separated).
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    _cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(',') if o.strip()]
 
+# ── REST Framework & JWT ────────────────────────────────────────────────────────
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
 }
 
 SIMPLE_JWT = {
@@ -153,8 +193,40 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 }
 
-# ── Sarvam AI Translation API ──────────────────────────────────────────────────
-SARVAM_API_KEY = os.getenv('SARVAM_API_KEY', '')
+# ── Logging ─────────────────────────────────────────────────────────────────────
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'placement_arena': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
-# ── Gemini AI API (Translation + English Grammar Correction) ───────────────────
+# ── External API Keys ──────────────────────────────────────────────────────────
+SARVAM_API_KEY = os.getenv('SARVAM_API_KEY', '')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')

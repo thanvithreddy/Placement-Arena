@@ -1,5 +1,8 @@
 from django.urls import path
-from .views import IngestTextbookView, TrueAIRAGAskView, RecordTelemetryView
+from .views import (
+    IngestTextbookView, TrueAIRAGAskView, RecordTelemetryView,
+    PDFDocumentUploadView, AITutorChatView, DocumentListDeleteView
+)
 
 urlpatterns = [
     path('ingest/', IngestTextbookView.as_view(), name='textbook-ingest'),
@@ -11,6 +14,5 @@ urlpatterns = [
 
     path('documents/', DocumentListDeleteView.as_view(), name='textbook-documents-list'),
     path('documents/<int:pk>/', DocumentListDeleteView.as_view(), name='textbook-documents-delete'),
-
-
 ]
+

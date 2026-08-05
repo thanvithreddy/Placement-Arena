@@ -1,4 +1,5 @@
 import re
+import logging
 import requests as http_requests
 from django.conf import settings
 from rest_framework.views import APIView
@@ -8,6 +9,8 @@ from rest_framework import status
 
 from .models import SpeechTopic, SpeechAttempt
 from .serializers import SpeechTopicSerializer, SpeechAttemptSerializer, SpeechAttemptCreateSerializer
+
+logger = logging.getLogger('placement_arena')
 
 
 # ════════════════════════════════════════════════════════════════════════════════
@@ -837,7 +840,7 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
             data = json.loads(raw.strip())
             return Response(data, status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"[Robo AI View Error]: {e}")
+            logger.error("Robo AI View error: %s", e)
             fallback_data = self._fallback_robo_reply(transcript, persona_key, history)
             return Response(fallback_data, status=status.HTTP_200_OK)
 

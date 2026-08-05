@@ -416,7 +416,7 @@ class PurgeAllDataView(APIView):
         return Response({'message': 'All questions, exams, submissions, and logs have been completely purged!'})
 
 
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from django.core.management import call_command
 
 # Aptitude endpoints have been migrated to static frontend data.js
@@ -427,7 +427,7 @@ from django.core.management import call_command
 # ==========================================
 
 class JavaTopicsView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
 

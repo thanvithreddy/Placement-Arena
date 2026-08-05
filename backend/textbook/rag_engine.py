@@ -1,5 +1,7 @@
-import math, os
+import math, os, logging
 from .models import Document, DocumentChunk
+
+logger = logging.getLogger('placement_arena')
 
 def get_text_embedding(text):
     """
@@ -87,7 +89,7 @@ def generate_socratic_guidance(query, subject, topic_slug, cognitive_state='OPTI
             response = model.generate_content(prompt)
             return response.text, [c.content for c in relevant_chunks]
         except Exception as e:
-            print("Gemini API Error:", e)
+            logger.error("Gemini API error: %s", e)
 
     # 2. TRY OPENAI API SECOND
     openai_key = os.getenv('OPENAI_API_KEY')
@@ -104,7 +106,7 @@ def generate_socratic_guidance(query, subject, topic_slug, cognitive_state='OPTI
             )
             return completion.choices[0].message.content, [c.content for c in relevant_chunks]
         except Exception as e:
-            print("OpenAI API Error:", e)
+            logger.error("OpenAI API error: %s", e)
 
     # 3. DIRECT DYNAMIC REASONING ENGINE (When no API keys present in env)
     snippet = context_text[:300].replace('#', '').strip()
