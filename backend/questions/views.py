@@ -63,8 +63,8 @@ class SaveAnswerView(APIView):
         except SectionAttempt.DoesNotExist:
             return Response({'error': 'Invalid section attempt'}, status=status.HTTP_400_BAD_REQUEST)
             
-        if attempt.status == 'completed':
-            return Response({'error': 'Section already submitted'}, status=status.HTTP_400_BAD_REQUEST)
+        if attempt.exam_attempt.status == 'completed':
+            return Response({'error': 'Exam already submitted'}, status=status.HTTP_400_BAD_REQUEST)
             
         question_id = data.get('question_id')
         option_id = data.get('option_id')
@@ -149,15 +149,15 @@ class BulkImportView(APIView):
 
             r = [clean_val(cell) for cell in row]
 
-            raw_cat = r[0].strip().lower() if r[0] else 'arithmetic'
-            if 'arith' in raw_cat:
+            raw_cat = r[0].strip() if r[0] else 'General'
+            if 'arith' in raw_cat.lower():
                 cat = 'arithmetic'
-            elif 'verb' in raw_cat:
+            elif 'verb' in raw_cat.lower():
                 cat = 'verbal'
-            elif 'reas' in raw_cat:
+            elif 'reas' in raw_cat.lower():
                 cat = 'reasoning'
             else:
-                cat = 'arithmetic'
+                cat = raw_cat.lower()
                 
             diff = r[1].lower() if len(r) > 1 and r[1] else 'medium'
             if diff not in ['easy', 'medium', 'hard']:

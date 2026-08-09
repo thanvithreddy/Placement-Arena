@@ -204,11 +204,12 @@ class SubmitSectionView(APIView):
                 totals = {'arithmetic': [0,0], 'verbal': [0,0], 'reasoning': [0,0]}
                 
                 for sa in exam_attempt.section_attempts.all():
-                    cat = sa.section.section_type
-                    if cat in totals:
-                        answers = sa.answers.all()
-                        totals[cat][1] += answers.count()
-                        totals[cat][0] += answers.filter(is_correct=True).count()
+                    cat = sa.section.section_type.lower()
+                    if cat not in totals:
+                        totals[cat] = [0, 0]
+                    answers = sa.answers.all()
+                    totals[cat][1] += answers.count()
+                    totals[cat][0] += answers.filter(is_correct=True).count()
                 
                 def acc(correct, total):
                     return round((correct / total * 100), 1) if total > 0 else 0.0
@@ -219,9 +220,9 @@ class SubmitSectionView(APIView):
                     exam_attempt=exam_attempt,
                     defaults={
                         'user': exam_attempt.user,
-                        'arithmetic_accuracy': acc(*totals['arithmetic']),
-                        'verbal_accuracy': acc(*totals['verbal']),
-                        'reasoning_accuracy': acc(*totals['reasoning']),
+                        'arithmetic_accuracy': acc(*totals.get('arithmetic', [0,0])),
+                        'verbal_accuracy': acc(*totals.get('verbal', [0,0])),
+                        'reasoning_accuracy': acc(*totals.get('reasoning', [0,0])),
                         'coding_accuracy': 0.0,  # updated separately on coding submit
                         'weak_areas': weak
                     }

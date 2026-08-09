@@ -10,10 +10,9 @@ class Exam(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class ExamSection(models.Model):
-    SECTION_TYPES = [('arithmetic','Arithmetic'),('verbal','Verbal'),('reasoning','Reasoning'),('coding','Coding')]
     exam = models.ForeignKey(Exam, related_name='sections', on_delete=models.CASCADE)
-    section_type = models.CharField(max_length=20, choices=SECTION_TYPES)
-    order = models.IntegerField()  # 1,2,3,4
+    section_type = models.CharField(max_length=100)
+    order = models.IntegerField()  # 1,2,3,4...
     duration_minutes = models.IntegerField()
     max_score = models.IntegerField()
     question_count = models.IntegerField()

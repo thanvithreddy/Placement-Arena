@@ -97,13 +97,13 @@
     </div>
 
     <!-- Top Navigation Bar -->
-    <header class="bg-white border-b border-slate-200 h-16 px-6 flex justify-between items-center z-10 shrink-0 shadow-xs">
-        <div class="flex items-center gap-4">
-            <h1 class="text-lg font-extrabold text-slate-900">Placement Arena</h1>
-            <span class="text-slate-300">|</span>
-            <span id="section-badge" class="px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-full text-xs font-bold">
-                Arithmetic
-            </span>
+    <header class="bg-white border-b border-slate-200 h-16 px-6 flex justify-between items-center z-10 shrink-0 shadow-xs gap-4">
+        <div class="flex items-center gap-3 overflow-x-auto">
+            <h1 class="text-base md:text-lg font-extrabold text-slate-900 whitespace-nowrap shrink-0">Placement Arena</h1>
+            <span class="text-slate-300 shrink-0">|</span>
+            <div id="section-tabs-container" class="flex items-center gap-2 overflow-x-auto py-1 shrink-0">
+                <!-- Interactive Section Navigation Tabs -->
+            </div>
         </div>
         
         <!-- Timer & Fullscreen -->
@@ -338,7 +338,7 @@
                 return;
             }
 
-            document.getElementById('section-badge').innerText = capitalize(sec.section_type);
+            renderSectionTabs();
             
             const startRes = await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
             let fetchedQuestions = startRes.data.questions;
@@ -369,6 +369,42 @@
             renderPalette();
         }
 
+        function renderSectionTabs() {
+            const container = document.getElementById('section-tabs-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            sectionAttempts.forEach((sa, idx) => {
+                const targetSecId = sa.section || sa.section_id;
+                const sec = sections.find(s => s.id === targetSecId);
+                if (!sec) return;
+
+                const isCurrent = (idx === currentSectionIdx);
+                const secTitle = capitalize(sec.section_type);
+
+                const tabBtn = document.createElement('button');
+                tabBtn.type = 'button';
+                tabBtn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    isCurrent
+                        ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+                }`;
+                tabBtn.innerHTML = `
+                    <span>${secTitle}</span>
+                    ${sa.status === 'completed' ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-600 px-1.5 py-0.5 rounded font-extrabold">✓</span>' : ''}
+                `;
+
+                tabBtn.onclick = () => switchSectionTab(idx);
+                container.appendChild(tabBtn);
+            });
+        }
+
+        async function switchSectionTab(idx) {
+            if (idx === currentSectionIdx || idx < 0 || idx >= sectionAttempts.length) return;
+            currentSectionIdx = idx;
+            await loadCurrentSection();
+        }
+
         function renderQuestion(idx) {
             if (!questions || questions.length === 0) {
                 document.getElementById('question-number-text').innerText = 'No Questions Uploaded';
@@ -396,17 +432,8 @@
             (q.options || []).forEach((opt, oIdx) => {
                 const isSelected = questionStates[q.id].selected_option_id === opt.id;
                 const label = document.createElement('label');
-                label.className = `option-label p-4 rounded-xl flex items-center gap-3 text-sm ${isSelected ? 'selected' : ''}`;
-                // Use onclick directly on label for reliable touch + mouse support
-                label.onclick = (e) => {
-                    e.preventDefault();
-                    selectOption(q.id, opt.id);
-                };
-                // Also handle touchend to ensure mobile works after section transition
-                label.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    selectOption(q.id, opt.id);
-                }, { passive: false });
+                label.className = `option-label p-4 rounded-xl flex items-center gap-3 text-sm cursor-pointer ${isSelected ? 'selected' : ''}`;
+                label.onclick = () => selectOption(q.id, opt.id);
                 label.innerHTML = `
                     <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold text-xs pointer-events-none ${isSelected ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600'}">${String.fromCharCode(65 + oIdx)}</span>
                     <span class="pointer-events-none">${opt.text}</span>
@@ -459,14 +486,9 @@
             questions.forEach((q, idx) => {
                 const st = questionStates[q.id] ? questionStates[q.id].status : 'not_visited';
                 const div = document.createElement('div');
-                div.className = `palette-item ${st === 'answered' ? 'answered' : st === 'marked' ? 'marked' : st === 'visited' ? 'visited' : 'not-visited'} ${idx === currentQIdx ? 'ring-2 ring-indigo-600 font-bold' : ''}`;
+                div.className = `palette-item cursor-pointer ${st === 'answered' ? 'answered' : st === 'marked' ? 'marked' : st === 'visited' ? 'visited' : 'not-visited'} ${idx === currentQIdx ? 'ring-2 ring-indigo-600 font-bold' : ''}`;
                 div.innerText = idx + 1;
                 div.onclick = () => renderQuestion(idx);
-                // Reliable touch for mobile after section transitions
-                div.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    renderQuestion(idx);
-                }, { passive: false });
                 grid.appendChild(div);
             });
         }

@@ -1,10 +1,9 @@
 from django.db import models
 
 class Question(models.Model):
-    CATEGORY_CHOICES = [('arithmetic','Arithmetic'),('verbal','Verbal'),('reasoning','Reasoning')]
     DIFFICULTY_CHOICES = [('easy','Easy'),('medium','Medium'),('hard','Hard')]
     section = models.ForeignKey('exams.ExamSection', on_delete=models.CASCADE, related_name='questions', null=True, blank=True)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=100)
     difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
     text = models.TextField()
     explanation = models.TextField(blank=True)

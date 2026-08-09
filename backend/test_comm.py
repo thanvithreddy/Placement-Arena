@@ -1,4 +1,6 @@
 import sys, os
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 sys.path.insert(0, '.')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'placement_arena.settings'
 import django
