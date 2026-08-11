@@ -25,6 +25,7 @@ class SubmissionHistoryView(APIView):
                 'exam_date': att.exam.date,
                 'status': att.status,
                 'total_score': att.total_score,
+                'total_max_score': sum(sa.section.max_score for sa in att.section_attempts.all()),
                 'rank': lb.rank if lb else None,
                 'started_at': att.started_at,
                 'submitted_at': att.submitted_at,

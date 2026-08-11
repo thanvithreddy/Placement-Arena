@@ -261,15 +261,14 @@ class ExamResultView(APIView):
         lb_entry = DailyLeaderboard.objects.filter(exam_id=exam_id, user=request.user).first()
         rank = lb_entry.rank if lb_entry else None
         
-        time_taken = None
-        if attempt.started_at and attempt.submitted_at:
-            time_taken = int((attempt.submitted_at - attempt.started_at).total_seconds())
+        total_max_score = sum(sec['max_score'] for sec in sections_data)
         
         return Response({
             'exam_id': exam_id,
             'exam_title': attempt.exam.title,
             'status': attempt.status,
             'total_score': attempt.total_score,
+            'total_max_score': total_max_score,
             'rank': rank,
             'time_taken_seconds': time_taken,
             'sections': sections_data

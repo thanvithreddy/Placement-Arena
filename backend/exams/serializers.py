@@ -35,6 +35,11 @@ class SectionAttemptSerializer(serializers.ModelSerializer):
 
 class ExamAttemptSerializer(serializers.ModelSerializer):
     section_attempts = SectionAttemptSerializer(many=True, read_only=True)
+    total_max_score = serializers.SerializerMethodField()
+
     class Meta:
         model = ExamAttempt
-        fields = ['id', 'user_id', 'exam_id', 'status', 'total_score', 'violations_count', 'started_at', 'submitted_at', 'section_attempts']
+        fields = ['id', 'user_id', 'exam_id', 'status', 'total_score', 'total_max_score', 'violations_count', 'started_at', 'submitted_at', 'section_attempts']
+
+    def get_total_max_score(self, obj):
+        return sum(sa.section.max_score for sa in obj.section_attempts.all()) if obj.section_attempts.exists() else 0

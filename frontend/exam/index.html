@@ -38,6 +38,10 @@
             background: #f1f5f9;
             color: #0f172a;
         }
+        button, .option-label, .palette-item {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
         .option-label {
             transition: all 0.2s ease;
             cursor: pointer;
@@ -338,11 +342,15 @@
                 return;
             }
 
-            renderSectionTabs();
-            
             const startRes = await axios.post(`${API}/exams/sections/${sa.id}/start/`, {}, getHeaders());
+            if (startRes.data && startRes.data.status) {
+                sa.status = startRes.data.status;
+                sectionAttempts[currentSectionIdx] = startRes.data;
+            }
+
+            renderSectionTabs();
+
             let fetchedQuestions = startRes.data.questions;
-            
             if (!fetchedQuestions || fetchedQuestions.length === 0) {
                 try {
                     const qRes = await axios.get(`${API}/questions/section/${sa.id}/`, getHeaders());
@@ -394,7 +402,17 @@
                     ${sa.status === 'completed' ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-600 px-1.5 py-0.5 rounded font-extrabold">✓</span>' : ''}
                 `;
 
-                tabBtn.onclick = () => switchSectionTab(idx);
+                let handled = false;
+                const handleSwitch = (e) => {
+                    if (e) { e.preventDefault(); e.stopPropagation(); }
+                    if (handled) return;
+                    handled = true;
+                    setTimeout(() => { handled = false; }, 300);
+                    switchSectionTab(idx);
+                };
+                tabBtn.onclick = handleSwitch;
+                tabBtn.ontouchstart = handleSwitch;
+
                 container.appendChild(tabBtn);
             });
         }
@@ -433,7 +451,18 @@
                 const isSelected = questionStates[q.id].selected_option_id === opt.id;
                 const label = document.createElement('label');
                 label.className = `option-label p-4 rounded-xl flex items-center gap-3 text-sm cursor-pointer ${isSelected ? 'selected' : ''}`;
-                label.onclick = () => selectOption(q.id, opt.id);
+                
+                let handled = false;
+                const handleSelect = (e) => {
+                    if (e) { e.preventDefault(); e.stopPropagation(); }
+                    if (handled) return;
+                    handled = true;
+                    setTimeout(() => { handled = false; }, 300);
+                    selectOption(q.id, opt.id);
+                };
+                label.onclick = handleSelect;
+                label.ontouchstart = handleSelect;
+
                 label.innerHTML = `
                     <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold text-xs pointer-events-none ${isSelected ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600'}">${String.fromCharCode(65 + oIdx)}</span>
                     <span class="pointer-events-none">${opt.text}</span>
@@ -447,16 +476,43 @@
         async function selectOption(qId, optId) {
             questionStates[qId].selected_option_id = optId;
             questionStates[qId].status = 'answered';
-            renderQuestion(currentQIdx);
+
+            // In-place UI update for instant, zero-flicker touch feedback
+            const container = document.getElementById('options-container');
+            if (container) {
+                const labels = container.querySelectorAll('.option-label');
+                const q = questions[currentQIdx];
+                if (q && q.options) {
+                    q.options.forEach((opt, oIdx) => {
+                        const label = labels[oIdx];
+                        if (label) {
+                            const isSelected = (opt.id === optId);
+                            if (isSelected) {
+                                label.classList.add('selected');
+                            } else {
+                                label.classList.remove('selected');
+                            }
+                            const badge = label.querySelector('span');
+                            if (badge) {
+                                badge.className = `w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold text-xs pointer-events-none ${isSelected ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600'}`;
+                            }
+                        }
+                    });
+                }
+            }
+
+            renderPalette();
 
             const sa = sectionAttempts[currentSectionIdx];
-            try {
-                await axios.post(`${API}/questions/save-answer/`, {
-                    section_attempt_id: sa.id,
-                    question_id: qId,
-                    option_id: optId
-                }, getHeaders());
-            } catch(e) { console.error('Failed to save answer', e); }
+            if (sa) {
+                try {
+                    await axios.post(`${API}/questions/save-answer/`, {
+                        section_attempt_id: sa.id,
+                        question_id: qId,
+                        option_id: optId
+                    }, getHeaders());
+                } catch(e) { console.error('Failed to save answer', e); }
+            }
         }
 
         function markForReview() {
@@ -470,6 +526,9 @@
         function nextQuestion() {
             if (currentQIdx < questions.length - 1) {
                 renderQuestion(currentQIdx + 1);
+            } else {
+                // At last question of current section, advancing triggers section submission confirmation
+                submitSectionConfirm();
             }
         }
 
@@ -488,7 +547,18 @@
                 const div = document.createElement('div');
                 div.className = `palette-item cursor-pointer ${st === 'answered' ? 'answered' : st === 'marked' ? 'marked' : st === 'visited' ? 'visited' : 'not-visited'} ${idx === currentQIdx ? 'ring-2 ring-indigo-600 font-bold' : ''}`;
                 div.innerText = idx + 1;
-                div.onclick = () => renderQuestion(idx);
+                
+                let handled = false;
+                const handleNav = (e) => {
+                    if (e) { e.preventDefault(); e.stopPropagation(); }
+                    if (handled) return;
+                    handled = true;
+                    setTimeout(() => { handled = false; }, 300);
+                    renderQuestion(idx);
+                };
+                div.onclick = handleNav;
+                div.ontouchstart = handleNav;
+
                 grid.appendChild(div);
             });
         }
@@ -523,17 +593,19 @@
             document.getElementById('submit-modal').style.display = 'none';
             clearInterval(timerInterval);
             const sa = sectionAttempts[currentSectionIdx];
-            
-            try {
-                await axios.post(`${API}/exams/sections/${sa.id}/submit/`, {}, getHeaders());
-            } catch(e) { console.error('Submit error', e); }
+            if (sa) {
+                sa.status = 'completed';
+                try {
+                    await axios.post(`${API}/exams/sections/${sa.id}/submit/`, {}, getHeaders());
+                } catch(e) { console.error('Submit error', e); }
+            }
             
             currentSectionIdx++;
             if (currentSectionIdx >= sectionAttempts.length) {
                 window.location.href = `/result/index.html?exam_id=${examId}`;
                 return;
             }
-            loadCurrentSection();
+            await loadCurrentSection();
         }
 
         function enterExamFullscreen() {

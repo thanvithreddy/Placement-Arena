@@ -270,8 +270,8 @@
                 const hist = await axios.get(`${API}/analytics/history/`, getHeaders());
                 const scores = hist.data.slice(0, 5).map(h => h.total_score);
                 if (scores.length > 0) {
-                    const last = hist.data[0];
-                    document.getElementById('last-score').innerText = `${last.total_score} / 480`;
+                    const lastMax = last.total_max_score || 100;
+                    document.getElementById('last-score').innerText = `${last.total_score} / ${lastMax}`;
                     drawChart(scores.reverse());
                 } else {
                     document.getElementById('historyChart').parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-400 text-sm">No past performance data available yet. Take your first test today!</div>';

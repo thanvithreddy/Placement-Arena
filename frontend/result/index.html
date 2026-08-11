@@ -94,7 +94,7 @@
                 <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Total Score Earned</p>
                 <div class="text-5xl font-extrabold text-indigo-600 flex items-baseline gap-2">
                     <span id="total-score">0</span>
-                    <span class="text-xl text-slate-400 font-bold">/ 480</span>
+                    <span id="max-score-display" class="text-xl text-slate-400 font-bold">/ 0</span>
                 </div>
             </div>
             
@@ -233,6 +233,12 @@
                 window._resultData = data;
                 
                 document.getElementById('exam-title').innerText = data.exam_title || 'Mock Test Results';
+                
+                const maxScore = data.total_max_score || (data.sections ? data.sections.reduce((acc, s) => acc + (s.max_score || 0), 0) : 0);
+                document.getElementById('max-score-display').innerText = `/ ${maxScore}`;
+                if (document.getElementById('pdf-total-score')) {
+                    document.getElementById('pdf-total-score').innerText = `${data.total_score || 0} / ${maxScore}`;
+                }
                 
                 animateValue(document.getElementById('total-score'), 0, data.total_score || 0, 1500);
                 
