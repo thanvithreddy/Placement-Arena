@@ -578,6 +578,7 @@
                     });
                 }
 
+                const maxScoreText = document.getElementById('max-score-display') ? document.getElementById('max-score-display').innerText : '/ 0';
                 printArea.innerHTML = `
                     <div style="padding: 24px; background: #ffffff;">
                         <!-- Header Banner -->
@@ -592,7 +593,7 @@
                             </div>
                             <div class="text-right bg-indigo-50 p-3.5 rounded-2xl border border-indigo-100 min-w-[150px]">
                                 <div class="whitespace-nowrap text-xs font-bold text-slate-500 uppercase">Total Score</div>
-                                <div class="text-xl font-black text-indigo-700">${document.getElementById('total-score').innerText} / 480</div>
+                                <div class="text-xl font-black text-indigo-700">${document.getElementById('total-score').innerText} ${maxScoreText}</div>
                                 <div class="whitespace-nowrap text-xs font-extrabold text-amber-600 mt-0.5">Rank: ${document.getElementById('rank-badge').innerText}</div>
                             </div>
                         </div>
@@ -606,6 +607,15 @@
                         </div>
                     </div>
                 `;
+
+                // Unhide printArea temporarily so html2canvas computes valid dimensions
+                printArea.classList.remove('hidden');
+                printArea.style.display = 'block';
+                printArea.style.position = 'absolute';
+                printArea.style.left = '0px';
+                printArea.style.top = '0px';
+                printArea.style.width = '780px';
+                printArea.style.zIndex = '-9999';
 
                 // Render PDF with optimized html2pdf configuration
                 const opt = {
@@ -623,6 +633,10 @@
                 console.error('PDF generation failed:', e);
                 alert("Failed to generate PDF report. Please try again.");
             } finally {
+                if (printArea) {
+                    printArea.classList.add('hidden');
+                    printArea.style.display = 'none';
+                }
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = '<span>📥 Download PDF Report</span>';
