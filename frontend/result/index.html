@@ -581,10 +581,10 @@
 
                 const maxScoreText = document.getElementById('max-score-display') ? document.getElementById('max-score-display').innerText : '/ 0';
                 
-                // Create invisible container in DOM (display:none) so no screen flashing/overlay occurs
+                // Create container with display:block so layout geometry (offsetHeight) is computed by html2pdf, but opacity:0.001 & z-index:-9999 so invisible to user
                 var pdfWrapper = document.createElement('div');
                 pdfWrapper.id = 'temp-pdf-wrapper';
-                pdfWrapper.style.cssText = 'display: none; width: 780px; background: #ffffff; color: #0f172a; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif;';
+                pdfWrapper.style.cssText = 'position: fixed; top: 0; left: 0; width: 780px; background: #ffffff; color: #0f172a; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif; opacity: 0.001; z-index: -9999; pointer-events: none;';
                 pdfWrapper.innerHTML = `
                     <div>
                         <!-- Header Banner -->
@@ -616,7 +616,7 @@
 
                 document.body.appendChild(pdfWrapper);
 
-                // Render PDF with html2canvas onclone to reveal the element in off-screen snapshot
+                // Render PDF with html2canvas onclone to reveal full opacity in off-screen snapshot
                 const opt = {
                     margin:       [0.4, 0.4, 0.4, 0.4],
                     filename:     `Placement_Arena_Report_${candidateName.replace(/\s+/g, '_')}.pdf`,
@@ -630,8 +630,11 @@
                         onclone: (clonedDoc) => {
                             const wrapper = clonedDoc.getElementById('temp-pdf-wrapper');
                             if (wrapper) {
-                                wrapper.style.display = 'block';
+                                wrapper.style.opacity = '1';
+                                wrapper.style.zIndex = '99999';
                                 wrapper.style.position = 'relative';
+                                wrapper.style.top = 'auto';
+                                wrapper.style.left = 'auto';
                             }
                         }
                     },
