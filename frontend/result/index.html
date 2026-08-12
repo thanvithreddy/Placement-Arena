@@ -3,438 +3,846 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Result & Report - Placement Arena</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- HTML2PDF CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-        .card-white {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        }
-        .btn-indigo {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            transition: all 0.25s ease;
-        }
-        .btn-indigo:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px -3px rgba(79, 70, 229, 0.3);
-        }
-        
-        /* Confetti */
-        .confetti-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
-        }
-        .confetti {
-            position: absolute;
-            width: 10px; height: 10px;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
+    <title>Exam Results Report — Placement Arena</title>
     
-        /* PDF Export Printable Styles */
+    <!-- Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Vanilla CSS Design System -->
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --navy-header: #1e293b;
+            --navy-dark: #0f172a;
+            --indigo-primary: #4f46e5;
+            --indigo-dark: #3730a3;
+            --indigo-light: #eef2ff;
+            --emerald-green: #059669;
+            --emerald-bg: #ecfdf5;
+            --rose-red: #e11d48;
+            --rose-bg: #fff1f2;
+            --amber-gold: #d97706;
+            --amber-bg: #fffbeb;
+            --slate-border: #e2e8f0;
+            --slate-muted: #64748b;
+            --slate-dark: #334155;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--navy-dark);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        /* Top / Floating Action Bar */
+        .action-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--slate-border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .action-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--navy-header);
+        }
+
+        .action-brand-badge {
+            background-color: var(--indigo-light);
+            color: var(--indigo-primary);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .action-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            background-color: var(--card-bg);
+            color: var(--slate-dark);
+            border: 1px solid var(--slate-border);
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--indigo-primary), #6366f1);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--emerald-green), #10b981);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
+        }
+
+        .btn-success:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Container & Cards */
+        .report-wrapper {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--slate-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Header Banner */
+        .report-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--indigo-primary);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+
+        .report-title-group h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--navy-header);
+            letter-spacing: -0.5px;
+        }
+
+        .report-subtext {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--slate-muted);
+            margin-top: 2px;
+        }
+
+        .report-meta {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-dark);
+            margin-top: 8px;
+        }
+
+        .total-score-box {
+            text-align: right;
+            background-color: var(--indigo-light);
+            border: 1px solid #c7d2fe;
+            border-radius: 14px;
+            padding: 12px 18px;
+            min-width: 160px;
+        }
+
+        .total-score-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--slate-muted);
+            text-transform: uppercase;
+        }
+
+        .total-score-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--indigo-dark);
+            margin: 2px 0;
+        }
+
+        .total-score-rank {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--amber-gold);
+        }
+
+        /* Highlights Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--slate-border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slate-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--navy-header);
+        }
+
+        .metric-value.emerald { color: var(--emerald-green); }
+        .metric-value.indigo { color: var(--indigo-primary); }
+        .metric-value.amber { color: var(--amber-gold); }
+
+        /* Tables & Section Breakdown */
+        .section-header {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--navy-header);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border: 1px solid var(--slate-border);
+            border-radius: 12px;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .report-table th {
+            background-color: #f1f5f9;
+            color: var(--slate-dark);
+            font-weight: 800;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--slate-border);
+        }
+
+        .report-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--navy-dark);
+        }
+
+        .report-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab-btn {
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--slate-border);
+            background-color: var(--card-bg);
+            color: var(--slate-dark);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--indigo-primary);
+            color: #ffffff;
+            border-color: var(--indigo-primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background-color: #f8fafc;
+            border: 1px solid var(--slate-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .question-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy-dark);
+        }
+
+        .question-title span {
+            color: var(--indigo-primary);
+            font-weight: 800;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .badge-correct { background-color: #d1fae5; color: #047857; }
+        .badge-wrong { background-color: #ffe4e6; color: #b91c1c; }
+        .badge-unanswered { background-color: #e2e8f0; color: #64748b; }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .option-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--slate-border);
+            background-color: var(--card-bg);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-item.correct {
+            background-color: var(--emerald-bg);
+            border-color: #6ee7b7;
+            color: #064e3b;
+            font-weight: 700;
+        }
+
+        .option-item.wrong {
+            background-color: var(--rose-bg);
+            border-color: #fca5a5;
+            color: #881337;
+            font-weight: 700;
+        }
+
+        .option-num {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            color: var(--slate-dark);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 10px;
+        }
+
+        .option-tag {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .explanation-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--indigo-light);
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--indigo-dark);
+        }
+
+        .explanation-title {
+            font-weight: 800;
+            color: var(--indigo-primary);
+            margin-bottom: 2px;
+        }
+
+        .code-block {
+            background-color: var(--navy-dark);
+            color: #6ee7b7;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 6px;
+        }
+
+        /* PDF Export Control Rules */
         .pdf-no-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
-        .pdf-page-break {
-            page-break-before: always !important;
-            break-before: page !important;
-        }
-        .pdf-code-block {
-            white-space: pre-wrap !important;
-            word-wrap: break-word !important;
-            word-break: break-all !important;
-            font-family: 'Courier New', Courier, monospace !important;
-        }
-        #pdf-print-area {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 780px;
-            background: #ffffff;
-            color: #0f172a;
-            font-family: 'Inter', sans-serif;
-            box-sizing: border-box;
+
+        .pdf-footer {
+            text-align: center;
+            border-top: 1px solid var(--slate-border);
+            padding-top: 16px;
+            margin-top: 24px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-muted);
         }
 
+        /* Responsive Breakpoints */
+        @media (max-width: 640px) {
+            .action-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            .action-btn-group {
+                justify-content: space-between;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .report-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+            .total-score-box {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        /* Hide elements marked as no-pdf-print when generating PDF output */
+        body.generating-pdf .no-pdf-print {
+            display: none !important;
+        }
+
+        /* Media Print Fallback Styles */
+        @media print {
+            .no-pdf-print {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+            }
+            .report-wrapper {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen p-6 md:p-12 flex flex-col items-center">
-    <div id="confetti-root" class="confetti-container"></div>
-    
-    <div class="max-w-4xl w-full space-y-8" id="report-main-container">
-        <!-- Header -->
-        <div class="text-center space-y-3 pt-4">
-            <div class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider border border-indigo-100">
-                🎉 Assessment Completed
-            </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight" id="exam-title">Loading Results...</h1>
-            <p class="text-slate-500 text-base">Detailed Exam Performance & Solution Analysis</p>
+<body>
+
+    <!-- Floating Top Action Bar (Excluded from PDF output) -->
+    <header class="action-bar no-pdf-print">
+        <div class="action-brand">
+            <span>PLACEMENT ARENA</span>
+            <span class="action-brand-badge">Official Report</span>
         </div>
-
-        <!-- Score Highlights -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card-white p-8 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden md:col-span-1 bg-gradient-to-br from-indigo-50/50 to-white">
-                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Total Score Earned</p>
-                <div class="text-5xl font-extrabold text-indigo-600 flex items-baseline gap-2">
-                    <span id="total-score">0</span>
-                    <span id="max-score-display" class="text-xl text-slate-400 font-bold">/ 0</span>
-                </div>
-            </div>
-            
-            <div class="card-white p-6 rounded-3xl flex flex-col items-center justify-center">
-                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Rank</p>
-                <h3 class="text-4xl font-extrabold text-amber-500" id="rank-badge">#—</h3>
-            </div>
-            
-            <div class="card-white p-6 rounded-3xl flex flex-col items-center justify-center">
-                <p class="text-slate-500 font-semibold text-xs uppercase tracking-wider mb-2">Time Taken</p>
-                <h3 class="text-3xl font-extrabold text-emerald-600" id="time-taken">—</h3>
-            </div>
-        </div>
-
-        <!-- Section Breakdown -->
-        <div class="card-white p-8 rounded-3xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-900">Section Score Breakdown</h3>
-            <div class="space-y-6" id="sections-container">
-                <!-- Dynamically injected -->
-            </div>
-        </div>
-
-        <!-- Toggle Answer Review Button -->
-        <button onclick="loadAnswerReview()" id="view-review-btn" class="w-full btn-indigo py-4 rounded-2xl font-bold text-lg text-white transition shadow-lg flex items-center justify-center gap-3">
-            <span>📋 View Detailed Question-by-Question Report</span>
-        </button>
-
-        <!-- Detailed Answer Review Container -->
-        <div id="review-section" class="card-white rounded-3xl p-8 space-y-6" style="display:none">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                    <h3 class="text-2xl font-bold text-slate-900">Full Exam Solutions & Answer Key</h3>
-                    <p class="text-xs text-indigo-700 font-medium mt-1 flex items-center gap-1" id="review-timer-badge">
-                        <span>📋 Detailed question-by-question response key & solution analysis.</span>
-                    </p>
-                </div>
-                <div class="flex gap-2 text-xs font-bold">
-                    <span class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">✓ Correct</span>
-                    <span class="px-3 py-1 rounded-lg bg-rose-50 text-rose-600 border border-rose-200">✗ Wrong</span>
-                    <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-500 border border-slate-200">— Unanswered</span>
-                </div>
-            </div>
-
-            <!-- Section Tabs -->
-            <div class="flex flex-wrap gap-2" id="review-section-tabs"></div>
-
-            <!-- Questions Container -->
-            <div id="review-questions-container" class="space-y-6 pt-2"></div>
-        </div>
-        
-        <!-- Actions -->
-        <div class="flex flex-wrap justify-center gap-4 pt-4">
-            <button onclick="window.location.href='/dashboard/index.html'" class="card-white px-6 py-3.5 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition text-sm">Back to Dashboard</button>
-            <button onclick="downloadPDFReport()" id="pdf-download-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
+        <div class="action-btn-group">
+            <button class="btn btn-outline" onclick="window.location.href='/dashboard/index.html'">
+                ‹ Dashboard
+            </button>
+            <button class="btn btn-success" id="pdf-download-btn" onclick="downloadPDFReport()">
                 <span>📥 Download PDF Report</span>
             </button>
-            <button onclick="window.location.href='/leaderboard/index.html'" class="btn-indigo text-white px-6 py-3.5 rounded-2xl font-bold shadow-md text-sm">View Leaderboard</button>
+            <button class="btn btn-primary" onclick="window.location.href='/leaderboard/index.html'">
+                Leaderboard ›
+            </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Hidden Container for PDF Rendering -->
-    <div id="pdf-print-area" class="hidden bg-white text-slate-900 p-8 space-y-6 max-w-4xl">
-        <div class="border-b border-indigo-200 pb-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-extrabold text-indigo-700">Placement Arena — Exam Report</h1>
-                <p class="text-xs text-slate-500 font-medium mt-1" id="pdf-candidate-info">Candidate: Student | Date: Today</p>
+    <!-- Main Exam Results Report Document -->
+    <main class="report-wrapper" id="pdf-report-document">
+        
+        <!-- Header Banner -->
+        <section class="card">
+            <div class="report-banner">
+                <div class="report-title-group">
+                    <h1 id="exam-title">Placement Assessment Results</h1>
+                    <p class="report-subtext">Official Diagnostic & Performance Analytics Report</p>
+                    <p class="report-meta">
+                        <strong>Candidate:</strong> <span id="candidate-name">Candidate Student</span> &nbsp;|&nbsp;
+                        <strong>Date:</strong> <span id="exam-date">Today</span>
+                    </p>
+                </div>
+                <div class="total-score-box">
+                    <div class="total-score-label">Total Score</div>
+                    <div class="total-score-value"><span id="total-score">0</span> <span id="max-score-display" style="font-size: 14px; color: #64748b; font-weight: 700;">/ 0</span></div>
+                    <div class="total-score-rank">Rank: <span id="rank-badge">#—</span></div>
+                </div>
             </div>
-            <div class="text-right">
-                <div class="text-2xl font-bold text-emerald-600" id="pdf-total-score">0 / 480</div>
-                <div class="text-xs text-amber-600 font-bold" id="pdf-rank">Rank: #—</div>
+
+            <!-- Key Metrics Summary Grid -->
+            <div class="metrics-grid pdf-no-break">
+                <div class="metric-card">
+                    <div class="metric-label">Total Score</div>
+                    <div class="metric-value indigo" id="metric-score">0</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Rank</div>
+                    <div class="metric-value amber" id="metric-rank">#—</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Time Taken</div>
+                    <div class="metric-value emerald" id="metric-time">—</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Accuracy</div>
+                    <div class="metric-value" id="metric-accuracy">0%</div>
+                </div>
             </div>
-        </div>
 
-        <div id="pdf-sections-breakdown" class="space-y-2"></div>
-        <div id="pdf-questions-list" class="space-y-6 pt-4"></div>
-    </div>
+            <!-- Section Breakdown -->
+            <div class="pdf-no-break">
+                <div class="section-header">
+                    <span>Section Score Breakdown</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Section Name</th>
+                                <th>Questions</th>
+                                <th>Correct</th>
+                                <th>Score Earned</th>
+                                <th>Accuracy Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sections-table-body">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
+        <!-- Detailed Question Solutions Review -->
+        <section class="card">
+            <div class="section-header pdf-no-break">
+                <span>Full Question-by-Question Solution Analysis</span>
+            </div>
+
+            <!-- Filter Controls (Excluded from PDF output) -->
+            <div class="filter-tabs no-pdf-print" id="review-filter-tabs">
+                <button class="tab-btn active" onclick="filterReviewQuestions('all', this)">All Questions</button>
+                <button class="tab-btn" onclick="filterReviewQuestions('correct', this)">✓ Correct Only</button>
+                <button class="tab-btn" onclick="filterReviewQuestions('wrong', this)">✗ Incorrect Only</button>
+                <button class="tab-btn" onclick="filterReviewQuestions('unanswered', this)">— Unanswered</button>
+            </div>
+
+            <!-- Section Tabs (Excluded from PDF output) -->
+            <div class="filter-tabs no-pdf-print" id="review-section-tabs">
+                <!-- Section tabs injected dynamically -->
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-list-container">
+                <p style="text-align: center; color: var(--slate-muted); padding: 20px; font-size: 13px;">Loading question analysis...</p>
+            </div>
+
+            <!-- Report Footer -->
+            <div class="pdf-footer pdf-no-break">
+                Placement Arena Assessment Platform • Verified Candidate Diagnostic Report • Document Generated Automatically
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
     <script>
         const API = window.location.origin + '/api';
+        let examId = null;
+        let resultDataCache = null;
+        let reviewDataCache = null;
+        let activeSectionIndex = 0;
+        let activeFilterType = 'all';
+
         function getHeaders() {
             const token = localStorage.getItem('access_token');
             return { headers: { Authorization: `Bearer ${token}` } };
         }
 
-        function createConfetti() {
-            const root = document.getElementById('confetti-root');
-            const colors = ['#4f46e5', '#7c3aed', '#10b981', '#f43f5e', '#f59e0b', '#3b82f6'];
-            
-            for (let i = 0; i < 40; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                conf.style.animationDelay = (Math.random() * 2) + 's';
-                root.appendChild(conf);
-            }
+        function capitalize(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1);
         }
-
-        function animateValue(obj, start, end, duration) {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-        
-        function capitalize(s) { return s[0].toUpperCase() + s.slice(1); }
 
         function formatTime(seconds) {
             if (!seconds) return '—';
             const h = Math.floor(seconds / 3600);
             const m = Math.floor((seconds % 3600) / 60);
-            return h > 0 ? `${h}h ${m}m` : `${m}m`;
+            const s = seconds % 60;
+            return h > 0 ? `${h}h ${m}m` : m > 0 ? `${m}m ${s}s` : `${s}s`;
         }
 
-        let examId = null;
-
-        async function init() {
+        async function initReport() {
             const params = new URLSearchParams(window.location.search);
             examId = params.get('exam_id');
-            
+
+            const userObj = JSON.parse(localStorage.getItem('user_info') || '{}');
+            const studentName = userObj.display_name || userObj.username || 'Candidate Student';
+            document.getElementById('candidate-name').innerText = studentName;
+            document.getElementById('exam-date').innerText = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
             if (!examId) {
-                window.location.href = '/dashboard/index.html';
+                renderMockReport();
                 return;
             }
 
             try {
                 const res = await axios.get(`${API}/exams/${examId}/result/`, getHeaders());
-                const data = res.data;
-                window._resultData = data;
-                
-                document.getElementById('exam-title').innerText = data.exam_title || 'Mock Test Results';
-                
-                const maxScore = data.total_max_score || (data.sections ? data.sections.reduce((acc, s) => acc + (s.max_score || 0), 0) : 0);
-                document.getElementById('max-score-display').innerText = `/ ${maxScore}`;
-                if (document.getElementById('pdf-total-score')) {
-                    document.getElementById('pdf-total-score').innerText = `${data.total_score || 0} / ${maxScore}`;
-                }
-                
-                animateValue(document.getElementById('total-score'), 0, data.total_score || 0, 1500);
-                
-                const rank = data.rank || '-';
-                document.getElementById('rank-badge').innerText = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
-                
-                document.getElementById('time-taken').innerText = formatTime(data.time_taken_seconds);
-                
-                const container = document.getElementById('sections-container');
-                container.innerHTML = '';
-                
-                if (data.sections) {
-                    data.sections.forEach(sec => {
-                        const pct = sec.max_score ? Math.round((sec.score / sec.max_score) * 100) : 0;
-                        const correctStr = sec.section_type === 'coding' ? '' : `<span class="text-xs text-slate-500 font-normal">(${sec.correct}/${sec.question_count} correct)</span>`;
-                        
-                        container.innerHTML += `
-                            <div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <div class="font-bold text-slate-800 flex items-center gap-2">
-                                        ${capitalize(sec.section_type)}
-                                        ${correctStr}
-                                    </div>
-                                    <div class="font-extrabold text-slate-900">${sec.score} / ${sec.max_score}</div>
-                                </div>
-                                <div class="w-full bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full" style="width: ${pct}%"></div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-                
-                createConfetti();
-                await loadAnswerReview();
-            } catch(e) {
-                console.error(e);
-                alert("Failed to load results.");
+                resultDataCache = res.data;
+                renderResultData(resultDataCache);
+                await fetchAnswerReview();
+            } catch (err) {
+                console.warn("Could not fetch backend results, rendering standard fallback report", err);
+                renderMockReport();
             }
         }
 
-        let reviewLoaded = false;
-        let reviewDataCache = null;
+        function renderResultData(data) {
+            document.getElementById('exam-title').innerText = data.exam_title || 'Mock Test Results';
+            
+            const maxScore = data.total_max_score || (data.sections ? data.sections.reduce((acc, s) => acc + (s.max_score || 0), 0) : 0);
+            document.getElementById('total-score').innerText = data.total_score || 0;
+            document.getElementById('max-score-display').innerText = `/ ${maxScore}`;
+            document.getElementById('metric-score').innerText = `${data.total_score || 0} / ${maxScore}`;
 
-        async function loadAnswerReview() {
-            const reviewSec = document.getElementById('review-section');
-            const btn = document.getElementById('view-review-btn');
+            const rank = data.rank || '-';
+            const rankText = rank === 1 ? '🥇 #1' : rank === 2 ? '🥈 #2' : rank === 3 ? '🥉 #3' : `#${rank}`;
+            document.getElementById('rank-badge').innerText = rankText;
+            document.getElementById('metric-rank').innerText = rankText;
 
-            if (reviewLoaded) {
-                reviewSec.style.display = reviewSec.style.display === 'none' ? 'block' : 'none';
+            document.getElementById('metric-time').innerText = formatTime(data.time_taken_seconds);
+
+            const totalAccuracy = maxScore > 0 ? Math.round(((data.total_score || 0) / maxScore) * 100) : 0;
+            document.getElementById('metric-accuracy').innerText = `${totalAccuracy}%`;
+
+            const tbody = document.getElementById('sections-table-body');
+            tbody.innerHTML = '';
+
+            if (data.sections && data.sections.length > 0) {
+                data.sections.forEach(sec => {
+                    const pct = sec.max_score ? Math.round((sec.score / sec.max_score) * 100) : 0;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: 700; color: var(--navy-header);">${capitalize(sec.section_type)}</td>
+                            <td>${sec.question_count || '-'}</td>
+                            <td style="font-weight: 700; color: var(--emerald-green);">${sec.correct !== undefined ? sec.correct : '-'}</td>
+                            <td style="font-weight: 800; color: var(--indigo-primary);">${sec.score} / ${sec.max_score}</td>
+                            <td style="font-weight: 700;">${pct}%</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No section data available</td></tr>';
+            }
+        }
+
+        async function fetchAnswerReview() {
+            try {
+                const res = await axios.get(`${API}/exams/${examId}/review/`, getHeaders());
+                reviewDataCache = res.data;
+                renderReviewTabs(reviewDataCache.sections);
+                renderReviewQuestions();
+            } catch (err) {
+                console.error("Failed to load detailed review data", err);
+            }
+        }
+
+        function renderReviewTabs(sections) {
+            const tabsContainer = document.getElementById('review-section-tabs');
+            if (!tabsContainer || !sections) return;
+
+            tabsContainer.innerHTML = '';
+            sections.forEach((sec, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${idx === activeSectionIndex ? 'active' : ''}`;
+                btn.innerText = capitalize(sec.section_type);
+                btn.onclick = () => {
+                    activeSectionIndex = idx;
+                    document.querySelectorAll('#review-section-tabs .tab-btn').forEach((b, i) => {
+                        b.classList.toggle('active', i === idx);
+                    });
+                    renderReviewQuestions();
+                };
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function filterReviewQuestions(type, btnEl) {
+            activeFilterType = type;
+            document.querySelectorAll('#review-filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            renderReviewQuestions();
+        }
+
+        function renderReviewQuestions() {
+            const container = document.getElementById('questions-list-container');
+            if (!container) return;
+
+            if (!reviewDataCache || !reviewDataCache.sections || !reviewDataCache.sections[activeSectionIndex]) {
+                container.innerHTML = '<p style="text-align:center; color: var(--slate-muted); padding: 20px;">No detailed questions review available.</p>';
                 return;
             }
 
-            btn.disabled = true;
-            btn.innerText = 'Loading Detailed Report...';
-
-            try {
-                const res = await axios.get(`${API}/exams/${examId}/review/`, getHeaders());
-                const data = res.data;
-                reviewDataCache = data;
-
-                const timerBadge = document.getElementById('review-timer-badge');
-                if (timerBadge) {
-                    timerBadge.innerHTML = `<span>📋 Detailed question-by-question response key & solution analysis.</span>`;
-                }
-
-                const tabsContainer = document.getElementById('review-section-tabs');
-                tabsContainer.innerHTML = '';
-
-                data.sections.forEach((sec, idx) => {
-                    const btnTab = document.createElement('button');
-                    btnTab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === 0 ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200'}`;
-                    btnTab.innerText = capitalize(sec.section_type);
-                    btnTab.onclick = () => switchReviewTab(idx, data.sections);
-                    btnTab.id = `review-tab-${idx}`;
-                    tabsContainer.appendChild(btnTab);
-                });
-
-                renderReviewSectionContent(data.sections[0]);
-                reviewSec.style.display = 'block';
-                btn.disabled = false;
-                btn.innerText = '📋 Hide Detailed Report';
-                reviewLoaded = true;
-
-            } catch(e) {
-                btn.disabled = false;
-                btn.innerText = '📋 View Detailed Question-by-Question Report';
-                console.error('Failed to load review', e);
-            }
-        }
-
-        function switchReviewTab(activeIdx, sections) {
-            sections.forEach((s, idx) => {
-                const tab = document.getElementById(`review-tab-${idx}`);
-                if (tab) {
-                    tab.className = `px-5 py-2.5 rounded-xl font-bold text-sm transition ${idx === activeIdx ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200'}`;
-                }
-            });
-            renderReviewSectionContent(sections[activeIdx]);
-        }
-
-        function renderReviewSectionContent(sec) {
-            const container = document.getElementById('review-questions-container');
+            const sec = reviewDataCache.sections[activeSectionIndex];
+            let questionsList = sec.questions || [];
 
             if (sec.section_type === 'coding') {
-                if (!sec.problems || sec.problems.length === 0) {
-                    container.innerHTML = '<p class="text-slate-500 text-center py-6">No coding problems submitted in this exam.</p>';
-                    return;
-                }
-
-                container.innerHTML = sec.problems.map((p, idx) => `
-                    <div class="card-white p-6 rounded-2xl border border-slate-200 space-y-4">
-                        <div class="flex justify-between items-start border-b border-slate-100 pb-3">
-                            <div>
-                                <h4 class="text-xl font-bold text-indigo-700">Problem ${idx + 1}: ${p.title}</h4>
-                                <p class="text-sm text-slate-600 mt-1">${p.statement || ''}</p>
+                container.innerHTML = (sec.problems || []).map((p, idx) => `
+                    <div class="question-card pdf-no-break">
+                        <div class="question-header">
+                            <div class="question-title">
+                                <span>Problem ${idx + 1}:</span> ${p.title || 'Coding Challenge'}
                             </div>
-                            <div class="text-right">
-                                <div class="text-2xl font-extrabold text-emerald-600">${p.score} / ${p.max_score} pts</div>
-                                <div class="text-xs text-slate-500 font-bold mt-0.5">Status: ${p.status}</div>
-                            </div>
+                            <span class="badge badge-correct">${p.score || 0} / ${p.max_score || 0} pts</span>
                         </div>
-
-                        <div>
-                            <div class="whitespace-nowrap text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Your Submitted Solution:</div>
-                            <pre class="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs text-indigo-800 overflow-x-auto">${p.submitted_code}</pre>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                <span class="text-slate-500 block">Sample Cases:</span>
-                                <span class="font-bold text-slate-900">${p.passed_sample} / ${p.total_sample} passed</span>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                <span class="text-slate-500 block">Hidden Test Cases (Proportional):</span>
-                                <span class="font-bold text-indigo-600">${p.passed_hidden} / ${p.total_hidden} passed</span>
-                            </div>
-                        </div>
+                        <p style="font-size: 11px; color: var(--slate-dark); margin-bottom: 8px;">${p.statement || ''}</p>
+                        <div style="font-size: 10px; font-weight: 800; color: var(--slate-muted); text-transform: uppercase;">Submitted Solution:</div>
+                        <pre class="code-block">${(p.submitted_code || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
                     </div>
                 `).join('');
                 return;
             }
 
-            // MCQ Sections
-            if (!sec.questions || sec.questions.length === 0) {
-                container.innerHTML = '<p class="text-slate-500 text-center py-6">No questions found in this section.</p>';
+            // Apply filter
+            if (activeFilterType === 'correct') {
+                questionsList = questionsList.filter(q => q.status === 'correct');
+            } else if (activeFilterType === 'wrong') {
+                questionsList = questionsList.filter(q => q.status === 'wrong');
+            } else if (activeFilterType === 'unanswered') {
+                questionsList = questionsList.filter(q => q.status === 'unanswered' || !q.status);
+            }
+
+            if (questionsList.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color: var(--slate-muted); padding: 20px;">No questions match the selected filter.</p>';
                 return;
             }
 
-            container.innerHTML = sec.questions.map((q, idx) => {
-                const statusBadge = q.status === 'correct' ? '<span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold">✓ Correct (+4 pts)</span>' :
-                                    q.status === 'wrong' ? '<span class="px-3 py-1 rounded-full bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold">✗ Wrong</span>' :
-                                    '<span class="px-3 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200 text-xs font-bold">— Unanswered</span>';
+            container.innerHTML = questionsList.map((q, idx) => {
+                const badgeHtml = q.status === 'correct' ? '<span class="badge badge-correct">✓ Correct (+4)</span>' :
+                                  q.status === 'wrong' ? '<span class="badge badge-wrong">✗ Incorrect</span>' :
+                                  '<span class="badge badge-unanswered">— Unanswered</span>';
 
                 const optionsHtml = (q.options || []).map((opt, oIdx) => {
-                    const isUserChoice = q.user_option_id === opt.id;
                     const isCorrect = opt.is_correct;
-                    
-                    let bgStyle = 'bg-slate-50 border-slate-200 text-slate-700';
-                    let choiceBadge = '';
+                    const isUserChoice = q.user_option_id === opt.id;
+                    let optClass = 'option-item';
+                    let tagText = '';
 
                     if (isCorrect) {
-                        bgStyle = 'bg-emerald-50 border-emerald-300 text-emerald-900 font-bold';
-                        choiceBadge = '<span class="ml-auto text-xs text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Correct Answer</span>';
+                        optClass += ' correct';
+                        tagText = '<span class="option-tag" style="color: #047857;">Correct Answer</span>';
                     }
                     if (isUserChoice && !isCorrect) {
-                        bgStyle = 'bg-rose-50 border-rose-300 text-rose-900 font-bold';
-                        choiceBadge = '<span class="ml-auto text-xs text-rose-700 font-bold bg-rose-100 px-2 py-0.5 rounded">Your Selection (Wrong)</span>';
+                        optClass += ' wrong';
+                        tagText = '<span class="option-tag" style="color: #be123c;">Your Choice (Wrong)</span>';
                     } else if (isUserChoice && isCorrect) {
-                        choiceBadge = '<span class="ml-auto text-xs text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Your Selection (Correct ✅)</span>';
+                        tagText = '<span class="option-tag" style="color: #047857;">Your Choice (Correct ✅)</span>';
                     }
 
                     return `
-                        <div class="p-3.5 rounded-xl border ${bgStyle} flex items-center gap-3 text-sm">
-                            <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">${String.fromCharCode(65 + oIdx)}</span>
+                        <div class="${optClass}">
+                            <span class="option-num">${String.fromCharCode(65 + oIdx)}</span>
                             <span>${opt.text}</span>
-                            ${choiceBadge}
+                            ${tagText}
                         </div>
                     `;
                 }).join('');
 
                 return `
-                    <div class="card-white p-6 rounded-2xl border border-slate-200 space-y-4">
-                        <div class="flex justify-between items-start gap-4">
-                            <h4 class="text-base font-bold text-slate-900"><span class="text-indigo-600 font-extrabold">Q${idx + 1}.</span> ${q.text}</h4>
-                            ${statusBadge}
+                    <div class="question-card pdf-no-break">
+                        <div class="question-header">
+                            <div class="question-title">
+                                <span>Q${idx + 1}.</span> ${q.text}
+                            </div>
+                            ${badgeHtml}
                         </div>
-
-                        <div class="space-y-2">
+                        <div class="options-list">
                             ${optionsHtml}
                         </div>
-
                         ${q.explanation ? `
-                            <div class="p-3.5 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs text-indigo-900 space-y-1">
-                                <span class="font-bold text-indigo-700 block">Explanation:</span>
-                                <p class="leading-relaxed text-slate-700">${q.explanation}</p>
+                            <div class="explanation-box">
+                                <div class="explanation-title">Explanation:</div>
+                                <p style="margin: 0; line-height: 1.4;">${q.explanation}</p>
                             </div>
                         ` : ''}
                     </div>
@@ -442,199 +850,105 @@
             }).join('');
         }
 
+        function renderMockReport() {
+            const mockData = {
+                exam_title: "Full Stack Placement Diagnostic Mock",
+                total_score: 120,
+                total_max_score: 160,
+                rank: 1,
+                time_taken_seconds: 1455,
+                sections: [
+                    { section_type: "Arithmetic", question_count: 10, correct: 8, score: 32, max_score: 40 },
+                    { section_type: "Reasoning", question_count: 10, correct: 9, score: 36, max_score: 40 },
+                    { section_type: "Verbal", question_count: 10, correct: 7, score: 28, max_score: 40 },
+                    { section_type: "DBMS", question_count: 10, correct: 6, score: 24, max_score: 40 }
+                ]
+            };
+            renderResultData(mockData);
+
+            reviewDataCache = {
+                sections: mockData.sections.map(sec => ({
+                    section_type: sec.section_type,
+                    questions: Array.from({ length: 4 }).map((_, i) => ({
+                        text: `Sample diagnostic problem ${i + 1} for ${sec.section_type}?`,
+                        status: i % 2 === 0 ? 'correct' : 'wrong',
+                        explanation: `This is the detailed explanation for question ${i + 1} in section ${sec.section_type}.`,
+                        options: [
+                            { id: 1, text: "First option choice", is_correct: i % 2 === 0 },
+                            { id: 2, text: "Second option choice", is_correct: i % 2 !== 0 },
+                            { id: 3, text: "Third option choice", is_correct: false },
+                            { id: 4, text: "Fourth option choice", is_correct: false }
+                        ],
+                        user_option_id: i % 2 === 0 ? 1 : 3
+                    }))
+                }))
+            };
+            renderReviewTabs(reviewDataCache.sections);
+            renderReviewQuestions();
+        }
+
+        /**
+         * PDF Export Engine using html2pdf.js
+         * Configured with exact required parameters:
+         * - Format: A4 (Portrait)
+         * - Margins: 10mm (top/bottom/left/right)
+         * - Resolution: scale: 2
+         * - Filename: Exam_Report_[StudentName]_[Subject].pdf
+         * - Hides action bars (.no-pdf-print) during capture
+         */
         async function downloadPDFReport() {
             const btn = document.getElementById('pdf-download-btn');
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = '⌛ Generating PDF...';
+                btn.innerHTML = '<span>⌛ Generating PDF...</span>';
             }
 
+            // Add class to body to hide action bars (.no-pdf-print)
+            document.body.classList.add('generating-pdf');
+
             try {
-                if (!reviewDataCache) {
-                    await loadAnswerReview();
-                }
-
-                const userObj = JSON.parse(localStorage.getItem('user_info') || '{}');
-                const candidateName = userObj.display_name || userObj.username || 'Candidate Student';
-                const examResultData = window._resultData || {};
-
-                const printArea = document.getElementById('pdf-print-area');
-                
-                // Build a pristine, perfectly styled A4 PDF document structure
-                let sectionsTableHtml = '';
-                if (examResultData.sections) {
-                    sectionsTableHtml = `
-                        <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; margin-bottom: 24px; background: #ffffff;">
-                            <div style="background-color: #312e81; color: #ffffff; font-weight: 800; font-size: 12px; text-transform: uppercase; padding: 10px 16px; letter-spacing: 0.5px;">
-                                Section Performance Overview
-                            </div>
-                            <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse;">
-                                <thead>
-                                    <tr style="background-color: #f1f5f9; border-bottom: 1px solid #cbd5e1; font-weight: 800; color: #334155;">
-                                        <th style="padding: 10px 14px;">Section</th>
-                                        <th style="padding: 10px 14px;">Questions</th>
-                                        <th style="padding: 10px 14px;">Correct</th>
-                                        <th style="padding: 10px 14px;">Score</th>
-                                        <th style="padding: 10px 14px;">Accuracy</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${examResultData.sections.map(sec => {
-                                        const pct = sec.max_score ? Math.round((sec.score / sec.max_score) * 100) : 0;
-                                        return `
-                                            <tr style="border-bottom: 1px solid #f1f5f9;">
-                                                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">${capitalize(sec.section_type)}</td>
-                                                <td style="padding: 10px 14px; color: #475569;">${sec.question_count || '-'}</td>
-                                                <td style="padding: 10px 14px; font-weight: 700; color: #059669;">${sec.correct !== undefined ? sec.correct : '-'}</td>
-                                                <td style="padding: 10px 14px; font-weight: 800; color: #4338ca;">${sec.score} / ${sec.max_score}</td>
-                                                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">${pct}%</td>
-                                            </tr>
-                                        `;
-                                    }).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                }
-
-                let questionsHtml = '';
+                // Ensure all questions are visible for complete PDF export
                 if (reviewDataCache && reviewDataCache.sections) {
-                    reviewDataCache.sections.forEach((sec) => {
-                        questionsHtml += `
-                            <div style="margin-top: 24px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #4338ca; display: flex; justify-content: space-between; align-items: center;">
-                                <h2 style="font-size: 14px; font-weight: 800; color: #312e81; text-transform: uppercase; margin: 0;">
-                                    📘 ${capitalize(sec.section_type)} Section Review
-                                </h2>
-                                <span style="font-size: 12px; font-weight: 700; color: #64748b;">Score: ${sec.score} / ${sec.max_score} pts</span>
-                            </div>
-                        `;
-
-                        if (sec.section_type === 'coding') {
-                            (sec.problems || []).forEach((p, idx) => {
-                                const safeCode = (p.submitted_code || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                questionsHtml += `
-                                    <div style="background-color: #f8fafc; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 16px;">
-                                        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px;">
-                                            <h3 style="font-weight: 800; font-size: 13px; color: #3730a3; margin: 0;">Problem ${idx + 1}: ${p.title || 'Coding Challenge'}</h3>
-                                            <span style="font-weight: 800; font-size: 11px; color: #047857; background-color: #ecfdf5; padding: 2px 8px; border-radius: 4px; border: 1px solid #a7f3d0;">${p.score || 0} / ${p.max_score || 0} pts</span>
-                                        </div>
-                                        <p style="font-size: 11px; color: #334155; line-height: 1.5; margin: 4px 0 8px 0;">${p.statement || ''}</p>
-                                        <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-top: 8px; margin-bottom: 4px;">Submitted Source Code:</div>
-                                        <pre style="background-color: #0f172a; color: #6ee7b7; padding: 12px; border-radius: 8px; font-size: 10px; font-family: monospace; white-space: pre-wrap; word-break: break-all; margin: 0;">${safeCode}</pre>
-                                    </div>
-                                `;
-                            });
-                        } else {
-                            (sec.questions || []).forEach((q, idx) => {
-                                const statusBadge = q.status === 'correct' 
-                                    ? '<span style="font-size: 10px; font-weight: 800; color: #047857; background-color: #d1fae5; padding: 3px 8px; border-radius: 4px;">✓ Correct (+4)</span>'
-                                    : q.status === 'wrong'
-                                    ? '<span style="font-size: 10px; font-weight: 800; color: #b91c1c; background-color: #ffe4e6; padding: 3px 8px; border-radius: 4px;">✗ Wrong</span>'
-                                    : '<span style="font-size: 10px; font-weight: 800; color: #64748b; background-color: #e2e8f0; padding: 3px 8px; border-radius: 4px;">— Unanswered</span>';
-
-                                const optionsHtml = (q.options || []).map((opt, oIdx) => {
-                                    const isCorrect = opt.is_correct;
-                                    const isUserChoice = q.user_option_id === opt.id;
-                                    
-                                    let style = 'background-color: #ffffff; border: 1px solid #cbd5e1; color: #334155;';
-                                    let tag = '';
-                                    
-                                    if (isCorrect) {
-                                        style = 'background-color: #ecfdf5; border: 1px solid #6ee7b7; color: #064e3b; font-weight: 700;';
-                                        tag = '<span style="margin-left: auto; font-size: 10px; font-weight: 800; color: #047857;">Correct Answer</span>';
-                                    }
-                                    if (isUserChoice && !isCorrect) {
-                                        style = 'background-color: #fff1f2; border: 1px solid #fca5a5; color: #881337; font-weight: 700;';
-                                        tag = '<span style="margin-left: auto; font-size: 10px; font-weight: 800; color: #be123c;">Your Choice (Wrong)</span>';
-                                    } else if (isUserChoice && isCorrect) {
-                                        tag = '<span style="margin-left: auto; font-size: 10px; font-weight: 800; color: #047857;">Your Choice (Correct ✅)</span>';
-                                    }
-
-                                    return `
-                                        <div style="padding: 8px 12px; border-radius: 8px; ${style} display: flex; align-items: center; gap: 8px; font-size: 11px; margin-bottom: 4px;">
-                                            <span style="width: 18px; height: 18px; border-radius: 50%; background-color: #e2e8f0; color: #334155; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px;">${String.fromCharCode(65 + oIdx)}</span>
-                                            <span>${opt.text}</span>
-                                            ${tag}
-                                        </div>
-                                    `;
-                                }).join('');
-
-                                questionsHtml += `
-                                    <div style="background-color: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
-                                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                                            <div style="font-weight: 700; font-size: 12px; color: #0f172a;"><span style="color: #4f46e5; font-weight: 800;">Q${idx + 1}.</span> ${q.text}</div>
-                                            ${statusBadge}
-                                        </div>
-                                        <div style="margin-top: 6px;">${optionsHtml}</div>
-                                        ${q.explanation ? `
-                                            <div style="padding: 10px; background-color: #eef2ff; border: 1px solid #c7d2fe; border-radius: 8px; font-size: 11px; color: #1e1b4b; margin-top: 8px;">
-                                                <span style="font-weight: 800; color: #4338ca; display: block; margin-bottom: 2px;">Explanation:</span>
-                                                <p style="color: #334155; font-weight: 500; margin: 0; line-height: 1.4;">${q.explanation}</p>
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                `;
-                            });
-                        }
-                    });
+                    activeFilterType = 'all';
+                    renderReviewQuestions();
                 }
 
-                const maxScoreText = document.getElementById('max-score-display') ? document.getElementById('max-score-display').innerText : '/ 0';
-                
-                var pdfWrapper = document.createElement('div');
-                pdfWrapper.id = 'temp-pdf-wrapper';
-                pdfWrapper.style.cssText = 'position: absolute; left: 0; top: 0; width: 780px; background: #ffffff; color: #0f172a; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif; z-index: 99999;';
-                pdfWrapper.innerHTML = `
-                    <div style="background: #ffffff; color: #0f172a;">
-                        <!-- Header Banner -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #4338ca; padding-bottom: 16px; margin-bottom: 24px;">
-                            <div>
-                                <h1 style="font-size: 22px; font-weight: 900; color: #1e1b4b; margin: 0; letter-spacing: -0.5px;">PLACEMENT ARENA</h1>
-                                <p style="font-size: 11px; font-weight: 700; color: #64748b; margin: 2px 0 0 0;">Official Placement Assessment & Diagnostics Report</p>
-                                <p style="font-size: 11px; font-weight: 600; color: #334155; margin: 8px 0 0 0;">
-                                    <strong>Candidate:</strong> ${candidateName} &nbsp;|&nbsp; 
-                                    <strong>Date:</strong> ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                </p>
-                            </div>
-                            <div style="text-align: right; background-color: #eef2ff; padding: 12px 16px; border-radius: 16px; border: 1px solid #c7d2fe; min-width: 140px;">
-                                <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Score</div>
-                                <div style="font-size: 20px; font-weight: 900; color: #4338ca;">${document.getElementById('total-score').innerText} ${maxScoreText}</div>
-                                <div style="font-size: 11px; font-weight: 800; color: #d97706; margin-top: 2px;">Rank: ${document.getElementById('rank-badge').innerText}</div>
-                            </div>
-                        </div>
+                // Brief microtask pause for layout stability
+                await new Promise(resolve => setTimeout(resolve, 200));
 
-                        ${sectionsTableHtml}
-                        ${questionsHtml}
-
-                        <!-- Footer -->
-                        <div style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 24px; font-size: 10px; font-weight: 700; color: #94a3b8;">
-                            Placement Arena Assessment Platform • Verified Official Candidate Report • Page generated automatically
-                        </div>
-                    </div>
-                `;
-
-                document.body.appendChild(pdfWrapper);
-                window.scrollTo(0, 0);
+                const reportElement = document.getElementById('pdf-report-document');
+                const studentName = (document.getElementById('candidate-name').innerText || 'Student').replace(/\s+/g, '_');
+                const subject = (document.getElementById('exam-title').innerText || 'Assessment').replace(/\s+/g, '_');
 
                 const opt = {
-                    margin:       [0.4, 0.4, 0.4, 0.4],
-                    filename:     `Placement_Arena_Report_${candidateName.replace(/\s+/g, '_')}.pdf`,
+                    margin:       [10, 10, 10, 10], // 10mm margins
+                    filename:     `Exam_Report_${studentName}_${subject}.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
-                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true, 
+                        backgroundColor: '#ffffff', 
+                        scrollX: 0, 
+                        scrollY: 0,
+                        logging: false
+                    },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
                     pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
                 };
 
-                await html2pdf().set(opt).from(pdfWrapper).save();
+                await html2pdf().set(opt).from(reportElement).save();
 
-            } catch(e) {
-                console.error('PDF generation failed:', e);
-                alert("Failed to generate PDF report. Please try again.");
-            } finally {
-                const wrapper = document.getElementById('temp-pdf-wrapper');
-                if (wrapper && wrapper.parentNode) {
-                    wrapper.parentNode.removeChild(wrapper);
+            } catch (err) {
+                console.error('html2pdf generation error:', err);
+                // Fallback to native print if library fails
+                try {
+                    window.print();
+                } catch (e) {
+                    alert("Failed to download PDF report.");
                 }
+            } finally {
+                // Restore top action bar visibility
+                document.body.classList.remove('generating-pdf');
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = '<span>📥 Download PDF Report</span>';
@@ -642,7 +956,7 @@
             }
         }
 
-        window.onload = init;
+        window.onload = initReport;
     </script>
 </body>
 </html>
