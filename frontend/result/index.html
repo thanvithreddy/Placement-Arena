@@ -511,15 +511,16 @@
 
                         if (sec.section_type === 'coding') {
                             (sec.problems || []).forEach((p, idx) => {
+                                const safeCode = (p.submitted_code || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                                 questionsHtml += `
                                     <div class="pdf-no-break bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 space-y-2">
                                         <div class="flex justify-between items-start border-b border-slate-200 pb-2">
-                                            <h3 class="font-extrabold text-xs text-indigo-800">Problem ${idx + 1}: ${p.title}</h3>
-                                            <span class="font-extrabold text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">${p.score} / ${p.max_score} pts</span>
+                                            <h3 class="font-extrabold text-xs text-indigo-800">Problem ${idx + 1}: ${p.title || 'Coding Challenge'}</h3>
+                                            <span class="font-extrabold text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">${p.score || 0} / ${p.max_score || 0} pts</span>
                                         </div>
                                         <p class="text-[11px] text-slate-700 font-medium leading-relaxed">${p.statement || ''}</p>
                                         <div class="text-[10px] font-bold text-slate-500 uppercase mt-2 mb-1">Submitted Source Code:</div>
-                                        <pre class="pdf-code-block bg-slate-900 text-emerald-300 p-3 rounded-lg text-[10px] border border-slate-800 leading-normal">${p.submitted_code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                                        <pre class="pdf-code-block bg-slate-900 text-emerald-300 p-3 rounded-lg text-[10px] border border-slate-800 leading-normal">${safeCode}</pre>
                                     </div>
                                 `;
                             });
@@ -579,8 +580,13 @@
                 }
 
                 const maxScoreText = document.getElementById('max-score-display') ? document.getElementById('max-score-display').innerText : '/ 0';
-                printArea.innerHTML = `
-                    <div style="padding: 24px; background: #ffffff;">
+                
+                // Create clean, visible container on top for html2canvas layout capture
+                var pdfWrapper = document.createElement('div');
+                pdfWrapper.id = 'temp-pdf-wrapper';
+                pdfWrapper.style.cssText = 'position: absolute; left: 0; top: 0; width: 780px; background: #ffffff; color: #0f172a; z-index: 99999; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif;';
+                pdfWrapper.innerHTML = `
+                    <div>
                         <!-- Header Banner -->
                         <div class="pdf-no-break flex justify-between items-center border-b-2 border-indigo-600 pb-4 mb-6">
                             <div>
@@ -608,14 +614,7 @@
                     </div>
                 `;
 
-                // Unhide printArea temporarily so html2canvas computes valid dimensions
-                printArea.classList.remove('hidden');
-                printArea.style.display = 'block';
-                printArea.style.position = 'absolute';
-                printArea.style.left = '0px';
-                printArea.style.top = '0px';
-                printArea.style.width = '780px';
-                printArea.style.zIndex = '-9999';
+                document.body.appendChild(pdfWrapper);
 
                 // Render PDF with optimized html2pdf configuration
                 const opt = {
@@ -627,15 +626,15 @@
                     pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
                 };
 
-                await html2pdf().set(opt).from(printArea).save();
+                await html2pdf().set(opt).from(pdfWrapper).save();
 
             } catch(e) {
                 console.error('PDF generation failed:', e);
                 alert("Failed to generate PDF report. Please try again.");
             } finally {
-                if (printArea) {
-                    printArea.classList.add('hidden');
-                    printArea.style.display = 'none';
+                const wrapper = document.getElementById('temp-pdf-wrapper');
+                if (wrapper && wrapper.parentNode) {
+                    wrapper.parentNode.removeChild(wrapper);
                 }
                 if (btn) {
                     btn.disabled = false;
