@@ -581,10 +581,10 @@
 
                 const maxScoreText = document.getElementById('max-score-display') ? document.getElementById('max-score-display').innerText : '/ 0';
                 
-                // Create clean, visible container on top for html2canvas layout capture
+                // Create invisible container in DOM (display:none) so no screen flashing/overlay occurs
                 var pdfWrapper = document.createElement('div');
                 pdfWrapper.id = 'temp-pdf-wrapper';
-                pdfWrapper.style.cssText = 'position: absolute; left: 0; top: 0; width: 780px; background: #ffffff; color: #0f172a; z-index: 99999; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif;';
+                pdfWrapper.style.cssText = 'display: none; width: 780px; background: #ffffff; color: #0f172a; padding: 24px; box-sizing: border-box; font-family: Inter, sans-serif;';
                 pdfWrapper.innerHTML = `
                     <div>
                         <!-- Header Banner -->
@@ -616,12 +616,25 @@
 
                 document.body.appendChild(pdfWrapper);
 
-                // Render PDF with optimized html2pdf configuration
+                // Render PDF with html2canvas onclone to reveal the element in off-screen snapshot
                 const opt = {
                     margin:       [0.4, 0.4, 0.4, 0.4],
                     filename:     `Placement_Arena_Report_${candidateName.replace(/\s+/g, '_')}.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true, 
+                        backgroundColor: '#ffffff', 
+                        scrollX: 0, 
+                        scrollY: 0,
+                        onclone: (clonedDoc) => {
+                            const wrapper = clonedDoc.getElementById('temp-pdf-wrapper');
+                            if (wrapper) {
+                                wrapper.style.display = 'block';
+                                wrapper.style.position = 'relative';
+                            }
+                        }
+                    },
                     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
                     pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
                 };
