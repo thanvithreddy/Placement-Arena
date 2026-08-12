@@ -263,6 +263,10 @@ class ExamResultView(APIView):
         
         total_max_score = sum(sec['max_score'] for sec in sections_data)
         
+        time_taken = None
+        if attempt.started_at and attempt.submitted_at:
+            time_taken = int((attempt.submitted_at - attempt.started_at).total_seconds())
+
         return Response({
             'exam_id': exam_id,
             'exam_title': attempt.exam.title,
