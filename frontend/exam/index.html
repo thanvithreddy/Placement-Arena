@@ -571,8 +571,7 @@
                 updateTimerDisplay();
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    alert('Time limit reached for this section!');
-                    submitSection();
+                    submitSection(true);
                 }
             }, 1000);
         }
@@ -589,8 +588,12 @@
             document.getElementById('submit-modal').style.display = 'flex';
         }
 
-        async function submitSection() {
-            document.getElementById('submit-modal').style.display = 'none';
+        async function submitSection(isAuto = false) {
+            const submitModal = document.getElementById('submit-modal');
+            const warningModal = document.getElementById('warning-modal');
+            if (submitModal) submitModal.style.display = 'none';
+            if (warningModal) warningModal.style.display = 'none';
+            
             clearInterval(timerInterval);
             const sa = sectionAttempts[currentSectionIdx];
             if (sa) {

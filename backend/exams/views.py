@@ -263,6 +263,13 @@ class ExamResultView(APIView):
         
         total_max_score = sum(sec['max_score'] for sec in sections_data)
         
+        if attempt.status != 'completed':
+            attempt.status = 'completed'
+            if not attempt.submitted_at:
+                attempt.submitted_at = timezone.now()
+            attempt.total_score = sum(sec['score'] for sec in sections_data)
+            attempt.save(update_fields=['status', 'submitted_at', 'total_score'])
+
         time_taken = None
         if attempt.started_at and attempt.submitted_at:
             time_taken = int((attempt.submitted_at - attempt.started_at).total_seconds())
@@ -574,6 +581,24 @@ class AdminAttemptListView(APIView):
                 'sections': sections_summary
             })
         return Response(result)
+
+
+class AdminAttemptDetailView(APIView):
+    """
+    DELETE /api/admin-panel/attempts/{id}/
+    Selectively deletes a candidate exam submission attempt.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            attempt = ExamAttempt.objects.get(id=id)
+            attempt.delete()
+            return Response({'message': 'Attempt deleted successfully'}, status=status.HTTP_200_OK)
+        except ExamAttempt.DoesNotExist:
+            return Response({'error': 'Attempt not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class PurgeExamCountView(APIView):

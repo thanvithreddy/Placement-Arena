@@ -58,3 +58,22 @@ class AdminViolationListView(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
         logs = ViolationLog.objects.all().order_by('-timestamp')
         return Response(ViolationLogSerializer(logs, many=True).data)
+
+
+class AdminViolationDetailView(APIView):
+    """
+    DELETE /api/admin-panel/violations/{id}/
+    Selectively deletes a single violation log entry.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, id):
+        if not request.user.is_admin_user():
+            return Response({'error': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            log = ViolationLog.objects.get(id=id)
+            log.delete()
+            return Response({'message': 'Violation log deleted successfully'}, status=status.HTTP_200_OK)
+        except ViolationLog.DoesNotExist:
+            return Response({'error': 'Violation log not found'}, status=status.HTTP_404_NOT_FOUND)
+

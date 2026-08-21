@@ -371,6 +371,11 @@
         }
 
         window.onload = init;
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                init();
+            }
+        });
     </script>
 </body>
 </html>
