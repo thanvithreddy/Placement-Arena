@@ -1542,11 +1542,20 @@
                 body.innerHTML = users.map(u => {
                     const isSelf = u.id === user.id;
                     const dateStr = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
-                    const roleBadge = u.role === 'admin' 
-                        ? '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-purple-50 text-purple-700 border border-purple-200">Admin</span>' 
-                        : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">Candidate</span>';
+                    
+                    let roleBadge = '';
+                    if (u.status === 'pending') {
+                        const createdMs = new Date(u.created_at).getTime();
+                        const hoursLeft = Math.max(0, 24 - Math.floor((Date.now() - createdMs) / (1000 * 60 * 60)));
+                        roleBadge = `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200" title="Expires in ${hoursLeft}h">⏳ Pending (${hoursLeft}h left)</span>`;
+                    } else if (u.role === 'admin') {
+                        roleBadge = '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-purple-50 text-purple-700 border border-purple-200">Admin</span>';
+                    } else {
+                        roleBadge = '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">Candidate</span>';
+                    }
+
                     return `
-                        <tr class="hover:bg-slate-50">
+                        <tr class="hover:bg-slate-50 ${u.status === 'pending' ? 'bg-amber-50/40' : ''}">
                             <td class="p-3.5 font-bold text-slate-900">@${u.username} ${isSelf ? '<span class="text-xs text-indigo-600 font-semibold">(You)</span>' : ''}</td>
                             <td class="p-3.5 text-slate-700 font-medium">${u.display_name || u.username}</td>
                             <td class="p-3.5">${roleBadge}</td>
@@ -1554,9 +1563,16 @@
                             <td class="p-3.5 text-xs text-slate-500 font-mono">${dateStr}</td>
                             <td class="p-3.5">
                                 ${isSelf ? '<span class="text-xs text-slate-400 italic font-medium">Logged in</span>' : `
-                                    <button onclick="deleteUser(${u.id}, '${u.username}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1 rounded-xl text-xs font-bold transition">
-                                        Delete
-                                    </button>
+                                    <div class="flex items-center gap-2">
+                                        ${u.status === 'pending' ? `
+                                            <button onclick="confirmUser(${u.id}, '${u.username}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs font-bold transition shadow-xs">
+                                                ✅ Confirm User
+                                            </button>
+                                        ` : ''}
+                                        <button onclick="deleteUser(${u.id}, '${u.username}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1 rounded-xl text-xs font-bold transition">
+                                            ${u.status === 'pending' ? 'Reject' : 'Delete'}
+                                        </button>
+                                    </div>
                                 `}
                             </td>
                         </tr>
@@ -1564,6 +1580,17 @@
                 }).join('');
             } catch(e) {
                 body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-rose-500 font-medium">Failed to load users.</td></tr>';
+            }
+        }
+
+        async function confirmUser(id, uname) {
+            if (!confirm(`✅ Confirm and approve candidate "@${uname}" to access Placement Arena?`)) return;
+            try {
+                await axios.post(`${API}/admin-panel/users/${id}/confirm/`, {}, getHeaders());
+                showToast(`🎉 User "@${uname}" has been approved!`, 'success');
+                loadUsers();
+            } catch(e) {
+                showToast(e.response?.data?.error || 'Failed to confirm user', 'error');
             }
         }
 

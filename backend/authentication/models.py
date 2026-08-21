@@ -1,15 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+from datetime import timedelta
 
 class User(AbstractUser):
     ROLE_CHOICES = [('admin', 'Admin'), ('candidate', 'Candidate')]
+    STATUS_CHOICES = [('pending', 'Pending Approval'), ('confirmed', 'Confirmed')]
+
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='candidate')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='confirmed')
     display_name = models.CharField(max_length=100, blank=True)
     total_exams_taken = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     def is_admin_user(self):
         return self.role == 'admin'
+
+    @classmethod
+    def cleanup_expired_pending_users(cls):
+        """Automatically delete pending sign-up requests created > 24 hours ago."""
+        cutoff = timezone.now() - timedelta(hours=24)
+        cls.objects.filter(status='pending', created_at__lte=cutoff).delete()
 
 
 class DailyStreak(models.Model):

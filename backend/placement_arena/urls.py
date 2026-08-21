@@ -11,8 +11,8 @@ FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 FRONTEND_DIR = os.path.normpath(FRONTEND_DIR)
 
 urlpatterns = [
-    # Root redirect to login page
-    path('', RedirectView.as_view(url='/login/index.html', permanent=False)),
+    # Root redirect to dashboard landing page
+    path('', RedirectView.as_view(url='/dashboard/index.html', permanent=False)),
     path('admin/', admin.site.urls),
 
     # API endpoints

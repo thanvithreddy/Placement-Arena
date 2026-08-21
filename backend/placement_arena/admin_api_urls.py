@@ -15,7 +15,7 @@ from questions.views import (
 )
 from coding.views import AdminCodingProblemView, AdminCodingProblemDetailView, AdminTestCaseView, BulkImportCodingView
 from warnings_log.views import AdminViolationListView, AdminViolationDetailView
-from authentication.views import AdminUserListView, AdminUserDetailView
+from authentication.views import AdminUserListView, AdminUserDetailView, AdminConfirmUserView
 
 urlpatterns = [
     # Exam management
@@ -46,6 +46,7 @@ urlpatterns = [
     # User Management
     path('users/', AdminUserListView.as_view(), name='admin_user_list'),
     path('users/<int:id>/', AdminUserDetailView.as_view(), name='admin_user_detail'),
+    path('users/<int:id>/confirm/', AdminConfirmUserView.as_view(), name='admin_user_confirm'),
 
     # Violations
     path('violations/', AdminViolationListView.as_view(), name='admin_violations'),

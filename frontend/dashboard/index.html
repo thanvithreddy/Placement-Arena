@@ -78,30 +78,27 @@
                     👤 Profile
                 </a>
                 <div class="h-6 w-px bg-slate-200"></div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2" id="auth-header-actions">
                     <div class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xs" id="user-avatar">
-                        T
+                        ?
                     </div>
-                    <button onclick="logout()" class="whitespace-nowrap text-xs font-semibold text-rose-600 hover:text-rose-700 px-2 py-1 rounded-lg hover:bg-rose-50 transition">
-                        Logout
-                    </button>
                 </div>
             </nav>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 pt-8 space-y-8">
-        <!-- Hero Welcome Banner (Matching LogicWhile Design) -->
+        <!-- Hero Welcome Banner -->
         <div class="banner-gradient rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-xs">
             <div class="max-w-2xl space-y-3 relative z-10">
                 <div class="inline-flex items-center gap-2 bg-indigo-600/10 text-indigo-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    <span>Active Session</span>
+                    <span id="hero-badge-text">Placement Assessment Platform</span>
                 </div>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight" id="greeting">
-                    Welcome Back, Thanvith! ⚡
+                    Welcome to Placement Arena ⚡
                 </h2>
-                <p class="text-slate-600 text-base leading-relaxed">
-                    Ready to continue your placement preparation journey? You're making great progress!
+                <p class="text-slate-600 text-base leading-relaxed" id="hero-subtext">
+                    Prepare for top company placement assessments with daily mock tests, coding problems, and AI speaking practice.
                 </p>
                 <div class="pt-2">
                     <button id="cta-btn" class="btn-indigo text-white font-extrabold px-8 py-4 rounded-2xl text-base shadow-lg pulse-anim flex items-center gap-2">
@@ -147,7 +144,7 @@
                     </div>
                     <div>
                         <div class="whitespace-nowrap text-xs font-bold text-slate-400 uppercase tracking-wider">Last Score</div>
-                        <div class="text-xl font-extrabold text-slate-900" id="last-score">— / 480</div>
+                        <div class="text-xl font-extrabold text-slate-900" id="last-score">— / —</div>
                     </div>
                 </div>
 
@@ -158,7 +155,7 @@
                     </div>
                     <div>
                         <div class="whitespace-nowrap text-xs font-bold text-slate-400 uppercase tracking-wider">Total Duration</div>
-                        <div class="text-xl font-extrabold text-slate-900">120 mins</div>
+                        <div class="text-xl font-extrabold text-slate-900" id="total-duration">— mins</div>
                     </div>
                 </div>
             </div>
@@ -209,7 +206,9 @@
                         return axios(originalRequest);
                     } catch(e) {
                         localStorage.clear();
-                        window.location.href = '/login/index.html';
+                        if (!window.location.pathname.includes('/dashboard/')) {
+                            window.location.href = '/login/index.html';
+                        }
                         return Promise.reject(e);
                     }
                 }
@@ -233,50 +232,121 @@
             window.location.href = '/login/index.html';
         }
 
-        function setGreeting() {
+        function renderHeaderAndHero() {
+            const token = localStorage.getItem('access_token');
             const user = getUser();
-            const name = user.display_name || user.username || 'Student';
-            document.getElementById('greeting').innerText = `Welcome Back, ${name}! ⚡`;
-            document.getElementById('user-avatar').innerText = name.charAt(0).toUpperCase();
+            const isLoggedIn = token && user && (user.username || user.display_name);
+
+            const headerActions = document.getElementById('auth-header-actions');
+            const heroBadge = document.getElementById('hero-badge-text');
+            const greeting = document.getElementById('greeting');
+            const heroSubtext = document.getElementById('hero-subtext');
+
+            if (isLoggedIn) {
+                const name = user.display_name || user.username || 'Student';
+                const initial = name.charAt(0).toUpperCase();
+
+                if (headerActions) {
+                    headerActions.innerHTML = `
+                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xs" id="user-avatar">
+                            ${initial}
+                        </div>
+                        <button onclick="logout()" class="whitespace-nowrap text-xs font-semibold text-rose-600 hover:text-rose-700 px-2 py-1 rounded-lg hover:bg-rose-50 transition">
+                            Logout
+                        </button>
+                    `;
+                }
+                if (heroBadge) heroBadge.innerText = 'Active Session';
+                if (greeting) greeting.innerText = `Welcome Back, ${name}! ⚡`;
+                if (heroSubtext) heroSubtext.innerText = "Ready to continue your placement preparation journey? You're making great progress!";
+            } else {
+                if (headerActions) {
+                    headerActions.innerHTML = `
+                        <a href="/login/index.html" class="whitespace-nowrap text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-xl transition">
+                            Sign In
+                        </a>
+                        <a href="/login/index.html?mode=signup" class="whitespace-nowrap text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3.5 py-2 rounded-xl shadow-xs transition">
+                            Sign Up
+                        </a>
+                    `;
+                }
+                if (heroBadge) heroBadge.innerText = 'Placement Assessment Platform';
+                if (greeting) greeting.innerText = 'Welcome to Placement Arena ⚡';
+                if (heroSubtext) heroSubtext.innerText = 'Prepare for top company placement assessments with daily mock tests, coding problems, and AI speaking practice.';
+                
+                const btn = document.getElementById('cta-btn');
+                if (btn) {
+                    btn.innerText = '🚀 Login or Sign Up to Start Test →';
+                    btn.onclick = () => window.location.href = '/login/index.html';
+                }
+            }
         }
 
         async function init() {
-            setGreeting();
+            renderHeaderAndHero();
+            const token = localStorage.getItem('access_token');
+            const user = getUser();
+            const isLoggedIn = token && user && (user.username || user.display_name);
+
+            if (!isLoggedIn) {
+                document.getElementById('exam-status-text').innerText = 'Login Required';
+                document.getElementById('current-rank').innerText = '#—';
+                document.getElementById('last-score').innerText = '— / —';
+                document.getElementById('total-duration').innerText = '60 mins';
+                const chartBox = document.getElementById('historyChart');
+                if (chartBox && chartBox.parentElement) {
+                    chartBox.parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-400 text-sm font-medium">Please log in or sign up to view your personal performance analytics trajectory.</div>';
+                }
+                return;
+            }
+
             try {
                 // 1. Fetch today's exam
                 const res = await axios.get(`${API}/exams/today/`, getHeaders());
                 const { exam, attempt } = res.data;
                 updateExamStatus(exam, attempt);
-                window._examId = exam.id;
+                if (exam) {
+                    window._examId = exam.id;
+                    const totalMinutes = (exam.sections || []).reduce((acc, s) => acc + (s.duration_minutes || 0), 0);
+                    document.getElementById('total-duration').innerText = totalMinutes > 0 ? `${totalMinutes} mins` : '— mins';
+                } else {
+                    document.getElementById('total-duration').innerText = '— mins';
+                }
                 
                 // 2. Fetch leaderboard for rank
                 try {
                     const lb = await axios.get(`${API}/leaderboard/daily/?exam_id=${exam.id}`, getHeaders());
-                    const user = getUser();
                     const myEntry = lb.data.find(e => e.username === user.username);
                     document.getElementById('current-rank').innerText = myEntry ? `#${myEntry.rank}` : '#—';
-                } catch(e) { /* no leaderboard yet */ }
+                } catch(e) { document.getElementById('current-rank').innerText = '#—'; }
                 
             } catch(e) {
                 document.getElementById('exam-status-text').innerText = 'No Exam Today';
+                document.getElementById('total-duration').innerText = '— mins';
                 const btn = document.getElementById('cta-btn');
-                btn.disabled = true;
-                btn.innerText = 'No Active Exam Today';
-                btn.classList.remove('pulse-anim');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerText = 'No Active Exam Today';
+                    btn.classList.remove('pulse-anim');
+                }
             }
             
-            // 3. Fetch submission history for chart
+            // 3. Fetch submission history for chart & last score
             try {
                 const hist = await axios.get(`${API}/analytics/history/`, getHeaders());
-                const scores = hist.data.slice(0, 5).map(h => h.total_score);
-                if (scores.length > 0) {
-                    const lastMax = last.total_max_score || 100;
+                if (hist.data && hist.data.length > 0) {
+                    const last = hist.data[0];
+                    const lastMax = last.total_max_score || '—';
                     document.getElementById('last-score').innerText = `${last.total_score} / ${lastMax}`;
+
+                    const scores = hist.data.slice(0, 5).map(h => h.total_score);
                     drawChart(scores.reverse());
                 } else {
+                    document.getElementById('last-score').innerText = '— / —';
                     document.getElementById('historyChart').parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-400 text-sm">No past performance data available yet. Take your first test today!</div>';
                 }
             } catch(e) {
+                document.getElementById('last-score').innerText = '— / —';
                 document.getElementById('historyChart').parentElement.innerHTML = '<div class="h-full flex items-center justify-center text-slate-400 text-sm">Could not load performance data.</div>';
             }
         }
@@ -357,7 +427,6 @@
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            max: 480, 
                             grid: { color: '#f1f5f9' },
                             ticks: { color: '#64748b' }
                         },
