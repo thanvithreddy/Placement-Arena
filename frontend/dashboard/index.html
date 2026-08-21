@@ -189,10 +189,20 @@
     <script>
         const API = window.location.origin + '/api';
         
-        // Auto-refresh JWT token on 401
+        function handleDuplicateLogin() {
+            alert('⚠️ Duplicate Login Detected!\n\nYour account was logged in from another device or browser session.\nThis session has been logged out.');
+            localStorage.clear();
+            window.location.href = '/login/index.html';
+        }
+
+        // Auto-refresh JWT token on 401 & catch 409 duplicate login
         axios.interceptors.response.use(
             response => response,
             async error => {
+                if (error.response?.status === 409 && error.response?.data?.error === 'duplicate_login') {
+                    handleDuplicateLogin();
+                    return Promise.reject(error);
+                }
                 const originalRequest = error.config;
                 if (error.response?.status === 401 && !originalRequest._retry) {
                     originalRequest._retry = true;
@@ -218,7 +228,10 @@
 
         function getHeaders() {
             const token = localStorage.getItem('access_token');
-            return { headers: { Authorization: `Bearer ${token}` } };
+            const sessionKey = localStorage.getItem('session_key');
+            const headers = { Authorization: `Bearer ${token}` };
+            if (sessionKey) headers['X-Session-Key'] = sessionKey;
+            return { headers };
         }
 
         function getUser() {

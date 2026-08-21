@@ -56,6 +56,10 @@ class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        provided_key = request.META.get('HTTP_X_SESSION_KEY')
+        if request.user.session_key and provided_key and provided_key != request.user.session_key:
+            return Response({'error': 'duplicate_login', 'message': 'Duplicate login detected from another device/session.'}, status=status.HTTP_409_CONFLICT)
+
         serializer = UserSerializer(request.user)
         data = serializer.data
         from .models import DailyStreak

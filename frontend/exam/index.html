@@ -237,10 +237,32 @@
     <script>
         const API = window.location.origin + '/api';
 
-        // Auto-refresh JWT token on 401
+        let isDuplicateHandling = false;
+        async function handleDuplicateLogin() {
+            if (isDuplicateHandling) return;
+            isDuplicateHandling = true;
+            
+            if (window._currentAttemptId || attemptId) {
+                const targetAttemptId = window._currentAttemptId || attemptId;
+                try {
+                    await axios.post(`${API}/exams/attempts/${targetAttemptId}/reset-on-duplicate/`, {}, getHeaders());
+                } catch(e) { console.error('Failed to reset attempt on duplicate login', e); }
+            }
+
+            alert('⚠️ Duplicate Login Detected!\n\nYour account was logged in from another device or browser session.\nThis exam session has been terminated and your exam progress has been reset.\nPlease log in again to take a fresh exam.');
+            
+            localStorage.clear();
+            window.location.href = '/login/index.html';
+        }
+
+        // Auto-refresh JWT token on 401 & catch 409 duplicate login
         axios.interceptors.response.use(
             response => response,
             async error => {
+                if (error.response?.status === 409 && error.response?.data?.error === 'duplicate_login') {
+                    handleDuplicateLogin();
+                    return Promise.reject(error);
+                }
                 const originalRequest = error.config;
                 if (error.response?.status === 401 && !originalRequest._retry) {
                     originalRequest._retry = true;
@@ -264,8 +286,28 @@
 
         function getHeaders() {
             const token = localStorage.getItem('access_token');
-            return { headers: { Authorization: `Bearer ${token}` } };
+            const sessionKey = localStorage.getItem('session_key');
+            const headers = { Authorization: `Bearer ${token}` };
+            if (sessionKey) headers['X-Session-Key'] = sessionKey;
+            return { headers };
         }
+
+        // Periodic Session Check Heartbeat every 5 seconds
+        setInterval(async () => {
+            if (isDuplicateHandling) return;
+            const token = localStorage.getItem('access_token');
+            if (!token) return;
+            try {
+                const res = await axios.get(`${API}/auth/me/`, getHeaders());
+                if (res.status === 409 || res.data?.error === 'duplicate_login') {
+                    handleDuplicateLogin();
+                }
+            } catch(e) {
+                if (e.response?.status === 409 && e.response?.data?.error === 'duplicate_login') {
+                    handleDuplicateLogin();
+                }
+            }
+        }, 5000);
 
         const params = new URLSearchParams(window.location.search);
         let examId = params.get('exam_id');

@@ -10,6 +10,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='candidate')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='confirmed')
     display_name = models.CharField(max_length=100, blank=True)
+    session_key = models.CharField(max_length=100, blank=True, null=True)
     total_exams_taken = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

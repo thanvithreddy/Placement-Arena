@@ -30,6 +30,14 @@ class ExamDetailView(APIView):
         except Exam.DoesNotExist:
             return Response({'error': 'Exam not found'}, status=status.HTTP_404_NOT_FOUND)
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip or '127.0.0.1'
+
 class StartExamView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -41,13 +49,15 @@ class StartExamView(APIView):
             
         force_reset = str(request.data.get('reset', '')).lower() in ['true', '1'] or str(request.query_params.get('reset', '')).lower() in ['true', '1']
         attempt = ExamAttempt.objects.filter(user=request.user, exam=exam).first()
+        client_ip = get_client_ip(request)
         
         if not attempt:
             attempt = ExamAttempt.objects.create(
                 user=request.user,
                 exam=exam,
                 status='in_progress',
-                started_at=timezone.now()
+                started_at=timezone.now(),
+                ip_address=client_ip
             )
             for section in exam.sections.all().order_by('order'):
                 SectionAttempt.objects.create(
@@ -55,22 +65,23 @@ class StartExamView(APIView):
                     section=section,
                     status='not_started'
                 )
-        elif force_reset:
-            # Reset attempt ONLY if user explicitly requested a retake
-            attempt.section_attempts.all().delete()
-            attempt.status = 'in_progress'
-            attempt.started_at = timezone.now()
-            attempt.submitted_at = None
-            attempt.total_score = 0
-            attempt.violations_count = 0
-            attempt.save()
+        else:
+            attempt.ip_address = client_ip
+            if force_reset:
+                attempt.section_attempts.all().delete()
+                attempt.status = 'in_progress'
+                attempt.started_at = timezone.now()
+                attempt.submitted_at = None
+                attempt.total_score = 0
+                attempt.violations_count = 0
 
-            for section in exam.sections.all().order_by('order'):
-                SectionAttempt.objects.create(
-                    exam_attempt=attempt,
-                    section=section,
-                    status='not_started'
-                )
+                for section in exam.sections.all().order_by('order'):
+                    SectionAttempt.objects.create(
+                        exam_attempt=attempt,
+                        section=section,
+                        status='not_started'
+                    )
+            attempt.save()
 
         return Response(ExamAttemptSerializer(attempt).data, status=status.HTTP_200_OK)
 
@@ -576,11 +587,34 @@ class AdminAttemptListView(APIView):
                 'status': att.status,
                 'total_score': att.total_score,
                 'violations_count': att.violations_count,
+                'ip_address': att.ip_address or '127.0.0.1',
                 'started_at': att.started_at,
                 'submitted_at': att.submitted_at,
                 'sections': sections_summary
             })
         return Response(result)
+
+
+class ResetDuplicateAttemptView(APIView):
+    """
+    POST /api/exams/attempts/{id}/reset-on-duplicate/
+    Resets an active exam attempt when duplicate login is detected.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        try:
+            attempt = ExamAttempt.objects.get(id=id, user=request.user)
+            attempt.section_attempts.all().delete()
+            attempt.status = 'not_started'
+            attempt.started_at = None
+            attempt.submitted_at = None
+            attempt.total_score = 0
+            attempt.violations_count = 0
+            attempt.save()
+            return Response({'message': 'Exam attempt progress reset due to duplicate login.'}, status=status.HTTP_200_OK)
+        except ExamAttempt.DoesNotExist:
+            return Response({'message': 'No attempt found to reset.'}, status=status.HTTP_200_OK)
 
 
 class AdminAttemptDetailView(APIView):

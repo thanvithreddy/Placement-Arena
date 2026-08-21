@@ -205,10 +205,11 @@
 
             try {
                 const response = await axios.post(`${API}/auth/login/`, { username, password });
-                const { access, refresh, user } = response.data;
+                const { access, refresh, session_key, user } = response.data;
                 
                 localStorage.setItem('access_token', access);
                 localStorage.setItem('refresh_token', refresh);
+                if (session_key) localStorage.setItem('session_key', session_key);
                 localStorage.setItem('user_info', JSON.stringify({
                     id: user.id,
                     username: user.username,

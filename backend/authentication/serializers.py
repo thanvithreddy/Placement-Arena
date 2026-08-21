@@ -28,10 +28,16 @@ class LoginSerializer(serializers.Serializer):
         if user.status == 'pending':
             raise serializers.ValidationError('Your registration request is pending admin confirmation (valid for 24h).')
         
+        import uuid
+        session_key = uuid.uuid4().hex
+        user.session_key = session_key
+        user.save(update_fields=['session_key'])
+
         refresh = RefreshToken.for_user(user)
         
         return {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'session_key': session_key,
             'user': UserSerializer(user).data
         }

@@ -333,6 +333,7 @@
                         <tr>
                             <th class="p-3.5">Candidate</th>
                             <th class="p-3.5">Exam Title</th>
+                            <th class="p-3.5">Location / IP</th>
                             <th class="p-3.5">Total Score</th>
                             <th class="p-3.5">Section Breakdown</th>
                             <th class="p-3.5">Violations</th>
@@ -342,7 +343,7 @@
                         </tr>
                     </thead>
                     <tbody id="submissions-table-body" class="divide-y divide-slate-100">
-                        <tr><td colspan="8" class="p-6 text-center text-slate-400">Loading attempts & scores...</td></tr>
+                        <tr><td colspan="9" class="p-6 text-center text-slate-400">Loading attempts & scores...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -753,7 +754,10 @@
         const API = window.location.origin + '/api';
         function getHeaders() {
             const token = localStorage.getItem('access_token');
-            return { headers: { Authorization: `Bearer ${token}` } };
+            const sessionKey = localStorage.getItem('session_key');
+            const headers = { Authorization: `Bearer ${token}` };
+            if (sessionKey) headers['X-Session-Key'] = sessionKey;
+            return { headers };
         }
 
         // Axios 401 JWT refresh interceptor
@@ -1501,6 +1505,7 @@
                         <tr class="hover:bg-slate-50">
                             <td class="p-3.5 font-bold text-slate-900">${a.display_name || a.username} <span class="text-xs text-slate-400 font-normal">(@${a.username})</span></td>
                             <td class="p-3.5 text-indigo-700 font-bold">${a.exam_title}</td>
+                            <td class="p-3.5"><span class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-slate-100 border border-slate-200 text-slate-700">📍 ${a.ip_address || '127.0.0.1'}</span></td>
                             <td class="p-3.5"><span class="text-base font-extrabold text-emerald-600">${a.total_score}</span> <span class="text-xs text-slate-400 font-semibold">pts</span></td>
                             <td class="p-3.5 flex flex-wrap gap-1">${secPills || '<span class="text-xs text-slate-400">None</span>'}</td>
                             <td class="p-3.5"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${a.violations_count > 0 ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-slate-100 text-slate-500'}">${a.violations_count}/5</span></td>
@@ -1514,7 +1519,7 @@
                         </tr>
                     `;
                 }).join('');
-            } catch(e) { body.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-rose-500 font-medium">Failed to load attempts.</td></tr>'; }
+            } catch(e) { body.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-rose-500 font-medium">Failed to load attempts.</td></tr>'; }
         }
 
         async function deleteSingleSubmission(id) {
