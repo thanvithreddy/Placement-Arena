@@ -556,44 +556,266 @@
 
             if (slug === 'percentages') {
                 container.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between border-b pb-3">
-                            <h5 class="text-sm font-extrabold text-slate-900">Percentages Concept Playground</h5>
-                            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">Symmetry &amp; Decimal Shift</span>
-                        </div>
-                        <p class="text-xs text-slate-600">Drag sliders to test the <strong>Symmetry Rule</strong> ($a\% \text{ of } b = b\% \text{ of } a$) and $10\% / 1\%$ decimal shift!</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
-                            <div class="space-y-2">
-                                <label class="whitespace-nowrap text-xs font-bold text-slate-700 flex justify-between">
-                                    <span>Percentage ($a\%$)</span>
-                                    <span class="text-indigo-600 font-extrabold" id="pct-val-a">20%</span>
-                                </label>
-                                <input type="range" min="1" max="100" value="20" id="pct-slider-a" oninput="calcPct()" class="w-full accent-indigo-600">
+                    <div class="space-y-6">
+                        <!-- Header Badge -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
+                            <div>
+                                <h5 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                                    <span>💯 Gamified Percentages Interactive Suite</span>
+                                </h5>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">Manipulate 100-Grid particles, fluid containers, scaling multipliers, and test your speed in the Challenge Arena!</p>
                             </div>
-                            <div class="space-y-2">
-                                <label class="whitespace-nowrap text-xs font-bold text-slate-700 flex justify-between">
-                                    <span>Base Number ($b$)</span>
-                                    <span class="text-indigo-600 font-extrabold" id="pct-val-b">500</span>
-                                </label>
-                                <input type="range" min="10" max="2000" step="10" value="500" id="pct-slider-b" oninput="calcPct()" class="w-full accent-indigo-600">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full flex items-center gap-1">
+                                    <span>🎮 Interactive Physics</span>
+                                </span>
+                                <span class="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full flex items-center gap-1" id="pct-user-xp">
+                                    <span>⭐ +500 XP Topic</span>
+                                </span>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-center">
-                                <h6 class="text-[10px] font-extrabold text-indigo-900 uppercase">Symmetry Rule</h6>
-                                <p class="text-base font-extrabold text-indigo-700 mt-1" id="pct-result-text">20% of 500 = 100</p>
-                                <p class="text-[11px] text-slate-500 font-medium mt-0.5" id="pct-symmetry-text">500% of 20 = 100 ✓</p>
+                        <!-- Playground Selector Tabs -->
+                        <div class="flex bg-slate-100 p-1.5 rounded-2xl gap-2 overflow-x-auto text-xs font-bold">
+                            <button id="pct-subtab-1" onclick="switchPctSubTab(1)" class="flex-1 py-2.5 px-4 rounded-xl transition bg-indigo-600 text-white shadow-xs whitespace-nowrap">
+                                🌊 1. 100-Grid &amp; Fluid Container
+                            </button>
+                            <button id="pct-subtab-2" onclick="switchPctSubTab(2)" class="flex-1 py-2.5 px-4 rounded-xl transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                                📊 2. Shift &amp; Multiplier Bars
+                            </button>
+                            <button id="pct-subtab-3" onclick="switchPctSubTab(3)" class="flex-1 py-2.5 px-4 rounded-xl transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                                📉 3. Successive &amp; Loss Pipeline
+                            </button>
+                            <button id="pct-subtab-4" onclick="switchPctSubTab(4)" class="flex-1 py-2.5 px-4 rounded-xl transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                                🎴 4. Fraction Matrix
+                            </button>
+                            <button id="pct-subtab-5" onclick="switchPctSubTab(5)" class="flex-1 py-2.5 px-4 rounded-xl transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                                🏆 5. Challenge Arena
+                            </button>
+                        </div>
+
+                        <!-- MODULE 1: 100-GRID & FLUID TANK -->
+                        <div id="pct-sec-1" class="space-y-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-200">
+                                <div class="space-y-5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Controls</span>
+                                        <button onclick="toggleSymmetry()" class="text-xs font-bold bg-indigo-600 text-white px-3 py-1.5 rounded-xl hover:bg-indigo-700 transition flex items-center gap-1.5 shadow-xs">
+                                            <span>🔄 Test Symmetry Rule ($a\\% \\text{ of } b = b\\% \\text{ of } a$)</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                                <span>Percentage ($P\\%$)</span>
+                                                <span class="text-indigo-600 font-extrabold text-sm" id="pct-lbl-p">35%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="35" id="pct-rng-p" oninput="updatePctSim1()" class="w-full accent-indigo-600 cursor-pointer">
+                                        </div>
+
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                                <span>Base Quantity ($B$)</span>
+                                                <span class="text-indigo-600 font-extrabold text-sm" id="pct-lbl-b">400</span>
+                                            </div>
+                                            <input type="range" min="10" max="1000" step="10" value="400" id="pct-rng-b" oninput="updatePctSim1()" class="w-full accent-indigo-600 cursor-pointer">
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-indigo-900 to-purple-900 text-white p-5 rounded-2xl space-y-3 shadow-md">
+                                        <div class="text-[10px] font-extrabold text-indigo-300 uppercase tracking-wider">Live Calculation Formula</div>
+                                        <div class="text-xl md:text-2xl font-black text-amber-300" id="pct-sim1-eq">
+                                            35% of 400 = 140
+                                        </div>
+                                        <div class="text-xs text-indigo-200 font-mono leading-relaxed" id="pct-sim1-steps">
+                                            = (35 / 100) × 400 = 140
+                                        </div>
+                                        <div class="pt-2 border-t border-indigo-800 flex justify-between text-xs text-indigo-200">
+                                            <span>10% Shift: <strong class="text-white" id="pct-shift-10-txt">40.0</strong></span>
+                                            <span>1% Shift: <strong class="text-white" id="pct-shift-1-txt">4.00</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 flex flex-col justify-center items-center">
+                                    <div class="w-full flex justify-around items-center gap-4">
+                                        <div class="text-center space-y-2">
+                                            <span class="text-xs font-extrabold text-slate-700">100-Grid Particle Matrix ($P\\%$)</span>
+                                            <div class="grid grid-cols-10 gap-1 bg-slate-900 p-2.5 rounded-2xl shadow-inner border border-slate-800" id="pct-grid-100" style="width: 170px; height: 170px;">
+                                            </div>
+                                            <span class="text-[11px] text-indigo-600 font-bold" id="pct-grid-count">35 / 100 Blocks Lit</span>
+                                        </div>
+
+                                        <div class="text-center space-y-2">
+                                            <span class="text-xs font-extrabold text-slate-700">Fluid Tank ($B = 400$)</span>
+                                            <div class="relative w-24 h-44 bg-slate-100 border-4 border-slate-300 rounded-2xl overflow-hidden shadow-inner mx-auto flex items-end">
+                                                <div id="pct-liquid-tank" class="w-full bg-gradient-to-t from-indigo-600 to-cyan-400 transition-all duration-300 relative" style="height: 35%;">
+                                                    <div class="absolute top-0 left-0 w-full h-1 bg-white/50 animate-pulse"></div>
+                                                </div>
+                                                <div class="absolute inset-0 flex items-center justify-center font-black text-sm text-slate-900 drop-shadow-md" id="pct-tank-val">
+                                                    140 L
+                                                </div>
+                                            </div>
+                                            <span class="text-[11px] text-emerald-600 font-bold" id="pct-tank-percent">35% Full</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center">
-                                <h6 class="text-[10px] font-extrabold text-amber-900 uppercase">Decimal Shift (Page 1)</h6>
-                                <p class="whitespace-nowrap text-xs font-bold text-amber-800 mt-1" id="pct-shift-10">10% of 500 = 50.0</p>
-                                <p class="whitespace-nowrap text-xs font-bold text-amber-800" id="pct-shift-1">1% of 500 = 5.00</p>
+                        </div>
+
+                        <!-- MODULE 2: SHIFT & MULTIPLIER BARS -->
+                        <div id="pct-sec-2" class="space-y-6 hidden">
+                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-6">
+                                <div>
+                                    <h6 class="text-sm font-extrabold text-slate-900">Percentage Increase &amp; Decrease Multiplier Engine</h6>
+                                    <p class="text-xs text-slate-500">See how $+X\\%$ or $-X\\%$ visually resizes the value bar and transforms into a decimal multiplier!</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4 bg-white p-4 rounded-2xl border border-slate-200">
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                                <span>Base Amount ($V_1$)</span>
+                                                <span class="text-indigo-600 font-extrabold" id="pct-lbl-base">$500</span>
+                                            </div>
+                                            <input type="range" min="50" max="2000" step="50" value="500" id="pct-rng-base" oninput="updatePctSim2()" class="w-full accent-indigo-600">
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                                <span>Percentage Change ($\Delta\\%$)</span>
+                                                <span class="font-extrabold" id="pct-lbl-change">+25%</span>
+                                            </div>
+                                            <input type="range" min="-50" max="100" step="5" value="25" id="pct-rng-change" oninput="updatePctSim2()" class="w-full accent-indigo-600">
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col justify-center space-y-3">
+                                        <div class="text-xs font-bold text-slate-400 uppercase">Multiplier Formula</div>
+                                        <div class="text-xl font-black text-slate-900" id="pct-sim2-formula">
+                                            $V_2 = 500 \times 1.25 = 625$
+                                        </div>
+                                        <div class="text-xs text-emerald-600 font-bold" id="pct-sim2-diff">
+                                            +$125 (+25% expansion)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 pt-2">
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-xs font-bold text-slate-600">
+                                            <span>Original Value ($V_1$)</span>
+                                            <span id="pct-bar1-lbl">$500</span>
+                                        </div>
+                                        <div class="w-full bg-slate-200 h-6 rounded-xl overflow-hidden">
+                                            <div class="bg-slate-700 h-full rounded-xl transition-all duration-300 flex items-center px-3 text-xs text-white font-bold" style="width: 50%;">
+                                                Original ($500)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-xs font-bold text-slate-600">
+                                            <span>New Value ($V_2$)</span>
+                                            <span id="pct-bar2-lbl">$625</span>
+                                        </div>
+                                        <div class="w-full bg-slate-200 h-6 rounded-xl overflow-hidden">
+                                            <div id="pct-bar2-fill" class="bg-emerald-500 h-full rounded-xl transition-all duration-300 flex items-center px-3 text-xs text-white font-bold" style="width: 62.5%;">
+                                                New ($625)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 3: SUCCESSIVE & SQUARE LOSS PIPELINE -->
+                        <div id="pct-sec-3" class="space-y-6 hidden">
+                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-6">
+                                <div>
+                                    <h6 class="text-sm font-extrabold text-slate-900">Successive Change &amp; Square Loss Pipeline</h6>
+                                    <p class="text-xs text-slate-500">Why does $+30\\%$ then $-30\\%$ result in a 9% NET LOSS? Test the 2-stage pipeline below!</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4 rounded-2xl border border-slate-200">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700">First Change ($x\\%$)</label>
+                                        <select id="pct-succ-x" onchange="updatePctSim3()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-slate-50 mt-1">
+                                            <option value="30">+30% Increase</option>
+                                            <option value="20">+20% Increase</option>
+                                            <option value="10">+10% Increase</option>
+                                            <option value="-20">-20% Discount</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700">Second Change ($y\\%$)</label>
+                                        <select id="pct-succ-y" onchange="updatePctSim3()" class="w-full p-2.5 border rounded-xl text-xs font-bold bg-slate-50 mt-1">
+                                            <option value="-30">-30% Decrease</option>
+                                            <option value="-20">-20% Decrease</option>
+                                            <option value="-10">-10% Decrease</option>
+                                            <option value="20">+20% Increase</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-indigo-950 text-white rounded-2xl">
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-indigo-300 font-bold uppercase">Initial (100%)</span>
+                                        <p class="text-lg font-black text-white">100.0</p>
+                                    </div>
+                                    <div class="text-indigo-400 font-bold">➔ Stage 1 (<span id="pct-pipe-s1">+30%</span>) ➔</div>
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-indigo-300 font-bold uppercase">Intermediate</span>
+                                        <p class="text-lg font-black text-amber-300" id="pct-pipe-v1">130.0</p>
+                                    </div>
+                                    <div class="text-indigo-400 font-bold">➔ Stage 2 (<span id="pct-pipe-s2">-30%</span>) ➔</div>
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-indigo-300 font-bold uppercase">Final Outcome</span>
+                                        <p class="text-xl font-black text-rose-400" id="pct-pipe-v2">91.0</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl text-center space-y-1">
+                                    <span class="text-xs font-extrabold text-rose-800 uppercase">Net Result &amp; Square Loss Rule</span>
+                                    <p class="text-base font-black text-rose-700" id="pct-pipe-net">Net 9.00% Loss!</p>
+                                    <p class="text-[11px] text-slate-500 font-medium">Formula: $x + y + \\frac{x \\cdot y}{100} = 30 - 30 - \\frac{900}{100} = -9\\%$</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 4: FRACTION-TO-PERCENTAGE MATRIX -->
+                        <div id="pct-sec-4" class="space-y-6 hidden">
+                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-4">
+                                <div>
+                                    <h6 class="text-sm font-extrabold text-slate-900">Standard Fraction-to-Percentage Speed Memory Matrix</h6>
+                                    <p class="text-xs text-slate-500">Tap any fraction card to reveal its exact percentage equivalent &amp; pie chart slice!</p>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="pct-frac-matrix">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 5: GAMIFIED CHALLENGE ARENA -->
+                        <div id="pct-sec-5" class="space-y-6 hidden">
+                            <div class="card-white p-6 md:p-8 rounded-3xl space-y-6 border border-slate-200">
+                                <div class="flex justify-between items-center border-b pb-4">
+                                    <div>
+                                        <h6 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                                            <span>🏆 Predict &amp; Solve Percentage Quests</span>
+                                        </h6>
+                                        <p class="text-xs text-slate-500">Solve 3 interactive challenges to earn your "Percentage Master" Badge &amp; +500 XP!</p>
+                                    </div>
+                                    <span class="text-xs font-extrabold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full" id="pct-arena-score">
+                                        Quest 1 of 3
+                                    </span>
+                                </div>
+
+                                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4" id="pct-quest-card">
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
-                calcPct();
+                updatePctSim1();
             } else if (slug === 'profit-loss') {
                 container.innerHTML = `
                     <div class="space-y-4">
@@ -1142,7 +1364,284 @@
                 `;
             }
 
-            renderMathInUI();
+        // Helper functions for Percentages Gamified Suite
+        let pctSymmetryMode = false;
+        let currentPctQuest = 0;
+
+        function switchPctSubTab(tabNum) {
+            for (let i = 1; i <= 5; i++) {
+                const sec = document.getElementById(`pct-sec-${i}`);
+                const btn = document.getElementById(`pct-subtab-${i}`);
+                if (sec) sec.classList.add('hidden');
+                if (btn) {
+                    btn.className = "flex-1 py-2.5 px-4 rounded-xl transition text-slate-600 hover:text-slate-900 whitespace-nowrap";
+                }
+            }
+            const activeSec = document.getElementById(`pct-sec-${tabNum}`);
+            const activeBtn = document.getElementById(`pct-subtab-${tabNum}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.className = "flex-1 py-2.5 px-4 rounded-xl transition bg-indigo-600 text-white shadow-xs whitespace-nowrap font-bold";
+            }
+
+            if (tabNum === 1) updatePctSim1();
+            if (tabNum === 2) updatePctSim2();
+            if (tabNum === 3) updatePctSim3();
+            if (tabNum === 4) renderPctFracMatrix();
+            if (tabNum === 5) renderPctQuest(currentPctQuest);
+        }
+
+        function toggleSymmetry() {
+            pctSymmetryMode = !pctSymmetryMode;
+            updatePctSim1();
+        }
+
+        function updatePctSim1() {
+            let p = parseFloat(document.getElementById('pct-rng-p')?.value) || 35;
+            let b = parseFloat(document.getElementById('pct-rng-b')?.value) || 400;
+
+            if (document.getElementById('pct-lbl-p')) document.getElementById('pct-lbl-p').innerText = `${p}%`;
+            if (document.getElementById('pct-lbl-b')) document.getElementById('pct-lbl-b').innerText = `${b}`;
+
+            const res = (p / 100) * b;
+
+            const eqEl = document.getElementById('pct-sim1-eq');
+            const stepEl = document.getElementById('pct-sim1-steps');
+
+            if (eqEl && stepEl) {
+                if (pctSymmetryMode) {
+                    eqEl.innerText = `${b}% of ${p} = ${res.toFixed(1)}`;
+                    stepEl.innerText = `= (${b} / 100) × ${p} = ${res.toFixed(1)}  (Symmetry Rule: ${p}% of ${b} = ${res.toFixed(1)})`;
+                } else {
+                    eqEl.innerText = `${p}% of ${b} = ${res.toFixed(1)}`;
+                    stepEl.innerText = `= (${p} / 100) × ${b} = ${res.toFixed(1)}`;
+                }
+            }
+
+            if (document.getElementById('pct-shift-10-txt')) document.getElementById('pct-shift-10-txt').innerText = ((10 / 100) * b).toFixed(1);
+            if (document.getElementById('pct-shift-1-txt')) document.getElementById('pct-shift-1-txt').innerText = ((1 / 100) * b).toFixed(2);
+
+            // Update 100-Grid
+            const gridContainer = document.getElementById('pct-grid-100');
+            if (gridContainer) {
+                gridContainer.innerHTML = '';
+                for (let i = 1; i <= 100; i++) {
+                    const dot = document.createElement('div');
+                    const isLit = i <= Math.round(p);
+                    dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${isLit ? 'bg-amber-400 shadow-[0_0_8px_#fbbf24] scale-110' : 'bg-slate-700 opacity-40'}`;
+                    gridContainer.appendChild(dot);
+                }
+            }
+            if (document.getElementById('pct-grid-count')) document.getElementById('pct-grid-count').innerText = `${Math.round(p)} / 100 Blocks Lit`;
+
+            // Update Fluid Tank
+            const tank = document.getElementById('pct-liquid-tank');
+            if (tank) {
+                tank.style.height = `${p}%`;
+            }
+            if (document.getElementById('pct-tank-val')) document.getElementById('pct-tank-val').innerText = `${res.toFixed(0)} L`;
+            if (document.getElementById('pct-tank-percent')) document.getElementById('pct-tank-percent').innerText = `${p}% Full`;
+        }
+
+        function updatePctSim2() {
+            const base = parseFloat(document.getElementById('pct-rng-base')?.value) || 500;
+            const change = parseFloat(document.getElementById('pct-rng-change')?.value) || 25;
+
+            if (document.getElementById('pct-lbl-base')) document.getElementById('pct-lbl-base').innerText = `$${base}`;
+            if (document.getElementById('pct-lbl-change')) document.getElementById('pct-lbl-change').innerText = `${change >= 0 ? '+' : ''}${change}%`;
+
+            const mult = 1 + (change / 100);
+            const newVal = base * mult;
+            const diff = newVal - base;
+
+            if (document.getElementById('pct-sim2-formula')) document.getElementById('pct-sim2-formula').innerHTML = `$V_2 = ${base} \\times ${mult.toFixed(2)} = $${newVal.toFixed(1)}`;
+            if (document.getElementById('pct-sim2-diff')) document.getElementById('pct-sim2-diff').innerText = `${diff >= 0 ? '+' : ''}$${diff.toFixed(1)} (${change}% ${change >= 0 ? 'expansion' : 'shrinkage'})`;
+
+            if (document.getElementById('pct-bar1-lbl')) document.getElementById('pct-bar1-lbl').innerText = `$${base}`;
+            if (document.getElementById('pct-bar2-lbl')) document.getElementById('pct-bar2-lbl').innerText = `$${newVal.toFixed(1)}`;
+
+            const bar2 = document.getElementById('pct-bar2-fill');
+            if (bar2) {
+                const pctWidth = Math.min(100, Math.max(10, (newVal / 2000) * 100));
+                bar2.style.width = `${pctWidth}%`;
+                bar2.className = `h-full rounded-xl transition-all duration-300 flex items-center px-3 text-xs text-white font-bold ${change >= 0 ? 'bg-emerald-500' : 'bg-rose-500'}`;
+                bar2.innerText = `New ($${newVal.toFixed(0)})`;
+            }
+        }
+
+        function updatePctSim3() {
+            const x = parseFloat(document.getElementById('pct-succ-x')?.value) || 30;
+            const y = parseFloat(document.getElementById('pct-succ-y')?.value) || -30;
+
+            if (document.getElementById('pct-pipe-s1')) document.getElementById('pct-pipe-s1').innerText = `${x >= 0 ? '+' : ''}${x}%`;
+            if (document.getElementById('pct-pipe-s2')) document.getElementById('pct-pipe-s2').innerText = `${y >= 0 ? '+' : ''}${y}%`;
+
+            const v1 = 100 * (1 + x / 100);
+            const v2 = v1 * (1 + y / 100);
+            const netChange = v2 - 100;
+
+            if (document.getElementById('pct-pipe-v1')) document.getElementById('pct-pipe-v1').innerText = v1.toFixed(1);
+            if (document.getElementById('pct-pipe-v2')) document.getElementById('pct-pipe-v2').innerText = v2.toFixed(1);
+
+            const netEl = document.getElementById('pct-pipe-net');
+            if (netEl) {
+                netEl.innerText = `Net ${Math.abs(netChange).toFixed(2)}% ${netChange >= 0 ? 'Gain' : 'Loss'}!`;
+                netEl.className = `text-base font-black ${netChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+            }
+        }
+
+        function renderPctFracMatrix() {
+            const matrix = [
+                { frac: '1/2', pct: '50%', dec: '0.50' },
+                { frac: '1/3', pct: '33.33%', dec: '0.333' },
+                { frac: '1/4', pct: '25%', dec: '0.25' },
+                { frac: '1/5', pct: '20%', dec: '0.20' },
+                { frac: '1/6', pct: '16.66%', dec: '0.166' },
+                { frac: '1/7', pct: '14.28%', dec: '0.142' },
+                { frac: '1/8', pct: '12.5%', dec: '0.125' },
+                { frac: '1/9', pct: '11.11%', dec: '0.111' },
+                { frac: '1/10', pct: '10%', dec: '0.10' },
+                { frac: '1/11', pct: '9.09%', dec: '0.090' },
+                { frac: '1/12', pct: '8.33%', dec: '0.083' },
+                { frac: '3/8', pct: '37.5%', dec: '0.375' }
+            ];
+
+            const container = document.getElementById('pct-frac-matrix');
+            if (!container) return;
+
+            container.innerHTML = matrix.map(item => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 shadow-xs hover:shadow-md transition text-center space-y-2 cursor-pointer group">
+                    <span class="text-xs font-black text-slate-400 group-hover:text-indigo-600 transition">Fraction</span>
+                    <p class="text-xl font-black text-indigo-600">${item.frac}</p>
+                    <div class="bg-indigo-50 p-2 rounded-xl border border-indigo-100">
+                        <span class="text-xs font-extrabold text-indigo-900">${item.pct}</span>
+                        <p class="text-[10px] text-slate-500">(${item.dec})</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const pctQuests = [
+            {
+                title: "Quest 1: The Liquid Container Challenge 🌊",
+                desc: "Adjust the percentage slider below so that the container holds EXACTLY 140 Liters out of 400 Liters!",
+                target: 140,
+                base: 400,
+                type: "slider"
+            },
+            {
+                title: "Quest 2: Successive Discount Calculator 🏷️",
+                desc: "A phone costs $1000. It is discounted by 20% during sale, and you get an extra 10% coupon. What is the final price?",
+                options: ["$700", "$720", "$750", "$680"],
+                correct: 1,
+                type: "mcq"
+            },
+            {
+                title: "Quest 3: Salary Comparison Reversal ⚖️",
+                desc: "A's salary is 25% MORE than B's salary. By what percentage is B's salary LESS than A's salary?",
+                options: ["25%", "20%", "16.66%", "30%"],
+                correct: 1,
+                type: "mcq"
+            }
+        ];
+
+        function renderPctQuest(idx) {
+            const card = document.getElementById('pct-quest-card');
+            const scoreTag = document.getElementById('pct-arena-score');
+            if (!card) return;
+
+            if (scoreTag) scoreTag.innerText = `Quest ${idx + 1} of ${pctQuests.length}`;
+            const q = pctQuests[idx];
+
+            if (!q) {
+                card.innerHTML = `
+                    <div class="text-center space-y-4 py-6">
+                        <div class="text-4xl">🎉🏆</div>
+                        <h4 class="text-xl font-black text-slate-900">Congratulations! You are a Percentage Master!</h4>
+                        <p class="text-xs text-slate-600">You earned +500 XP and unlocked full visual intuition for Percentages!</p>
+                        <button onclick="renderPctQuest(0)" class="gradient-btn text-white px-6 py-2.5 rounded-xl font-bold text-xs">Replay Quests 🔄</button>
+                    </div>
+                `;
+                if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
+
+            if (q.type === 'slider') {
+                card.innerHTML = `
+                    <div class="space-y-4">
+                        <h5 class="text-sm font-extrabold text-slate-900">${q.title}</h5>
+                        <p class="text-xs text-slate-600">${q.desc}</p>
+                        <div class="bg-white p-4 rounded-xl border space-y-2">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span>Slide Percentage (P%):</span>
+                                <span id="pct-q-val" class="text-indigo-600 font-black">10% (40 L)</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="10" id="pct-q-rng" oninput="checkQuestSlider()" class="w-full accent-indigo-600">
+                        </div>
+                        <div id="pct-q-feedback" class="text-xs font-bold text-center p-2 rounded-xl hidden"></div>
+                        <button onclick="submitQuestSlider(${q.target})" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs">Verify Liquid Volume 🚀</button>
+                    </div>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="space-y-4">
+                        <h5 class="text-sm font-extrabold text-slate-900">${q.title}</h5>
+                        <p class="text-xs text-slate-600">${q.desc}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${q.options.map((opt, oIdx) => `
+                                <button onclick="submitQuestMCQ(${oIdx}, ${q.correct})" class="p-3 bg-white border border-slate-200 hover:border-indigo-500 rounded-xl text-xs font-bold text-slate-800 text-left transition hover:bg-indigo-50">
+                                    ${String.fromCharCode(65 + oIdx)}. ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div id="pct-q-feedback" class="text-xs font-bold text-center p-2 rounded-xl hidden"></div>
+                    </div>
+                `;
+            }
+        }
+
+        function checkQuestSlider() {
+            const val = parseFloat(document.getElementById('pct-q-rng').value);
+            const resultLiters = (val / 100) * 400;
+            document.getElementById('pct-q-val').innerText = `${val}% (${resultLiters.toFixed(0)} L)`;
+        }
+
+        function submitQuestSlider(target) {
+            const val = parseFloat(document.getElementById('pct-q-rng').value);
+            const resultLiters = (val / 100) * 400;
+            const fb = document.getElementById('pct-q-feedback');
+            fb.classList.remove('hidden');
+
+            if (Math.abs(resultLiters - target) < 1) {
+                fb.className = 'text-xs font-bold text-center p-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200';
+                fb.innerText = '🎯 PERFECT! 35% of 400 L = 140 L!';
+                if (window.confetti) confetti({ particleCount: 50, spread: 60 });
+                setTimeout(() => {
+                    currentPctQuest++;
+                    renderPctQuest(currentPctQuest);
+                }, 1500);
+            } else {
+                fb.className = 'text-xs font-bold text-center p-3 rounded-xl bg-rose-50 text-rose-700 border border-rose-200';
+                fb.innerText = `Keep sliding! Current: ${resultLiters.toFixed(0)} L (Target: ${target} L)`;
+            }
+        }
+
+        function submitQuestMCQ(selected, correct) {
+            const fb = document.getElementById('pct-q-feedback');
+            fb.classList.remove('hidden');
+
+            if (selected === correct) {
+                fb.className = 'text-xs font-bold text-center p-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200';
+                fb.innerText = '🎉 CORRECT! Excellent calculation!';
+                if (window.confetti) confetti({ particleCount: 50, spread: 60 });
+                setTimeout(() => {
+                    currentPctQuest++;
+                    renderPctQuest(currentPctQuest);
+                }, 1500);
+            } else {
+                fb.className = 'text-xs font-bold text-center p-3 rounded-xl bg-rose-50 text-rose-700 border border-rose-200';
+                fb.innerText = '❌ Incorrect! Try again.';
+            }
         }
 
         // Helper calculations for Concept Playgrounds
