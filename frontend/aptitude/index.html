@@ -384,10 +384,19 @@
 
         // User Stats
         function getUserStats() {
+            let completedArr = [];
+            try {
+                const stored = localStorage.getItem('aptitude_completed');
+                if (stored) completedArr = JSON.parse(stored) || [];
+            } catch(e) {
+                completedArr = [];
+            }
+            if (!Array.isArray(completedArr)) completedArr = [];
+
             return {
-                xp: parseInt(localStorage.getItem('aptitude_xp') || '0'),
-                level: parseInt(localStorage.getItem('aptitude_level') || '1'),
-                completed: JSON.parse(localStorage.getItem('aptitude_completed') || '[]')
+                xp: parseInt(localStorage.getItem('aptitude_xp') || '0') || 0,
+                level: parseInt(localStorage.getItem('aptitude_level') || '1') || 1,
+                completed: completedArr
             };
         }
 
@@ -400,13 +409,17 @@
 
         function updateHeaderStats() {
             const stats = getUserStats();
-            document.getElementById('user-xp').textContent = stats.xp;
-            document.getElementById('user-level').textContent = stats.level;
+            const xpEl = document.getElementById('user-xp');
+            const lvlEl = document.getElementById('user-level');
+            if (xpEl) xpEl.textContent = stats.xp;
+            if (lvlEl) lvlEl.textContent = stats.level;
             renderBadges(stats.completed.length);
         }
 
         function renderBadges(completedCount) {
             const container = document.getElementById('badges-container');
+            if (!container) return;
+
             let badges = [
                 { name: "Starter ⚡", req: 1 },
                 { name: "Quant Master 🛡️", req: 5 },
@@ -427,43 +440,58 @@
         // Render Topics Grid (ALL UNLOCKED)
         function renderMap() {
             const grid = document.getElementById('levels-grid');
+            if (!grid) return;
+
+            if (typeof aptitudeTopics === 'undefined' || !Array.isArray(aptitudeTopics) || aptitudeTopics.length === 0) {
+                grid.innerHTML = `<div class="col-span-full p-8 text-center text-slate-500 font-bold bg-white rounded-2xl border border-slate-200">
+                    <div class="text-3xl mb-2">⚡</div>
+                    <div>Loading 17 Interactive Topics...</div>
+                </div>`;
+                setTimeout(renderMap, 200);
+                return;
+            }
+
             const stats = getUserStats();
 
-            grid.innerHTML = aptitudeTopics.map((topic, index) => {
-                const isCompleted = stats.completed.includes(topic.id);
+            try {
+                grid.innerHTML = aptitudeTopics.map((topic, index) => {
+                    const isCompleted = Array.isArray(stats.completed) && stats.completed.includes(topic.id);
 
-                return `
-                    <div class="card-white rounded-2xl p-5 flex flex-col justify-between space-y-4">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-3xl">${topic.icon || '📚'}</span>
-                                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${
-                                    isCompleted 
-                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
-                                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                                }">
-                                    ${isCompleted ? '✓ Completed' : '⚡ Level ' + (index + 1)}
-                                </span>
+                    return `
+                        <div class="card-white rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-3xl">${topic.icon || '📚'}</span>
+                                    <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${
+                                        isCompleted 
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+                                        : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                                    }">
+                                        ${isCompleted ? '✓ Completed' : '⚡ Level ' + (index + 1)}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-base font-extrabold text-slate-900 tracking-tight">${topic.name}</h3>
+                                    <p class="text-xs text-slate-500 font-medium line-clamp-2 mt-1 leading-relaxed">${topic.description || 'Master core formulas and shortcut tricks.'}</p>
+                                </div>
                             </div>
 
-                            <div>
-                                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">${topic.name}</h3>
-                                <p class="text-xs text-slate-500 font-medium line-clamp-2 mt-1 leading-relaxed">${topic.description || 'Master core formulas and shortcut tricks.'}</p>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                                <div class="text-[10px] font-bold text-slate-400">
+                                    <span>${(topic.flashcards || []).length} Cards</span> • 
+                                    <span class="text-amber-600 font-extrabold">+${topic.xp_reward || 100} XP</span>
+                                </div>
+                                <button onclick="openTopic('${topic.slug}')" class="gradient-btn text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-xs">
+                                    ${isCompleted ? 'Review' : 'Play'}
+                                </button>
                             </div>
                         </div>
-
-                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
-                            <div class="text-[10px] font-bold text-slate-400">
-                                <span>${(topic.flashcards || []).length} Cards</span> • 
-                                <span class="text-amber-600 font-extrabold">+${topic.xp_reward || 100} XP</span>
-                            </div>
-                            <button onclick="openTopic('${topic.slug}')" class="gradient-btn text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-xs">
-                                ${isCompleted ? 'Review' : 'Play'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            } catch(e) {
+                console.error("Error rendering map:", e);
+            }
         }
 
         function backToMap() {
